@@ -1,4 +1,13 @@
 {
+  "version": 2,
+  "outputDirectory": ".",
   "cleanUrls": false,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/html/DangNhap.html",
+      "permanent": false
+    }
+  ]
 }
