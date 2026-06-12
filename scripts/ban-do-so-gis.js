@@ -111,6 +111,7 @@ window.initMap = function initMap() {
     streetViewControl: false,
     fullscreenControl: false,
     zoomControl: false,
+    gestureHandling: 'greedy',
     styles: [
       { featureType: 'poi.business', stylers: [{ visibility: 'off' }] },
       { featureType: 'water', stylers: [{ color: '#a7d5ff' }] },
