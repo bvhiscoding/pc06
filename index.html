@@ -1,12 +1,199 @@
 <!doctype html>
 <html lang="vi">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="refresh" content="0; url=/html/DangNhap.html" />
-  <title>Đang chuyển hướng</title>
+  <title>Bản đồ số GIS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/ban-do-so-gis.css">
+  <link rel="stylesheet" href="styles/ban-do-so.css">
 </head>
-<body>
-  <a href="/html/DangNhap.html">Đi tới trang đăng nhập</a>
+
+<body class="font-sans antialiased">
+  <header class="public-header">
+    <div class="public-brand">
+      <img src="public/logocongan.png" alt="Logo Bộ Công an">
+      <div>
+        <h1>CÔNG AN TỈNH NINH BÌNH</h1>
+        <p>HỆ THỐNG QUẢN LÝ CƠ SỞ KINH DOANH CÓ ĐIỀU KIỆN VỀ ANTT</p>
+      </div>
+    </div>
+    <a class="login-btn" href="html/DangNhap.html">
+      <i data-lucide="user-round" class="h-5 w-5"></i>
+      Đăng nhập
+    </a>
+  </header>
+
+  <main class="public-map-page">
+    <section class="public-title">
+      <h1>Bản đồ số GIS</h1>
+      <p>Tra cứu thông tin cơ sở kinh doanh có điều kiện về an ninh trật tự trên địa bàn tỉnh Ninh Bình</p>
+    </section>
+
+    <section class="gis-filter public-filter">
+      <label>
+        <span>Địa bàn</span>
+        <select>
+          <option>Tất cả</option>
+          <option>P. Đông Thành</option>
+          <option>P. Nam Thành</option>
+        </select>
+      </label>
+      <label>
+        <span>Loại hình kinh doanh</span>
+        <select>
+          <option>Tất cả</option>
+          <option>Karaoke</option>
+          <option>Nhà nghỉ</option>
+          <option>Khách sạn</option>
+        </select>
+      </label>
+      <label>
+        <span>Trạng thái cơ sở</span>
+        <select>
+          <option>Tất cả</option>
+          <option>Đang hoạt động</option>
+          <option>Tạm dừng</option>
+          <option>Ngừng hoạt động</option>
+        </select>
+      </label>
+      <label>
+        <span>Giấy phép</span>
+        <select>
+          <option>Tất cả</option>
+          <option>Còn hiệu lực</option>
+          <option>Sắp hết hạn</option>
+          <option>Hết hạn / Bị thu hồi</option>
+        </select>
+      </label>
+      <label class="search-field">
+        <span class="sr-only">Tìm kiếm cơ sở</span>
+        <span class="search-wrap">
+          <input id="facilitySearch" type="text" placeholder="Nhập tên cơ sở, địa chỉ..." />
+          <i data-lucide="search" class="h-5 w-5"></i>
+        </span>
+      </label>
+      <button id="advancedFilterBtn" class="advanced-btn" type="button">
+        <i data-lucide="funnel" class="h-5 w-5"></i>
+        Bộ lọc nâng cao
+      </button>
+    </section>
+
+    <section class="gis-layout public-layout">
+      <div class="map-shell public-map-shell">
+        <div id="gisMap" class="map-canvas" aria-label="Bản đồ số GIS">
+          <div class="map-fallback-note">
+            <strong>Google Maps API</strong>
+            <span>Thay YOUR_GOOGLE_MAPS_API_KEY trong file HTML để tải bản đồ thật.</span>
+          </div>
+        </div>
+
+        <div class="map-toolbar">
+          <button type="button" data-map-control="zoom-in"><i data-lucide="plus" class="h-6 w-6"></i></button>
+          <button type="button" data-map-control="zoom-out"><i data-lucide="minus" class="h-6 w-6"></i></button>
+          <button type="button" data-map-control="fit"><i data-lucide="scan" class="h-5 w-5"></i></button>
+          <button type="button" data-map-control="locate"><i data-lucide="crosshair" class="h-5 w-5"></i></button>
+          <button type="button" data-map-control="layers"><i data-lucide="layers" class="h-5 w-5"></i></button>
+        </div>
+
+        <div class="map-legend">
+          <h2>Chú thích trạng thái</h2>
+          <div><span class="marker-dot green"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Đang hoạt động</div>
+          <div><span class="marker-dot yellow"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Tạm dừng hoạt động
+          </div>
+          <div><span class="marker-dot gray"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Ngừng hoạt động</div>
+          <div><span class="marker-dot orange"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Giấy phép sắp hết
+            hạn</div>
+          <div><span class="marker-dot red"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Giấy phép hết hạn / Bị
+            thu hồi</div>
+          <div><span class="marker-dot purple"><i data-lucide="triangle-alert" class="h-3.5 w-3.5"></i></span>Có vi phạm
+            / Rủi ro cao</div>
+        </div>
+
+        <article id="facilityPopup" class="facility-popup anchor-right">
+          <button class="popup-close" type="button" aria-label="Đóng"><i data-lucide="x" class="h-5 w-5"></i></button>
+          <h2>Karaoke Hoa Sen</h2>
+          <span class="popup-status">Đang hoạt động</span>
+          <dl>
+            <div>
+              <dt><i data-lucide="briefcase-business" class="h-4 w-4"></i>Loại hình:</dt>
+              <dd>Karaoke</dd>
+            </div>
+            <div>
+              <dt><i data-lucide="map-pin" class="h-4 w-4"></i>Địa chỉ:</dt>
+              <dd>123 Trần Hưng Đạo, P. Đông Thành,<br>TP. Ninh Bình, Ninh Bình</dd>
+            </div>
+            <div>
+              <dt><i data-lucide="shield-check" class="h-4 w-4"></i>Giấy phép ANTT:</dt>
+              <dd class="green-text">Còn hiệu lực</dd>
+            </div>
+            <div>
+              <dt><i data-lucide="user-round" class="h-4 w-4"></i>Chủ cơ sở:</dt>
+              <dd>Nguyễn Văn B</dd>
+            </div>
+            <div>
+              <dt><i data-lucide="phone" class="h-4 w-4"></i>SĐT:</dt>
+              <dd>0912 345 678</dd>
+            </div>
+          </dl>
+          <a href="html/ChiTietHoSo.html" class="popup-detail">Xem chi tiết</a>
+        </article>
+      </div>
+
+      <aside class="gis-side">
+        <section class="gis-side-card">
+          <div class="side-title">
+            <h2>Tổng quan trên bản đồ</h2>
+            <button id="refreshStatsBtn" type="button" aria-label="Làm mới">
+              <i data-lucide="refresh-cw" class="h-5 w-5"></i>
+            </button>
+          </div>
+          <div class="stat-grid">
+            <div><span class="marker-dot green"><i data-lucide="store"
+                  class="h-4 w-4"></i></span><strong>1.248</strong><em>Đang hoạt động</em></div>
+            <div><span class="marker-dot yellow"><i data-lucide="store"
+                  class="h-4 w-4"></i></span><strong>112</strong><em>Tạm dừng</em></div>
+            <div><span class="marker-dot gray"><i data-lucide="store"
+                  class="h-4 w-4"></i></span><strong>58</strong><em>Ngừng hoạt động</em></div>
+            <div><span class="marker-dot orange"><i data-lucide="store"
+                  class="h-4 w-4"></i></span><strong>96</strong><em>Sắp hết hạn</em></div>
+            <div><span class="marker-dot red"><i data-lucide="store"
+                  class="h-4 w-4"></i></span><strong>37</strong><em>Hết hạn / Bị thu hồi</em></div>
+            <div><span class="marker-dot purple"><i data-lucide="triangle-alert"
+                  class="h-4 w-4"></i></span><strong>21</strong><em>Có vi phạm</em></div>
+          </div>
+        </section>
+
+        <section class="gis-side-card nearby-card">
+          <div class="side-title">
+            <h2>Cơ sở gần đây</h2>
+            <a href="#">Xem tất cả</a>
+          </div>
+          <div id="nearbyList" class="nearby-list"></div>
+        </section>
+
+        <section class="gis-side-card layer-card">
+          <h2>Lớp hiển thị trên bản đồ</h2>
+          <label><input type="checkbox" checked> Hiển thị nhãn cơ sở</label>
+          <label><input type="checkbox" checked> Hiển thị ranh giới hành chính</label>
+          <label><input type="checkbox" checked> Hiển thị giao thông</label>
+          <label><input type="checkbox"> Hiển thị sông, hồ</label>
+        </section>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="public-footer">© 2024 Công an tỉnh Ninh Bình. Tất cả quyền được bảo lưu.</footer>
+
+  <script src="scripts/ban-do-so.js"></script>
+  <script type="text/javascript"
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA9oDzJjHCZH4iVCowyZ-UR9eG6X4qFpGY&callback=initPublicMap&libraries=places"
+    async defer></script>
 </body>
+
 </html>
