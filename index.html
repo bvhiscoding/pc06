@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bản đồ số GIS</title>
+  <title>Hệ thống Quản lý Cơ sở Kinh doanh ANTT Ninh Bình</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,24 +12,637 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/ban-do-so-gis.css">
   <link rel="stylesheet" href="styles/ban-do-so.css">
+  <link rel="stylesheet" href="styles/trang-chu.css">
 </head>
 
 <body class="font-sans antialiased">
-  <header class="public-header">
-    <div class="public-brand">
+  
+  <!-- Header / Navigation Bar (Mockup Style) -->
+  <header class="custom-header">
+    <a href="#" class="custom-brand" data-tab="home">
       <img src="public/logocongan.png" alt="Logo Bộ Công an">
-      <div>
+      <div class="custom-brand-text">
         <h1>CÔNG AN TỈNH NINH BÌNH</h1>
         <p>HỆ THỐNG QUẢN LÝ CƠ SỞ KINH DOANH CÓ ĐIỀU KIỆN VỀ ANTT</p>
       </div>
-    </div>
-    <a class="login-btn" href="html/DangNhap.html">
-      <i data-lucide="user-round" class="h-5 w-5"></i>
+    </a>
+
+    <nav>
+      <ul class="custom-nav">
+        <li class="custom-nav-item active" id="nav-home">
+          <a class="custom-nav-link" data-tab="home">
+            <i data-lucide="home"></i> Trang chủ
+          </a>
+        </li>
+        <li class="custom-nav-item" id="nav-map">
+          <a class="custom-nav-link" data-tab="map">
+            <i data-lucide="map"></i> Bản đồ số
+          </a>
+        </li>
+        <li class="custom-nav-item" id="nav-procedures">
+          <a class="custom-nav-link" data-tab="procedures">
+            <i data-lucide="file-text"></i> Thủ tục <i data-lucide="chevron-down" class="ml-0.5"></i>
+          </a>
+          <div class="custom-nav-dropdown">
+            <a href="html/DangKy.html">Đăng ký cơ sở mới</a>
+            <a href="html/QuanLyHoSo.html">Khai báo thay đổi</a>
+            <a href="#" data-tab="procedures" class="dropdown-procedure-link">Danh mục thủ tục</a>
+          </div>
+        <li class="custom-nav-item" id="nav-search">
+          <a class="custom-nav-link" data-tab="search">
+            <i data-lucide="search"></i> Tra cứu hồ sơ
+          </a>
+        </li>
+        <li class="custom-nav-item" id="nav-support">
+          <a class="custom-nav-link" href="#" data-tab="feedback">
+            <i data-lucide="headset"></i> Hỗ trợ <i data-lucide="chevron-down" class="ml-0.5"></i>
+          </a>
+          <div class="custom-nav-dropdown">
+            <a href="#">Hướng dẫn quy trình</a>
+            <a href="#">Biểu mẫu tải về</a>
+            <a href="#">Câu hỏi thường gặp</a>
+            <a href="#" data-tab="feedback" class="dropdown-feedback-link">Tiếp nhận phản ánh</a>
+          </div>
+        </li>
+      </ul>
+    </nav>
+
+    <a class="custom-login-btn" href="html/DangNhap.html">
+      <i data-lucide="user"></i>
       Đăng nhập
     </a>
   </header>
 
-  <main class="public-map-page">
+  <!-- VIEW 1: HOMEPAGE (Mockup Layout) -->
+  <main id="homepage-view" class="view-container">
+    
+    <!-- Hero Banner with Blended Backgrounds -->
+    <section class="custom-hero">
+      <div class="hero-bg-trongdong"></div>
+      <div class="hero-bg-canhdep"></div>
+      <div class="hero-content">
+        <!-- Search and Advanced filter input -->
+        <div class="custom-search-container">
+          <div class="custom-search-bar">
+            <input type="text" placeholder="Nhập từ khóa tìm kiếm thủ tục, hồ sơ hoặc hướng dẫn..." />
+            <i data-lucide="search"></i>
+          </div>
+          <button class="custom-filter-btn" type="button">
+            <i data-lucide="sliders"></i>
+            Tìm kiếm nâng cao
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Overlapping Primary Actions Cards -->
+    <section class="custom-hero-cards">
+      <a href="html/DangKy.html" class="hero-card">
+        <div class="hero-card-left">
+          <div class="hero-card-icon">
+            <i data-lucide="store"></i>
+          </div>
+          <span class="hero-card-title">Đăng ký / Kê khai<br>cơ sở kinh doanh</span>
+        </div>
+        <div class="hero-card-arrow">
+          <i data-lucide="chevron-right"></i>
+        </div>
+      </a>
+
+      <a href="html/QuanLyHoSo.html" class="hero-card">
+        <div class="hero-card-left">
+          <div class="hero-card-icon">
+            <i data-lucide="file-up"></i>
+          </div>
+          <span class="hero-card-title">Nộp hồ sơ<br>trực tuyến</span>
+        </div>
+        <div class="hero-card-arrow">
+          <i data-lucide="chevron-right"></i>
+        </div>
+      </a>
+
+      <a href="#" class="hero-card hero-card-search" data-tab="search">
+        <div class="hero-card-left">
+          <div class="hero-card-icon">
+            <i data-lucide="file-search"></i>
+          </div>
+          <span class="hero-card-title">Tra cứu<br>trạng thái hồ sơ</span>
+        </div>
+        <div class="hero-card-arrow">
+          <i data-lucide="chevron-right"></i>
+        </div>
+      </a>
+    </section>
+
+    <!-- Main Content Section: Two Column Layout -->
+    <section class="homepage-body">
+      <div class="content-columns">
+        
+        <!-- Left Column: Business Services -->
+        <div class="content-column">
+          <div class="content-column-header">
+            <div class="column-header-icon">
+              <i data-lucide="users"></i>
+            </div>
+            <h2>Doanh nghiệp / Chủ cơ sở</h2>
+          </div>
+          
+          <div class="sub-cards-grid">
+            <a href="html/DangKy.html" class="sub-card">
+              <div class="sub-card-left">
+                <div class="sub-card-icon">
+                  <i data-lucide="plus-circle"></i>
+                </div>
+                <div class="sub-card-text">
+                  <h3>Đăng ký cơ sở mới</h3>
+                  <p>Khai báo thông tin cơ sở kinh doanh lần đầu.</p>
+                </div>
+              </div>
+              <div class="sub-card-arrow">
+                <i data-lucide="chevron-right"></i>
+              </div>
+            </a>
+
+            <a href="html/QuanLyHoSo.html" class="sub-card">
+              <div class="sub-card-left">
+                <div class="sub-card-icon">
+                  <i data-lucide="file-edit"></i>
+                </div>
+                <div class="sub-card-text">
+                  <h3>Khai báo thay đổi thông tin</h3>
+                  <p>Cập nhật thông tin, ngành nghề, địa chỉ, người đại diện...</p>
+                </div>
+              </div>
+              <div class="sub-card-arrow">
+                <i data-lucide="chevron-right"></i>
+              </div>
+            </a>
+
+            <a href="#" class="sub-card sub-card-search" data-tab="search">
+              <div class="sub-card-left">
+                <div class="sub-card-icon">
+                  <i data-lucide="folder-search"></i>
+                </div>
+                <div class="sub-card-text">
+                  <h3>Theo dõi hồ sơ</h3>
+                  <p>Xem tiến độ và lịch sử xử lý các hồ sơ đã nộp.</p>
+                </div>
+              </div>
+              <div class="sub-card-arrow">
+                <i data-lucide="chevron-right"></i>
+              </div>
+            </a>
+
+            <a href="html/QuanLyHoSo.html" class="sub-card">
+              <div class="sub-card-left">
+                <div class="sub-card-icon">
+                  <i data-lucide="home"></i>
+                </div>
+                <div class="sub-card-text">
+                  <h3>Cơ sở của tôi</h3>
+                  <p>Quản lý danh sách và thông tin các cơ sở kinh doanh.</p>
+                </div>
+              </div>
+              <div class="sub-card-arrow">
+                <i data-lucide="chevron-right"></i>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Right Column: Quick Support -->
+        <div class="content-column">
+          <div class="content-column-header">
+            <div class="column-header-icon">
+              <i data-lucide="headset"></i>
+            </div>
+            <h2>Hỗ trợ nhanh</h2>
+          </div>
+          
+          <div class="sub-cards-grid">
+            <a href="#" class="sub-card">
+              <div class="sub-card-left">
+                <div class="sub-card-icon">
+                  <i data-lucide="help-circle"></i>
+                </div>
+                <div class="sub-card-text">
+                  <h3>Hướng dẫn thủ tục</h3>
+                  <p>Tìm hiểu quy trình, thành phần hồ sơ và cách thực hiện.</p>
+                </div>
+              </div>
+              <div class="sub-card-arrow">
+                <i data-lucide="chevron-right"></i>
+              </div>
+            </a>
+
+            <a href="#" class="sub-card">
+              <div class="sub-card-left">
+                <div class="sub-card-icon">
+                  <i data-lucide="download"></i>
+                </div>
+                <div class="sub-card-text">
+                  <h3>Biểu mẫu tải về</h3>
+                  <p>Tải các mẫu đơn, tờ khai và giấy tờ liên quan.</p>
+                </div>
+              </div>
+              <div class="sub-card-arrow">
+                <i data-lucide="chevron-right"></i>
+              </div>
+            </a>
+
+            <a href="#" class="sub-card">
+              <div class="sub-card-left">
+                <div class="sub-card-icon">
+                  <i data-lucide="message-square"></i>
+                </div>
+                <div class="sub-card-text">
+                  <h3>Câu hỏi thường gặp</h3>
+                  <p>Giải đáp các thắc mắc phổ biến về thủ tục, hồ sơ.</p>
+                </div>
+              </div>
+              <div class="sub-card-arrow">
+                <i data-lucide="chevron-right"></i>
+              </div>
+            </a>
+
+            <a href="#" class="sub-card sub-card-feedback" data-tab="feedback">
+              <div class="sub-card-left">
+                <div class="sub-card-icon">
+                  <i data-lucide="phone"></i>
+                </div>
+                <div class="sub-card-text">
+                  <h3>Liên hệ hỗ trợ</h3>
+                  <p>Kênh hỗ trợ trực tuyến và thông tin liên hệ chính thức.</p>
+                </div>
+              </div>
+              <div class="sub-card-arrow">
+                <i data-lucide="chevron-right"></i>
+              </div>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Contacts details panel -->
+    <section class="custom-contact-bar">
+      <div class="contact-bar-grid">
+        <div class="contact-item">
+          <div class="contact-icon-wrapper">
+            <i data-lucide="phone"></i>
+          </div>
+          <div class="contact-info">
+            <span class="label">Tổng đài hỗ trợ</span>
+            <span class="value highlight">1900 1234</span>
+            <span class="sub-label">(7h30 - 17h30, Thứ 2 - Thứ 6)</span>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-icon-wrapper">
+            <i data-lucide="mail"></i>
+          </div>
+          <div class="contact-info">
+            <span class="label">Email hỗ trợ</span>
+            <span class="value">hotro@ninhbinh-dkkd.gov.vn</span>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-icon-wrapper">
+            <i data-lucide="map-pin"></i>
+          </div>
+          <div class="contact-info">
+            <span class="label">Trung tâm phục vụ hành chính công</span>
+            <span class="value">Đường Trần Hưng Đạo, P. Đông Thành, TP. Ninh Bình, Tỉnh Ninh Bình</span>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-icon-wrapper">
+            <i data-lucide="clock"></i>
+          </div>
+          <div class="contact-info">
+            <span class="label">Giờ làm việc</span>
+            <span class="value">Sáng: 7h30 - 11h30</span>
+            <span class="value">Chiều: 13h30 - 17h30</span>
+            <span class="sub-label">(Thứ 2 - Thứ 6)</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- VIEW 3: PROCEDURES VIEW (Danh sách thủ tục) -->
+  <main id="procedures-view" class="view-container hidden max-w-7xl mx-auto px-6 md:px-10 box-sizing-border-box" style="padding-top: 1px;">
+    <!-- Breadcrumbs -->
+    <div class="procedures-breadcrumb">
+      <a href="#" data-tab="home">Trang chủ</a>
+      <span>&gt;</span>
+      <a href="#">Thủ tục hành chính</a>
+      <span>&gt;</span>
+      <span class="active-crumb">Danh sách thủ tục hành chính</span>
+    </div>
+
+    <!-- Header Title & Subtitle -->
+    <section class="procedures-header">
+      <h1>Danh sách thủ tục hành chính</h1>
+      <p>Tra cứu và thực hiện các thủ tục liên quan đến đăng ký, khai báo và quản lý cơ sở kinh doanh.</p>
+    </section>
+
+    <!-- Search & Filter Controls -->
+    <section class="procedures-search-container">
+      <div class="procedures-search-input-wrapper">
+        <input type="text" placeholder="Nhập từ khóa tìm kiếm thủ tục..." />
+        <i data-lucide="search"></i>
+      </div>
+      <button class="procedures-filter-btn" type="button">
+        <i data-lucide="sliders-horizontal"></i>
+        Tìm kiếm nâng cao
+      </button>
+      <button class="procedures-search-btn" type="button">
+        <i data-lucide="search"></i>
+        Tìm kiếm
+      </button>
+    </section>
+
+    <!-- Two Column Layout -->
+    <section class="procedures-layout">
+      <!-- Left Column: Table of Procedures -->
+      <div class="procedures-table-card">
+        <div class="procedures-table-title">
+          <i data-lucide="file-text"></i>
+          <h2>Thủ tục hành chính</h2>
+        </div>
+        
+        <div class="procedures-table-wrapper">
+          <table class="procedures-table">
+            <thead>
+              <tr>
+                <th style="width: 110px;">Mã số</th>
+                <th>Tên thủ tục</th>
+                <th>Cơ quan ban hành</th>
+                <th>Cơ quan thực hiện</th>
+                <th style="width: 160px;">Lĩnh vực</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="code-cell">TTHC-001</td>
+                <td class="title-cell"><a href="html/DangKy.html" class="hover:text-red-700 transition">Đăng ký/kê khai cơ sở kinh doanh mới</a></td>
+                <td>Công an tỉnh Ninh Bình</td>
+                <td>Phòng Quản lý hành chính về trật tự xã hội</td>
+                <td>Cơ sở kinh doanh</td>
+              </tr>
+              <tr>
+                <td class="code-cell">TTHC-002</td>
+                <td class="title-cell"><a href="#" class="hover:text-red-700 transition">Cấp mới Giấy chứng nhận đủ điều kiện về ANTT</a></td>
+                <td>Công an tỉnh Ninh Bình</td>
+                <td>Phòng Cảnh sát QLHC về TTXH</td>
+                <td>An ninh trật tự</td>
+              </tr>
+              <tr>
+                <td class="code-cell">TTHC-003</td>
+                <td class="title-cell"><a href="#" class="hover:text-red-700 transition">Cấp đổi Giấy chứng nhận đủ điều kiện về ANTT</a></td>
+                <td>Công an tỉnh Ninh Bình</td>
+                <td>Phòng Cảnh sát QLHC về TTXH</td>
+                <td>An ninh trật tự</td>
+              </tr>
+              <tr>
+                <td class="code-cell">TTHC-004</td>
+                <td class="title-cell"><a href="#" class="hover:text-red-700 transition">Cấp lại Giấy chứng nhận đủ điều kiện về ANTT</a></td>
+                <td>Công an tỉnh Ninh Bình</td>
+                <td>Phòng Cảnh sát QLHC về TTXH</td>
+                <td>An ninh trật tự</td>
+              </tr>
+              <tr>
+                <td class="code-cell">TTHC-005</td>
+                <td class="title-cell"><a href="html/QuanLyHoSo.html" class="hover:text-red-700 transition">Khai báo thay đổi thông tin cơ sở kinh doanh</a></td>
+                <td>Công an tỉnh Ninh Bình</td>
+                <td>Công an cấp huyện/xã</td>
+                <td>Cập nhật thông tin</td>
+              </tr>
+              <tr>
+                <td class="code-cell">TTHC-006</td>
+                <td class="title-cell"><a href="html/QuanLyHoSo.html" class="hover:text-red-700 transition">Thông báo tạm dừng hoạt động cơ sở kinh doanh</a></td>
+                <td>Công an tỉnh Ninh Bình</td>
+                <td>Công an cấp huyện/xã</td>
+                <td>Cơ sở kinh doanh</td>
+              </tr>
+              <tr>
+                <td class="code-cell">TTHC-007</td>
+                <td class="title-cell"><a href="html/QuanLyHoSo.html" class="hover:text-red-700 transition">Thông báo ngừng hoạt động cơ sở kinh doanh</a></td>
+                <td>Công an tỉnh Ninh Bình</td>
+                <td>Công an cấp huyện/xã</td>
+                <td>Cơ sở kinh doanh</td>
+              </tr>
+              <tr>
+                <td class="code-cell">TTHC-008</td>
+                <td class="title-cell"><a href="html/QuanLyHoSo.html" class="hover:text-red-700 transition">Bổ sung hồ sơ theo yêu cầu</a></td>
+                <td>Công an tỉnh Ninh Bình</td>
+                <td>Bộ phận tiếp nhận hồ sơ</td>
+                <td>Hồ sơ trực tuyến</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="procedures-pagination">
+          <button class="pagination-btn disabled" type="button"><i data-lucide="chevron-left"></i></button>
+          <button class="pagination-btn active" type="button">1</button>
+          <button class="pagination-btn" type="button">2</button>
+          <button class="pagination-btn" type="button">3</button>
+          <button class="pagination-btn" type="button"><i data-lucide="chevron-right"></i></button>
+        </div>
+      </div>
+
+      <!-- Right Column: Sidebar -->
+      <div class="procedures-sidebar-card">
+        <div class="sidebar-header">
+          <i data-lucide="flame"></i>
+          <h2>Tìm kiếm nhiều nhất</h2>
+        </div>
+        <ul class="sidebar-list">
+          <li class="sidebar-item">
+            <a href="html/DangKy.html" class="sidebar-link">
+              <i data-lucide="chevron-right"></i>
+              Đăng ký/kê khai cơ sở kinh doanh mới
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a href="#" class="sidebar-link">
+              <i data-lucide="chevron-right"></i>
+              Cấp mới Giấy chứng nhận đủ điều kiện về ANTT
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a href="html/QuanLyHoSo.html" class="sidebar-link">
+              <i data-lucide="chevron-right"></i>
+              Khai báo thay đổi thông tin cơ sở kinh doanh
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a href="html/QuanLyHoSo.html" class="sidebar-link">
+              <i data-lucide="chevron-right"></i>
+              Thông báo tạm dừng hoạt động cơ sở kinh doanh
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a href="html/QuanLyHoSo.html" class="sidebar-link">
+              <i data-lucide="chevron-right"></i>
+              Bổ sung hồ sơ theo yêu cầu
+            </a>
+          </li>
+        </ul>
+
+        <button class="sidebar-action-btn" type="button">
+          <i data-lucide="trending-up"></i>
+          Xem tất cả thủ tục
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- VIEW 4: SEARCH VIEW (Tra cứu hồ sơ) -->
+  <main id="search-view" class="view-container hidden max-w-7xl mx-auto px-6 md:px-10 box-sizing-border-box" style="padding-top: 1px;">
+    <!-- Breadcrumbs -->
+    <div class="procedures-breadcrumb">
+      <a href="#" data-tab="home">Trang chủ</a>
+      <span>&gt;</span>
+      <span class="active-crumb">Tra cứu hồ sơ</span>
+    </div>
+
+    <!-- Header Title & Subtitle -->
+    <section class="procedures-header">
+      <h1>Tra cứu hồ sơ</h1>
+      <p>Tra cứu tình trạng xử lý hồ sơ trực tuyến theo mã hồ sơ đã được cấp sau khi nộp.</p>
+    </section>
+
+    <!-- Inner Tabs & Search Form -->
+    <div class="search-tabs">
+      <div class="search-tab-item active" data-search-tab="code">Tra cứu theo mã hồ sơ</div>
+      <div class="search-tab-item" data-search-tab="facility">Tra cứu theo thông tin cơ sở</div>
+    </div>
+
+    <section class="search-layout">
+      <div class="search-main-content">
+        <!-- Search Card -->
+        <div class="search-form-card">
+          <!-- Form 1: Tra cứu theo mã hồ sơ -->
+          <form id="searchFormByCode" onsubmit="event.preventDefault();">
+            <div class="search-form-row">
+              <div class="search-form-group" style="flex: 2;">
+                <label>Mã hồ sơ <span>*</span></label>
+                <input type="text" placeholder="Nhập mã hồ sơ" required />
+              </div>
+              <div class="search-form-group" style="flex: 2;">
+                <label>Mã bảo mật <span>*</span></label>
+                <input type="text" placeholder="Nhập mã bảo mật" required />
+              </div>
+              <div class="search-form-group" style="flex: 1.5;">
+                <div class="captcha-wrapper">
+                  <div class="captcha-box">UWGS7M</div>
+                  <button class="captcha-reload-btn" type="button" aria-label="Đổi mã bảo mật">
+                    <i data-lucide="refresh-cw"></i>
+                  </button>
+                </div>
+              </div>
+              <button class="procedures-search-btn" type="submit" style="height: 44px; padding: 0 32px;">
+                Tra cứu
+              </button>
+            </div>
+          </form>
+
+          <!-- Form 2: Tra cứu theo thông tin cơ sở -->
+          <form id="searchFormByFacility" class="hidden" onsubmit="event.preventDefault();">
+            <div class="search-form-row">
+              <div class="search-form-group" style="flex: 2;">
+                <label>Tên cơ sở <span>*</span></label>
+                <input type="text" placeholder="Nhập tên cơ sở kinh doanh" required />
+              </div>
+              <div class="search-form-group" style="flex: 2;">
+                <label>Số điện thoại / Giấy phép <span>*</span></label>
+                <input type="text" placeholder="Nhập số điện thoại hoặc số GP" required />
+              </div>
+              <div class="search-form-group" style="flex: 1.5;">
+                <div class="captcha-wrapper">
+                  <div class="captcha-box">X8R2NP</div>
+                  <button class="captcha-reload-btn" type="button" aria-label="Đổi mã bảo mật">
+                    <i data-lucide="refresh-cw"></i>
+                  </button>
+                </div>
+              </div>
+              <button class="procedures-search-btn" type="submit" style="height: 44px; padding: 0 32px;">
+                Tra cứu
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Results Card -->
+        <div class="procedures-table-card">
+          <div class="procedures-table-title">
+            <i data-lucide="clipboard-list"></i>
+            <h2>Kết quả tra cứu</h2>
+          </div>
+          
+          <div class="procedures-table-wrapper">
+            <table class="procedures-table">
+              <thead>
+                <tr>
+                  <th style="width: 140px;">Mã HS</th>
+                  <th>Tên hồ sơ</th>
+                  <th style="width: 150px;">Trạng thái</th>
+                  <th>Đơn vị thực hiện</th>
+                  <th style="width: 130px;">Ngày nộp</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="code-cell"><a href="html/ChiTietHoSo.html" class="hover:text-red-700 transition">HS-2026-00125</a></td>
+                  <td class="title-cell">Cấp mới Giấy chứng nhận đủ điều kiện về ANTT</td>
+                  <td><span class="badge-pending">Đang xử lý</span></td>
+                  <td>Phòng Cảnh sát QLHC về TTXH - Công an tỉnh Ninh Bình</td>
+                  <td>20/05/2026</td>
+                </tr>
+                <tr>
+                  <td class="code-cell"><a href="html/ChiTietHoSo.html" class="hover:text-red-700 transition">HS-2026-00118</a></td>
+                  <td class="title-cell">Khai báo thay đổi thông tin cơ sở kinh doanh</td>
+                  <td><span class="badge-received">Đã tiếp nhận</span></td>
+                  <td>Công an TP. Ninh Bình</td>
+                  <td>18/05/2026</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="results-info-note">
+            <i data-lucide="info"></i>
+            <span>Người dùng có thể nhấp vào mã hồ sơ để xem chi tiết quá trình xử lý.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Floating Sidebar Card -->
+      <div class="search-sidebar-card">
+        <div class="search-sidebar-header">
+          <i data-lucide="info"></i>
+          <h2>Lưu ý tra cứu</h2>
+        </div>
+        <ul class="search-sidebar-list">
+          <li class="search-sidebar-item">Nhập đúng mã hồ sơ đã được hệ thống cấp.</li>
+          <li class="search-sidebar-item">Sử dụng mã bảo mật hiển thị để xác thực tra cứu.</li>
+          <li class="search-sidebar-item">Liên hệ tổng đài hỗ trợ nếu cần thêm thông tin.</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <!-- VIEW 2: MAP VIEW (Original Digital Map) -->
+  <main id="map-view" class="view-container hidden public-map-page">
     <section class="public-title">
       <h1>Bản đồ số GIS</h1>
       <p>Tra cứu thông tin cơ sở kinh doanh có điều kiện về an ninh trật tự trên địa bàn tỉnh Ninh Bình</p>
@@ -104,15 +717,11 @@
         <div class="map-legend">
           <h2>Chú thích trạng thái</h2>
           <div><span class="marker-dot green"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Đang hoạt động</div>
-          <div><span class="marker-dot yellow"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Tạm dừng hoạt động
-          </div>
+          <div><span class="marker-dot yellow"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Tạm dừng hoạt động</div>
           <div><span class="marker-dot gray"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Ngừng hoạt động</div>
-          <div><span class="marker-dot orange"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Giấy phép sắp hết
-            hạn</div>
-          <div><span class="marker-dot red"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Giấy phép hết hạn / Bị
-            thu hồi</div>
-          <div><span class="marker-dot purple"><i data-lucide="triangle-alert" class="h-3.5 w-3.5"></i></span>Có vi phạm
-            / Rủi ro cao</div>
+          <div><span class="marker-dot orange"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Giấy phép sắp hết hạn</div>
+          <div><span class="marker-dot red"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Giấy phép hết hạn / Bị thu hồi</div>
+          <div><span class="marker-dot purple"><i data-lucide="triangle-alert" class="h-3.5 w-3.5"></i></span>Có vi phạm / Rủi ro cao</div>
         </div>
 
         <article id="facilityPopup" class="facility-popup anchor-right">
@@ -141,7 +750,6 @@
               <dd>0912 345 678</dd>
             </div>
           </dl>
-          <a href="html/ChiTietHoSo.html" class="popup-detail">Xem chi tiết</a>
         </article>
       </div>
 
@@ -154,18 +762,12 @@
             </button>
           </div>
           <div class="stat-grid">
-            <div><span class="marker-dot green"><i data-lucide="store"
-                  class="h-4 w-4"></i></span><strong>1.248</strong><em>Đang hoạt động</em></div>
-            <div><span class="marker-dot yellow"><i data-lucide="store"
-                  class="h-4 w-4"></i></span><strong>112</strong><em>Tạm dừng</em></div>
-            <div><span class="marker-dot gray"><i data-lucide="store"
-                  class="h-4 w-4"></i></span><strong>58</strong><em>Ngừng hoạt động</em></div>
-            <div><span class="marker-dot orange"><i data-lucide="store"
-                  class="h-4 w-4"></i></span><strong>96</strong><em>Sắp hết hạn</em></div>
-            <div><span class="marker-dot red"><i data-lucide="store"
-                  class="h-4 w-4"></i></span><strong>37</strong><em>Hết hạn / Bị thu hồi</em></div>
-            <div><span class="marker-dot purple"><i data-lucide="triangle-alert"
-                  class="h-4 w-4"></i></span><strong>21</strong><em>Có vi phạm</em></div>
+            <div><span class="marker-dot green"><i data-lucide="store" class="h-4 w-4"></i></span><strong>1.248</strong><em>Đang hoạt động</em></div>
+            <div><span class="marker-dot yellow"><i data-lucide="store" class="h-4 w-4"></i></span><strong>112</strong><em>Tạm dừng</em></div>
+            <div><span class="marker-dot gray"><i data-lucide="store" class="h-4 w-4"></i></span><strong>58</strong><em>Ngừng hoạt động</em></div>
+            <div><span class="marker-dot orange"><i data-lucide="store" class="h-4 w-4"></i></span><strong>96</strong><em>Sắp hết hạn</em></div>
+            <div><span class="marker-dot red"><i data-lucide="store" class="h-4 w-4"></i></span><strong>37</strong><em>Hết hạn / Bị thu hồi</em></div>
+            <div><span class="marker-dot purple"><i data-lucide="triangle-alert" class="h-4 w-4"></i></span><strong>21</strong><em>Có vi phạm</em></div>
           </div>
         </section>
 
@@ -188,7 +790,311 @@
     </section>
   </main>
 
-  <footer class="public-footer">© 2024 Công an tỉnh Ninh Bình. Tất cả quyền được bảo lưu.</footer>
+  <!-- VIEW 5: FEEDBACK VIEW (Tiếp nhận phản ánh) -->
+  <main id="feedback-view" class="view-container hidden max-w-7xl mx-auto px-6 md:px-10 box-sizing-border-box" style="padding-top: 1px;">
+    <!-- Breadcrumbs -->
+    <div class="procedures-breadcrumb">
+      <a href="#" data-tab="home">Trang chủ</a>
+      <span>&gt;</span>
+      <a href="#" class="feedback-breadcrumb-support" data-tab="home">Hỗ trợ</a>
+      <span>&gt;</span>
+      <span class="active-crumb">Phản ánh kiến nghị</span>
+    </div>
+
+    <!-- Header Title & Subtitle -->
+    <section class="procedures-header">
+      <h1>Tiếp nhận phản ánh kiến nghị</h1>
+      <p>Gửi phản ánh, kiến nghị hoặc yêu cầu hỗ trợ liên quan đến thủ tục, hồ sơ và quá trình sử dụng hệ thống.</p>
+    </section>
+
+    <!-- Main Content Layout -->
+    <section class="feedback-layout">
+      <div class="feedback-main-content">
+        <!-- Form Card -->
+        <div class="feedback-card">
+          <!-- Info Banner -->
+          <div class="feedback-info-banner">
+            <i data-lucide="info" class="info-icon"></i>
+            <span>Vui lòng đăng nhập tài khoản để gửi phản ánh, kiến nghị và theo dõi kết quả xử lý.</span>
+          </div>
+
+          <!-- Form Fields Container (Single Column Layout) -->
+          <form id="feedbackForm" onsubmit="event.preventDefault();">
+            <div class="feedback-form-container">
+              
+              <!-- Đối tượng PAKN -->
+              <div class="feedback-form-group">
+                <label>Đối tượng PAKN <span class="required">*</span></label>
+                <div class="feedback-radio-group">
+                  <label class="radio-label">
+                    <input type="radio" name="target_type" value="citizen" />
+                    <span>Công dân</span>
+                  </label>
+                  <label class="radio-label">
+                    <input type="radio" name="target_type" value="organization" checked />
+                    <span>Doanh nghiệp/Tổ chức</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Tên doanh nghiệp / chủ cơ sở -->
+              <div class="feedback-form-group">
+                <label>Tên doanh nghiệp / chủ cơ sở <span class="required">*</span></label>
+                <input type="text" placeholder="Nhập tên doanh nghiệp / chủ cơ sở" required />
+              </div>
+
+              <!-- Địa chỉ -->
+              <div class="feedback-form-group">
+                <label>Địa chỉ</label>
+                <input type="text" placeholder="Nhập địa chỉ chi tiết" />
+              </div>
+
+              <!-- Số điện thoại -->
+              <div class="feedback-form-group">
+                <label>Số điện thoại <span class="required">*</span></label>
+                <input type="tel" placeholder="Nhập số điện thoại" required />
+              </div>
+
+              <!-- Email -->
+              <div class="feedback-form-group">
+                <label>Email</label>
+                <input type="email" placeholder="Nhập email" />
+              </div>
+
+              <!-- Chủ đề phản ánh -->
+              <div class="feedback-form-group">
+                <label>Chủ đề phản ánh <span class="required">*</span></label>
+                <select required>
+                  <option value="" disabled selected>Chọn chủ đề phản ánh</option>
+                  <option value="administrative">Thủ tục hành chính</option>
+                  <option value="online_profile">Hồ sơ trực tuyến</option>
+                  <option value="facility_info">Thông tin cơ sở kinh doanh</option>
+                  <option value="tech_support">Hỗ trợ kỹ thuật hệ thống</option>
+                  <option value="other">Kiến nghị khác</option>
+                </select>
+              </div>
+
+              <!-- Mã hồ sơ -->
+              <div class="feedback-form-group">
+                <label>Mã hồ sơ</label>
+                <input type="text" placeholder="Nhập mã hồ sơ (nếu có)" />
+              </div>
+
+              <!-- Nội dung -->
+              <div class="feedback-form-group">
+                <label>Nội dung <span class="required">*</span></label>
+                <textarea placeholder="Trình bày chi tiết nội dung phản ánh, kiến nghị..." required rows="6"></textarea>
+                <span class="helper-text error-text" style="font-size: 13px; line-height: 1.4; display: block; margin-top: 4px;">Nội dung phản ánh cần rõ ràng, đầy đủ thông tin để thuận tiện cho việc xử lý.</span>
+              </div>
+
+              <!-- Chọn đơn vị tiếp nhận -->
+              <div class="feedback-form-group">
+                <label>Chọn đơn vị tiếp nhận <span class="required">*</span></label>
+                <div class="feedback-radio-group">
+                  <label class="radio-label">
+                    <input type="radio" name="dept_level" value="province" checked />
+                    <span>Công an tỉnh</span>
+                  </label>
+                  <label class="radio-label">
+                    <input type="radio" name="dept_level" value="district" />
+                    <span>Công an cấp huyện</span>
+                  </label>
+                  <label class="radio-label">
+                    <input type="radio" name="dept_level" value="commune" />
+                    <span>Công an cấp xã/phường</span>
+                  </label>
+                </div>
+                <select required style="margin-top: 10px;">
+                  <option value="qlhc" selected>Phòng Cảnh sát QLHC về TTXH</option>
+                  <option value="pccc">Phòng Cảnh sát PCCC và CNCH</option>
+                </select>
+              </div>
+
+              <!-- Tài liệu đính kèm -->
+              <div class="feedback-form-group">
+                <label>Tài liệu đính kèm</label>
+                <div class="file-upload-wrapper">
+                  <button class="file-upload-btn" type="button">
+                    <i data-lucide="paperclip" class="h-4 w-4"></i>
+                    <span>Chọn file</span>
+                  </button>
+                  <span class="file-upload-info" style="margin-top: 4px; display: block;">Dung lượng tối đa 10MB (PDF, DOC, DOCX, JPG, PNG)</span>
+                </div>
+              </div>
+
+              <!-- Mã bảo mật -->
+              <div class="feedback-form-group">
+                <label>Mã bảo mật <span class="required">*</span></label>
+                <div class="feedback-captcha-row">
+                  <input type="text" placeholder="Nhập mã bảo mật" required style="flex: 1; min-width: 0;" />
+                  <div class="captcha-wrapper" style="flex: initial; margin-bottom: 0;">
+                    <div class="captcha-box" style="height: 44px;">7K92A</div>
+                    <button class="captcha-reload-btn" type="button" aria-label="Đổi mã bảo mật" style="height: 44px; width: 44px;">
+                      <i data-lucide="refresh-cw"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Form Actions -->
+            <div class="feedback-form-actions">
+              <button class="feedback-btn-submit" type="submit">
+                <i data-lucide="send" class="h-4 w-4"></i>
+                Gửi phản ánh
+              </button>
+              <button class="feedback-btn-reset" type="reset">
+                <i data-lucide="refresh-cw" class="h-4 w-4"></i>
+                Nhập lại
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <footer class="custom-footer-copyright">© 2024 Công an tỉnh Ninh Bình. Tất cả quyền được bảo lưu.</footer>
+
+  <!-- Tab toggling client logic script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const navItems = document.querySelectorAll('.custom-nav-item');
+      const homepageView = document.getElementById('homepage-view');
+      const mapView = document.getElementById('map-view');
+      const proceduresView = document.getElementById('procedures-view');
+      const searchView = document.getElementById('search-view');
+      const feedbackView = document.getElementById('feedback-view');
+
+      // Helper function to hide all views
+      function hideAllViews() {
+        homepageView.classList.add('hidden');
+        mapView.classList.add('hidden');
+        proceduresView.classList.add('hidden');
+        searchView.classList.add('hidden');
+        feedbackView.classList.add('hidden');
+      }
+
+      // Handler for tab switching
+      function switchTab(tab) {
+        hideAllViews();
+        navItems.forEach(nav => nav.classList.remove('active'));
+
+        if (tab === 'home') {
+          document.getElementById('nav-home')?.classList.add('active');
+          homepageView.classList.remove('hidden');
+        } else if (tab === 'map') {
+          document.getElementById('nav-map')?.classList.add('active');
+          mapView.classList.remove('hidden');
+
+          // Force map element to re-fit if map has loaded
+          if (window.map) {
+            google.maps.event.trigger(window.map, 'resize');
+            if (window.bounds) {
+              window.map.fitBounds(window.bounds);
+            }
+          }
+        } else if (tab === 'procedures') {
+          document.getElementById('nav-procedures')?.classList.add('active');
+          proceduresView.classList.remove('hidden');
+        } else if (tab === 'search') {
+          document.getElementById('nav-search')?.classList.add('active');
+          searchView.classList.remove('hidden');
+        } else if (tab === 'feedback') {
+          document.getElementById('nav-support')?.classList.add('active');
+          feedbackView.classList.remove('hidden');
+          // Re-trigger Lucide icon creation for newly visible content
+          if (window.lucide) {
+            window.lucide.createIcons();
+          }
+        }
+      }
+
+      // Main links event listener
+      navItems.forEach(item => {
+        const link = item.querySelector('.custom-nav-link');
+        if (!link) return;
+
+        const tab = link.getAttribute('data-tab');
+        if (tab === 'home' || tab === 'map' || tab === 'procedures' || tab === 'search' || tab === 'feedback') {
+          link.addEventListener('click', (e) => {
+            e.preventDefault();
+            switchTab(tab);
+          });
+        }
+      });
+
+      // Homepage hero search card click event listener
+      document.querySelector('.hero-card-search')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        switchTab('search');
+      });
+
+      // Homepage sub-card search click event listener
+      document.querySelector('.sub-card-search')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        switchTab('search');
+      });
+
+      // Homepage sub-card feedback click event listener
+      document.querySelector('.sub-card-feedback')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        switchTab('feedback');
+      });
+
+      // Dropdown link event listener
+      document.querySelector('.dropdown-procedure-link')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        switchTab('procedures');
+      });
+
+      // Dropdown feedback link event listener
+      document.querySelector('.dropdown-feedback-link')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        switchTab('feedback');
+      });
+
+      document.querySelectorAll('.procedures-breadcrumb a[data-tab="home"], .feedback-breadcrumb-support').forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          switchTab('home');
+        });
+      });
+
+      // Inner Search View Tabs Toggle
+      const searchTabItems = document.querySelectorAll('.search-tab-item');
+      const formByCode = document.getElementById('searchFormByCode');
+      const formByFacility = document.getElementById('searchFormByFacility');
+
+      searchTabItems.forEach(tabItem => {
+        tabItem.addEventListener('click', () => {
+          searchTabItems.forEach(item => item.classList.remove('active'));
+          tabItem.classList.add('active');
+
+          const searchType = tabItem.getAttribute('data-search-tab');
+          if (searchType === 'code') {
+            formByCode?.classList.remove('hidden');
+            formByFacility?.classList.add('hidden');
+          } else if (searchType === 'facility') {
+            formByCode?.classList.add('hidden');
+            formByFacility?.classList.remove('hidden');
+          }
+        });
+      });
+
+
+
+      // Quick link mapping from brand logo back to home
+      document.querySelector('.custom-brand').addEventListener('click', (e) => {
+        e.preventDefault();
+        switchTab('home');
+      });
+    });
+  </script>
 
   <script src="scripts/ban-do-so.js"></script>
   <script type="text/javascript"
