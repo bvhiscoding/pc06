@@ -711,9 +711,21 @@
           <button type="button" data-map-control="zoom-out"><i data-lucide="minus" class="h-6 w-6"></i></button>
           <button type="button" data-map-control="fit"><i data-lucide="scan" class="h-5 w-5"></i></button>
           <button type="button" data-map-control="locate"><i data-lucide="crosshair" class="h-5 w-5"></i></button>
-          <button type="button" data-map-control="layers"><i data-lucide="layers" class="h-5 w-5"></i></button>
         </div>
 
+        <div class="map-layer-menu">
+          <button id="mapLayerToggle" class="map-layer-toggle" type="button" aria-expanded="false" aria-controls="mapLayerPanel">
+            <i data-lucide="layers" class="h-5 w-5"></i>
+            <span>Lớp hiển thị</span>
+          </button>
+          <section id="mapLayerPanel" class="map-layer-panel layer-card" hidden>
+            <h2>Lớp hiển thị trên bản đồ</h2>
+            <label><input type="checkbox" data-map-layer="facilityLabels" checked> Hiển thị nhãn cơ sở</label>
+            <label><input type="checkbox" data-map-layer="administrative" checked> Hiển thị ranh giới hành chính</label>
+            <label><input type="checkbox" data-map-layer="roads" checked> Hiển thị giao thông</label>
+            <label><input type="checkbox" data-map-layer="water"> Hiển thị sông, hồ</label>
+          </section>
+        </div>
         <div class="map-legend">
           <h2>Chú thích trạng thái</h2>
           <div><span class="marker-dot green"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Đang hoạt động</div>
@@ -724,7 +736,7 @@
           <div><span class="marker-dot purple"><i data-lucide="triangle-alert" class="h-3.5 w-3.5"></i></span>Có vi phạm / Rủi ro cao</div>
         </div>
 
-        <article id="facilityPopup" class="facility-popup anchor-right">
+        <article id="facilityPopup" class="facility-popup anchor-right" hidden>
           <button class="popup-close" type="button" aria-label="Đóng"><i data-lucide="x" class="h-5 w-5"></i></button>
           <h2>Karaoke Hoa Sen</h2>
           <span class="popup-status">Đang hoạt động</span>
@@ -781,10 +793,10 @@
 
         <section class="gis-side-card layer-card">
           <h2>Lớp hiển thị trên bản đồ</h2>
-          <label><input type="checkbox" checked> Hiển thị nhãn cơ sở</label>
-          <label><input type="checkbox" checked> Hiển thị ranh giới hành chính</label>
-          <label><input type="checkbox" checked> Hiển thị giao thông</label>
-          <label><input type="checkbox"> Hiển thị sông, hồ</label>
+          <label><input type="checkbox" data-map-layer="facilityLabels" checked> Hiển thị nhãn cơ sở</label>
+          <label><input type="checkbox" data-map-layer="administrative" checked> Hiển thị ranh giới hành chính</label>
+          <label><input type="checkbox" data-map-layer="roads" checked> Hiển thị giao thông</label>
+          <label><input type="checkbox" data-map-layer="water"> Hiển thị sông, hồ</label>
         </section>
       </aside>
     </section>
@@ -1103,3 +1115,4 @@
 </body>
 
 </html>
+

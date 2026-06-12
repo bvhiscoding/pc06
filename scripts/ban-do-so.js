@@ -19,8 +19,86 @@ const statusColor = {
 const els = {
   nearbyList: document.querySelector('#nearbyList'),
   facilityPopup: document.querySelector('#facilityPopup'),
-  mapShell: document.querySelector('.map-shell')
+  mapShell: document.querySelector('.map-shell'),
+  mapLayerToggle: document.querySelector('#mapLayerToggle'),
+  mapLayerPanel: document.querySelector('#mapLayerPanel'),
+  layerToggles: document.querySelectorAll('[data-map-layer]')
 };
+
+const state = {
+  layers: {
+    facilityLabels: true,
+    administrative: true,
+    roads: true,
+    water: false
+  }
+};
+
+const baseMapStyles = [
+  { featureType: 'poi.business', stylers: [{ visibility: 'off' }] },
+  { featureType: 'water', stylers: [{ color: '#a7d5ff' }] },
+  { featureType: 'road.highway', stylers: [{ color: '#f7c56b' }] }
+];
+
+function getMapStyles() {
+  const styles = [...baseMapStyles];
+
+  styles.push({
+    featureType: 'administrative',
+    elementType: 'geometry',
+    stylers: [{ visibility: state.layers.administrative ? 'on' : 'off' }]
+  });
+
+  styles.push({
+    featureType: 'administrative.locality',
+    elementType: 'labels',
+    stylers: [{ visibility: state.layers.administrative ? 'on' : 'off' }]
+  });
+
+  styles.push({
+    featureType: 'road',
+    elementType: 'geometry',
+    stylers: [{ visibility: state.layers.roads ? 'on' : 'off' }]
+  });
+
+  styles.push({
+    featureType: 'road',
+    elementType: 'labels',
+    stylers: [{ visibility: state.layers.roads ? 'on' : 'off' }]
+  });
+
+  styles.push({
+    featureType: 'water',
+    elementType: 'geometry',
+    stylers: [{ visibility: state.layers.water ? 'on' : 'off' }, { color: '#8fd0ff' }]
+  });
+
+  styles.push({
+    featureType: 'water',
+    elementType: 'labels',
+    stylers: [{ visibility: state.layers.water ? 'on' : 'off' }]
+  });
+
+  return styles;
+}
+
+function markerLabel(facility) {
+  if (!state.layers.facilityLabels) return null;
+  return { text: '■', color: '#ffffff', fontSize: '8px' };
+}
+
+function applyLayerSettings() {
+  if (map) {
+    map.setOptions({ styles: getMapStyles() });
+  }
+
+  markers.forEach((marker, index) => {
+    const facility = facilities[index];
+    if (facility) {
+      marker.setLabel(markerLabel(facility));
+    }
+  });
+}
 
 let map;
 let markers = [];
@@ -65,11 +143,8 @@ window.initPublicMap = function initPublicMap() {
     streetViewControl: false,
     fullscreenControl: false,
     zoomControl: false,
-    styles: [
-      { featureType: 'poi.business', stylers: [{ visibility: 'off' }] },
-      { featureType: 'water', stylers: [{ color: '#a7d5ff' }] },
-      { featureType: 'road.highway', stylers: [{ color: '#f7c56b' }] }
-    ]
+    gestureHandling: 'greedy',
+    styles: getMapStyles()
   });
 
   els.mapShell.classList.add('map-loaded');
@@ -80,7 +155,7 @@ window.initPublicMap = function initPublicMap() {
       position: facility.position,
       title: facility.name,
       icon: markerIcon(statusColor[facility.status]),
-      label: { text: '■', color: '#ffffff', fontSize: '8px' }
+      label: markerLabel(facility)
     });
     bounds.extend(facility.position);
     marker.addListener('click', () => showFacility(facility));
@@ -161,6 +236,42 @@ document.querySelectorAll('[data-map-control]').forEach((button) => {
     if (control === 'fit' && bounds) map.fitBounds(bounds);
     if (control === 'locate') map.panTo({ lat: 20.2506, lng: 105.9745 });
     if (control === 'layers') alert('Lớp bản đồ đã được bật/tắt theo tùy chọn bên phải.');
+  });
+});
+
+function setLayerPanelOpen(isOpen) {
+  if (!els.mapLayerToggle || !els.mapLayerPanel) return;
+  els.mapLayerPanel.hidden = !isOpen;
+  els.mapLayerToggle.setAttribute('aria-expanded', String(isOpen));
+}
+
+els.mapLayerToggle?.addEventListener('click', (event) => {
+  event.stopPropagation();
+  setLayerPanelOpen(els.mapLayerPanel.hidden);
+});
+
+els.mapLayerPanel?.addEventListener('click', (event) => {
+  event.stopPropagation();
+});
+
+document.addEventListener('click', () => setLayerPanelOpen(false));
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') setLayerPanelOpen(false);
+});
+
+els.layerToggles?.forEach((toggle) => {
+  toggle.addEventListener('change', (event) => {
+    const layer = event.target.dataset.mapLayer;
+    const isChecked = event.target.checked;
+    
+    // Sync other checkboxes for the same layer
+    document.querySelectorAll(`[data-map-layer="${layer}"]`).forEach((cb) => {
+      cb.checked = isChecked;
+    });
+    
+    state.layers[layer] = isChecked;
+    applyLayerSettings();
   });
 });
 

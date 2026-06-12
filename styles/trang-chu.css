@@ -1378,6 +1378,265 @@ body {
   }
 }
 
+/* Homepage GIS View */
+.gis-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 15px;
+}
+
+.map-shell {
+  position: relative;
+  min-height: calc((100vh - 260px) * 0.81);
+  overflow: hidden;
+  border: 1px solid #e1e6ee;
+  border-radius: 8px;
+  background: #e8f1e7;
+}
+
+.map-canvas {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(30deg, transparent 0 47%, rgba(245, 187, 81, 0.55) 48% 49%, transparent 50%),
+    linear-gradient(145deg, transparent 0 46%, rgba(245, 187, 81, 0.5) 47% 48%, transparent 49%),
+    radial-gradient(circle at 75% 38%, #b8dcff 0 12%, transparent 13%),
+    radial-gradient(circle at 86% 64%, #a9d2ff 0 17%, transparent 18%),
+    radial-gradient(circle at 30% 22%, rgba(63, 164, 81, 0.18), transparent 18%),
+    radial-gradient(circle at 38% 76%, rgba(63, 164, 81, 0.18), transparent 14%),
+    #edf4ea;
+}
+
+.map-toolbar {
+  position: absolute;
+  left: 16px;
+  top: 16px;
+  z-index: 5;
+  display: grid;
+  gap: 10px;
+}
+
+.map-toolbar button {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border: 1px solid #dfe5ed;
+  border-radius: 6px;
+  background: #fff;
+  color: #111827;
+  box-shadow: 0 5px 12px rgba(15, 23, 42, 0.12);
+}
+
+.map-toolbar button:hover {
+  color: var(--primary-red);
+}
+
+.map-legend {
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+  z-index: 5;
+  display: grid;
+  gap: 13px;
+  width: 300px;
+  max-width: calc(100% - 32px);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 17px 18px;
+  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.16);
+  box-sizing: border-box;
+}
+
+.map-legend h2,
+.gis-side-card h2 {
+  color: #9e0000;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.25;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.map-legend div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #253041;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.marker-dot {
+  display: inline-grid;
+  width: 27px;
+  height: 27px;
+  place-items: center;
+  border-radius: 999px;
+  color: #fff;
+  flex: 0 0 auto;
+}
+
+.marker-dot.green { background: #22a447; }
+.marker-dot.yellow { background: #f4b400; }
+.marker-dot.gray { background: #777d86; }
+.marker-dot.orange { background: #ff7a16; }
+.marker-dot.red { background: #e60012; }
+.marker-dot.purple { background: #8752dc; }
+
+.gis-side {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+}
+
+.gis-side-card {
+  border: 1px solid #ffd5d5;
+  border-radius: 8px;
+  background: #fff;
+  padding: 17px 16px;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.045);
+}
+
+.side-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.side-title a,
+.side-title button {
+  color: #c90000;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border: 1px solid #edf1f6;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.stat-grid div {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  column-gap: 10px;
+  align-items: center;
+  min-height: 74px;
+  border-right: 1px solid #edf1f6;
+  border-bottom: 1px solid #edf1f6;
+  padding: 12px;
+}
+
+.stat-grid div:nth-child(2n) {
+  border-right: 0;
+}
+
+.stat-grid div:nth-last-child(-n + 2) {
+  border-bottom: 0;
+}
+
+.stat-grid strong {
+  color: #111827;
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.stat-grid em {
+  grid-column: 2;
+  color: #374151;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+}
+
+.nearby-list {
+  display: grid;
+}
+
+.layer-card {
+  display: grid;
+  gap: 11px;
+}
+
+.layer-card label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #374151;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.layer-card input {
+  width: 18px;
+  height: 18px;
+  accent-color: #d00000;
+}
+
+@media (max-width: 1380px) {
+  .gis-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .gis-side {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 980px) {
+  .gis-side {
+    grid-template-columns: 1fr;
+  }
+
+  .map-legend {
+    width: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .map-toolbar {
+    left: 12px;
+    top: 12px;
+    gap: 8px;
+  }
+
+  .map-toolbar button {
+    width: 40px;
+    height: 40px;
+  }
+
+  .map-legend {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    max-width: none;
+    padding: 14px;
+  }
+
+  .stat-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-grid div,
+  .stat-grid div:nth-child(2n) {
+    border-right: 0;
+  }
+
+  .stat-grid div:nth-last-child(-n + 2) {
+    border-bottom: 1px solid #edf1f6;
+  }
+
+  .stat-grid div:last-child {
+    border-bottom: 0;
+  }
+}
+
 /* Feedback View (Tiếp nhận phản ánh) Styles */
 .feedback-layout {
   display: block;
