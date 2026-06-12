@@ -1,0 +1,283 @@
+.font-sans {
+      font-family: 'Roboto', Arial, sans-serif;
+    }
+
+:root {
+      --red: #df0008;
+      --ink: #101722;
+      --muted: #7b8493;
+      --line: #d9e0ea;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { min-height: 100%; }
+
+    body {
+      font-family: 'Roboto', Arial, sans-serif;
+      margin: 0;
+      color: var(--ink);
+      background: #b70000;
+    }
+
+    .auth-page {
+      position: relative;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background:
+        linear-gradient(180deg, rgba(203, 0, 0, 0.84) 0%, rgba(171, 0, 0, 0.92) 100%),
+        url("../public/background-trongdong.jpg") center center / cover no-repeat;
+    }
+
+    .auth-page::before {
+      content: "";
+      position: fixed;
+      inset: -12vh -10vw;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(255, 225, 130, 0.18) 0 21%, transparent 22%),
+        radial-gradient(circle at 50% 51%, transparent 0 30%, rgba(255, 198, 80, 0.16) 31%, transparent 52%),
+        radial-gradient(circle at 49% 50%, transparent 0 48%, rgba(255, 219, 142, 0.16) 49%, transparent 64%);
+      mix-blend-mode: screen;
+      opacity: 0.5;
+    }
+
+    .auth-page::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 50% 32%, rgba(255, 215, 125, 0.14), transparent 23rem),
+        linear-gradient(90deg, rgba(121, 0, 0, 0.24), transparent 18%, transparent 82%, rgba(121, 0, 0, 0.24));
+    }
+
+    .auth-shell {
+      position: relative;
+      z-index: 1;
+      width: min(100%, 1160px);
+      min-height: 100vh;
+      margin: 0 auto;
+      padding: 34px 24px 32px;
+    }
+
+    .brand-logo {
+      width: 116px;
+      height: 80px;
+      object-fit: contain;
+      filter: drop-shadow(0 10px 14px rgba(88, 0, 0, 0.35));
+    }
+
+    .brand-title {
+      margin-top: 14px;
+      color: #fff;
+      text-align: center;
+      font-size: clamp(27px, 3vw, 36px);
+      font-weight: 600;
+      line-height: 1.15;
+      text-shadow: 0 3px 9px rgba(94, 0, 0, 0.18);
+    }
+
+    .brand-subtitle {
+      margin-top: 10px;
+      color: rgba(255, 255, 255, 0.98);
+      text-align: center;
+      font-size: clamp(16px, 1.75vw, 21px);
+      font-weight: 600;
+      line-height: 1.42;
+      text-shadow: 0 2px 8px rgba(94, 0, 0, 0.16);
+    }
+
+    .auth-card {
+      width: min(100%, 640px);
+      margin: 28px auto 0;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.98);
+      padding: 34px 48px 32px;
+      box-shadow:
+        0 26px 60px rgba(79, 0, 0, 0.28),
+        inset 0 1px 0 rgba(255, 255, 255, 0.95);
+    }
+
+    .card-heading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      color: var(--red);
+      font-size: 22px;
+      font-weight: 600;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+
+    .heading-icon {
+      display: grid;
+      width: 46px;
+      height: 46px;
+      place-items: center;
+      border: 2px solid var(--red);
+      border-radius: 999px;
+      color: var(--red);
+      flex: 0 0 auto;
+    }
+
+    .help-text {
+      margin: 20px auto 0;
+      max-width: 500px;
+      color: #667085;
+      text-align: center;
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.55;
+    }
+
+    .field-group {
+      margin-top: 28px;
+    }
+
+    .field-label {
+      display: block;
+      margin-bottom: 11px;
+      color: #111827;
+      font-size: 17px;
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    .required {
+      color: var(--red);
+      font-weight: 600;
+    }
+
+    .input-wrap {
+      position: relative;
+      display: block;
+    }
+
+    .auth-input {
+      width: 100%;
+      height: 54px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #fff;
+      padding: 0 54px;
+      color: #1f2937;
+      font-size: 16px;
+      font-weight: 500;
+      outline: none;
+      transition: border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    .auth-input::placeholder {
+      color: #8b95a5;
+      font-weight: 500;
+    }
+
+    .auth-input:focus {
+      border-color: #e60000;
+      box-shadow: 0 0 0 4px rgba(230, 0, 0, 0.1);
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      width: 22px;
+      height: 22px;
+      color: #9aa4b3;
+      transform: translateY(-50%);
+      stroke-width: 2;
+    }
+
+    .hint-box {
+      display: flex;
+      gap: 12px;
+      margin-top: 18px;
+      border: 1px solid #f5c7c7;
+      border-radius: 8px;
+      background: #fff7f7;
+      padding: 14px 15px;
+      color: #b42318;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.45;
+    }
+
+    .primary-btn,
+    .secondary-btn {
+      display: inline-flex;
+      width: 100%;
+      height: 58px;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      border-radius: 8px;
+      font-size: 19px;
+      font-weight: 600;
+      line-height: 1;
+      text-decoration: none;
+      transition: transform 160ms ease, box-shadow 160ms ease, filter 160ms ease;
+    }
+
+    .primary-btn {
+      margin-top: 30px;
+      border: 0;
+      background: linear-gradient(180deg, #ed000b 0%, #d80008 100%);
+      color: #fff;
+      box-shadow: 0 13px 22px rgba(184, 0, 0, 0.21);
+    }
+
+    .primary-btn:hover {
+      filter: brightness(1.04);
+      box-shadow: 0 16px 25px rgba(184, 0, 0, 0.25);
+    }
+
+    .secondary-btn {
+      margin-top: 14px;
+      border: 1.5px solid var(--red);
+      background: #fff;
+      color: var(--red);
+    }
+
+    .secondary-btn:hover {
+      background: #fff8f8;
+      box-shadow: 0 10px 18px rgba(204, 0, 0, 0.09);
+    }
+
+    .primary-btn:active,
+    .secondary-btn:active {
+      transform: translateY(1px);
+    }
+
+    @media (max-width: 720px) {
+      .auth-shell {
+        padding: 24px 16px 28px;
+      }
+
+      .brand-logo {
+        width: 104px;
+        height: 72px;
+      }
+
+      .auth-card {
+        margin-top: 22px;
+        border-radius: 20px;
+        padding: 26px 20px 24px;
+      }
+
+      .card-heading {
+        font-size: 18px;
+      }
+
+      .field-label,
+      .help-text,
+      .hint-box {
+        font-size: 14px;
+      }
+
+      .auth-input,
+      .primary-btn,
+      .secondary-btn {
+        height: 54px;
+      }
+    }

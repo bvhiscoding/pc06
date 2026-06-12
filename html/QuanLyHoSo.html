@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quản lý hồ sơ</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../styles/quan-ly-ho-so.css">
+</head>
+
+<body class="font-sans antialiased">
+  <div class="desktop-shell min-h-screen">
+    <header
+      class="app-header fixed left-0 right-0 top-0 z-30 flex h-[80px] items-center justify-between px-6 text-white">
+      <div class="flex h-full items-center">
+        <img class="crest" src="../public/logocongan.png" alt="Logo Bộ Công an" />
+        <div class="brand-copy ml-4">
+          <div class="text-[22px] font-semibold leading-tight tracking-[0]">CÔNG AN TỈNH NINH BÌNH</div>
+          <div class="mt-1 text-[15px] font-medium tracking-[0] text-white/95">HỆ THỐNG QUẢN LÝ CƠ SỞ KINH DOANH CÓ
+            ĐIỀU KIỆN VỀ ANTT</div>
+        </div>
+      </div>
+
+      <div class="topbar-actions flex h-full items-center gap-6">
+        <div class="topbar-menu-wrap">
+          <button id="notificationToggle" class="topbar-icon-btn relative" type="button" aria-label="Thông báo"
+            aria-expanded="false">
+            <i data-lucide="bell" class="h-[26px] w-[26px]"></i>
+            <span id="notificationBadge"
+            class="absolute right-0 top-1 grid h-5 min-w-5 place-items-center rounded-full bg-[#ff1e1e] px-1 text-[11px] font-semibold leading-none shadow">5</span>
+          </button>
+
+          <div id="notificationMenu" class="topbar-dropdown notification-dropdown" hidden>
+            <div class="dropdown-head">
+              <span>Thông báo</span>
+              <button id="markAllReadBtn" type="button">Đánh dấu đã đọc</button>
+            </div>
+            <div id="notificationList" class="notification-list"></div>
+          </div>
+        </div>
+
+        <div class="topbar-menu-wrap">
+          <button id="userMenuToggle" class="user-menu-btn" type="button" aria-label="Mở menu tài khoản"
+            aria-expanded="false">
+            <div class="grid h-[46px] w-[46px] place-items-center rounded-full bg-white text-[#cf0000] shadow-sm">
+              <i data-lucide="user-round" class="h-7 w-7 fill-[#cf0000]/15"></i>
+            </div>
+            <div class="hidden text-left sm:block">
+              <div class="text-[15px] font-semibold leading-5">Nguyễn Văn A</div>
+              <div class="text-[13px] font-medium text-white/92">Phòng CS QLHC về TTXH</div>
+            </div>
+            <i data-lucide="chevron-down" class="user-chevron h-5 w-5 text-white"></i>
+          </button>
+
+          <div id="userMenu" class="topbar-dropdown user-dropdown" hidden>
+            <div class="user-card">
+              <div class="grid h-11 w-11 place-items-center rounded-full bg-[#fff2f2] text-[#cf0000]">
+                <i data-lucide="user-round" class="h-6 w-6"></i>
+              </div>
+              <div>
+                <div class="user-name">Nguyễn Văn A</div>
+                <div class="user-role">Phòng CS QLHC về TTXH</div>
+              </div>
+            </div>
+            <button class="dropdown-action" type="button" data-user-action="profile">
+              <i data-lucide="id-card" class="h-4 w-4"></i>
+              Thông tin tài khoản
+            </button>
+            <button class="dropdown-action" type="button" data-user-action="settings">
+              <i data-lucide="settings" class="h-4 w-4"></i>
+              Cài đặt hiển thị
+            </button>
+            <a class="dropdown-action danger" href="DangNhap.html">
+              <i data-lucide="log-out" class="h-4 w-4"></i>
+              Đăng xuất
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <aside class="sidebar fixed bottom-0 left-0 top-[80px] z-20 px-2 text-white">
+      <div class="sidebar-scroll">
+        <div class="nav-section mt-0">Tổng quan</div>
+        <a href="#" class="nav-item mt-2">
+          <i data-lucide="house"></i>
+          <span class="nav-copy">Dashboard</span>
+        </a>
+
+        <div class="nav-section">Giám sát địa bàn</div>
+        <a href="#" class="nav-item mt-2">
+          <i data-lucide="map-pin"></i>
+          <span class="nav-copy">Bản đồ số GIS</span>
+        </a>
+
+        <div class="nav-section">Nghiệp vụ</div>
+        <a href="#" class="nav-item active mt-2">
+          <i data-lucide="file-text"></i>
+          <span class="nav-copy">Quản lý hồ sơ</span>
+        </a>
+        <a href="#" class="nav-item">
+          <i data-lucide="database"></i>
+          <span class="nav-copy">Cơ sở dữ liệu CSKD-ANTT</span>
+        </a>
+        <a href="#" class="nav-item">
+          <i data-lucide="clipboard-check"></i>
+          <span class="nav-copy">Kiểm tra cơ sở</span>
+        </a>
+        <a href="#" class="nav-item">
+          <i data-lucide="octagon-alert"></i>
+          <span class="nav-copy">Vi phạm / Xử lý vi phạm</span>
+        </a>
+        <a href="#" class="nav-item">
+          <i data-lucide="message-square-warning"></i>
+          <span class="nav-copy">Phản ánh kiến nghị</span>
+        </a>
+
+        <div class="nav-section">Báo cáo</div>
+        <a href="#" class="nav-item mt-2">
+          <i data-lucide="chart-column-big"></i>
+          <span class="nav-copy">Báo cáo - thống kê</span>
+        </a>
+
+        <div class="nav-section">Cấu hình</div>
+        <a href="#" class="nav-item mt-2">
+          <i data-lucide="folder"></i>
+          <span class="nav-copy">Danh mục dùng chung</span>
+          <i data-lucide="chevron-down" class="ml-auto h-4 w-4 nav-copy"></i>
+        </a>
+        <a href="#" class="nav-item">
+          <i data-lucide="settings"></i>
+          <span class="nav-copy">Quản trị hệ thống</span>
+          <i data-lucide="chevron-down" class="ml-auto h-4 w-4 nav-copy"></i>
+        </a>
+      </div>
+
+      <div class="sidebar-action">
+        <button id="sidebarToggle" class="sidebar-toggle" type="button" aria-label="Thu gọn menu" aria-expanded="true">
+          <i data-lucide="chevron-left" class="toggle-icon"></i>
+          <span class="collapse-label">Thu gọn</span>
+        </button>
+      </div>
+    </aside>
+
+    <main class="content min-h-screen pt-[80px]">
+      <div class="px-6 pb-8 pt-6 lg:px-7">
+        <section class="mb-5">
+          <div class="mt-3 flex items-center gap-2 text-[13px] font-medium text-[#6b7280]">
+            <i data-lucide="house" class="h-4 w-4 text-[#9098a5]"></i>
+            <span>Trang chủ</span>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
+            <span>Quản lý hồ sơ</span>
+          </div>
+        </section>
+
+        <section class="rounded-[7px] border border-[#e0e5ed] bg-white p-5 shadow-panel">
+          <div class="grid grid-cols-12 gap-x-7 gap-y-4">
+            <label class="col-span-12 xl:col-span-4">
+              <span class="form-label">Tìm kiếm</span>
+              <span class="field-wrap block">
+                <input id="searchInput" class="field" type="text"
+                  placeholder="Nhập mã hồ sơ, tên cơ sở, tên chủ cơ sở, SĐT..." />
+                <i data-lucide="search" class="field-icon"></i>
+              </span>
+            </label>
+
+            <label class="col-span-12 md:col-span-4 xl:col-span-3">
+              <span class="form-label">Trạng thái hồ sơ</span>
+              <span class="field-wrap block">
+                <select id="statusSelect" class="field appearance-none font-medium">
+                  <option>-- Tất cả --</option>
+                </select>
+                <i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>
+              </span>
+            </label>
+
+            <label class="col-span-12 md:col-span-4 xl:col-span-3">
+              <span class="form-label">Loại thủ tục</span>
+              <span class="field-wrap block">
+                <select id="typeSelect" class="field appearance-none font-medium">
+                  <option>-- Tất cả --</option>
+                </select>
+                <i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>
+              </span>
+            </label>
+
+            <label class="col-span-12 md:col-span-4 xl:col-span-2">
+              <span class="form-label">Địa bàn</span>
+              <span class="field-wrap block">
+                <select id="areaSelect" class="field appearance-none font-medium">
+                  <option>-- Tất cả --</option>
+                </select>
+                <i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>
+              </span>
+            </label>
+
+            <label class="col-span-12 sm:col-span-6 xl:col-span-3">
+              <span class="form-label">Ngày nộp từ</span>
+              <span class="field-wrap block">
+                <input id="dateFrom" class="field" type="date" />
+                <i data-lucide="calendar-days" class="field-icon"></i>
+              </span>
+            </label>
+
+            <label class="col-span-12 sm:col-span-6 xl:col-span-3">
+              <span class="form-label">Ngày nộp đến</span>
+              <span class="field-wrap block">
+                <input id="dateTo" class="field" type="date" />
+                <i data-lucide="calendar-days" class="field-icon"></i>
+              </span>
+            </label>
+
+            <label class="col-span-12 md:col-span-6 xl:col-span-3">
+              <span class="form-label">Đơn vị xử lý</span>
+              <span class="field-wrap block">
+                <select id="unitSelect" class="field appearance-none font-medium">
+                  <option>-- Tất cả --</option>
+                </select>
+                <i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>
+              </span>
+            </label>
+
+            <label class="col-span-12 md:col-span-6 xl:col-span-3">
+              <span class="form-label">Cán bộ xử lý</span>
+              <span class="field-wrap block">
+                <select id="officerSelect" class="field appearance-none font-medium">
+                  <option>-- Tất cả --</option>
+                </select>
+                <i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>
+              </span>
+            </label>
+          </div>
+
+          <div class="mt-4 flex justify-end gap-3">
+            <button id="resetBtn"
+              class="inline-flex h-[42px] items-center gap-2 rounded-md border border-[#d9dfe8] bg-white px-6 text-[14px] font-medium text-[#202833] shadow-sm transition hover:bg-[#f8fafc]"
+              type="button">
+              <i data-lucide="rotate-ccw" class="h-4 w-4"></i>
+              Đặt lại
+            </button>
+            <button id="searchBtn"
+              class="inline-flex h-[42px] items-center gap-2 rounded-md bg-[#c50000] px-7 text-[14px] font-semibold text-white shadow-[0_6px_13px_rgba(192,0,0,0.24)] transition hover:bg-[#ad0000]"
+              type="button">
+              <i data-lucide="search" class="h-[18px] w-[18px]"></i>
+              Tìm kiếm
+            </button>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <div id="statusTabs" class="flex flex-wrap gap-3">
+            <button class="tab active">Tất cả (248)</button>
+            <button class="tab">Chờ tiếp nhận (18)</button>
+            <button class="tab">Đã tiếp nhận (35)</button>
+            <button class="tab">Đang xử lý (42)</button>
+            <button class="tab">Cần bổ sung (21)</button>
+            <button class="tab">Đã hoàn thành (98)</button>
+            <button class="tab">Từ chối (22)</button>
+            <button class="tab danger">Quá hạn (12)</button>
+          </div>
+        </section>
+
+        <section class="mt-4 overflow-hidden rounded-[7px] border border-[#e4e9f0] bg-white shadow-soft">
+          <div class="overflow-x-auto">
+            <table class="data-table w-full">
+              <thead>
+                <tr>
+                  <th class="w-[52px]">STT</th>
+                  <th class="w-[136px]">Mã hồ sơ</th>
+                  <th class="w-[188px]">Tên thủ tục</th>
+                  <th class="w-[175px]">Tên cơ sở</th>
+                  <th class="w-[190px]">Chủ cơ sở / Người đại diện</th>
+                  <th class="w-[150px]">Địa bàn</th>
+                  <th class="w-[122px]">Ngày nộp</th>
+                  <th class="w-[116px]">Hạn xử lý</th>
+                  <th class="w-[140px]">Trạng thái</th>
+                  <th class="w-[128px]">Cán bộ xử lý</th>
+                  <th class="w-[90px]">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="recordsBody">
+                <tr>
+                  <td class="text-center">1</td>
+                  <td class="text-center font-medium text-[#ff0000]">HS-2026-00125</td>
+                  <td>Cấp mới giấy chứng nhận đủ ĐK ANTT</td>
+                  <td>Karaoke Hoa Sen</td>
+                  <td class="text-center">Nguyễn Văn B</td>
+                  <td class="text-center">P. Đông Thành,<br>TP. Ninh Bình</td>
+                  <td class="text-center">20/05/2026<br>09:15</td>
+                  <td class="text-center">04/06/2026</td>
+                  <td class="text-center"><span class="status st-orange">Chờ tiếp nhận</span></td>
+                  <td class="text-center">-</td>
+                  <td class="text-center"><button
+                      class="mx-auto grid h-9 w-9 place-items-center rounded-md border border-[#dfe5ed] bg-white shadow-sm"><i
+                        data-lucide="ellipsis-vertical" class="h-5 w-5"></i></button></td>
+                </tr>
+                <tr>
+                  <td class="text-center">2</td>
+                  <td class="text-center font-medium text-[#ff0000]">HS-2026-00124</td>
+                  <td>Cấp giấy chứng nhận đủ ĐK ANTT</td>
+                  <td>Nhà nghỉ Bình Minh</td>
+                  <td class="text-center">Trần Thị C</td>
+                  <td class="text-center">P. Nam Thành,<br>TP. Ninh Bình</td>
+                  <td class="text-center">20/05/2026<br>08:42</td>
+                  <td class="text-center">04/06/2026</td>
+                  <td class="text-center"><span class="status st-blue">Đang xử lý</span></td>
+                  <td class="text-center">Nguyễn Văn A</td>
+                  <td class="text-center"><button
+                      class="mx-auto grid h-9 w-9 place-items-center rounded-md border border-[#dfe5ed] bg-white shadow-sm"><i
+                        data-lucide="ellipsis-vertical" class="h-5 w-5"></i></button></td>
+                </tr>
+                <tr>
+                  <td class="text-center">3</td>
+                  <td class="text-center font-medium text-[#ff0000]">HS-2026-00123</td>
+                  <td>Cấp đổi giấy chứng nhận đủ ĐK ANTT</td>
+                  <td>Khách sạn Tràng An</td>
+                  <td class="text-center">Lê Văn D</td>
+                  <td class="text-center">P. Đông Thành,<br>TP. Ninh Bình</td>
+                  <td class="text-center">19/05/2026<br>16:28</td>
+                  <td class="text-center">03/06/2026</td>
+                  <td class="text-center"><span class="status st-warn">Cần bổ sung</span></td>
+                  <td class="text-center">Phạm Thị H</td>
+                  <td class="text-center"><button
+                      class="mx-auto grid h-9 w-9 place-items-center rounded-md border border-[#dfe5ed] bg-white shadow-sm"><i
+                        data-lucide="ellipsis-vertical" class="h-5 w-5"></i></button></td>
+                </tr>
+                <tr>
+                  <td class="text-center">4</td>
+                  <td class="text-center font-medium text-[#ff0000]">HS-2026-00122</td>
+                  <td>Cấp lại giấy chứng nhận đủ ĐK ANTT</td>
+                  <td>Bar New Life</td>
+                  <td class="text-center">Hoàng Quốc E</td>
+                  <td class="text-center">P. Nam Bình,<br>TP. Ninh Bình</td>
+                  <td class="text-center">19/05/2026<br>10:05</td>
+                  <td class="text-center">03/06/2026</td>
+                  <td class="text-center"><span class="status st-blue">Đã tiếp nhận</span></td>
+                  <td class="text-center">Trần Văn K</td>
+                  <td class="text-center"><button
+                      class="mx-auto grid h-9 w-9 place-items-center rounded-md border border-[#dfe5ed] bg-white shadow-sm"><i
+                        data-lucide="ellipsis-vertical" class="h-5 w-5"></i></button></td>
+                </tr>
+                <tr>
+                  <td class="text-center">5</td>
+                  <td class="text-center font-medium text-[#ff0000]">HS-2026-00121</td>
+                  <td>Khai báo thay đổi thông tin cơ sở</td>
+                  <td>Nhà hàng Thắng Cố 36</td>
+                  <td class="text-center">Phạm Văn F</td>
+                  <td class="text-center">P. Phúc Thành,<br>TP. Ninh Bình</td>
+                  <td class="text-center">18/05/2026<br>14:30</td>
+                  <td class="text-center">01/06/2026</td>
+                  <td class="text-center"><span class="status st-blue">Đang xử lý</span></td>
+                  <td class="text-center">Nguyễn Văn A</td>
+                  <td class="text-center"><button
+                      class="mx-auto grid h-9 w-9 place-items-center rounded-md border border-[#dfe5ed] bg-white shadow-sm"><i
+                        data-lucide="ellipsis-vertical" class="h-5 w-5"></i></button></td>
+                </tr>
+                <tr>
+                  <td class="text-center">6</td>
+                  <td class="text-center font-medium text-[#ff0000]">HS-2026-00120</td>
+                  <td>Tạm dừng hoạt động</td>
+                  <td>Karaoke Hải Đăng</td>
+                  <td class="text-center">Vũ Thị G</td>
+                  <td class="text-center">P. Đông Thành,<br>TP. Ninh Bình</td>
+                  <td class="text-center">18/05/2026<br>09:10</td>
+                  <td class="text-center">30/05/2026</td>
+                  <td class="text-center"><span class="status st-green">Đã hoàn thành</span></td>
+                  <td class="text-center">Phạm Thị H</td>
+                  <td class="text-center"><button
+                      class="mx-auto grid h-9 w-9 place-items-center rounded-md border border-[#dfe5ed] bg-white shadow-sm"><i
+                        data-lucide="ellipsis-vertical" class="h-5 w-5"></i></button></td>
+                </tr>
+                <tr>
+                  <td class="text-center">7</td>
+                  <td class="text-center font-medium text-[#ff0000]">HS-2026-00119</td>
+                  <td>Cấp mới giấy chứng nhận đủ ĐK ANTT</td>
+                  <td>Dịch vụ cầm đồ Phát Lộc</td>
+                  <td class="text-center">Đinh Văn H</td>
+                  <td class="text-center">P. Tân Thành,<br>TP. Ninh Bình</td>
+                  <td class="text-center">17/05/2026<br>11:22</td>
+                  <td class="text-center">31/05/2026</td>
+                  <td class="text-center"><span class="status st-red">Từ chối</span></td>
+                  <td class="text-center">Trần Văn K</td>
+                  <td class="text-center"><button
+                      class="mx-auto grid h-9 w-9 place-items-center rounded-md border border-[#dfe5ed] bg-white shadow-sm"><i
+                        data-lucide="ellipsis-vertical" class="h-5 w-5"></i></button></td>
+                </tr>
+                <tr>
+                  <td class="text-center">8</td>
+                  <td class="text-center font-medium text-[#ff0000]">HS-2026-00118</td>
+                  <td>Ngừng hoạt động</td>
+                  <td>Nhà nghỉ Hoàng Gia</td>
+                  <td class="text-center">Bùi Thị I</td>
+                  <td class="text-center">P. Nam Thành,<br>TP. Ninh Bình</td>
+                  <td class="text-center">17/05/2026<br>08:55</td>
+                  <td class="text-center">30/05/2026</td>
+                  <td class="text-center"><span class="status st-purple">Quá hạn</span></td>
+                  <td class="text-center">Nguyễn Văn A</td>
+                  <td class="text-center"><button
+                      class="mx-auto grid h-9 w-9 place-items-center rounded-md border border-[#dfe5ed] bg-white shadow-sm"><i
+                        data-lucide="ellipsis-vertical" class="h-5 w-5"></i></button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section
+          class="mt-5 flex flex-col gap-4 text-[14px] text-[#5f6877] md:flex-row md:items-center md:justify-between">
+          <div id="resultSummary">Hiển thị 1 - 20 trong tổng số 248 hồ sơ</div>
+          <div class="flex flex-wrap items-center gap-2">
+            <select id="pageSizeSelect" class="field h-10 w-[120px] appearance-none pr-8 text-left font-medium">
+              <option value="10" selected>10 / trang</option>
+              <option value="20">20 / trang</option>
+              <option value="50">50 / trang</option>
+            </select>
+            <div id="pagination" class="flex flex-wrap items-center gap-2"></div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+  <script src="../scripts/quan-ly-ho-so.js"></script>
+</body>
+
+</html>

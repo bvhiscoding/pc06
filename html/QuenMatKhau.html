@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quên mật khẩu</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/quen-mat-khau.css">
+</head>
+<body class="font-sans antialiased">
+  <main class="auth-page">
+    <div class="auth-shell">
+      <section class="mx-auto flex flex-col items-center text-center">
+        <img class="brand-logo" src="../public/logocongan.png" alt="Logo Bộ Công an" />
+        <h1 class="brand-title">CÔNG AN TỈNH NINH BÌNH</h1>
+        <p class="brand-subtitle">HỆ THỐNG QUẢN LÝ CƠ SỞ KINH DOANH<br>CÓ ĐIỀU KIỆN VỀ ANTT</p>
+      </section>
+
+      <section class="auth-card" aria-label="Quên mật khẩu">
+        <div class="card-heading">
+          <span class="heading-icon">
+            <i data-lucide="key-round" class="h-7 w-7"></i>
+          </span>
+          <span>Quên mật khẩu</span>
+        </div>
+
+        <p class="help-text">
+          Nhập tên đăng nhập, số điện thoại hoặc email đã đăng ký để nhận hướng dẫn khôi phục mật khẩu.
+        </p>
+
+        <form action="DangNhap.html" method="get">
+          <label class="field-group block">
+            <span class="field-label">Tên đăng nhập / Số điện thoại / Email <span class="required">*</span></span>
+            <span class="input-wrap">
+              <i data-lucide="mail-check" class="input-icon"></i>
+              <input class="auth-input" type="text" placeholder="Nhập tên đăng nhập, số điện thoại hoặc email" />
+            </span>
+          </label>
+
+          <div class="hint-box">
+            <i data-lucide="info" class="mt-0.5 h-5 w-5 flex-none"></i>
+            <span>Mã xác thực hoặc liên kết đặt lại mật khẩu sẽ được gửi tới thông tin liên hệ đã đăng ký.</span>
+          </div>
+
+          <button class="primary-btn" type="submit">
+            <i data-lucide="send" class="h-6 w-6"></i>
+            <span>Gửi yêu cầu</span>
+          </button>
+
+          <a class="secondary-btn" href="DangNhap.html">
+            <i data-lucide="arrow-left" class="h-6 w-6"></i>
+            <span>Quay lại đăng nhập</span>
+          </a>
+        </form>
+      </section>
+    </div>
+  </main>
+  <script src="../scripts/quen-mat-khau.js"></script>
+</body>
+</html>
