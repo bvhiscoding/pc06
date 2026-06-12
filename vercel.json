@@ -6,7 +6,7 @@
   "redirects": [
     {
       "source": "/",
-      "destination": "/html/BanDoSoGis.html",
+      "destination": "/index.html",
       "permanent": false
     }
   ]
