@@ -255,7 +255,8 @@ function handleRowAction(action, id) {
   if (!record) return;
 
   if (action === 'detail') {
-    alert(`${record.id}\n${record.business}\nChủ cơ sở: ${record.owner}\nTrạng thái: ${record.status}`);
+    window.location.href = `ChiTietHoSo.html?id=${encodeURIComponent(record.id)}`;
+    return;
   }
 
   if (action === 'receive') {

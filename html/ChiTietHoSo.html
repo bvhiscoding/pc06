@@ -1,0 +1,596 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chi tiết hồ sơ</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/quan-ly-ho-so.css">
+  <link rel="stylesheet" href="../styles/chi-tiet-ho-so.css">
+</head>
+
+<body class="font-sans antialiased">
+  <div class="desktop-shell min-h-screen">
+    <header
+      class="app-header fixed left-0 right-0 top-0 z-30 flex h-[80px] items-center justify-between px-6 text-white">
+      <div class="flex h-full items-center">
+        <img class="crest" src="../public/logocongan.png" alt="Logo Bộ Công an" />
+        <div class="brand-copy ml-4">
+          <div class="text-[22px] font-semibold leading-tight tracking-[0]">CÔNG AN TỈNH NINH BÌNH</div>
+          <div class="mt-1 text-[15px] font-medium tracking-[0] text-white/95">HỆ THỐNG QUẢN LÝ CƠ SỞ KINH DOANH CÓ
+            ĐIỀU KIỆN VỀ ANTT</div>
+        </div>
+      </div>
+
+      <div class="topbar-actions flex h-full items-center gap-6">
+        <div class="topbar-menu-wrap">
+          <button id="notificationToggle" class="topbar-icon-btn relative" type="button" aria-label="Thông báo"
+            aria-expanded="false">
+            <i data-lucide="bell" class="h-[26px] w-[26px]"></i>
+            <span id="notificationBadge"
+              class="absolute right-0 top-1 grid h-5 min-w-5 place-items-center rounded-full bg-[#ff1e1e] px-1 text-[11px] font-semibold leading-none shadow">5</span>
+          </button>
+
+          <div id="notificationMenu" class="topbar-dropdown notification-dropdown" hidden>
+            <div class="dropdown-head">
+              <span>Thông báo</span>
+              <button id="markAllReadBtn" type="button">Đánh dấu đã đọc</button>
+            </div>
+            <div id="notificationList" class="notification-list"></div>
+          </div>
+        </div>
+
+        <div class="topbar-menu-wrap">
+          <button id="userMenuToggle" class="user-menu-btn" type="button" aria-label="Mở menu tài khoản"
+            aria-expanded="false">
+            <div class="grid h-[46px] w-[46px] place-items-center rounded-full bg-white text-[#cf0000] shadow-sm">
+              <i data-lucide="user-round" class="h-7 w-7 fill-[#cf0000]/15"></i>
+            </div>
+            <div class="hidden text-left sm:block">
+              <div class="text-[15px] font-semibold leading-5">Nguyễn Văn A</div>
+              <div class="text-[13px] font-medium text-white/92">Phòng CS QLHC về TTXH</div>
+            </div>
+            <i data-lucide="chevron-down" class="user-chevron h-5 w-5 text-white"></i>
+          </button>
+
+          <div id="userMenu" class="topbar-dropdown user-dropdown" hidden>
+            <div class="user-card">
+              <div class="grid h-11 w-11 place-items-center rounded-full bg-[#fff2f2] text-[#cf0000]">
+                <i data-lucide="user-round" class="h-6 w-6"></i>
+              </div>
+              <div>
+                <div class="user-name">Nguyễn Văn A</div>
+                <div class="user-role">Phòng CS QLHC về TTXH</div>
+              </div>
+            </div>
+            <button class="dropdown-action" type="button" data-user-action="profile">
+              <i data-lucide="id-card" class="h-4 w-4"></i>
+              Thông tin tài khoản
+            </button>
+            <button class="dropdown-action" type="button" data-user-action="settings">
+              <i data-lucide="settings" class="h-4 w-4"></i>
+              Cài đặt hiển thị
+            </button>
+            <a class="dropdown-action danger" href="DangNhap.html">
+              <i data-lucide="log-out" class="h-4 w-4"></i>
+              Đăng xuất
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <aside class="sidebar fixed bottom-0 left-0 top-[80px] z-20 px-2 text-white">
+      <div class="sidebar-scroll">
+        <div class="nav-section mt-0">Tổng quan</div>
+        <a href="#" class="nav-item mt-2">
+          <i data-lucide="house"></i>
+          <span class="nav-copy">Dashboard</span>
+        </a>
+
+        <div class="nav-section">Giám sát địa bàn</div>
+        <a href="BanDoSoGis.html" class="nav-item mt-2">
+          <i data-lucide="map-pin"></i>
+          <span class="nav-copy">Bản đồ số GIS</span>
+        </a>
+
+        <div class="nav-section">Nghiệp vụ</div>
+        <a href="QuanLyHoSo.html" class="nav-item active mt-2">
+          <i data-lucide="file-text"></i>
+          <span class="nav-copy">Quản lý hồ sơ</span>
+        </a>
+        <a href="#" class="nav-item">
+          <i data-lucide="database"></i>
+          <span class="nav-copy">Cơ sở dữ liệu CSKD-ANTT</span>
+        </a>
+        <a href="#" class="nav-item">
+          <i data-lucide="clipboard-check"></i>
+          <span class="nav-copy">Kiểm tra cơ sở</span>
+        </a>
+        <a href="#" class="nav-item">
+          <i data-lucide="octagon-alert"></i>
+          <span class="nav-copy">Vi phạm / Xử lý vi phạm</span>
+        </a>
+        <a href="#" class="nav-item">
+          <i data-lucide="message-square-warning"></i>
+          <span class="nav-copy">Phản ánh kiến nghị</span>
+        </a>
+
+        <div class="nav-section">Báo cáo</div>
+        <a href="#" class="nav-item mt-2">
+          <i data-lucide="chart-column-big"></i>
+          <span class="nav-copy">Báo cáo - thống kê</span>
+        </a>
+
+        <div class="nav-section">Cấu hình</div>
+        <a href="#" class="nav-item mt-2">
+          <i data-lucide="folder"></i>
+          <span class="nav-copy">Danh mục dùng chung</span>
+          <i data-lucide="chevron-down" class="ml-auto h-4 w-4 nav-copy"></i>
+        </a>
+        <a href="#" class="nav-item">
+          <i data-lucide="settings"></i>
+          <span class="nav-copy">Quản trị hệ thống</span>
+          <i data-lucide="chevron-down" class="ml-auto h-4 w-4 nav-copy"></i>
+        </a>
+      </div>
+
+      <div class="sidebar-action">
+        <button id="sidebarToggle" class="sidebar-toggle" type="button" aria-label="Thu gọn menu" aria-expanded="true">
+          <i data-lucide="chevron-left" class="toggle-icon"></i>
+          <span class="collapse-label">Thu gọn</span>
+        </button>
+      </div>
+    </aside>
+
+    <main class="content min-h-screen pt-[80px]">
+      <div class="detail-page px-6 pb-8 pt-6 lg:px-7">
+        <section class="detail-heading">
+          <h1>Chi tiết hồ sơ: HS-2026-00125</h1>
+          <a class="back-link" href="QuanLyHoSo.html">
+            <i data-lucide="arrow-left" class="h-4 w-4"></i>
+            Quay lại danh sách
+          </a>
+        </section>
+
+        <section class="summary-strip">
+          <div>
+            <span>Mã hồ sơ</span>
+            <strong class="red-code">HS-2026-00125</strong>
+          </div>
+          <div>
+            <span>Tên thủ tục</span>
+            <strong>Cấp mới giấy chứng nhận đủ điều kiện về ANTT</strong>
+          </div>
+          <div>
+            <span>Ngày nộp</span>
+            <strong>20/05/2026 09:15</strong>
+          </div>
+          <div>
+            <span>Trạng thái</span>
+            <span class="status st-orange">Chờ tiếp nhận</span>
+          </div>
+          <div>
+            <span>Hạn xử lý</span>
+            <strong>04/06/2026</strong>
+          </div>
+          <div>
+            <span>Cán bộ xử lý</span>
+            <strong>-</strong>
+          </div>
+        </section>
+
+        <div class="detail-grid">
+          <div class="detail-main">
+            <section class="info-grid">
+              <article class="detail-card">
+                <h2><i data-lucide="store" class="h-5 w-5"></i>1. Thông tin cơ sở kinh doanh</h2>
+                <div class="info-box">
+                  <dl class="detail-list">
+                    <div>
+                      <dt>Tên cơ sở</dt>
+                      <dd>Karaoke Hoa Sen</dd>
+                    </div>
+                    <div>
+                      <dt>Loại hình kinh doanh</dt>
+                      <dd>Karaoke</dd>
+                    </div>
+                    <div>
+                      <dt>Giấy chứng nhận ĐKKD</dt>
+                      <dd>2700456789</dd>
+                    </div>
+                    <div>
+                      <dt>Địa chỉ</dt>
+                      <dd>Số 123, đường Trần Hưng Đạo, Phường Đông Thành,<br>TP. Ninh Bình, Ninh Bình</dd>
+                    </div>
+                    <div>
+                      <dt>Số điện thoại</dt>
+                      <dd>0912 345 678</dd>
+                    </div>
+                    <div>
+                      <dt>Email</dt>
+                      <dd>karaokehoasen@gmail.com</dd>
+                    </div>
+                    <div class="map-row">
+                      <dt>Vị trí trên bản đồ</dt>
+                      <dd>
+                        <span class="map-thumb">
+                          <span class="map-road r1"></span>
+                          <span class="map-road r2"></span>
+                          <span class="map-road r3"></span>
+                          <i data-lucide="map-pin" class="map-pin"></i>
+                        </span>
+                        <a href="#" class="map-link">Xem trên bản đồ</a>
+                      </dd>
+                    </div>
+                  </dl>
+                </div>
+              </article>
+
+              <article class="detail-card">
+                <h2><i data-lucide="briefcase-business" class="h-5 w-5"></i>2. Thông tin chủ cơ sở / người đại diện</h2>
+                <div class="info-box">
+                  <dl class="detail-list">
+                    <div>
+                      <dt>Họ và tên</dt>
+                      <dd>Nguyễn Văn B</dd>
+                    </div>
+                    <div>
+                      <dt>Số CCCD/CMND</dt>
+                      <dd>037085001234</dd>
+                    </div>
+                    <div>
+                      <dt>Ngày sinh</dt>
+                      <dd>12/05/1985</dd>
+                    </div>
+                    <div>
+                      <dt>Số điện thoại</dt>
+                      <dd>0912 345 678</dd>
+                    </div>
+                    <div>
+                      <dt>Email</dt>
+                      <dd>nguyenvanb@gmail.com</dd>
+                    </div>
+                    <div>
+                      <dt>Địa chỉ thường trú</dt>
+                      <dd>Tổ 5, Phường Nam Thành, TP. Ninh Bình, Ninh Bình</dd>
+                    </div>
+                    <div>
+                      <dt>Vai trò</dt>
+                      <dd>Chủ cơ sở</dd>
+                    </div>
+                  </dl>
+                </div>
+              </article>
+            </section>
+
+            <article class="detail-card compact">
+              <h2><i data-lucide="folder-open" class="h-5 w-5"></i>3. Thông tin hồ sơ</h2>
+              <dl class="detail-list two-col">
+                <div>
+                  <dt>Hình thức nộp hồ sơ</dt>
+                  <dd>Nộp trực tuyến</dd>
+                </div>
+                <div>
+                  <dt>Đơn vị tiếp nhận</dt>
+                  <dd>Công an TP. Ninh Bình</dd>
+                </div>
+                <div>
+                  <dt>Đơn vị xử lý</dt>
+                  <dd>Phòng CS QLHC về TTXH</dd>
+                </div>
+                <div>
+                  <dt>Ghi chú của người nộp</dt>
+                  <dd>Đề nghị xem xét và cấp giấy chứng nhận đủ điều kiện về ANTT cho cơ sở.</dd>
+                </div>
+              </dl>
+            </article>
+
+            <article class="detail-card document-card">
+              <h2><i data-lucide="clipboard-list" class="h-5 w-5"></i>4. Thành phần hồ sơ đã nộp (6)</h2>
+              <div class="doc-table-wrap">
+                <table class="doc-table">
+                  <thead>
+                    <tr>
+                      <th>STT</th>
+                      <th>Tên giấy tờ</th>
+                      <th>Bắt buộc</th>
+                      <th>Tệp tin đã nộp</th>
+                      <th>Ngày nộp</th>
+                      <th>Trạng thái</th>
+                      <th>Thao tác</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>1</td>
+                      <td>Giấy chứng nhận đăng ký doanh nghiệp</td>
+                      <td>Có</td>
+                      <td><a href="#"><i data-lucide="file-text" class="h-4 w-4"></i>GCN_DKD_HoaSen.pdf</a></td>
+                      <td>20/05/2026 09:15</td>
+                      <td><span class="file-status valid">Hợp lệ</span></td>
+                      <td><button><i data-lucide="eye" class="h-4 w-4"></i></button><button><i data-lucide="download"
+                            class="h-4 w-4"></i></button></td>
+                    </tr>
+                    <tr>
+                      <td>2</td>
+                      <td>Bản khai thông tin cơ sở kinh doanh</td>
+                      <td>Có</td>
+                      <td><a href="#"><i data-lucide="file-text" class="h-4 w-4"></i>Ban_khai_HoaSen.pdf</a></td>
+                      <td>20/05/2026 09:15</td>
+                      <td><span class="file-status valid">Hợp lệ</span></td>
+                      <td><button><i data-lucide="eye" class="h-4 w-4"></i></button><button><i data-lucide="download"
+                            class="h-4 w-4"></i></button></td>
+                    </tr>
+                    <tr>
+                      <td>3</td>
+                      <td>Sơ đồ mặt bằng cơ sở</td>
+                      <td>Có</td>
+                      <td><a href="#"><i data-lucide="file-text" class="h-4 w-4"></i>So_do_mat_bang.pdf</a></td>
+                      <td>20/05/2026 09:15</td>
+                      <td><span class="file-status valid">Hợp lệ</span></td>
+                      <td><button><i data-lucide="eye" class="h-4 w-4"></i></button><button><i data-lucide="download"
+                            class="h-4 w-4"></i></button></td>
+                    </tr>
+                    <tr>
+                      <td>4</td>
+                      <td>Giấy tờ chứng minh quyền sử dụng địa điểm</td>
+                      <td>Có</td>
+                      <td><a href="#"><i data-lucide="file-text" class="h-4 w-4"></i>Hop_dong_thue.pdf</a></td>
+                      <td>20/05/2026 09:15</td>
+                      <td><span class="file-status valid">Hợp lệ</span></td>
+                      <td><button><i data-lucide="eye" class="h-4 w-4"></i></button><button><i data-lucide="download"
+                            class="h-4 w-4"></i></button></td>
+                    </tr>
+                    <tr>
+                      <td>5</td>
+                      <td>Giấy chứng nhận đủ điều kiện về PCCC</td>
+                      <td>Có</td>
+                      <td><a href="#"><i data-lucide="file-text" class="h-4 w-4"></i>GCN_PCCC.pdf</a></td>
+                      <td>20/05/2026 09:15</td>
+                      <td><span class="file-status invalid">Chưa hợp lệ</span></td>
+                      <td><button><i data-lucide="eye" class="h-4 w-4"></i></button><button><i data-lucide="download"
+                            class="h-4 w-4"></i></button></td>
+                    </tr>
+                    <tr>
+                      <td>6</td>
+                      <td>Giấy tờ khác (nếu có)</td>
+                      <td>Không</td>
+                      <td>-</td>
+                      <td>-</td>
+                      <td>-</td>
+                      <td>-</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </article>
+          </div>
+
+          <aside class="detail-side">
+            <article class="side-card">
+              <h2><i data-lucide="file-check-2" class="h-5 w-5"></i>Thông tin xử lý</h2>
+              <dl class="side-list">
+                <div>
+                  <dt>Trạng thái hiện tại</dt>
+                  <dd><span class="status st-orange">Chờ tiếp nhận</span></dd>
+                </div>
+                <div>
+                  <dt>Ngày nộp</dt>
+                  <dd>20/05/2026 09:15</dd>
+                </div>
+                <div>
+                  <dt>Hạn xử lý</dt>
+                  <dd>04/06/2026 <span class="late-note">(Còn 15 ngày)</span></dd>
+                </div>
+                <div>
+                  <dt>Cán bộ xử lý</dt>
+                  <dd>Chưa phân công</dd>
+                </div>
+                <div>
+                  <dt>Đơn vị xử lý</dt>
+                  <dd>Phòng CS QLHC về TTXH</dd>
+                </div>
+              </dl>
+            </article>
+
+            <article class="side-card">
+              <h2><i data-lucide="file-cog" class="h-5 w-5"></i>Thao tác</h2>
+              <div class="action-stack">
+                <button class="action-btn green" type="button"><i data-lucide="check-square" class="h-4 w-4"></i>Tiếp
+                  nhận hồ sơ</button>
+                <button class="action-btn orange" type="button" data-modal-target="supplementModal"><i data-lucide="circle-alert" class="h-4 w-4"></i>Yêu
+                  cầu bổ sung</button>
+                <button class="action-btn blue" type="button" data-modal-target="transferModal"><i data-lucide="circle-arrow-right"
+                    class="h-4 w-4"></i>Chuyển xử lý</button>
+                <button class="action-btn red" type="button"><i data-lucide="square-x" class="h-4 w-4"></i>Từ chối hồ
+                  sơ</button>
+                <button class="action-btn plain" type="button"><i data-lucide="printer" class="h-4 w-4"></i>In phiếu
+                  tiếp nhận</button>
+              </div>
+            </article>
+
+            <article class="side-card note-card">
+              <h2><i data-lucide="notebook-pen" class="h-5 w-5"></i>Ghi chú</h2>
+              <p>Hồ sơ đang ở trạng thái chờ tiếp nhận.</p>
+              <p>Vui lòng kiểm tra thông tin và thành phần hồ sơ trước khi tiếp nhận.</p>
+            </article>
+          </aside>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div id="transferModal" class="modal-overlay" hidden>
+    <section class="case-modal transfer-modal" role="dialog" aria-modal="true" aria-labelledby="transferTitle">
+      <header class="modal-head">
+        <h2 id="transferTitle">Chuyển xử lý hồ sơ</h2>
+        <button class="modal-close" type="button" data-modal-close aria-label="Đóng">
+          <i data-lucide="x" class="h-5 w-5"></i>
+        </button>
+      </header>
+
+      <div class="modal-body">
+        <div class="modal-info">
+          <i data-lucide="info" class="h-4 w-4"></i>
+          <span>Sau khi chuyển xử lý, hồ sơ sẽ được chuyển đến đơn vị/cán bộ được phân công để tiếp tục xử lý.</span>
+        </div>
+
+        <section class="modal-section">
+          <h3>Thông tin hồ sơ</h3>
+          <dl class="modal-summary-list">
+            <div><dt>Mã hồ sơ</dt><dd class="red-code">HS-2026-00125</dd></div>
+            <div><dt>Tên thủ tục</dt><dd>Cấp mới giấy chứng nhận đủ điều kiện về ANTT</dd></div>
+            <div><dt>Tên cơ sở</dt><dd>Karaoke Hoa Sen</dd></div>
+            <div><dt>Người nộp</dt><dd>Nguyễn Văn B</dd></div>
+          </dl>
+        </section>
+
+        <form class="modal-form">
+          <label class="modal-field">
+            <span>Đơn vị xử lý <b>*</b></span>
+            <span class="modal-select-wrap">
+              <select>
+                <option>Phòng Cảnh sát QLHC về TTXH</option>
+                <option>Công an TP. Ninh Bình</option>
+                <option>Đội QLHC số 1</option>
+              </select>
+              <i data-lucide="chevron-down" class="h-4 w-4"></i>
+            </span>
+          </label>
+
+          <label class="modal-field">
+            <span>Cán bộ xử lý <b>*</b></span>
+            <span class="modal-select-wrap">
+              <select>
+                <option>Trần Thị C</option>
+                <option>Nguyễn Văn A</option>
+                <option>Phạm Thị H</option>
+              </select>
+              <i data-lucide="chevron-down" class="h-4 w-4"></i>
+            </span>
+          </label>
+
+          <label class="modal-field">
+            <span>Hạn xử lý dự kiến <b>*</b></span>
+            <span class="modal-input-wrap">
+              <input type="text" value="04/06/2026">
+              <i data-lucide="calendar-days" class="h-4 w-4"></i>
+            </span>
+          </label>
+
+          <label class="modal-field">
+            <span>Lý do chuyển xử lý <b>*</b></span>
+            <textarea rows="3">Hồ sơ đầy đủ, hợp lệ. Chuyển cán bộ chuyên môn thẩm định và xử lý.</textarea>
+          </label>
+
+          <label class="modal-field">
+            <span>Ghi chú thêm</span>
+            <span class="textarea-count-wrap">
+              <textarea rows="3" placeholder="Nhập ghi chú nếu có..."></textarea>
+              <em>0/500</em>
+            </span>
+          </label>
+        </form>
+      </div>
+
+      <footer class="modal-actions">
+        <button class="modal-cancel" type="button" data-modal-close>Hủy bỏ</button>
+        <button class="modal-submit" type="button" data-modal-submit="transfer">Xác nhận chuyển xử lý</button>
+      </footer>
+    </section>
+  </div>
+
+  <div id="supplementModal" class="modal-overlay" hidden>
+    <section class="case-modal supplement-modal" role="dialog" aria-modal="true" aria-labelledby="supplementTitle">
+      <header class="modal-head">
+        <h2 id="supplementTitle">Yêu cầu bổ sung hồ sơ</h2>
+        <button class="modal-close" type="button" data-modal-close aria-label="Đóng">
+          <i data-lucide="x" class="h-5 w-5"></i>
+        </button>
+      </header>
+
+      <div class="modal-body">
+        <div class="modal-info">
+          <i data-lucide="info" class="h-4 w-4"></i>
+          <span>Hồ sơ sẽ được trả về cho người nộp để bổ sung theo nội dung yêu cầu. Sau khi bổ sung, hồ sơ sẽ được gửi lại để tiếp tục xử lý.</span>
+        </div>
+
+        <form class="modal-form">
+          <div class="supplement-group">
+            <div class="supplement-row">
+              <label><input type="checkbox" checked> Giấy chứng nhận đủ điều kiện về PCCC</label>
+              <span class="pill required-pill">Bắt buộc</span>
+              <span class="issue-text">Thiếu tài liệu</span>
+              <i data-lucide="chevron-up" class="h-4 w-4"></i>
+            </div>
+            <label class="modal-field no-gap">
+              <span>Ghi chú bổ sung <b>*</b></span>
+              <span class="textarea-count-wrap">
+                <textarea rows="4">Đề nghị cơ sở bổ sung Giấy chứng nhận đủ điều kiện về PCCC còn hiệu lực.
+
+Lưu ý: Tài liệu phải rõ nét, đầy đủ trang, đúng định dạng (PDF, dung lượng tối đa 10MB).</textarea>
+                <em>137/1000</em>
+              </span>
+            </label>
+          </div>
+
+          <div class="supplement-group">
+            <div class="supplement-row">
+              <label><input type="checkbox" checked> Giấy tờ chứng minh quyền sử dụng địa điểm</label>
+              <span class="pill required-pill">Bắt buộc</span>
+              <span class="issue-text">Sai/không rõ thông tin</span>
+              <i data-lucide="chevron-up" class="h-4 w-4"></i>
+            </div>
+            <label class="modal-field no-gap">
+              <span>Ghi chú bổ sung <b>*</b></span>
+              <span class="textarea-count-wrap">
+                <textarea rows="5">Giấy tờ chứng minh quyền sử dụng địa điểm chưa rõ thời hạn và thông tin chủ sở hữu. Đề nghị cơ sở cung cấp Hợp đồng thuê/mượn hoặc Giấy chứng nhận quyền sử dụng địa điểm có thời hạn tối thiểu 12 tháng kể từ ngày nộp hồ sơ, thể hiện đầy đủ thông tin của bên cho thuê và bên thuê.
+
+Tài liệu cần rõ ràng, không bị mờ, cắt xén, đảm bảo xác nhận của cơ quan có thẩm quyền (nếu là bản sao).</textarea>
+                <em>426/1000</em>
+              </span>
+            </label>
+          </div>
+
+          <div class="supplement-row collapsed">
+            <label><input type="checkbox"> Bản khai thông tin cơ sở kinh doanh</label>
+            <span class="pill required-pill">Bắt buộc</span>
+            <span class="issue-text">Thông tin chưa đầy đủ</span>
+            <i data-lucide="chevron-down" class="h-4 w-4"></i>
+          </div>
+
+          <label class="modal-field date-field">
+            <span>Thời hạn bổ sung <b>*</b></span>
+            <span class="modal-input-wrap">
+              <input type="text" value="27/05/2026">
+              <i data-lucide="calendar-days" class="h-4 w-4"></i>
+            </span>
+          </label>
+
+          <label class="modal-field">
+            <span>Ghi chú chung (nếu có)</span>
+            <span class="textarea-count-wrap">
+              <textarea rows="3" placeholder="Nhập ghi chú chung (nếu có)..."></textarea>
+              <em>0/1000</em>
+            </span>
+          </label>
+        </form>
+      </div>
+
+      <footer class="modal-actions">
+        <button class="modal-cancel" type="button" data-modal-close>Hủy bỏ</button>
+        <button class="modal-submit" type="button" data-modal-submit="supplement">Gửi yêu cầu bổ sung</button>
+      </footer>
+    </section>
+  </div>
+
+  <script src="../scripts/chi-tiet-ho-so.js"></script>
+</body>
+
+</html>
