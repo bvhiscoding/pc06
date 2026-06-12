@@ -159,7 +159,7 @@
           </div>
         </section>
 
-        <section class="gis-filter">
+        <section class="gis-filter legacy-filter">
           <label>
             <span>Địa bàn</span>
             <select>
@@ -217,62 +217,145 @@
               </div>
             </div>
 
+            <div class="map-search-bar" role="search">
+              <span class="map-search-input">
+                <i data-lucide="search" class="h-5 w-5"></i>
+                <input id="facilitySearchFloating" type="text" placeholder="Tìm kiếm cơ sở, địa chỉ, loại hình..." />
+              </span>
+              <button id="openFilterDrawerBtn" class="map-filter-btn" type="button">
+                <i data-lucide="sliders-horizontal" class="h-5 w-5"></i>
+                Bộ lọc
+              </button>
+              <label class="risk-toggle">
+                <input id="riskHeatmapToggle" type="checkbox" />
+                <span>Bản đồ rủi ro</span>
+              </label>
+            </div>
+
             <div class="map-toolbar">
               <button type="button" data-map-control="zoom-in"><i data-lucide="plus" class="h-6 w-6"></i></button>
               <button type="button" data-map-control="zoom-out"><i data-lucide="minus" class="h-6 w-6"></i></button>
               <button type="button" data-map-control="fit"><i data-lucide="scan" class="h-5 w-5"></i></button>
               <button type="button" data-map-control="locate"><i data-lucide="crosshair" class="h-5 w-5"></i></button>
-              <button type="button" data-map-control="layers"><i data-lucide="layers" class="h-5 w-5"></i></button>
+              <button type="button" data-map-control="radius" title="Khoanh vùng bán kính"><i data-lucide="circle-dot" class="h-5 w-5"></i></button>
+              <button type="button" data-map-control="polygon" title="Vẽ đa giác"><i data-lucide="pentagon" class="h-5 w-5"></i></button>
+              <button type="button" data-map-control="clear-region" title="Xóa vùng lọc"><i data-lucide="eraser" class="h-5 w-5"></i></button>
             </div>
 
             <div class="map-legend">
-              <h2>Chú thích trạng thái</h2>
-              <div><span class="marker-dot green"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Đang hoạt động
+              <button id="legendToggle" class="legend-toggle" type="button" aria-expanded="false">
+                <i data-lucide="eye" class="h-4 w-4"></i>
+                Chú thích
+              </button>
+              <div class="legend-content">
+                <h2>Chú thích trạng thái</h2>
+                <div><span class="marker-dot green"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Đang hoạt động
+                </div>
+                <div><span class="marker-dot yellow"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Tạm dừng hoạt
+                  động</div>
+                <div><span class="marker-dot gray"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Ngừng hoạt động
+                </div>
+                <div><span class="marker-dot orange"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Giấy phép sắp
+                  hết hạn</div>
+                <div><span class="marker-dot red"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Giấy phép hết hạn
+                  / Bị thu hồi</div>
+                <div><span class="marker-dot purple"><i data-lucide="triangle-alert" class="h-3.5 w-3.5"></i></span>Có vi
+                  phạm / Rủi ro cao</div>
               </div>
-              <div><span class="marker-dot yellow"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Tạm dừng hoạt
-                động</div>
-              <div><span class="marker-dot gray"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Ngừng hoạt động
-              </div>
-              <div><span class="marker-dot orange"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Giấy phép sắp
-                hết hạn</div>
-              <div><span class="marker-dot red"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Giấy phép hết hạn
-                / Bị thu hồi</div>
-              <div><span class="marker-dot purple"><i data-lucide="triangle-alert" class="h-3.5 w-3.5"></i></span>Có vi
-                phạm / Rủi ro cao</div>
             </div>
 
-            <article id="facilityPopup" class="facility-popup">
+            <article id="facilityPopup" class="facility-popup facility-tooltip" hidden>
               <button class="popup-close" type="button" aria-label="Đóng"><i data-lucide="x"
-                  class="h-5 w-5"></i></button>
+                  class="h-4 w-4"></i></button>
               <h2>Karaoke Hoa Sen</h2>
               <span class="popup-status">Đang hoạt động</span>
-              <dl>
-                <div>
-                  <dt><i data-lucide="briefcase-business" class="h-4 w-4"></i>Loại hình:</dt>
-                  <dd>Karaoke</dd>
-                </div>
-                <div>
-                  <dt><i data-lucide="map-pin" class="h-4 w-4"></i>Địa chỉ:</dt>
-                  <dd>123 Trần Hưng Đạo, P. Đông Thành,<br>TP. Ninh Bình, Ninh Bình</dd>
-                </div>
-                <div>
-                  <dt><i data-lucide="shield-check" class="h-4 w-4"></i>Giấy phép ANTT:</dt>
-                  <dd class="green-text">Còn hiệu lực</dd>
-                </div>
-                <div>
-                  <dt><i data-lucide="user-round" class="h-4 w-4"></i>Cán bộ phụ trách:</dt>
-                  <dd>Nguyễn Văn B</dd>
-                </div>
-                <div>
-                  <dt><i data-lucide="phone" class="h-4 w-4"></i>SĐT:</dt>
-                  <dd>0912 345 678</dd>
-                </div>
-              </dl>
-              <a href="ChiTietHoSo.html" class="popup-detail">Xem chi tiết</a>
+              <p class="tooltip-type">Karaoke</p>
+              <button id="openFacilitySheetBtn" class="popup-detail" type="button">Xem chi tiết</button>
             </article>
+
+            <div id="gisFooterStats" class="gis-footer-stats" aria-label="Thống kê nhanh trên bản đồ"></div>
+
+            <aside id="facilityDetailSheet" class="facility-detail-sheet" aria-hidden="true">
+              <div class="detail-sheet-head">
+                <div>
+                  <span class="sheet-kicker">Chi tiết cơ sở</span>
+                  <h2 id="sheetFacilityName">Karaoke Hoa Sen</h2>
+                </div>
+                <button id="closeFacilitySheetBtn" type="button" aria-label="Đóng chi tiết">
+                  <i data-lucide="x" class="h-5 w-5"></i>
+                </button>
+              </div>
+              <div id="facilityDetailContent" class="facility-detail-content"></div>
+            </aside>
+
+            <aside id="filterDrawer" class="filter-drawer" aria-hidden="true">
+              <div class="drawer-head">
+                <div>
+                  <span>Bộ lọc nâng cao</span>
+                  <strong>Lọc dữ liệu bản đồ</strong>
+                </div>
+                <button id="closeFilterDrawerBtn" type="button" aria-label="Đóng bộ lọc">
+                  <i data-lucide="x" class="h-5 w-5"></i>
+                </button>
+              </div>
+              <div class="drawer-body">
+                <label>
+                  <span>Địa bàn</span>
+                  <select id="filterWard">
+                    <option value="">Tất cả</option>
+                    <option value="P. Đông Thành">P. Đông Thành</option>
+                    <option value="P. Nam Thành">P. Nam Thành</option>
+                    <option value="P. Vân Giang">P. Vân Giang</option>
+                    <option value="P. Nam Bình">P. Nam Bình</option>
+                    <option value="P. Tân Thành">P. Tân Thành</option>
+                  </select>
+                </label>
+                <label>
+                  <span>Loại hình kinh doanh</span>
+                  <select id="filterType">
+                    <option value="">Tất cả</option>
+                    <option value="Karaoke">Karaoke</option>
+                    <option value="Nhà nghỉ">Nhà nghỉ</option>
+                    <option value="Khách sạn">Khách sạn</option>
+                    <option value="Bar">Bar</option>
+                    <option value="Massage">Massage</option>
+                    <option value="Cầm đồ">Cầm đồ</option>
+                  </select>
+                </label>
+                <label>
+                  <span>Trạng thái cơ sở</span>
+                  <select id="filterStatus">
+                    <option value="">Tất cả</option>
+                    <option value="green">Đang hoạt động</option>
+                    <option value="yellow">Tạm dừng</option>
+                    <option value="gray">Ngừng hoạt động</option>
+                    <option value="purple">Có vi phạm / Rủi ro cao</option>
+                  </select>
+                </label>
+                <label>
+                  <span>Trạng thái giấy phép</span>
+                  <select id="filterLicense">
+                    <option value="">Tất cả</option>
+                    <option value="Còn hiệu lực">Còn hiệu lực</option>
+                    <option value="Sắp hết hạn">Sắp hết hạn</option>
+                    <option value="Hết hạn / Bị thu hồi">Hết hạn / Bị thu hồi</option>
+                  </select>
+                </label>
+              </div>
+              <div class="drawer-actions">
+                <button id="resetFilterBtn" class="drawer-secondary" type="button">Đặt lại</button>
+                <button id="applyFilterBtn" class="drawer-primary" type="button">Áp dụng</button>
+              </div>
+            </aside>
+
+            <div id="mapOverlayBackdrop" class="map-overlay-backdrop" hidden></div>
           </div>
 
           <aside class="gis-side">
+            <button id="floatingPanelToggle" class="floating-panel-toggle" type="button" aria-expanded="true">
+              <i data-lucide="panel-right-close" class="h-5 w-5"></i>
+              <span>Thu gọn</span>
+            </button>
             <section class="gis-side-card">
               <div class="side-title">
                 <h2>Tổng quan trên bản đồ</h2>
@@ -306,10 +389,10 @@
 
             <section class="gis-side-card layer-card">
               <h2>Lớp hiển thị trên bản đồ</h2>
-              <label><input type="checkbox" checked> Hiển thị nhãn cơ sở</label>
-              <label><input type="checkbox" checked> Hiển thị ranh giới hành chính</label>
-              <label><input type="checkbox" checked> Hiển thị giao thông</label>
-              <label><input type="checkbox"> Hiển thị sông, hồ</label>
+              <label><input type="checkbox" data-map-layer="facilityLabels" checked> Hiển thị nhãn cơ sở</label>
+              <label><input type="checkbox" data-map-layer="administrative" checked> Hiển thị ranh giới hành chính</label>
+              <label><input type="checkbox" data-map-layer="roads" checked> Hiển thị giao thông</label>
+              <label><input type="checkbox" data-map-layer="water"> Hiển thị sông, hồ</label>
             </section>
           </aside>
         </section>
@@ -317,9 +400,11 @@
     </main>
   </div>
 
+  <script src="https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js"></script>
+  <script src="https://unpkg.com/deck.gl@latest/dist.min.js"></script>
   <script src="../scripts/ban-do-so-gis.js"></script>
   <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA9oDzJjHCZH4iVCowyZ-UR9eG6X4qFpGY&callback=initMap&libraries=places"></script>
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA9oDzJjHCZH4iVCowyZ-UR9eG6X4qFpGY&callback=initMap&libraries=places,geometry"></script>
 </body>
 
 </html>
