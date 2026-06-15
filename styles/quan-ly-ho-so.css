@@ -102,6 +102,43 @@
       transition: background 160ms ease, box-shadow 160ms ease;
     }
 
+    .topbar-search {
+      display: flex;
+      width: min(50vw, 600px);
+      height: 46px;
+      align-items: center;
+      gap: 9px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.13);
+      padding: 0 12px;
+      color: #fff;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+
+    @media (min-width: 1200px) {
+      .topbar-search {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
+
+    .topbar-search input {
+      min-width: 0;
+      flex: 1;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .topbar-search input::placeholder {
+      color: rgba(255, 255, 255, 0.78);
+    }
+
     .topbar-icon-btn {
       display: grid;
       width: 44px;
@@ -608,6 +645,10 @@
       }
 
       .brand-copy {
+        display: none;
+      }
+
+      .topbar-search {
         display: none;
       }
 

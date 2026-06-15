@@ -289,7 +289,7 @@
 }
 
 .facility-popup.anchor-right {
-  left: calc(50% + 30px);
+  left: calc(50% + 20px);
   top: 50%;
   transform: translateY(-50%);
 }
@@ -304,7 +304,7 @@
 }
 
 .facility-popup.anchor-left {
-  right: calc(50% + 30px);
+  right: calc(50% + 20px);
   top: 50%;
   transform: translateY(-50%);
 }
@@ -375,11 +375,21 @@
 
 .facility-popup dl div {
   display: grid;
-  grid-template-columns: 116px 1fr;
+  grid-template-columns: 140px 1fr;
   gap: 7px;
 }
 
-.facility-popup dt,
+.facility-popup dt {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  margin: 0;
+  color: #1f2937;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
 .facility-popup dd {
   display: flex;
   align-items: flex-start;
@@ -798,9 +808,7 @@
   display: grid;
 }
 
-.gis-side-card:first-of-type {
-  display: none;
-}
+
 
 .gis-footer-stats {
   position: absolute;
@@ -1027,7 +1035,6 @@
 
 .nearby-item.is-highlighted {
   background: #fff7f7;
-  box-shadow: inset 3px 0 0 #d00000;
 }
 
 .risk-ping {
@@ -1355,4 +1362,8 @@
   #map-view .map-layer-panel {
     width: 100%;
   }
+}
+
+#mapLayerPanel[hidden] {
+  display: none !important;
 }

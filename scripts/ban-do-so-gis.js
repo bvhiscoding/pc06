@@ -99,6 +99,156 @@ const facilities = [
     lastInspection: '05/06/2026',
     history: ['05/06/2026: Đưa vào diện theo dõi rủi ro cao.', '29/05/2026: Có phản ánh liên quan tài sản cầm cố.'],
     position: { lat: 20.2268, lng: 105.9797 }
+  },
+  {
+    id: 'ca-tinh-ninh-binh',
+    name: 'Công an tỉnh Ninh Bình',
+    address: 'Đường Đinh Tất Miễn, Hoa Lư',
+    ward: 'Hoa Lư',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Trụ sở Công an',
+    officer: 'Trực chỉ huy',
+    phone: '113',
+    riskScore: 0,
+    lastInspection: 'N/A',
+    history: ['Trụ sở Công an tỉnh Ninh Bình.'],
+    position: { lat: 20.2479, lng: 105.9747 }
+  },
+  {
+    id: 'ca-tp-ninh-binh-cu',
+    name: 'Công an TP Ninh Bình cũ',
+    address: '12 Trần Nguyên Đán',
+    ward: 'P. Đông Thành',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Trụ sở Công an',
+    officer: 'Trực ban',
+    phone: '0229 3871 092',
+    riskScore: 0,
+    lastInspection: 'N/A',
+    history: ['Trụ sở Công an TP Ninh Bình (cơ sở cũ).'],
+    position: { lat: 20.2534, lng: 105.9741 }
+  },
+  {
+    id: 'ca-p-hoa-lu',
+    name: 'Công an phường Hoa Lư',
+    address: 'Phường Hoa Lư',
+    ward: 'P. Hoa Lư',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Trụ sở Công an',
+    officer: 'Trực ban',
+    phone: '0229 3871 113',
+    riskScore: 0,
+    lastInspection: 'N/A',
+    history: ['Công an phường Hoa Lư.'],
+    position: { lat: 20.2481, lng: 105.9750 }
+  },
+  {
+    id: 'ca-p-nam-dinh',
+    name: 'Công an phường Nam Định',
+    address: 'Phường Nam Định',
+    ward: 'P. Nam Định',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Trụ sở Công an',
+    officer: 'Trực ban',
+    phone: '113',
+    riskScore: 0,
+    lastInspection: 'N/A',
+    history: ['Trụ sở Công an phường Nam Định.'],
+    position: { lat: 20.4388, lng: 106.1627 }
+  },
+  {
+    id: 'ca-p-ha-nam',
+    name: 'Công an phường Hà Nam',
+    address: 'Phường Hà Nam',
+    ward: 'P. Hà Nam',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Trụ sở Công an',
+    officer: 'Trực ban',
+    phone: '113',
+    riskScore: 0,
+    lastInspection: 'N/A',
+    history: ['Trụ sở Công an phường Hà Nam.'],
+    position: { lat: 20.5414, lng: 105.9135 }
+  },
+  {
+    id: 'ca-p-kim-bang',
+    name: 'Công an phường Kim Bảng',
+    address: 'Phường Kim Bảng',
+    ward: 'P. Kim Bảng',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Trụ sở Công an',
+    officer: 'Trực ban',
+    phone: '113',
+    riskScore: 0,
+    lastInspection: 'N/A',
+    history: ['Trụ sở Công an phường Kim Bảng.'],
+    position: { lat: 20.5846, lng: 105.8492 }
+  },
+  {
+    id: 'ca-p-nguyen-uy',
+    name: 'Công an phường Nguyễn Úy',
+    address: 'Phường Nguyễn Úy',
+    ward: 'P. Nguyễn Úy',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Trụ sở Công an',
+    officer: 'Trực ban',
+    phone: '113',
+    riskScore: 0,
+    lastInspection: 'N/A',
+    history: ['Trụ sở Công an phường Nguyễn Úy.'],
+    position: { lat: 20.5563, lng: 105.8638 }
+  },
+  {
+    id: 'ca-x-thanh-binh',
+    name: 'Công an xã Thanh Bình',
+    address: 'Xã Thanh Bình',
+    ward: 'X. Thanh Bình',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Trụ sở Công an',
+    officer: 'Trực ban',
+    phone: '113',
+    riskScore: 0,
+    lastInspection: 'N/A',
+    history: ['Trụ sở Công an xã Thanh Bình.'],
+    position: { lat: 20.5034, lng: 105.9284 }
+  },
+  {
+    id: 'ca-x-nam-ly',
+    name: 'Công an xã Nam Lý',
+    address: 'Xã Nam Lý',
+    ward: 'X. Nam Lý',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Trụ sở Công an',
+    officer: 'Trực ban',
+    phone: '113',
+    riskScore: 0,
+    lastInspection: 'N/A',
+    history: ['Trụ sở Công an xã Nam Lý.'],
+    position: { lat: 20.4852, lng: 106.0236 }
+  },
+  {
+    id: 'ca-x-binh-an',
+    name: 'Công an xã Bình An',
+    address: 'Xã Bình An',
+    ward: 'X. Bình An',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Trụ sở Công an',
+    officer: 'Trực ban',
+    phone: '113',
+    riskScore: 0,
+    lastInspection: 'N/A',
+    history: ['Trụ sở Công an xã Bình An.'],
+    position: { lat: 20.5147, lng: 105.9449 }
   }
 ];
 
@@ -117,7 +267,8 @@ const typeIconUrl = {
   'Nhà nghỉ': '../iconHKD/hotel.png',
   Massage: '../iconHKD/facial-treatment.png',
   Bar: '../iconHKD/bar.png',
-  'Cầm đồ': '../iconHKD/assets.png'
+  'Cầm đồ': '../iconHKD/assets.png',
+  'Trụ sở Công an': '../iconHKD/LogoCongAn-Map.png'
 };
 
 const els = {
@@ -139,7 +290,7 @@ const els = {
   gisLayout: document.querySelector('.gis-layout'),
   gisSide: document.querySelector('.gis-side'),
   floatingPanelToggle: document.querySelector('#floatingPanelToggle'),
-  footerStats: document.querySelector('#gisFooterStats'),
+  sideStats: document.querySelector('.gis-side-card .stat-grid'),
   searchFloating: document.querySelector('#facilitySearchFloating'),
   legacySearch: document.querySelector('#facilitySearch'),
   openFilterDrawerBtn: document.querySelector('#openFilterDrawerBtn'),
@@ -163,7 +314,7 @@ const state = {
   searchQuery: '',
   filters: { ward: '', type: '', status: '', license: '' },
   layers: {
-    facilityLabels: true,
+    facilityLabels: false,
     administrative: true,
     roads: true,
     water: false
@@ -174,7 +325,8 @@ const state = {
   drawingMode: null,
   radiusCenter: null,
   polygonPath: [],
-  activeRegion: null
+  activeRegion: null,
+  lockToCenter: false
 };
 
 let map;
@@ -410,7 +562,8 @@ function clearRiskPings() {
 
 function renderNearbyList(items = getFilteredFacilities()) {
   if (!els.nearbyList) return;
-  els.nearbyList.innerHTML = items.map((item) => {
+  const displayedItems = items.slice(0, 6);
+  els.nearbyList.innerHTML = displayedItems.map((item) => {
     const meta = statusMeta[item.status] || statusMeta.green;
     return `
       <button class="nearby-item" type="button" data-facility-id="${escapeHTML(item.id)}">
@@ -426,18 +579,19 @@ function renderNearbyList(items = getFilteredFacilities()) {
 }
 
 function renderStats(items = getFilteredFacilities()) {
-  if (!els.footerStats) return;
+  if (!els.sideStats) return;
   const stats = Object.keys(statusMeta).map((status) => ({
     status,
     ...statusMeta[status],
     count: items.filter((item) => item.status === status).length
   })).filter((item) => item.count > 0 || ['green', 'yellow', 'red', 'purple'].includes(item.status));
 
-  els.footerStats.innerHTML = stats.map((item) => `
-    <span class="footer-stat-item">
-      <span class="marker-dot ${escapeHTML(item.status)}"><i data-lucide="${escapeHTML(item.icon)}" class="h-3.5 w-3.5"></i></span>
-      ${escapeHTML(item.label)}: <strong>${item.count}</strong>
-    </span>
+  els.sideStats.innerHTML = stats.map((item) => `
+    <div>
+      <span class="marker-dot ${escapeHTML(item.status)}"><i data-lucide="${escapeHTML(item.icon)}" class="h-4 w-4"></i></span>
+      <strong>${item.count}</strong>
+      <em>${escapeHTML(item.label)}</em>
+    </div>
   `).join('');
 }
 
@@ -513,6 +667,7 @@ function openFacilityTooltip(facility) {
   els.facilityPopup.querySelector('.popup-status').style.color = meta.color;
   els.facilityPopup.querySelector('.tooltip-type').textContent = `${facility.type} - ${facility.licenseStatus}`;
   els.facilityPopup.hidden = false;
+  state.lockToCenter = true;
   positionFacilityPopup(facility.position);
   highlightFacility(facility.id, true, true);
 
@@ -531,16 +686,24 @@ function hideFacilityTooltip() {
 }
 
 function positionFacilityPopup(position) {
-  if (!projectionOverlay?.getProjection || !map) return;
-  const projection = projectionOverlay.getProjection();
-  if (!projection) return;
-
-  const point = projection.fromLatLngToContainerPixel(new google.maps.LatLng(position.lat, position.lng));
   const shellRect = els.mapShell.getBoundingClientRect();
   const width = 260;
   const height = 132;
-  const left = Math.max(16, Math.min(shellRect.width - width - 16, point.x - width / 2));
-  const top = Math.max(70, Math.min(shellRect.height - height - 74, point.y - height - 16));
+
+  let left, top;
+
+  if (state.lockToCenter) {
+    left = shellRect.width / 2 - width / 2;
+    top = shellRect.height / 2 - height - 16;
+  } else {
+    if (!projectionOverlay?.getProjection || !map) return;
+    const projection = projectionOverlay.getProjection();
+    if (!projection) return;
+
+    const point = projection.fromLatLngToContainerPixel(new google.maps.LatLng(position.lat, position.lng));
+    left = Math.max(16, Math.min(shellRect.width - width - 16, point.x - width / 2));
+    top = Math.max(70, Math.min(shellRect.height - height - 74, point.y - height - 16));
+  }
 
   els.facilityPopup.style.left = `${left}px`;
   els.facilityPopup.style.top = `${top}px`;
@@ -662,10 +825,12 @@ function setPanelCollapsed(collapsed) {
   state.isPanelCollapsed = collapsed;
   els.gisSide.classList.toggle('is-collapsed', collapsed);
   els.gisLayout.classList.toggle('panel-collapsed', collapsed);
-  els.floatingPanelToggle.setAttribute('aria-expanded', String(!collapsed));
-  els.floatingPanelToggle.innerHTML = collapsed
-    ? '<i data-lucide="panel-right-open" class="h-5 w-5"></i><span>Mở rộng</span>'
-    : '<i data-lucide="panel-right-close" class="h-5 w-5"></i><span>Thu gọn</span>';
+  if (els.floatingPanelToggle) {
+    els.floatingPanelToggle.setAttribute('aria-expanded', String(!collapsed));
+    els.floatingPanelToggle.innerHTML = collapsed
+      ? '<i data-lucide="panel-right-open" class="h-5 w-5"></i><span>Mở rộng</span>'
+      : '<i data-lucide="panel-right-close" class="h-5 w-5"></i><span>Thu gọn</span>';
+  }
   lucide.createIcons();
 }
 
@@ -871,6 +1036,21 @@ window.initMap = function initMap() {
     if (facility && !els.facilityPopup.hidden) {
       positionFacilityPopup(facility.position);
     }
+  });
+  map.addListener('idle', () => {
+    if (state.lockToCenter) {
+      state.lockToCenter = false;
+      const facility = findFacility(state.selectedFacilityId);
+      if (facility && !els.facilityPopup.hidden) {
+        positionFacilityPopup(facility.position);
+      }
+    }
+  });
+  map.addListener('dragstart', () => {
+    state.lockToCenter = false;
+  });
+  map.addListener('zoom_changed', () => {
+    state.lockToCenter = false;
   });
 
   renderMapData();

@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Xử lý vi phạm</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/quan-ly-ho-so.css">
+  <link rel="stylesheet" href="../styles/admin-danh-sach.css">
+  <link rel="stylesheet" href="../styles/module-pages.css">
+</head>
+
+<body class="font-sans antialiased">
+  <div class="desktop-shell min-h-screen">
+    <header
+      class="app-header fixed left-0 right-0 top-0 z-30 flex h-[80px] items-center justify-between px-6 text-white">
+      <div class="flex h-full items-center">
+        <img class="crest" src="../public/logocongan.png" alt="Logo Bộ Công an" />
+        <div class="brand-copy ml-4">
+          <div class="text-[22px] font-semibold leading-tight tracking-[0]">CÔNG AN TỈNH NINH BÌNH</div>
+          <div class="mt-1 text-[15px] font-medium tracking-[0] text-white/95">HỆ THỐNG QUẢN LÝ CƠ SỞ KINH DOANH CÓ
+            ĐIỀU KIỆN VỀ ANTT</div>
+        </div>
+      </div>
+
+      <div class="topbar-actions flex h-full items-center gap-6">
+        <div class="topbar-menu-wrap">
+          <button id="notificationToggle" class="topbar-icon-btn relative" type="button" aria-label="Thông báo"
+            aria-expanded="false">
+            <i data-lucide="bell" class="h-[26px] w-[26px]"></i>
+            <span id="notificationBadge"
+            class="absolute right-0 top-1 grid h-5 min-w-5 place-items-center rounded-full bg-[#ff1e1e] px-1 text-[11px] font-semibold leading-none shadow">5</span>
+          </button>
+
+          <div id="notificationMenu" class="topbar-dropdown notification-dropdown" hidden>
+            <div class="dropdown-head">
+              <span>Thông báo</span>
+              <button id="markAllReadBtn" type="button">Đánh dấu đã đọc</button>
+            </div>
+            <div id="notificationList" class="notification-list"></div>
+          </div>
+        </div>
+
+        <div class="topbar-menu-wrap">
+          <button id="userMenuToggle" class="user-menu-btn" type="button" aria-label="Mở menu tài khoản"
+            aria-expanded="false">
+            <div class="grid h-[46px] w-[46px] place-items-center rounded-full bg-white text-[#cf0000] shadow-sm">
+              <i data-lucide="user-round" class="h-7 w-7 fill-[#cf0000]/15"></i>
+            </div>
+            <div class="hidden text-left sm:block">
+              <div class="text-[15px] font-semibold leading-5">Nguyễn Văn A</div>
+              <div class="text-[13px] font-medium text-white/92">Phòng CS QLHC về TTXH</div>
+            </div>
+            <i data-lucide="chevron-down" class="user-chevron h-5 w-5 text-white"></i>
+          </button>
+
+          <div id="userMenu" class="topbar-dropdown user-dropdown" hidden>
+            <div class="user-card">
+              <div class="grid h-11 w-11 place-items-center rounded-full bg-[#fff2f2] text-[#cf0000]">
+                <i data-lucide="user-round" class="h-6 w-6"></i>
+              </div>
+              <div>
+                <div class="user-name">Nguyễn Văn A</div>
+                <div class="user-role">Phòng CS QLHC về TTXH</div>
+              </div>
+            </div>
+            <button class="dropdown-action" type="button" data-user-action="profile">
+              <i data-lucide="id-card" class="h-4 w-4"></i>
+              Thông tin tài khoản
+            </button>
+            <button class="dropdown-action" type="button" data-user-action="settings">
+              <i data-lucide="settings" class="h-4 w-4"></i>
+              Cài đặt hiển thị
+            </button>
+            <a class="dropdown-action danger" href="DangNhap.html">
+              <i data-lucide="log-out" class="h-4 w-4"></i>
+              Đăng xuất
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <aside class="sidebar fixed bottom-0 left-0 top-[80px] z-20 px-2 text-white">
+      <div class="sidebar-scroll">
+        <div class="nav-section mt-0">Tổng quan</div>
+        <a href="#" class="nav-item mt-2">
+          <i data-lucide="house"></i>
+          <span class="nav-copy">Dashboard</span>
+        </a>
+
+        <div class="nav-section">Giám sát địa bàn</div>
+        <a href="BanDoSoGis.html" class="nav-item mt-2">
+          <i data-lucide="map-pin"></i>
+          <span class="nav-copy">Bản đồ số GIS</span>
+        </a>
+
+        <div class="nav-section">Nghiệp vụ</div>
+        <a href="QuanLyHoSo.html" class="nav-item mt-2">
+          <i data-lucide="file-text"></i>
+          <span class="nav-copy">Quản lý hồ sơ</span>
+        </a>
+        <a href="CoSoDuLieuCSKD.html" class="nav-item">
+          <i data-lucide="database"></i>
+          <span class="nav-copy">Cơ sở dữ liệu CSKD-ANTT</span>
+        </a>
+        <a href="KiemTraCoSo.html" class="nav-item">
+          <i data-lucide="clipboard-check"></i>
+          <span class="nav-copy">Kiểm tra cơ sở</span>
+        </a>
+        <a href="XuLyViPham.html" class="nav-item active">
+          <i data-lucide="octagon-alert"></i>
+          <span class="nav-copy">Vi phạm / Xử lý vi phạm</span>
+        </a>
+        <a href="QuanLyPhanAnh.html" class="nav-item">
+          <i data-lucide="message-square-warning"></i>
+          <span class="nav-copy">Phản ánh kiến nghị</span>
+        </a>
+
+        <div class="nav-section">Báo cáo</div>
+        <a href="BaoCao-ThongKe.html" class="nav-item mt-2"><i data-lucide="chart-column-big"></i>
+          <span class="nav-copy">Báo cáo - thống kê</span></a>
+
+        <div class="nav-section">Cấu hình</div>
+        <a href="DanhMuc.html" class="nav-item mt-2"><i data-lucide="folder"></i>
+          <span class="nav-copy">Danh mục dùng chung</span>
+          <i data-lucide="chevron-down" class="ml-auto h-4 w-4 nav-copy"></i></a>
+        <a href="#" class="nav-item">
+          <i data-lucide="settings"></i>
+          <span class="nav-copy">Quản trị hệ thống</span>
+          <i data-lucide="chevron-down" class="ml-auto h-4 w-4 nav-copy"></i>
+        </a>
+      </div>
+
+      <div class="sidebar-action">
+        <button id="sidebarToggle" class="sidebar-toggle" type="button" aria-label="Thu gọn menu" aria-expanded="true">
+          <i data-lucide="chevron-left" class="toggle-icon"></i>
+          <span class="collapse-label">Thu gọn</span>
+        </button>
+      </div>
+    </aside>
+
+    <main class="content min-h-screen pt-[80px]">
+      <div class="module-page px-6 pb-7 pt-6 lg:px-7">
+        <nav class="module-breadcrumb" aria-label="Breadcrumb">
+          <span>Trang chủ</span>
+          <i data-lucide="chevron-right" class="h-4 w-4"></i>
+          <span>Vi phạm / Xử lý vi phạm</span>
+          <i data-lucide="chevron-right" class="h-4 w-4"></i>
+          <span>Danh sách vi phạm</span>
+        </nav>
+
+        <section class="module-toolbar">
+          <div class="module-title">
+            <h1>Danh sách vi phạm</h1>
+            <div class="module-total">Tổng số: <strong id="moduleTotal">128 vi phạm</strong></div>
+          </div>
+          <div class="module-actions">
+            <button class="module-action-btn module-action-secondary" type="button" data-reconcile-open>
+              <i data-lucide="scan-search" class="h-4 w-4"></i>
+              Đối soát nghi vấn
+            </button>
+            <button class="module-action-btn module-action-secondary" type="button" data-module-action="Xuất Excel danh sách vi phạm">
+              <i data-lucide="download" class="h-4 w-4"></i>
+              Xuất Excel
+            </button>
+            <button class="module-action-btn module-action-primary" type="button" data-route="XuLyViPham-ThemViPham.html">
+              <i data-lucide="plus" class="h-4 w-4"></i>
+              Thêm vi phạm
+            </button>
+          </div>
+        </section>
+
+        <section id="moduleFilter" class="module-filter violation" aria-label="Bộ lọc vi phạm">
+          <label class="filter-field">
+            <span>Từ khóa</span>
+            <span class="field-wrap block">
+              <input class="field" type="text" data-filter="query" placeholder="Tìm theo mã vi phạm, tên cơ sở..." />
+              <i data-lucide="search" class="field-icon"></i>
+            </span>
+          </label>
+          <label class="filter-field">
+            <span>Mức độ vi phạm</span>
+            <span class="field-wrap block">
+              <select class="field appearance-none font-medium" data-filter="severity" data-all-label="Chọn mức độ"></select>
+              <i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>
+            </span>
+          </label>
+          <label class="filter-field">
+            <span>Trạng thái xử lý</span>
+            <span class="field-wrap block">
+              <select class="field appearance-none font-medium" data-filter="status" data-all-label="Chọn trạng thái"></select>
+              <i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>
+            </span>
+          </label>
+          <label class="filter-field">
+            <span>Đơn vị/Đội xử lý</span>
+            <span class="field-wrap block">
+              <select class="field appearance-none font-medium" data-filter="unit" data-all-label="Chọn đơn vị"></select>
+              <i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>
+            </span>
+          </label>
+          <label class="filter-field">
+            <span>Từ ngày</span>
+            <span class="field-wrap block">
+              <input class="field" type="date" data-filter="dateFrom" />
+              <i data-lucide="calendar-days" class="field-icon h-4 w-4"></i>
+            </span>
+          </label>
+          <label class="filter-field">
+            <span>Đến ngày</span>
+            <span class="field-wrap block">
+              <input class="field" type="date" data-filter="dateTo" />
+              <i data-lucide="calendar-days" class="field-icon h-4 w-4"></i>
+            </span>
+          </label>
+          <div class="filter-actions">
+            <button id="resetBtn" class="filter-btn filter-reset" type="button">Đặt lại</button>
+            <button id="searchBtn" class="filter-btn filter-submit" type="button">
+              <i data-lucide="search" class="h-4 w-4"></i>
+              Tìm kiếm
+            </button>
+          </div>
+        </section>
+
+        <section class="module-table-card">
+          <div class="module-table-scroll">
+            <table class="module-table wide">
+              <thead>
+                <tr>
+                  <th class="center">STT</th>
+                  <th>Mã vi phạm</th>
+                  <th>Cơ sở liên quan</th>
+                  <th>Loại vi phạm</th>
+                  <th>Mức độ</th>
+                  <th>Ngày phát hiện</th>
+                  <th class="center">Trạng thái xử lý</th>
+                  <th>Hạn khắc phục</th>
+                  <th>Đơn vị/Đội xử lý</th>
+                  <th class="center">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="moduleTableBody"></tbody>
+            </table>
+          </div>
+          <div class="module-pagination">
+            <div class="page-size-control">
+              <span>Hiển thị</span>
+              <select id="pageSizeSelect" class="field appearance-none">
+                <option value="10" selected>10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+              </select>
+              <span>trên 128 bản ghi</span>
+            </div>
+            <div class="pager-list" id="pagination"></div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+  <div id="reconcileModal" class="modal-backdrop" hidden>
+    <section class="module-modal" role="dialog" aria-modal="true" aria-labelledby="reconcileTitle">
+      <div class="module-modal-head">
+        <h2 id="reconcileTitle" class="module-modal-title">Đối soát dữ liệu nghi vấn</h2>
+        <button class="close-icon-btn" type="button" data-reconcile-close aria-label="Đóng">
+          <i data-lucide="x" class="h-5 w-5"></i>
+        </button>
+      </div>
+      <div class="module-modal-body">
+        <div class="form-section">
+          <div class="form-section-title"><i data-lucide="scan-search" class="h-4 w-4 text-[#c50000]"></i>Thông tin nghi vấn</div>
+          <div class="form-row">
+            <label><span class="form-label">Mã phiếu</span><input class="field" value="DS-001" /></label>
+            <label><span class="form-label">Nguồn dữ liệu</span><input class="field" value="CSDL dân cư / Giấy phép / Tài sản" /></label>
+          </div>
+          <div class="form-row mt-3">
+            <label><span class="form-label">Đối tượng</span><input class="field" value="Khách sạn Hoa Lư - NB-ANTT-0256" /></label>
+            <label><span class="form-label">Mức độ</span><input class="field" value="Cao" /></label>
+          </div>
+          <label class="mt-3 block"><span class="form-label">Nội dung nghi vấn</span><textarea class="field textarea-field">CCCD chủ cơ sở không khớp ngày sinh với hồ sơ giấy phép. Cần xác minh trước khi đóng vi phạm hoặc yêu cầu bổ sung.</textarea></label>
+        </div>
+        <div class="form-section">
+          <div class="form-section-title"><i data-lucide="list-checks" class="h-4 w-4 text-[#c50000]"></i>Kết quả xử lý</div>
+          <div class="detail-list">
+            <div class="detail-row"><span class="detail-label">Hành động</span><span class="detail-value">Tạo phiếu xác minh hoặc đóng nghi vấn</span></div>
+            <div class="detail-row"><span class="detail-label">Dữ liệu nhạy cảm</span><span class="detail-value">CCCD được mask trên danh sách</span></div>
+            <div class="detail-row"><span class="detail-label">Ghi log</span><span class="detail-value">Lưu ActivityLog khi xác nhận đối soát</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="module-modal-foot">
+        <button class="btn btn-secondary" type="button" data-reconcile-close>Hủy bỏ</button>
+        <button class="btn btn-primary" type="button" data-reconcile-confirm><i data-lucide="check"></i>Xác nhận đối soát</button>
+      </div>
+    </section>
+  </div>
+  <script src="../scripts/layout-sync.js"></script>
+  <script src="../scripts/xu-ly-vi-pham.js"></script>
+</body>
+
+</html>
+

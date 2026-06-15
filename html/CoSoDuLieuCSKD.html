@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cơ sở dữ liệu CSKD-ANTT</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/quan-ly-ho-so.css">
+  <link rel="stylesheet" href="../styles/co-so-du-lieu-cskd.css">
+</head>
+
+<body class="font-sans antialiased">
+  <div class="desktop-shell min-h-screen">
+    <header
+      class="app-header fixed left-0 right-0 top-0 z-30 flex h-[80px] items-center justify-between px-6 text-white">
+      <div class="flex h-full items-center">
+        <img class="crest" src="../public/logocongan.png" alt="Logo Bộ Công an" />
+        <div class="brand-copy ml-4">
+          <div class="text-[22px] font-semibold leading-tight tracking-[0]">CÔNG AN TỈNH NINH BÌNH</div>
+          <div class="mt-1 text-[15px] font-medium tracking-[0] text-white/95">HỆ THỐNG QUẢN LÝ CƠ SỞ KINH DOANH CÓ
+            ĐIỀU KIỆN VỀ ANTT</div>
+        </div>
+      </div>
+
+      <div class="topbar-actions flex h-full items-center gap-6">
+        <div class="topbar-menu-wrap">
+          <button id="notificationToggle" class="topbar-icon-btn relative" type="button" aria-label="Thông báo"
+            aria-expanded="false">
+            <i data-lucide="bell" class="h-[26px] w-[26px]"></i>
+            <span id="notificationBadge"
+            class="absolute right-0 top-1 grid h-5 min-w-5 place-items-center rounded-full bg-[#ff1e1e] px-1 text-[11px] font-semibold leading-none shadow">5</span>
+          </button>
+
+          <div id="notificationMenu" class="topbar-dropdown notification-dropdown" hidden>
+            <div class="dropdown-head">
+              <span>Thông báo</span>
+              <button id="markAllReadBtn" type="button">Đánh dấu đã đọc</button>
+            </div>
+            <div id="notificationList" class="notification-list"></div>
+          </div>
+        </div>
+
+        <div class="topbar-menu-wrap">
+          <button id="userMenuToggle" class="user-menu-btn" type="button" aria-label="Mở menu tài khoản"
+            aria-expanded="false">
+            <div class="grid h-[46px] w-[46px] place-items-center rounded-full bg-white text-[#cf0000] shadow-sm">
+              <i data-lucide="user-round" class="h-7 w-7 fill-[#cf0000]/15"></i>
+            </div>
+            <div class="hidden text-left sm:block">
+              <div class="text-[15px] font-semibold leading-5">Nguyễn Văn A</div>
+              <div class="text-[13px] font-medium text-white/92">Phòng CS QLHC về TTXH</div>
+            </div>
+            <i data-lucide="chevron-down" class="user-chevron h-5 w-5 text-white"></i>
+          </button>
+
+          <div id="userMenu" class="topbar-dropdown user-dropdown" hidden>
+            <div class="user-card">
+              <div class="grid h-11 w-11 place-items-center rounded-full bg-[#fff2f2] text-[#cf0000]">
+                <i data-lucide="user-round" class="h-6 w-6"></i>
+              </div>
+              <div>
+                <div class="user-name">Nguyễn Văn A</div>
+                <div class="user-role">Phòng CS QLHC về TTXH</div>
+              </div>
+            </div>
+            <button class="dropdown-action" type="button" data-user-action="profile">
+              <i data-lucide="id-card" class="h-4 w-4"></i>
+              Thông tin tài khoản
+            </button>
+            <button class="dropdown-action" type="button" data-user-action="settings">
+              <i data-lucide="settings" class="h-4 w-4"></i>
+              Cài đặt hiển thị
+            </button>
+            <a class="dropdown-action danger" href="DangNhap.html">
+              <i data-lucide="log-out" class="h-4 w-4"></i>
+              Đăng xuất
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <aside class="sidebar fixed bottom-0 left-0 top-[80px] z-20 px-2 text-white">
+      <div class="sidebar-scroll">
+        <div class="nav-section mt-0">Tổng quan</div>
+        <a href="#" class="nav-item mt-2">
+          <i data-lucide="house"></i>
+          <span class="nav-copy">Dashboard</span>
+        </a>
+
+        <div class="nav-section">Giám sát địa bàn</div>
+        <a href="BanDoSoGis.html" class="nav-item mt-2">
+          <i data-lucide="map-pin"></i>
+          <span class="nav-copy">Bản đồ số GIS</span>
+        </a>
+
+        <div class="nav-section">Nghiệp vụ</div>
+        <a href="QuanLyHoSo.html" class="nav-item mt-2">
+          <i data-lucide="file-text"></i>
+          <span class="nav-copy">Quản lý hồ sơ</span>
+        </a>
+        <a href="CoSoDuLieuCSKD.html" class="nav-item active">
+          <i data-lucide="database"></i>
+          <span class="nav-copy">Cơ sở dữ liệu CSKD-ANTT</span>
+        </a>
+        <a href="KiemTraCoSo.html" class="nav-item">
+          <i data-lucide="clipboard-check"></i>
+          <span class="nav-copy">Kiểm tra cơ sở</span>
+        </a>
+        <a href="XuLyViPham.html" class="nav-item">
+          <i data-lucide="octagon-alert"></i>
+          <span class="nav-copy">Vi phạm / Xử lý vi phạm</span>
+        </a>
+        <a href="QuanLyPhanAnh.html" class="nav-item">
+          <i data-lucide="message-square-warning"></i>
+          <span class="nav-copy">Phản ánh kiến nghị</span>
+        </a>
+
+        <div class="nav-section">Báo cáo</div>
+        <a href="BaoCao-ThongKe.html" class="nav-item mt-2"><i data-lucide="chart-column-big"></i>
+          <span class="nav-copy">Báo cáo - thống kê</span></a>
+
+        <div class="nav-section">Cấu hình</div>
+        <a href="DanhMuc.html" class="nav-item mt-2"><i data-lucide="folder"></i>
+          <span class="nav-copy">Danh mục dùng chung</span>
+          <i data-lucide="chevron-down" class="ml-auto h-4 w-4 nav-copy"></i></a>
+        <a href="#" class="nav-item">
+          <i data-lucide="settings"></i>
+          <span class="nav-copy">Quản trị hệ thống</span>
+          <i data-lucide="chevron-down" class="ml-auto h-4 w-4 nav-copy"></i>
+        </a>
+      </div>
+
+      <div class="sidebar-action">
+        <button id="sidebarToggle" class="sidebar-toggle" type="button" aria-label="Thu gọn menu" aria-expanded="true">
+          <i data-lucide="chevron-left" class="toggle-icon"></i>
+          <span class="collapse-label">Thu gọn</span>
+        </button>
+      </div>
+    </aside>
+
+    <main class="content min-h-screen pt-[80px]">
+      <div class="database-page px-6 pb-7 pt-5 lg:px-7">
+        <section class="database-toolbar">
+          <h1>Danh sách cơ sở kinh doanh</h1>
+          <div class="toolbar-actions">
+            <a href="ImportDuLieu.html" class="toolbar-btn toolbar-btn-secondary" style="display: inline-flex; align-items: center; gap: 0.5rem;">
+              <i data-lucide="upload" class="h-4 w-4"></i>
+              Import Excel
+            </a>
+            <button id="exportBtn" class="toolbar-btn toolbar-btn-secondary" type="button">
+              <i data-lucide="download" class="h-4 w-4"></i>
+              Xuất Excel
+            </button>
+            <button id="addBusinessBtn" class="toolbar-btn toolbar-btn-primary" type="button">
+              <i data-lucide="plus" class="h-4 w-4"></i>
+              Thêm mới cơ sở
+            </button>
+          </div>
+        </section>
+
+        <section class="database-filter" aria-label="Bộ lọc cơ sở kinh doanh">
+          <label class="filter-field filter-search">
+            <span>Tìm kiếm</span>
+            <span class="field-wrap block">
+              <input id="searchInput" class="field" type="text" placeholder="Nhập mã cơ sở, tên cơ sở, địa chỉ, chủ cơ sở..." />
+              <i data-lucide="search" class="field-icon"></i>
+            </span>
+          </label>
+
+          <label class="filter-field">
+            <span>Loại hình</span>
+            <span class="field-wrap block">
+              <select id="typeSelect" class="field appearance-none font-medium">
+                <option value="Tất cả">-- Tất cả --</option>
+              </select>
+              <i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>
+            </span>
+          </label>
+
+          <label class="filter-field">
+            <span>Trạng thái</span>
+            <span class="field-wrap block">
+              <select id="statusSelect" class="field appearance-none font-medium">
+                <option value="Tất cả">-- Tất cả --</option>
+              </select>
+              <i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>
+            </span>
+          </label>
+
+          <label class="filter-field">
+            <span>Giấy phép ANTT</span>
+            <span class="field-wrap block">
+              <select id="licenseSelect" class="field appearance-none font-medium">
+                <option value="Tất cả">-- Tất cả --</option>
+              </select>
+              <i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>
+            </span>
+          </label>
+
+          <div class="filter-actions">
+            <button id="resetBtn" class="filter-btn filter-reset" type="button">
+              <i data-lucide="rotate-ccw" class="h-4 w-4"></i>
+              Đặt lại
+            </button>
+            <button id="searchBtn" class="filter-btn filter-submit" type="button">
+              <i data-lucide="search" class="h-4 w-4"></i>
+              Tìm kiếm
+            </button>
+          </div>
+        </section>
+
+        <section class="result-line">
+          <span>Tổng số: <strong id="totalCount">1.248 cơ sở</strong></span>
+        </section>
+
+        <section class="database-table-card">
+          <div class="table-scroll">
+            <table class="business-table">
+              <thead>
+                <tr>
+                  <th>Mã cơ sở</th>
+                  <th>Tên cơ sở</th>
+                  <th>Loại hình</th>
+                  <th>Địa chỉ</th>
+                  <th>Chủ cơ sở</th>
+                  <th>Trạng thái</th>
+                  <th>Giấy phép ANTT</th>
+                  <th>Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="businessBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="database-pagination">
+          <div class="page-size-control">
+            <span>Hiển thị</span>
+            <select id="pageSizeSelect" class="field appearance-none">
+              <option value="10" selected>10</option>
+              <option value="20">20</option>
+              <option value="50">50</option>
+            </select>
+            <span>trên 1 trang</span>
+          </div>
+          <div id="pagination" class="pager-list"></div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script src="../scripts/layout-sync.js"></script>
+  <script src="../scripts/co-so-du-lieu-cskd.js"></script>
+</body>
+
+</html>
+
+

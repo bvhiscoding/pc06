@@ -104,35 +104,31 @@
           <i data-lucide="file-text"></i>
           <span class="nav-copy">Quản lý hồ sơ</span>
         </a>
-        <a href="#" class="nav-item">
+        <a href="CoSoDuLieuCSKD.html" class="nav-item">
           <i data-lucide="database"></i>
           <span class="nav-copy">Cơ sở dữ liệu CSKD-ANTT</span>
         </a>
-        <a href="#" class="nav-item">
+        <a href="KiemTraCoSo.html" class="nav-item">
           <i data-lucide="clipboard-check"></i>
           <span class="nav-copy">Kiểm tra cơ sở</span>
         </a>
-        <a href="#" class="nav-item">
+        <a href="XuLyViPham.html" class="nav-item">
           <i data-lucide="octagon-alert"></i>
           <span class="nav-copy">Vi phạm / Xử lý vi phạm</span>
         </a>
-        <a href="#" class="nav-item">
+        <a href="QuanLyPhanAnh.html" class="nav-item">
           <i data-lucide="message-square-warning"></i>
           <span class="nav-copy">Phản ánh kiến nghị</span>
         </a>
 
         <div class="nav-section">Báo cáo</div>
-        <a href="#" class="nav-item mt-2">
-          <i data-lucide="chart-column-big"></i>
-          <span class="nav-copy">Báo cáo - thống kê</span>
-        </a>
+        <a href="BaoCao-ThongKe.html" class="nav-item mt-2"><i data-lucide="chart-column-big"></i>
+          <span class="nav-copy">Báo cáo - thống kê</span></a>
 
         <div class="nav-section">Cấu hình</div>
-        <a href="#" class="nav-item mt-2">
-          <i data-lucide="folder"></i>
+        <a href="DanhMuc.html" class="nav-item mt-2"><i data-lucide="folder"></i>
           <span class="nav-copy">Danh mục dùng chung</span>
-          <i data-lucide="chevron-down" class="ml-auto h-4 w-4 nav-copy"></i>
-        </a>
+          <i data-lucide="chevron-down" class="ml-auto h-4 w-4 nav-copy"></i></a>
         <a href="#" class="nav-item">
           <i data-lucide="settings"></i>
           <span class="nav-copy">Quản trị hệ thống</span>
@@ -151,7 +147,6 @@
     <main class="content min-h-screen pt-[80px]">
       <div class="gis-page px-6 pb-6 pt-6 lg:px-7">
         <section class="gis-heading">
-          <h1>Bản đồ số GIS</h1>
           <div class="gis-breadcrumb">
             <span>Trang chủ</span>
             <i data-lucide="chevron-right" class="h-4 w-4"></i>
@@ -237,9 +232,12 @@
               <button type="button" data-map-control="zoom-out"><i data-lucide="minus" class="h-6 w-6"></i></button>
               <button type="button" data-map-control="fit"><i data-lucide="scan" class="h-5 w-5"></i></button>
               <button type="button" data-map-control="locate"><i data-lucide="crosshair" class="h-5 w-5"></i></button>
-              <button type="button" data-map-control="radius" title="Khoanh vùng bán kính"><i data-lucide="circle-dot" class="h-5 w-5"></i></button>
-              <button type="button" data-map-control="polygon" title="Vẽ đa giác"><i data-lucide="pentagon" class="h-5 w-5"></i></button>
-              <button type="button" data-map-control="clear-region" title="Xóa vùng lọc"><i data-lucide="eraser" class="h-5 w-5"></i></button>
+              <button type="button" data-map-control="radius" title="Khoanh vùng bán kính"><i data-lucide="circle-dot"
+                  class="h-5 w-5"></i></button>
+              <button type="button" data-map-control="polygon" title="Vẽ đa giác"><i data-lucide="pentagon"
+                  class="h-5 w-5"></i></button>
+              <button type="button" data-map-control="clear-region" title="Xóa vùng lọc"><i data-lucide="eraser"
+                  class="h-5 w-5"></i></button>
             </div>
 
             <div class="map-legend">
@@ -257,9 +255,11 @@
                 </div>
                 <div><span class="marker-dot orange"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Giấy phép sắp
                   hết hạn</div>
-                <div><span class="marker-dot red"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Giấy phép hết hạn
+                <div><span class="marker-dot red"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Giấy phép hết
+                  hạn
                   / Bị thu hồi</div>
-                <div><span class="marker-dot purple"><i data-lucide="triangle-alert" class="h-3.5 w-3.5"></i></span>Có vi
+                <div><span class="marker-dot purple"><i data-lucide="triangle-alert" class="h-3.5 w-3.5"></i></span>Có
+                  vi
                   phạm / Rủi ro cao</div>
               </div>
             </div>
@@ -273,7 +273,7 @@
               <button id="openFacilitySheetBtn" class="popup-detail" type="button">Xem chi tiết</button>
             </article>
 
-            <div id="gisFooterStats" class="gis-footer-stats" aria-label="Thống kê nhanh trên bản đồ"></div>
+
 
             <aside id="facilityDetailSheet" class="facility-detail-sheet" aria-hidden="true">
               <div class="detail-sheet-head">
@@ -352,10 +352,6 @@
           </div>
 
           <aside class="gis-side">
-            <button id="floatingPanelToggle" class="floating-panel-toggle" type="button" aria-expanded="true">
-              <i data-lucide="panel-right-close" class="h-5 w-5"></i>
-              <span>Thu gọn</span>
-            </button>
             <section class="gis-side-card">
               <div class="side-title">
                 <h2>Tổng quan trên bản đồ</h2>
@@ -389,8 +385,9 @@
 
             <section class="gis-side-card layer-card">
               <h2>Lớp hiển thị trên bản đồ</h2>
-              <label><input type="checkbox" data-map-layer="facilityLabels" checked> Hiển thị nhãn cơ sở</label>
-              <label><input type="checkbox" data-map-layer="administrative" checked> Hiển thị ranh giới hành chính</label>
+              <label><input type="checkbox" data-map-layer="facilityLabels"> Hiển thị nhãn cơ sở</label>
+              <label><input type="checkbox" data-map-layer="administrative" checked> Hiển thị ranh giới hành
+                chính</label>
               <label><input type="checkbox" data-map-layer="roads" checked> Hiển thị giao thông</label>
               <label><input type="checkbox" data-map-layer="water"> Hiển thị sông, hồ</label>
             </section>
@@ -402,9 +399,11 @@
 
   <script src="https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js"></script>
   <script src="https://unpkg.com/deck.gl@latest/dist.min.js"></script>
+  <script src="../scripts/layout-sync.js"></script>
   <script src="../scripts/ban-do-so-gis.js"></script>
   <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA9oDzJjHCZH4iVCowyZ-UR9eG6X4qFpGY&callback=initMap&libraries=places,geometry"></script>
 </body>
 
 </html>
+

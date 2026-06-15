@@ -1,0 +1,677 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tạo kế hoạch kiểm tra - CSKD-ANTT Ninh Bình</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/quan-ly-ho-so.css">
+  <link rel="stylesheet" href="../styles/admin-danh-sach.css">
+  <style>
+    /* Premium Custom styles for Stepper */
+    .stepper-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      position: relative;
+      background: #fff;
+      padding: 1.25rem 2rem;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    }
+
+    .stepper-line {
+      position: absolute;
+      top: 50%;
+      left: 10%;
+      right: 10%;
+      height: 3px;
+      background: #e2e8f0;
+      z-index: 1;
+      transform: translateY(-13px); /* Offset to line up with icons */
+    }
+
+    .stepper-line-active {
+      position: absolute;
+      top: 50%;
+      left: 10%;
+      height: 3px;
+      background: #2563eb;
+      z-index: 1;
+      transform: translateY(-13px);
+      transition: width 0.3s ease;
+      width: 0%;
+    }
+
+    .step-item {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: #fff;
+      padding: 0 1rem;
+    }
+
+    .step-badge {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #fff;
+      border: 2px solid #cbd5e1;
+      color: #64748b;
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      font-size: 15px;
+      transition: all 0.3s ease;
+    }
+
+    .step-item.active .step-badge {
+      border-color: #2563eb;
+      background: #2563eb;
+      color: #fff;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
+    }
+
+    .step-item.completed .step-badge {
+      border-color: #16a34a;
+      background: #16a34a;
+      color: #fff;
+    }
+
+    .step-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #64748b;
+      margin-top: 0.5rem;
+      text-align: center;
+      transition: color 0.3s ease;
+    }
+
+    .step-item.active .step-label {
+      color: #2563eb;
+      font-weight: 700;
+    }
+
+    .step-item.completed .step-label {
+      color: #16a34a;
+    }
+
+    .step-content {
+      display: none;
+    }
+
+    .step-content.active {
+      display: block;
+      animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(15px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .business-row.selected {
+      background-color: #eff6ff;
+      border-color: #bfdbfe;
+    }
+
+    /* Modal overlay custom styles */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+    }
+    .modal-overlay[hidden] {
+      display: none !important;
+    }
+  </style>
+</head>
+
+<body class="font-sans antialiased">
+  <div class="desktop-shell min-h-screen">
+    <!-- Header -->
+    <header class="app-header fixed left-0 right-0 top-0 z-30 flex h-[80px] items-center justify-between px-6 text-white">
+      <div class="flex h-full items-center">
+        <img class="crest" src="../public/logocongan.png" alt="Logo Bộ Công an" />
+        <div class="brand-copy ml-4">
+          <div class="text-[22px] font-semibold leading-tight tracking-[0]">CÔNG AN TỈNH NINH BÌNH</div>
+          <div class="mt-1 text-[15px] font-medium tracking-[0] text-white/95">HỆ THỐNG QUẢN LÝ CƠ SỞ KINH DOANH CÓ ĐIỀU KIỆN VỀ ANTT</div>
+        </div>
+      </div>
+
+      <div class="topbar-actions flex h-full items-center gap-6">
+        <div class="topbar-menu-wrap">
+          <button id="notificationToggle" class="topbar-icon-btn relative" type="button" aria-label="Thông báo" aria-expanded="false">
+            <i data-lucide="bell" class="h-[26px] w-[26px]"></i>
+            <span id="notificationBadge" class="absolute right-0 top-1 grid h-5 min-w-5 place-items-center rounded-full bg-[#ff1e1e] px-1 text-[11px] font-semibold leading-none shadow">5</span>
+          </button>
+          <div id="notificationMenu" class="topbar-dropdown notification-dropdown" hidden>
+            <div class="dropdown-head">
+              <span>Thông báo</span>
+              <button id="markAllReadBtn" type="button">Đánh dấu đã đọc</button>
+            </div>
+            <div id="notificationList" class="notification-list"></div>
+          </div>
+        </div>
+
+        <div class="topbar-menu-wrap">
+          <button id="userMenuToggle" class="user-menu-btn" type="button" aria-label="Mở menu tài khoản" aria-expanded="false">
+            <div class="grid h-[46px] w-[46px] place-items-center rounded-full bg-white text-[#cf0000] shadow-sm">
+              <i data-lucide="user-round" class="h-7 w-7 fill-[#cf0000]/15"></i>
+            </div>
+            <div class="hidden text-left sm:block">
+              <div class="text-[15px] font-semibold leading-5">Nguyễn Văn A</div>
+              <div class="text-[13px] font-medium text-white/92">Phòng CS QLHC về TTXH</div>
+            </div>
+            <i data-lucide="chevron-down" class="user-chevron h-5 w-5 text-white"></i>
+          </button>
+          <div id="userMenu" class="topbar-dropdown user-dropdown" hidden>
+            <div class="user-card">
+              <div class="grid h-11 w-11 place-items-center rounded-full bg-[#fff2f2] text-[#cf0000]">
+                <i data-lucide="user-round" class="h-6 w-6"></i>
+              </div>
+              <div>
+                <div class="user-name">Nguyễn Văn A</div>
+                <div class="user-role">Phòng CS QLHC về TTXH</div>
+              </div>
+            </div>
+            <button class="dropdown-action" type="button" data-user-action="profile">
+              <i data-lucide="id-card" class="h-4 w-4"></i> Thông tin tài khoản
+            </button>
+            <button class="dropdown-action" type="button" data-user-action="settings">
+              <i data-lucide="settings" class="h-4 w-4"></i> Cài đặt hiển thị
+            </button>
+            <a class="dropdown-action danger" href="DangNhap.html">
+              <i data-lucide="log-out" class="h-4 w-4"></i> Đăng xuất
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar fixed bottom-0 left-0 top-[80px] z-20 px-2 text-white">
+      <div class="sidebar-scroll">
+        <div class="nav-section mt-0">Tổng quan</div>
+        <a href="#" class="nav-item mt-2">
+          <i data-lucide="house"></i>
+          <span class="nav-copy">Dashboard</span>
+        </a>
+
+        <div class="nav-section">Giám sát địa bàn</div>
+        <a href="BanDoSoGis.html" class="nav-item mt-2">
+          <i data-lucide="map-pin"></i>
+          <span class="nav-copy">Bản đồ số GIS</span>
+        </a>
+
+        <div class="nav-section">Nghiệp vụ</div>
+        <a href="QuanLyHoSo.html" class="nav-item mt-2">
+          <i data-lucide="file-text"></i>
+          <span class="nav-copy">Quản lý hồ sơ</span>
+        </a>
+        <a href="CoSoDuLieuCSKD.html" class="nav-item">
+          <i data-lucide="database"></i>
+          <span class="nav-copy">Cơ sở dữ liệu CSKD-ANTT</span>
+        </a>
+        <a href="KiemTraCoSo.html" class="nav-item active">
+          <i data-lucide="clipboard-check"></i>
+          <span class="nav-copy">Kiểm tra cơ sở</span>
+        </a>
+        <a href="XuLyViPham.html" class="nav-item">
+          <i data-lucide="octagon-alert"></i>
+          <span class="nav-copy">Vi phạm / Xử lý vi phạm</span>
+        </a>
+        <a href="QuanLyPhanAnh.html" class="nav-item">
+          <i data-lucide="message-square-warning"></i>
+          <span class="nav-copy">Phản ánh kiến nghị</span>
+        </a>
+
+        <div class="nav-section">Báo cáo</div>
+        <a href="BaoCao-ThongKe.html" class="nav-item mt-2"><i data-lucide="chart-column-big"></i>
+          <span class="nav-copy">Báo cáo - thống kê</span></a>
+
+        <div class="nav-section">Cấu hình</div>
+        <a href="DanhMuc.html" class="nav-item mt-2"><i data-lucide="folder"></i>
+          <span class="nav-copy">Danh mục dùng chung</span>
+          <i data-lucide="chevron-down" class="ml-auto h-4 w-4 nav-copy"></i></a>
+        <a href="#" class="nav-item">
+          <i data-lucide="settings"></i>
+          <span class="nav-copy">Quản trị hệ thống</span>
+          <i data-lucide="chevron-down" class="ml-auto h-4 w-4 nav-copy"></i>
+        </a>
+      </div>
+
+      <div class="sidebar-action">
+        <button id="sidebarToggle" class="sidebar-toggle" type="button" aria-label="Thu gọn menu" aria-expanded="true">
+          <i data-lucide="chevron-left" class="toggle-icon"></i>
+          <span class="collapse-label">Thu gọn</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="content min-h-screen pt-[80px]">
+      <div class="module-page px-6 pb-7 pt-6 lg:px-7">
+        <nav class="module-breadcrumb">
+          <span>Trang chủ</span>
+          <i data-lucide="chevron-right" class="h-4 w-4"></i>
+          <span>Kiểm tra cơ sở</span>
+          <i data-lucide="chevron-right" class="h-4 w-4"></i>
+          <span>Tạo kế hoạch kiểm tra</span>
+        </nav>
+
+        <section class="module-toolbar">
+          <div class="module-title">
+            <h1 class="flex items-center gap-2">
+              <a href="KiemTraCoSo.html" class="text-gray-400 hover:text-gray-900 transition-colors">
+                <i data-lucide="arrow-left" class="h-6 w-6"></i>
+              </a>
+              Tạo kế hoạch kiểm tra
+            </h1>
+            <div class="module-total">Lập kế hoạch thanh tra, kiểm tra điều kiện an ninh trật tự tại cơ sở</div>
+          </div>
+          <div class="module-actions">
+            <a class="module-action-btn module-action-secondary" href="KiemTraCoSo.html">
+              <i data-lucide="x" class="h-4 w-4"></i>Hủy bỏ
+            </a>
+          </div>
+        </section>
+
+        <!-- Stepper Component -->
+        <div class="stepper-container">
+          <div class="stepper-line"></div>
+          <div class="stepper-line-active" id="stepperLineActive"></div>
+
+          <div class="step-item active" data-step="1">
+            <div class="step-badge">1</div>
+            <span class="step-label">Thông tin chung</span>
+          </div>
+          <div class="step-item" data-step="2">
+            <div class="step-badge">2</div>
+            <span class="step-label">Chọn cơ sở kiểm tra</span>
+          </div>
+          <div class="step-item" data-step="3">
+            <div class="step-badge">3</div>
+            <span class="step-label">Thành lập đoàn</span>
+          </div>
+        </div>
+
+        <!-- Wizard Cards -->
+        <section class="module-form-card">
+          <form id="planForm" onsubmit="event.preventDefault();">
+
+            <!-- STEP 1: Thông tin chung -->
+            <div class="step-content active" data-step-content="1">
+              <h2 class="module-section-title">Bước 1: Thiết lập thông tin chung kế hoạch</h2>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <label class="col-span-2">
+                  <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase tracking-wide">Tên kế hoạch kiểm tra <b class="text-red-500">*</b></span>
+                  <input class="field w-full" type="text" id="planName" placeholder="Nhập tên kế hoạch kiểm tra (Ví dụ: Kiểm tra an toàn PCCC Quý II/2024)..." required />
+                </label>
+
+                <label>
+                  <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase tracking-wide">Loại kiểm tra <b class="text-red-500">*</b></span>
+                  <select class="field w-full" id="planType" required>
+                    <option value="Định kỳ" selected>Định kỳ</option>
+                    <option value="Đột xuất">Đột xuất</option>
+                    <option value="Chuyên đề">Chuyên đề</option>
+                  </select>
+                </label>
+
+                <label>
+                  <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase tracking-wide">Căn cứ kiểm tra (Quyết định/Văn bản) <b class="text-red-500">*</b></span>
+                  <input class="field w-full" type="text" id="planBasis" placeholder="Nhập căn cứ kiểm tra (Ví dụ: Quyết định số 123/QĐ-PC06)..." required />
+                </label>
+
+                <label>
+                  <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase tracking-wide">Thời gian bắt đầu <b class="text-red-500">*</b></span>
+                  <input class="field w-full" type="date" id="planStartDate" required />
+                </label>
+
+                <label>
+                  <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase tracking-wide">Thời gian kết thúc <b class="text-red-500">*</b></span>
+                  <input class="field w-full" type="date" id="planEndDate" required />
+                </label>
+
+                <label class="col-span-2">
+                  <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase tracking-wide">Mô tả / Ghi chú</span>
+                  <textarea class="field w-full h-24 py-2" id="planDescription" placeholder="Mô tả nội dung cụ thể hoặc ghi chú thêm..."></textarea>
+                </label>
+              </div>
+            </div>
+
+            <!-- STEP 2: Chọn cơ sở kiểm tra -->
+            <div class="step-content" data-step-content="2">
+              <h2 class="module-section-title">Bước 2: Chọn cơ sở kinh doanh cần kiểm tra</h2>
+              
+              <!-- Search & Filter bar for business selection -->
+              <div class="mb-4 flex flex-col md:flex-row gap-3">
+                <div class="relative flex-1">
+                  <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400"></i>
+                  <input type="text" id="searchBusiness" class="field w-full pl-9" placeholder="Tìm kiếm nhanh cơ sở theo tên, mã số, địa chỉ..." />
+                </div>
+                <select id="filterType" class="field w-full md:w-[200px]">
+                  <option value="">Tất cả loại hình</option>
+                  <option value="Khách sạn">Khách sạn</option>
+                  <option value="Karaoke">Karaoke</option>
+                  <option value="Massage">Massage</option>
+                  <option value="Cầm đồ">Cầm đồ</option>
+                </select>
+              </div>
+
+              <!-- Business List table -->
+              <div class="overflow-x-auto border border-gray-200 rounded-lg">
+                <table class="w-full text-left border-collapse text-xs">
+                  <thead>
+                    <tr class="bg-gray-50 border-b border-gray-200 font-bold text-gray-700">
+                      <th class="p-3 w-12 text-center">Chọn</th>
+                      <th class="p-3 w-[120px]">Mã cơ sở</th>
+                      <th class="p-3">Tên cơ sở kinh doanh</th>
+                      <th class="p-3">Loại hình</th>
+                      <th class="p-3">Người đại diện</th>
+                      <th class="p-3">Địa chỉ hoạt động</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-gray-200" id="businessTableBody">
+                    <tr class="business-row cursor-pointer" data-id="CS-0001">
+                      <td class="p-3 text-center">
+                        <input type="radio" name="selectedBusiness" value="CS-0001" class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500" required />
+                      </td>
+                      <td class="p-3 font-semibold text-gray-900">CS-2024-001</td>
+                      <td class="p-3 font-semibold text-blue-600">Khách sạn Hoa Mai</td>
+                      <td class="p-3">Cơ sở lưu trú</td>
+                      <td class="p-3">Trần Văn B</td>
+                      <td class="p-3">456 Đường Lê Lợi, P. Thanh Bình, TP. Ninh Bình</td>
+                    </tr>
+                    <tr class="business-row cursor-pointer" data-id="CS-0002">
+                      <td class="p-3 text-center">
+                        <input type="radio" name="selectedBusiness" value="CS-0002" class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500" />
+                      </td>
+                      <td class="p-3 font-semibold text-gray-900">CS-2024-002</td>
+                      <td class="p-3 font-semibold text-blue-600">Karaoke Phoenix</td>
+                      <td class="p-3">Karaoke</td>
+                      <td class="p-3">Nguyễn Thị H</td>
+                      <td class="p-3">12 Đường Tràng An, P. Đông Thành, TP. Ninh Bình</td>
+                    </tr>
+                    <tr class="business-row cursor-pointer" data-id="CS-0003">
+                      <td class="p-3 text-center">
+                        <input type="radio" name="selectedBusiness" value="CS-0003" class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500" />
+                      </td>
+                      <td class="p-3 font-semibold text-gray-900">CS-2024-003</td>
+                      <td class="p-3 font-semibold text-blue-600">Khách sạn Hoa Lư</td>
+                      <td class="p-3">Cơ sở lưu trú</td>
+                      <td class="p-3">Lê Văn D</td>
+                      <td class="p-3">01 Đường Trần Hưng Đạo, P. Đông Thành, TP. Ninh Bình</td>
+                    </tr>
+                    <tr class="business-row cursor-pointer" data-id="CS-0004">
+                      <td class="p-3 text-center">
+                        <input type="radio" name="selectedBusiness" value="CS-0004" class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500" />
+                      </td>
+                      <td class="p-3 font-semibold text-gray-900">CS-2024-004</td>
+                      <td class="p-3 font-semibold text-blue-600">Cầm đồ Khánh An</td>
+                      <td class="p-3">Cầm đồ</td>
+                      <td class="p-3">Hoàng Văn K</td>
+                      <td class="p-3">78 Phố Me, TT. Me, Huyện Gia Viễn</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- STEP 3: Thành lập đoàn kiểm tra -->
+            <div class="step-content" data-step-content="3">
+              <h2 class="module-section-title">Bước 3: Thành lập đoàn kiểm tra & Phân công công việc</h2>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <label>
+                  <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase tracking-wide">Đơn vị chủ trì <b class="text-red-500">*</b></span>
+                  <input class="field w-full bg-gray-50" type="text" id="agency" value="Phòng CS QLHC về TTXH" readonly />
+                </label>
+
+                <label>
+                  <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase tracking-wide">Trưởng đoàn kiểm tra <b class="text-red-500">*</b></span>
+                  <select class="field w-full" id="leader" required>
+                    <option value="" disabled selected>-- Chọn cán bộ Trưởng đoàn --</option>
+                    <option value="Nguyễn Văn A">Nguyễn Văn A (Phòng CS QLHC về TTXH)</option>
+                    <option value="Trần Thị B">Trần Thị B (Phòng CS QLHC về TTXH)</option>
+                    <option value="Phạm Văn C">Phạm Văn C (Phòng CS QLHC về TTXH)</option>
+                  </select>
+                </label>
+
+                <div class="col-span-2">
+                  <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase tracking-wide">Thành viên tham gia đoàn kiểm tra <b class="text-red-500">*</b></span>
+                  <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 border border-gray-200 rounded-lg p-4 bg-gray-50">
+                    <label class="flex items-center gap-2 cursor-pointer p-2 hover:bg-white rounded transition">
+                      <input type="checkbox" name="members" value="Trần Thị B" class="h-4 w-4 rounded text-blue-600" />
+                      <span class="text-xs font-medium text-gray-800">Trần Thị B</span>
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer p-2 hover:bg-white rounded transition">
+                      <input type="checkbox" name="members" value="Phạm Văn C" class="h-4 w-4 rounded text-blue-600" />
+                      <span class="text-xs font-medium text-gray-800">Phạm Văn C</span>
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer p-2 hover:bg-white rounded transition">
+                      <input type="checkbox" name="members" value="Lê Văn D" class="h-4 w-4 rounded text-blue-600" />
+                      <span class="text-xs font-medium text-gray-800">Lê Văn D</span>
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer p-2 hover:bg-white rounded transition">
+                      <input type="checkbox" name="members" value="Nguyễn Văn F" class="h-4 w-4 rounded text-blue-600" />
+                      <span class="text-xs font-medium text-gray-800">Nguyễn Văn F</span>
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer p-2 hover:bg-white rounded transition">
+                      <input type="checkbox" name="members" value="Hoàng Văn G" class="h-4 w-4 rounded text-blue-600" />
+                      <span class="text-xs font-medium text-gray-800">Hoàng Văn G</span>
+                    </label>
+                  </div>
+                </div>
+
+                <label class="col-span-2">
+                  <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase tracking-wide">Nhiệm vụ cụ thể phân công cho đoàn</span>
+                  <textarea class="field w-full h-24 py-2" id="memberTasks" placeholder="Ví dụ: Kiểm tra kỹ các điều kiện phòng cháy chữa cháy, hệ thống lưu trữ camera, và danh sách khách khai báo lưu trú..."></textarea>
+                </label>
+              </div>
+            </div>
+
+            <!-- Action buttons bar -->
+            <div class="module-form-actions mt-6 flex justify-end gap-3">
+              <button class="filter-btn filter-reset flex items-center gap-1.5" type="button" id="btnBack" style="display: none;">
+                <i data-lucide="chevron-left" class="h-4 w-4"></i> Quay lại
+              </button>
+              <button class="filter-btn filter-submit flex items-center gap-1.5 bg-blue-600 border-blue-600 text-white" type="button" id="btnNext">
+                Tiếp tục <i data-lucide="chevron-right" class="h-4 w-4"></i>
+              </button>
+              <button class="filter-btn filter-submit flex items-center gap-1.5 bg-green-600 border-green-600 hover:bg-green-700 text-white" type="submit" id="btnSubmit" style="display: none;">
+                <i data-lucide="save" class="h-4 w-4"></i> Lưu kế hoạch
+              </button>
+            </div>
+
+          </form>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <!-- SUCCESS POPUP MODAL -->
+  <div id="successModal" class="modal-overlay" hidden>
+    <section class="case-modal max-w-sm text-center p-6 bg-white rounded-xl shadow-xl border border-gray-100" role="dialog" aria-modal="true">
+      <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 text-green-600 shadow-inner">
+        <i data-lucide="check-check" class="h-8 w-8"></i>
+      </div>
+      <h2 class="text-lg font-bold text-gray-900 mb-2">Lập kế hoạch thành công</h2>
+      <p class="text-xs text-gray-500 mb-6 leading-relaxed">Kế hoạch kiểm tra mới đã được lập và được đưa vào danh sách lịch kiểm tra của hệ thống.</p>
+      <button class="w-full py-2.5 bg-green-600 text-white rounded-lg font-bold text-sm hover:bg-green-700 transition shadow" id="btnGoHome" type="button">
+        Quay lại trang danh sách
+      </button>
+    </section>
+  </div>
+
+  <script>
+    // Collapsible Sidebar logic
+    document.querySelector('#sidebarToggle')?.addEventListener('click', () => {
+      document.querySelector('.desktop-shell')?.classList.toggle('is-collapsed');
+    });
+
+    // Topbar Dropdown toggling
+    const initMenuToggle = (btnId, menuId) => {
+      const btn = document.getElementById(btnId);
+      const menu = document.getElementById(menuId);
+      if (!btn || !menu) return;
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const opened = btn.classList.toggle('is-open');
+        menu.hidden = !opened;
+      });
+    };
+    initMenuToggle('notificationToggle', 'notificationMenu');
+    initMenuToggle('userMenuToggle', 'userMenu');
+    document.addEventListener('click', () => {
+      document.getElementById('notificationMenu').hidden = true;
+      document.getElementById('userMenu').hidden = true;
+      document.getElementById('notificationToggle')?.classList.remove('is-open');
+      document.getElementById('userMenuToggle')?.classList.remove('is-open');
+    });
+
+    // Business table row clicking selector
+    const rows = document.querySelectorAll('.business-row');
+    rows.forEach(row => {
+      row.addEventListener('click', () => {
+        rows.forEach(r => {
+          r.classList.remove('selected');
+          const radio = r.querySelector('input[type="radio"]');
+          if (radio) radio.checked = false;
+        });
+        row.classList.add('selected');
+        const radio = row.querySelector('input[type="radio"]');
+        if (radio) radio.checked = true;
+      });
+    });
+
+    // Wizard navigation logic
+    let currentStep = 1;
+    const totalSteps = 3;
+    const stepperLineActive = document.getElementById('stepperLineActive');
+    const stepItems = document.querySelectorAll('.step-item');
+    const stepContents = document.querySelectorAll('.step-content');
+    const btnBack = document.getElementById('btnBack');
+    const btnNext = document.getElementById('btnNext');
+    const btnSubmit = document.getElementById('btnSubmit');
+
+    const updateWizard = () => {
+      // Line active progress width
+      const progress = ((currentStep - 1) / (totalSteps - 1)) * 80; // adjusted to match layout width
+      stepperLineActive.style.width = progress + '%';
+
+      stepItems.forEach((item, idx) => {
+        const stepNum = idx + 1;
+        item.classList.remove('active', 'completed');
+        if (stepNum === currentStep) {
+          item.classList.add('active');
+        } else if (stepNum < currentStep) {
+          item.classList.add('completed');
+        }
+      });
+
+      stepContents.forEach(content => {
+        content.classList.remove('active');
+        if (Number(content.dataset.stepContent) === currentStep) {
+          content.classList.add('active');
+        }
+      });
+
+      // Buttons control
+      btnBack.style.display = currentStep === 1 ? 'none' : 'inline-flex';
+      if (currentStep === totalSteps) {
+        btnNext.style.display = 'none';
+        btnSubmit.style.display = 'inline-flex';
+      } else {
+        btnNext.style.display = 'inline-flex';
+        btnSubmit.style.display = 'none';
+      }
+    };
+
+    btnNext.addEventListener('click', () => {
+      // Simple validation for step 1
+      if (currentStep === 1) {
+        const planName = document.getElementById('planName').value.trim();
+        const planBasis = document.getElementById('planBasis').value.trim();
+        const start = document.getElementById('planStartDate').value;
+        const end = document.getElementById('planEndDate').value;
+
+        if (!planName || !planBasis || !start || !end) {
+          alert('Vui lòng điền đầy đủ các trường thông tin bắt buộc (*).');
+          return;
+        }
+      }
+
+      // Simple validation for step 2
+      if (currentStep === 2) {
+        const selected = document.querySelector('input[name="selectedBusiness"]:checked');
+        if (!selected) {
+          alert('Vui lòng chọn một cơ sở kinh doanh cần kiểm tra.');
+          return;
+        }
+      }
+
+      if (currentStep < totalSteps) {
+        currentStep++;
+        updateWizard();
+      }
+    });
+
+    btnBack.addEventListener('click', () => {
+      if (currentStep > 1) {
+        currentStep--;
+        updateWizard();
+      }
+    });
+
+    // Handle Form Submit
+    document.getElementById('planForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const leader = document.getElementById('leader').value;
+      if (!leader) {
+        alert('Vui lòng chọn Trưởng đoàn kiểm tra.');
+        return;
+      }
+
+      const checkedMembers = document.querySelectorAll('input[name="members"]:checked');
+      if (checkedMembers.length === 0) {
+        alert('Vui lòng phân công ít nhất một thành viên tham gia đoàn.');
+        return;
+      }
+
+      // Show Success Modal
+      document.getElementById('successModal').hidden = false;
+    });
+
+    document.getElementById('btnGoHome').addEventListener('click', () => {
+      window.location.href = 'KiemTraCoSo.html';
+    });
+
+    window.addEventListener('load', () => {
+      if (window.lucide) window.lucide.createIcons();
+    });
+  </script>
+  <script src='../scripts/layout-sync.js'></script>
+</body>
+
+</html>

@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cập nhật tiến độ thi hành - CSKD-ANTT Ninh Bình</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/quan-ly-ho-so.css">
+  <link rel="stylesheet" href="../styles/admin-danh-sach.css">
+  <style>
+    /* Premium details and form layouts */
+    .details-card {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    }
+    .details-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #1e293b;
+      border-b: 1px solid #f1f5f9;
+      padding-bottom: 0.75rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.025em;
+    }
+    .info-row {
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      padding: 0.65rem 0;
+      border-bottom: 1px dashed #f1f5f9;
+      font-size: 13px;
+    }
+    .info-row:last-child {
+      border-bottom: none;
+    }
+    .info-label {
+      color: #64748b;
+      font-weight: 600;
+    }
+    .info-value {
+      color: #0f172a;
+      font-weight: 700;
+    }
+    
+    .upload-zone {
+      border: 2px dashed #cbd5e1;
+      background: #f8fafc;
+      border-radius: 10px;
+      padding: 2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .upload-zone:hover {
+      border-color: #3b82f6;
+      background: #f1f5f9;
+    }
+
+    .uploaded-file-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      margin-top: 0.5rem;
+    }
+
+    /* Modal overlay styles */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+    }
+    .modal-overlay[hidden] {
+      display: none !important;
+    }
+  </style>
+</head>
+
+<body class="font-sans antialiased">
+  <div class="desktop-shell min-h-screen">
+    <!-- Header -->
+    <header class="app-header fixed left-0 right-0 top-0 z-30 flex h-[80px] items-center justify-between px-6 text-white">
+      <div class="flex h-full items-center">
+        <img class="crest" src="../public/logocongan.png" alt="Logo Bộ Công an" />
+        <div class="brand-copy ml-4">
+          <div class="text-[22px] font-semibold leading-tight tracking-[0]">CÔNG AN TỈNH NINH BÌNH</div>
+          <div class="mt-1 text-[15px] font-medium tracking-[0] text-white/95">HỆ THỐNG QUẢN LÝ CƠ SỞ KINH DOANH CÓ ĐIỀU KIỆN VỀ ANTT</div>
+        </div>
+      </div>
+
+      <div class="topbar-actions flex h-full items-center gap-6">
+        <div class="topbar-menu-wrap">
+          <button id="notificationToggle" class="topbar-icon-btn relative" type="button" aria-label="Thông báo" aria-expanded="false">
+            <i data-lucide="bell" class="h-[26px] w-[26px]"></i>
+            <span id="notificationBadge" class="absolute right-0 top-1 grid h-5 min-w-5 place-items-center rounded-full bg-[#ff1e1e] px-1 text-[11px] font-semibold leading-none shadow">5</span>
+          </button>
+          <div id="notificationMenu" class="topbar-dropdown notification-dropdown" hidden>
+            <div class="dropdown-head">
+              <span>Thông báo</span>
+              <button id="markAllReadBtn" type="button">Đánh dấu đã đọc</button>
+            </div>
+            <div id="notificationList" class="notification-list"></div>
+          </div>
+        </div>
+
+        <div class="topbar-menu-wrap">
+          <button id="userMenuToggle" class="user-menu-btn" type="button" aria-label="Mở menu tài khoản" aria-expanded="false">
+            <div class="grid h-[46px] w-[46px] place-items-center rounded-full bg-white text-[#cf0000] shadow-sm">
+              <i data-lucide="user-round" class="h-7 w-7 fill-[#cf0000]/15"></i>
+            </div>
+            <div class="hidden text-left sm:block">
+              <div class="text-[15px] font-semibold leading-5">Nguyễn Văn A</div>
+              <div class="text-[13px] font-medium text-white/92">Phòng CS QLHC về TTXH</div>
+            </div>
+            <i data-lucide="chevron-down" class="user-chevron h-5 w-5 text-white"></i>
+          </button>
+          <div id="userMenu" class="topbar-dropdown user-dropdown" hidden>
+            <div class="user-card">
+              <div class="grid h-11 w-11 place-items-center rounded-full bg-[#fff2f2] text-[#cf0000]">
+                <i data-lucide="user-round" class="h-6 w-6"></i>
+              </div>
+              <div>
+                <div class="user-name">Nguyễn Văn A</div>
+                <div class="user-role">Phòng CS QLHC về TTXH</div>
+              </div>
+            </div>
+            <button class="dropdown-action" type="button" data-user-action="profile">
+              <i data-lucide="id-card" class="h-4 w-4"></i> Thông tin tài khoản
+            </button>
+            <button class="dropdown-action" type="button" data-user-action="settings">
+              <i data-lucide="settings" class="h-4 w-4"></i> Cài đặt hiển thị
+            </button>
+            <a class="dropdown-action danger" href="DangNhap.html">
+              <i data-lucide="log-out" class="h-4 w-4"></i> Đăng xuất
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar fixed bottom-0 left-0 top-[80px] z-20 px-2 text-white">
+      <div class="sidebar-scroll">
+        <div class="nav-section mt-0">Tổng quan</div>
+        <a href="#" class="nav-item mt-2">
+          <i data-lucide="house"></i>
+          <span class="nav-copy">Dashboard</span>
+        </a>
+
+        <div class="nav-section">Giám sát địa bàn</div>
+        <a href="BanDoSoGis.html" class="nav-item mt-2">
+          <i data-lucide="map-pin"></i>
+          <span class="nav-copy">Bản đồ số GIS</span>
+        </a>
+
+        <div class="nav-section">Nghiệp vụ</div>
+        <a href="QuanLyHoSo.html" class="nav-item mt-2">
+          <i data-lucide="file-text"></i>
+          <span class="nav-copy">Quản lý hồ sơ</span>
+        </a>
+        <a href="CoSoDuLieuCSKD.html" class="nav-item">
+          <i data-lucide="database"></i>
+          <span class="nav-copy">Cơ sở dữ liệu CSKD-ANTT</span>
+        </a>
+        <a href="KiemTraCoSo.html" class="nav-item">
+          <i data-lucide="clipboard-check"></i>
+          <span class="nav-copy">Kiểm tra cơ sở</span>
+        </a>
+        <a href="XuLyViPham.html" class="nav-item active">
+          <i data-lucide="octagon-alert"></i>
+          <span class="nav-copy">Vi phạm / Xử lý vi phạm</span>
+        </a>
+        <a href="QuanLyPhanAnh.html" class="nav-item">
+          <i data-lucide="message-square-warning"></i>
+          <span class="nav-copy">Phản ánh kiến nghị</span>
+        </a>
+
+        <div class="nav-section">Báo cáo</div>
+        <a href="BaoCao-ThongKe.html" class="nav-item mt-2"><i data-lucide="chart-column-big"></i>
+          <span class="nav-copy">Báo cáo - thống kê</span></a>
+
+        <div class="nav-section">Cấu hình</div>
+        <a href="DanhMuc.html" class="nav-item mt-2"><i data-lucide="folder"></i>
+          <span class="nav-copy">Danh mục dùng chung</span>
+          <i data-lucide="chevron-down" class="ml-auto h-4 w-4 nav-copy"></i></a>
+        <a href="#" class="nav-item">
+          <i data-lucide="settings"></i>
+          <span class="nav-copy">Quản trị hệ thống</span>
+          <i data-lucide="chevron-down" class="ml-auto h-4 w-4 nav-copy"></i>
+        </a>
+      </div>
+
+      <div class="sidebar-action">
+        <button id="sidebarToggle" class="sidebar-toggle" type="button" aria-label="Thu gọn menu" aria-expanded="true">
+          <i data-lucide="chevron-left" class="toggle-icon"></i>
+          <span class="collapse-label">Thu gọn</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="content min-h-screen pt-[80px]">
+      <div class="module-page px-6 pb-7 pt-6 lg:px-7">
+        <nav class="module-breadcrumb">
+          <span>Trang chủ</span>
+          <i data-lucide="chevron-right" class="h-4 w-4"></i>
+          <span>Vi phạm / Xử lý vi phạm</span>
+          <i data-lucide="chevron-right" class="h-4 w-4"></i>
+          <span>Cập nhật tiến độ xử lý</span>
+        </nav>
+
+        <section class="module-toolbar">
+          <div class="module-title">
+            <h1 class="flex items-center gap-2">
+              <a href="XuLyViPham-ChiTietViPham.html" class="text-gray-400 hover:text-gray-900 transition-colors">
+                <i data-lucide="arrow-left" class="h-6 w-6"></i>
+              </a>
+              Cập nhật tiến độ thi hành quyết định
+            </h1>
+            <div class="module-total">VP-2024-0012</div>
+          </div>
+          <div class="module-actions">
+            <a class="module-action-btn module-action-secondary" href="XuLyViPham-ChiTietViPham.html">
+              <i data-lucide="x" class="h-4 w-4"></i>Hủy bỏ
+            </a>
+          </div>
+        </section>
+
+        <!-- Grid Layout for Reference + Form -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+          
+          <!-- Column 1: Reference Details (Read-only) -->
+          <div class="details-card bg-gray-50 border-gray-200">
+            <h3 class="details-title text-gray-500">
+              <i data-lucide="gavel" class="h-5 w-5 text-gray-400"></i> Quyết định tham chiếu
+            </h3>
+            <div class="info-row">
+              <span class="info-label">Cơ sở vi phạm</span>
+              <span class="info-value text-gray-600">Khách sạn Hoa Lư</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Số quyết định</span>
+              <span class="info-value text-gray-600">QĐ-XP-2024-0129</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Số biên bản</span>
+              <span class="info-value text-gray-600">BB-2024-0048</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Hình thức phạt</span>
+              <span class="info-value text-gray-600">Phạt tiền</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Số tiền phạt</span>
+              <span class="info-value text-red-600">15.000.000 VNĐ</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Biện pháp bổ sung</span>
+              <span class="info-value text-gray-600 text-xs">Tạm tước Giấy chứng nhận ANTT trong 02 tháng</span>
+            </div>
+          </div>
+
+          <!-- Column 2 & 3: Progress Update Form -->
+          <div class="details-card lg:col-span-2">
+            <h3 class="details-title">
+              <i data-lucide="clipboard-list" class="h-5 w-5 text-blue-600"></i> Ghi nhận tiến độ thi hành mới
+            </h3>
+            
+            <form id="progressForm" onsubmit="event.preventDefault();">
+              
+              <div class="mb-5">
+                <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase tracking-wide">Trạng thái thi hành mới <b class="text-red-500">*</b></span>
+                <select class="field w-full max-w-xs" id="progressStatus" required>
+                  <option value="Chưa thi hành">Chưa thi hành</option>
+                  <option value="Đang thi hành">Đang thi hành</option>
+                  <option value="Đã thi hành" selected>Đã thi hành (Hoàn thành)</option>
+                </select>
+              </div>
+
+              <div class="mb-5">
+                <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase tracking-wide">Nội dung cập nhật tiến độ <b class="text-red-500">*</b></span>
+                <textarea class="field w-full h-24 py-2" id="progressText" placeholder="Mô tả chi tiết nội dung thi hành hoặc kết quả khắc phục (Ví dụ: Cơ sở trình biên lai nộp tiền phạt 15tr vào Kho bạc, đã hoàn tất sửa chữa nghiệm thu hệ thống PCCC)..." required>Cơ sở đã thực hiện nộp phạt đầy đủ số tiền 15.000.000 VNĐ tại Kho bạc Nhà nước tỉnh Ninh Bình và nộp biên lai xác nhận. Đã hoàn thành khắc phục các lỗi PCCC.</textarea>
+              </div>
+
+              <!-- Attachment Upload -->
+              <div class="mb-6">
+                <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase tracking-wide">Đính kèm biên lai / tài liệu minh chứng <b class="text-red-500">*</b></span>
+                <input type="file" id="fileInput" class="hidden" accept=".pdf,.jpg,.png" />
+                <div class="upload-zone" id="uploadZone">
+                  <i data-lucide="upload-cloud" class="h-10 w-10 text-gray-400 mx-auto mb-2"></i>
+                  <p class="text-xs font-bold text-gray-700">Kéo thả biên lai/tài liệu vào đây hoặc click để chọn tệp</p>
+                  <p class="text-[11px] text-gray-400 mt-1">Hỗ trợ tệp định dạng PDF hoặc hình ảnh biên lai</p>
+                </div>
+                
+                <div id="fileListContainer" class="max-w-md mt-2">
+                  <div class="uploaded-file-item" id="defaultFile">
+                    <i data-lucide="file-text" class="h-7 w-7 text-red-500"></i>
+                    <div class="flex-1 min-w-0">
+                      <p class="text-xs font-bold text-gray-900 truncate">BienLaiNopTienPhat_129.pdf</p>
+                      <p class="text-[10px] text-gray-500 font-medium">1.2 MB</p>
+                    </div>
+                    <button type="button" class="text-gray-400 hover:text-red-600 transition-colors p-1" onclick="removeDefaultFile()">
+                      <i data-lucide="trash-2" class="h-4.5 w-4.5"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Submit Buttons -->
+              <div class="flex justify-end gap-3 border-t pt-4">
+                <a href="XuLyViPham-ChiTietViPham.html" class="filter-btn filter-reset flex items-center gap-1.5">
+                  Hủy bỏ
+                </a>
+                <button type="submit" class="filter-btn filter-submit bg-blue-600 border-blue-600 text-white flex items-center gap-1.5 shadow-md">
+                  <i data-lucide="save" class="h-4 w-4"></i> Lưu tiến độ
+                </button>
+              </div>
+
+            </form>
+          </div>
+
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- SUCCESS POPUP MODAL -->
+  <div id="successModal" class="modal-overlay" hidden>
+    <section class="case-modal max-w-sm text-center p-6 bg-white rounded-xl shadow-xl border border-gray-100" role="dialog" aria-modal="true">
+      <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 text-green-600 shadow-inner">
+        <i data-lucide="check-check" class="h-8 w-8"></i>
+      </div>
+      <h2 class="text-lg font-bold text-gray-900 mb-2">Cập nhật thành công</h2>
+      <p class="text-xs text-gray-500 mb-6 leading-relaxed">Tiến độ thi hành quyết định xử phạt vi phạm hành chính đã được cập nhật thành công.</p>
+      <button class="w-full py-2.5 bg-green-600 text-white rounded-lg font-bold text-sm hover:bg-green-700 transition shadow" id="btnGoBackDetails" type="button">
+        Quay lại trang chi tiết
+      </button>
+    </section>
+  </div>
+
+  <script>
+    // Collapsible Sidebar logic
+    document.querySelector('#sidebarToggle')?.addEventListener('click', () => {
+      document.querySelector('.desktop-shell')?.classList.toggle('is-collapsed');
+    });
+
+    // Topbar Dropdown toggling
+    const initMenuToggle = (btnId, menuId) => {
+      const btn = document.getElementById(btnId);
+      const menu = document.getElementById(menuId);
+      if (!btn || !menu) return;
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const opened = btn.classList.toggle('is-open');
+        menu.hidden = !opened;
+      });
+    };
+    initMenuToggle('notificationToggle', 'notificationMenu');
+    initMenuToggle('userMenuToggle', 'userMenu');
+    document.addEventListener('click', () => {
+      document.getElementById('notificationMenu').hidden = true;
+      document.getElementById('userMenu').hidden = true;
+      document.getElementById('notificationToggle')?.classList.remove('is-open');
+      document.getElementById('userMenuToggle')?.classList.remove('is-open');
+    });
+
+    // Upload files management
+    const uploadZone = document.getElementById('uploadZone');
+    const fileInput = document.getElementById('fileInput');
+    const fileListContainer = document.getElementById('fileListContainer');
+
+    uploadZone.addEventListener('click', () => {
+      fileInput.click();
+    });
+
+    fileInput.addEventListener('change', () => {
+      const files = fileInput.files;
+      if (files.length > 0) {
+        const file = files[0];
+        
+        const item = document.createElement('div');
+        item.className = 'uploaded-file-item';
+        
+        const sizeMb = (file.size / (1024 * 1024)).toFixed(1);
+        
+        item.innerHTML = `
+          <i data-lucide="file-text" class="h-7 w-7 text-red-500"></i>
+          <div class="flex-1 min-w-0">
+            <p class="text-xs font-bold text-gray-900 truncate">${file.name}</p>
+            <p class="text-[10px] text-gray-500 font-medium">${sizeMb} MB</p>
+          </div>
+          <button type="button" class="text-gray-400 hover:text-red-600 transition-colors p-1 btn-delete-file">
+            <i data-lucide="trash-2" class="h-4.5 w-4.5"></i>
+          </button>
+        `;
+
+        item.querySelector('.btn-delete-file').addEventListener('click', () => {
+          item.remove();
+        });
+
+        fileListContainer.appendChild(item);
+        if (window.lucide) window.lucide.createIcons();
+      }
+    });
+
+    function removeDefaultFile() {
+      const defaultItem = document.getElementById('defaultFile');
+      if (defaultItem) defaultItem.remove();
+    }
+
+    // Submit handler
+    document.getElementById('progressForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const progressText = document.getElementById('progressText').value.trim();
+      if (!progressText) {
+        alert('Vui lòng nhập nội dung cập nhật tiến độ.');
+        return;
+      }
+
+      const attachments = fileListContainer.querySelectorAll('.uploaded-file-item');
+      if (attachments.length === 0) {
+        alert('Vui lòng đính kèm tệp minh chứng thi hành quyết định.');
+        return;
+      }
+
+      // Show Success modal
+      document.getElementById('successModal').hidden = false;
+    });
+
+    document.getElementById('btnGoBackDetails').addEventListener('click', () => {
+      window.location.href = 'XuLyViPham-ChiTietViPham.html';
+    });
+
+    window.addEventListener('load', () => {
+      if (window.lucide) window.lucide.createIcons();
+    });
+  </script>
+  <script src='../scripts/layout-sync.js'></script>
+</body>
+
+</html>
