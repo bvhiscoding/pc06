@@ -121,6 +121,302 @@ body {
 
 .public-map-shell .facility-popup {
   top: 47%;
+  width: 392px;
+  max-width: calc(100% - 32px);
+  max-height: none;
+  overflow: visible;
+  padding: 18px;
+}
+
+.public-map-shell .facility-popup dl {
+  margin-bottom: 0;
+}
+
+.popup-photo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.popup-photo-cell {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 1px solid #e6ebf2;
+  border-radius: 7px;
+  background: #f3f4f6;
+  cursor: zoom-in;
+  padding: 0;
+  transition: border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+}
+
+.popup-photo-cell:hover,
+.popup-photo-cell:focus-visible {
+  border-color: #f3b4b4;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.14);
+  transform: translateY(-1px);
+}
+
+.popup-photo-cell:focus-visible {
+  outline: 2px solid rgba(230, 0, 18, 0.25);
+  outline-offset: 2px;
+}
+
+.popup-photo-cell img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.popup-photo-more {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(17, 24, 39, 0.58);
+  color: #fff;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.popup-rating {
+  display: flex;
+  min-height: 36px;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  border: 1px solid #ffe0a8;
+  border-radius: 7px;
+  background: #fffaf0;
+  padding: 7px 10px;
+  color: #6b4b00;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.popup-rating strong {
+  color: #111827;
+  font-size: 15px;
+}
+
+.popup-rating span:last-child {
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.popup-stars {
+  display: inline-flex;
+  gap: 2px;
+  line-height: 1;
+}
+
+.popup-stars span {
+  color: #d1d5db;
+  font-size: 16px;
+}
+
+.popup-stars .filled,
+.popup-stars .half {
+  color: #f5a400;
+}
+
+.popup-stars .half {
+  background: linear-gradient(90deg, #f5a400 50%, #d1d5db 50%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.popup-review-form {
+  display: grid;
+  gap: 9px;
+  margin-top: 14px;
+  border-top: 1px solid #eef2f7;
+  padding-top: 14px;
+}
+
+.popup-review-form label {
+  color: #111827;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.popup-review-stars {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 7px;
+  width: 100%;
+}
+
+.popup-review-stars button {
+  display: grid;
+  width: 100%;
+  height: 42px;
+  place-items: center;
+  border: 1px solid #e7edf5;
+  border-radius: 8px;
+  background: #fff;
+  color: #d1d5db;
+  font-size: 24px;
+  line-height: 1;
+  box-shadow: inset 0 -1px 0 rgba(15, 23, 42, 0.04);
+  transition: background 150ms ease, border-color 150ms ease, box-shadow 150ms ease, color 150ms ease, transform 150ms ease;
+}
+
+.popup-review-stars button:hover,
+.popup-review-stars button:focus-visible,
+.popup-review-stars button.is-selected {
+  border-color: #f6c45d;
+  background: #fff3cf;
+  color: #f5a400;
+  box-shadow: 0 7px 14px rgba(245, 164, 0, 0.15);
+}
+
+.popup-review-stars button:focus-visible {
+  outline: 2px solid rgba(230, 0, 18, 0.28);
+  outline-offset: 2px;
+}
+
+.popup-review-stars button:active {
+  transform: translateY(1px);
+}
+
+.popup-review-form textarea {
+  width: 100%;
+  resize: vertical;
+  border: 1px solid #dfe5ed;
+  border-radius: 7px;
+  padding: 9px 10px;
+  color: #1f2937;
+  font-size: 13px;
+  line-height: 1.4;
+  outline: none;
+}
+
+.popup-review-form textarea:focus {
+  border-color: #f3b4b4;
+  box-shadow: 0 0 0 3px rgba(230, 0, 18, 0.08);
+}
+
+.popup-review-submit {
+  display: inline-flex;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
+  justify-self: start;
+  border-radius: 6px;
+  background: #e60012;
+  padding: 0 14px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.popup-review-submit:hover {
+  background: #b8000e;
+}
+
+.facility-photo-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.facility-photo-lightbox[hidden] {
+  display: none;
+}
+
+.facility-photo-lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(17, 24, 39, 0.68);
+  backdrop-filter: blur(3px);
+}
+
+.facility-photo-lightbox-panel {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: min(860px, 100%);
+  max-height: min(82vh, 680px);
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 10px;
+  background: #0f172a;
+  padding: 16px;
+  box-shadow: 0 28px 70px rgba(15, 23, 42, 0.42);
+}
+
+.facility-photo-lightbox-panel img {
+  width: 100%;
+  max-height: calc(82vh - 64px);
+  object-fit: contain;
+  border-radius: 7px;
+  background: #111827;
+}
+
+.photo-lightbox-close,
+.photo-lightbox-nav {
+  position: absolute;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.92);
+  color: #111827;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.24);
+}
+
+.photo-lightbox-close {
+  top: 12px;
+  right: 12px;
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+}
+
+.photo-lightbox-nav {
+  top: 50%;
+  width: 46px;
+  height: 46px;
+  border-radius: 999px;
+  transform: translateY(-50%);
+}
+
+.photo-lightbox-nav.prev {
+  left: 18px;
+}
+
+.photo-lightbox-nav.next {
+  right: 18px;
+}
+
+.photo-lightbox-close:hover,
+.photo-lightbox-nav:hover {
+  background: #fff3f3;
+  color: #c50000;
+}
+
+.photo-lightbox-count {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.78);
+  padding: 5px 10px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+body.photo-lightbox-open {
+  overflow: hidden;
 }
 
 .public-footer {
@@ -185,5 +481,38 @@ body {
 
   .public-map-shell {
     min-height: 560px;
+  }
+}
+
+.risk-ping {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+
+.risk-ping::before,
+.risk-ping::after {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 2px solid rgba(135, 82, 220, 0.7);
+  border-radius: 999px;
+  animation: riskPing 1.8s ease-out infinite;
+}
+
+.risk-ping::after {
+  animation-delay: 0.7s;
+}
+
+@keyframes riskPing {
+  from {
+    opacity: 0.9;
+    transform: scale(0.35);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.25);
   }
 }
