@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quản lý cán bộ</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/quan-ly-ho-so.css">
+  <link rel="stylesheet" href="../styles/quan-ly-can-bo.css">
+</head>
+
+<body class="font-sans antialiased">
+  <div class="desktop-shell can-bo-shell min-h-screen">
+    <header class="app-header fixed left-0 right-0 top-0 z-30 flex h-[80px] items-center justify-between px-6 text-white">
+      <div class="flex h-full items-center">
+        <img class="crest" src="../public/logocongan.png" alt="Logo Bộ Công an" />
+        <div class="brand-copy ml-4">
+          <div class="text-[22px] font-semibold leading-tight tracking-[0]">CÔNG AN TỈNH NINH BÌNH</div>
+          <div class="mt-1 text-[15px] font-medium tracking-[0] text-white/95">HỆ THỐNG QUẢN LÝ CƠ SỞ KINH DOANH CÓ ĐIỀU KIỆN VỀ AN NINH TRẬT TỰ</div>
+        </div>
+      </div>
+
+      <div class="topbar-actions flex h-full items-center gap-6">
+        <div class="topbar-menu-wrap">
+          <button id="notificationToggle" class="topbar-icon-btn relative" type="button" aria-label="Thông báo" aria-expanded="false">
+            <i data-lucide="bell" class="h-[26px] w-[26px]"></i>
+            <span id="notificationBadge" class="absolute right-0 top-1 grid h-5 min-w-5 place-items-center rounded-full bg-[#ff1e1e] px-1 text-[11px] font-semibold leading-none shadow">3</span>
+          </button>
+          <div id="notificationMenu" class="topbar-dropdown notification-dropdown" hidden>
+            <div class="dropdown-head"><span>Thông báo</span><button id="markAllReadBtn" type="button">Đánh dấu đã đọc</button></div>
+            <div id="notificationList" class="notification-list"></div>
+          </div>
+        </div>
+
+        <div class="topbar-menu-wrap">
+          <button id="userMenuToggle" class="user-menu-btn" type="button" aria-label="Mở menu tài khoản" aria-expanded="false">
+            <div class="grid h-[46px] w-[46px] place-items-center rounded-full bg-white text-[#cf0000] shadow-sm">
+              <i data-lucide="user-round" class="h-7 w-7 fill-[#cf0000]/15"></i>
+            </div>
+            <div class="hidden text-left sm:block">
+              <div class="text-[15px] font-semibold leading-5">Nguyễn Văn A</div>
+              <div class="text-[13px] font-medium text-white/92">Phòng CSQHCC về TTXH</div>
+            </div>
+            <i data-lucide="chevron-down" class="user-chevron h-5 w-5 text-white"></i>
+          </button>
+          <div id="userMenu" class="topbar-dropdown user-dropdown" hidden>
+            <div class="user-card">
+              <div class="grid h-11 w-11 place-items-center rounded-full bg-[#fff2f2] text-[#cf0000]"><i data-lucide="user-round" class="h-6 w-6"></i></div>
+              <div><div class="user-name">Nguyễn Văn A</div><div class="user-role">Phòng CSQHCC về TTXH</div></div>
+            </div>
+            <a class="dropdown-action" href="HoSoCaNhan.html"><i data-lucide="id-card" class="h-4 w-4"></i>Thông tin tài khoản</a>
+            <a class="dropdown-action" href="CauHinhHeThong.html"><i data-lucide="settings" class="h-4 w-4"></i>Cài đặt hiển thị</a>
+            <a class="dropdown-action danger" href="DangNhap.html"><i data-lucide="log-out" class="h-4 w-4"></i>Đăng xuất</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <aside class="sidebar fixed bottom-0 left-0 top-[80px] z-20 px-2 text-white">
+      <div class="sidebar-scroll">
+        <div class="nav-section mt-0">Tổng quan</div>
+        <a href="#" class="nav-item mt-2"><i data-lucide="house"></i><span class="nav-copy">Dashboard</span></a>
+        <div class="nav-section">Nghiệp vụ</div>
+        <a href="QuanLyHoSo.html" class="nav-item mt-2"><i data-lucide="file-text"></i><span class="nav-copy">Quản lý hồ sơ</span></a>
+        <a href="CoSoDuLieuCSKD.html" class="nav-item"><i data-lucide="database"></i><span class="nav-copy">Cơ sở dữ liệu điều kiện CAKD-ANTT</span></a>
+        <a href="KiemTraCoSo.html" class="nav-item"><i data-lucide="clipboard-check"></i><span class="nav-copy">Kiểm tra cơ sở</span></a>
+        <a href="XuLyViPham.html" class="nav-item"><i data-lucide="octagon-alert"></i><span class="nav-copy">Xử lý vi phạm</span></a>
+        <a href="QuanLyPhanAnh.html" class="nav-item"><i data-lucide="message-square-warning"></i><span class="nav-copy">Quản lý phản ánh</span></a>
+        <div class="nav-section">Báo cáo</div>
+        <a href="BaoCao-ThongKe.html" class="nav-item mt-2"><i data-lucide="chart-column-big"></i><span class="nav-copy">Báo cáo - thống kê</span></a>
+        <div class="nav-section">Quản trị hệ thống</div>
+        <a href="QuanLyTaiKhoan.html" class="nav-item mt-2"><i data-lucide="users"></i><span class="nav-copy">Quản lý tài khoản</span></a>
+        <a href="MaTranPhanQuyen.html" class="nav-item"><i data-lucide="crosshair"></i><span class="nav-copy">Phân quyền vai trò</span></a>
+        <a href="QuanLyCanBo.html" class="nav-item active"><i data-lucide="users-round"></i><span class="nav-copy">Quản lý cán bộ</span></a>
+        <a href="NhatKyHeThong.html" class="nav-item"><i data-lucide="notebook-text"></i><span class="nav-copy">Nhật ký hệ thống</span></a>
+        <a href="CauHinhHeThong.html" class="nav-item"><i data-lucide="settings"></i><span class="nav-copy">Cấu hình hệ thống</span></a>
+        <a href="#" class="nav-item"><i data-lucide="archive-restore"></i><span class="nav-copy">Sao lưu dữ liệu</span></a>
+      </div>
+      <div class="sidebar-action">
+        <button id="sidebarToggle" class="sidebar-toggle" type="button" aria-label="Thu gọn menu" aria-expanded="true">
+          <i data-lucide="chevron-left" class="toggle-icon"></i><span class="collapse-label">Thu gọn</span>
+        </button>
+      </div>
+    </aside>
+
+    <main class="content min-h-screen pt-[80px]">
+      <div class="px-6 pb-8 pt-6 lg:px-7">
+        <section class="can-bo-head">
+          <div>
+            <div class="flex items-center gap-2 text-[13px] font-medium text-[#41506a]">
+              <span>Trang chủ</span><i data-lucide="chevron-right" class="h-4 w-4 text-[#6d7788]"></i>
+              <span>Quản trị hệ thống</span><i data-lucide="chevron-right" class="h-4 w-4 text-[#6d7788]"></i>
+              <span>Quản lý cán bộ</span>
+            </div>
+            <h1 class="mt-7 text-[30px] font-extrabold leading-tight text-[#111827]">Quản lý cán bộ</h1>
+          </div>
+          <div class="can-bo-actions">
+            <button id="openOfficerModal" class="btn-red" type="button"><i data-lucide="plus"></i>Thêm cán bộ</button>
+            <button class="btn-light" type="button"><i data-lucide="download"></i>Xuất Excel</button>
+          </div>
+        </section>
+
+        <section class="officer-panel mt-5">
+          <div class="filter-grid">
+            <label class="field-wrap officer-search">
+              <input id="searchInput" class="field" type="text" placeholder="Tìm kiếm theo họ tên, username, số điện thoại..." />
+              <i data-lucide="search" class="field-icon"></i>
+            </label>
+            <label><span class="form-label">Đơn vị</span><span class="field-wrap block"><select id="unitSelect" class="field appearance-none"></select><i data-lucide="chevron-down" class="field-icon h-4 w-4"></i></span></label>
+            <label><span class="form-label">Chức vụ</span><span class="field-wrap block"><select id="positionSelect" class="field appearance-none"></select><i data-lucide="chevron-down" class="field-icon h-4 w-4"></i></span></label>
+            <label><span class="form-label">Vai trò</span><span class="field-wrap block"><select id="roleSelect" class="field appearance-none"></select><i data-lucide="chevron-down" class="field-icon h-4 w-4"></i></span></label>
+            <label><span class="form-label">Trạng thái</span><span class="field-wrap block"><select id="statusSelect" class="field appearance-none"></select><i data-lucide="chevron-down" class="field-icon h-4 w-4"></i></span></label>
+            <button id="searchBtn" class="btn-red self-end" type="button"><i data-lucide="search"></i>Tìm kiếm</button>
+            <button id="resetBtn" class="btn-light self-end" type="button"><i data-lucide="rotate-cw"></i>Đặt lại</button>
+          </div>
+
+        </section>
+
+        <section class="officer-table-panel mt-4 overflow-hidden rounded-[7px] border border-[#e4e9f0] bg-white shadow-soft">
+          <div class="overflow-x-auto">
+            <table class="data-table officer-table w-full">
+              <thead>
+                <tr>
+                  <th>STT</th><th>Họ và tên</th><th>Username</th><th>Vai trò</th><th>Chức vụ</th><th>Đơn vị</th><th>Số điện thoại</th><th>Trạng thái</th><th>Ngày tạo</th><th>Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="officerBody"></tbody>
+            </table>
+          </div>
+
+        </section>
+
+        <section class="officer-foot mt-5">
+          <div id="resultSummary">Hiển thị 1 đến 6 của 6 cán bộ</div>
+          <div id="pagination" class="flex items-center gap-2"></div>
+        </section>
+      </div>
+    </main>
+
+    <div id="officerModal" class="officer-modal-backdrop" hidden>
+      <section class="officer-modal" role="dialog" aria-modal="true" aria-labelledby="officerModalTitle">
+        <div class="officer-modal-head">
+          <h2 id="officerModalTitle">Thêm mới cán bộ</h2>
+          <button id="closeOfficerModal" class="close-icon-btn" type="button" aria-label="Đóng"><i data-lucide="x"></i></button>
+        </div>
+        <form id="officerForm" class="officer-modal-body">
+          <div class="form-block-title">1. Thông tin cá nhân</div>
+          <div class="modal-person-grid">
+            <label class="avatar-uploader">
+              <span class="form-label">Ảnh đại diện</span>
+              <span class="avatar-box">
+                <span class="avatar-placeholder"><i data-lucide="user-round"></i></span>
+                <span class="camera-dot"><i data-lucide="camera"></i></span>
+                <span class="choose-photo">Chọn ảnh</span>
+                <small>JPG, PNG (tối đa 2MB)</small>
+              </span>
+            </label>
+            <div class="modal-fields">
+              <div class="form-row-2">
+                <label><span class="form-label">Họ và tên <b>*</b></span><input class="field" required placeholder="Nhập họ và tên"></label>
+                <label><span class="form-label">Giới tính <b>*</b></span><span class="field-wrap block"><select class="field appearance-none" required><option>-- Chọn giới tính --</option><option>Nam</option><option>Nữ</option></select><i data-lucide="chevron-down" class="field-icon h-4 w-4"></i></span></label>
+              </div>
+              <div class="form-row-2">
+                <label><span class="form-label">Ngày sinh <b>*</b></span><span class="field-wrap block"><input class="field" type="text" placeholder="dd/mm/yyyy" required><i data-lucide="calendar-days" class="field-icon"></i></span></label>
+                <label><span class="form-label">Số CCCD/CMND <b>*</b></span><input class="field" required placeholder="Nhập số CCCD/CMND"></label>
+              </div>
+              <div class="form-row-2">
+                <label><span class="form-label">Số điện thoại <b>*</b></span><input class="field" required placeholder="Nhập số điện thoại"></label>
+                <label><span class="form-label">Email</span><input class="field" type="email" placeholder="Nhập email (nếu có)"></label>
+              </div>
+            </div>
+          </div>
+          <div class="form-label mt-4">Địa chỉ <b>*</b></div>
+          <div class="form-row-3">
+            <label><span class="form-label">Tỉnh/Thành phố <b>*</b></span><span class="field-wrap block"><select class="field appearance-none"><option>-- Chọn tỉnh/thành phố --</option><option>Ninh Bình</option></select><i data-lucide="chevron-down" class="field-icon h-4 w-4"></i></span></label>
+            <label><span class="form-label">Huyện/Quận <b>*</b></span><span class="field-wrap block"><select class="field appearance-none"><option>-- Chọn huyện/quận --</option><option>TP. Ninh Bình</option></select><i data-lucide="chevron-down" class="field-icon h-4 w-4"></i></span></label>
+            <label><span class="form-label">Xã/Phường/Thị trấn <b>*</b></span><span class="field-wrap block"><select class="field appearance-none"><option>-- Chọn xã/phường/thị trấn --</option><option>P. Đông Thành</option></select><i data-lucide="chevron-down" class="field-icon h-4 w-4"></i></span></label>
+          </div>
+          <label class="mt-3 block"><span class="form-label">Địa chỉ chi tiết <b>*</b></span><input class="field" placeholder="Số nhà, tên đường, thôn/xóm, ..."></label>
+
+          <div class="modal-divider"></div>
+          <div class="form-block-title">2. Thông tin công tác</div>
+          <div class="form-row-3">
+            <label><span class="form-label">Đơn vị công tác <b>*</b></span><span class="field-wrap block"><select class="field appearance-none"><option>-- Chọn đơn vị --</option><option>Phòng CSQHCC về TTXH</option><option>Đội QLHC về TTXH</option></select><i data-lucide="chevron-down" class="field-icon h-4 w-4"></i></span></label>
+            <label><span class="form-label">Chức vụ <b>*</b></span><input class="field" placeholder="Nhập chức vụ"></label>
+            <label><span class="form-label">Vai trò <b>*</b></span><span class="field-wrap block"><select class="field appearance-none"><option>-- Chọn vai trò --</option><option>Cán bộ tiếp nhận</option><option>Vai trò phụ</option></select><i data-lucide="chevron-down" class="field-icon h-4 w-4"></i></span></label>
+          </div>
+
+          <div class="modal-divider"></div>
+          <div class="form-block-title">3. Gắn tài khoản</div>
+          <label class="account-search"><span class="form-label">Tài khoản <b>*</b></span><span class="field-wrap block"><input class="field" value="Lan"><i data-lucide="search" class="field-left-icon"></i><button class="clear-mini" type="button" aria-label="Xóa"><i data-lucide="x"></i></button></span></label>
+          <label class="account-result"><input type="radio" name="account"><span>Nguyễn Lan - nguyenlan123</span></label>
+          <p class="modal-hint">Nhập để tìm kiếm tài khoản. Chỉ hiển thị các tài khoản đã tồn tại.</p>
+        </form>
+        <div class="officer-modal-foot">
+          <button class="btn-light" type="button" data-close-modal>Hủy bỏ</button>
+          <button class="btn-red" type="submit" form="officerForm">Lưu thông tin</button>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="../scripts/layout-sync.js"></script>
+  <script src="../scripts/quan-ly-can-bo.js"></script>
+</body>
+</html>

@@ -134,7 +134,7 @@
           ${navItem('QuanLyHoSo.html', 'file-text', 'Quản lý hồ sơ', ['QuanLyHoSo.html', 'ChiTietHoSo.html'])}
           ${navItem('CoSoDuLieuCSKD.html', 'database', 'Cơ sở dữ liệu CSKD-ANTT', ['CoSoDuLieuCSKD.html', 'CoSoDuLieuCSKD-ChiTiet.html', 'CoSoDuLieuCSKD-TaoMoi.html'])}
           ${navItem('QuanLyKhaiBao.html', 'inbox', 'Khai báo từ cơ sở', ['QuanLyKhaiBao.html', 'CongCSKD-KhaiBaoLuuTru.html', 'CongCSKD-KhaiBaoTaiSan.html', 'CongCSKD-BaoCaoDinhKy.html'])}
-          ${navItem('KiemTraCoSo.html', 'clipboard-check', 'Kiểm tra cơ sở', ['KiemTraCoSo.html', 'KiemTraCoSo-LichKiemTra.html', 'KiemTraCoSo-TaoKeHoach.html', 'KiemTraCoSo-ChinhSuaKiemTra.html', 'KiemTraCoSo-ChiTietKiemTra.html', 'QuanLyMauChecklist.html'])}
+          ${navItem('KiemTraCoSo.html', 'clipboard-check', 'Kiểm tra cơ sở', ['KiemTraCoSo.html', 'KiemTraCoSo-LichKiemTra.html', 'KiemTraCoSo-TaoKeHoach.html', 'KiemTraCoSo-ChiTietKiemTra.html', 'QuanLyMauChecklist.html'])}
           ${navItem('XuLyViPham.html', 'octagon-alert', 'Vi phạm / Xử lý vi phạm', ['XuLyViPham.html', 'XuLyViPham-ThemViPham.html', 'XuLyViPham-ChiTietViPham.html', 'XuLyViPham-CapNhatXuLy.html'])}
           ${navItem('QuanLyPhanAnh.html', 'message-square-warning', 'Phản ánh kiến nghị', ['QuanLyPhanAnh.html', 'QuanLyPhanAnh-TaoMoiPhanAnh.html', 'QuanLyPhanAnh-ChiTietPhanAnh.html', 'QuanLyPhanAnh-ChinhSuaPhanAnh.html'])}
 
@@ -151,6 +151,7 @@
           <div class="nav-section">Cấu hình</div>
           ${navItem('DanhMuc.html', 'folder', 'Danh mục dùng chung', ['DanhMuc.html'])}
           ${navItem('QuanLyTaiKhoan.html', 'users', 'Người dùng & phân quyền', ['QuanLyTaiKhoan.html', 'HoSoCaNhan.html', 'MaTranPhanQuyen.html', 'PhanCongDiaBan.html'])}
+          ${navItem('QuanLyCanBo.html', 'users-round', 'Quản lý cán bộ', ['QuanLyCanBo.html', 'ChiTietCanBo.html'])}
           ${navItem('NhatKyHeThong.html', 'history', 'Nhật ký hệ thống', ['NhatKyHeThong.html'])}
           ${navItem('CauHinhHeThong.html', 'settings', 'Cấu hình hệ thống', ['CauHinhHeThong.html'])}
         </div>

@@ -257,25 +257,28 @@
     <!-- Main Content -->
     <main class="content min-h-screen pt-[80px]">
       <div class="module-page px-6 pb-7 pt-6 lg:px-7">
-        <nav class="module-breadcrumb">
-          <span>Trang chủ</span>
-          <i data-lucide="chevron-right" class="h-4 w-4"></i>
-          <span>Cơ sở dữ liệu CSKD-ANTT</span>
-          <i data-lucide="chevron-right" class="h-4 w-4"></i>
-          <span>Thêm mới cơ sở</span>
-        </nav>
-
-        <section class="module-toolbar">
-          <div class="module-title">
-            <h1>Thêm mới cơ sở kinh doanh</h1>
-            <div class="module-total">Nhập thông tin đăng ký cơ sở mới vào hệ thống quản lý</div>
+        <!-- Component: Breadcrumbs & Header Actions -->
+        <section class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-5">
+          <div class="flex items-center gap-2 text-[13px] font-medium text-[#6b7280]">
+            <i data-lucide="house" class="h-4 w-4 text-[#9098a5]"></i>
+            <span>Trang chủ</span>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
+            <span>Cơ sở dữ liệu CSKD-ANTT</span>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
+            <span>Thêm mới cơ sở</span>
           </div>
-          <div class="module-actions">
+          <div class="flex flex-wrap gap-3">
             <a class="module-action-btn module-action-secondary" href="CoSoDuLieuCSKD.html">
               <i data-lucide="arrow-left" class="h-4 w-4"></i>Quay lại danh sách
             </a>
           </div>
         </section>
+
+        <!-- Component: Title & Description -->
+        <div class="mb-6">
+          <h1 class="text-[20px] font-bold text-[#1e293b]">Thêm mới cơ sở kinh doanh</h1>
+          <p class="text-[13px] text-gray-500">Nhập thông tin đăng ký cơ sở mới vào hệ thống quản lý</p>
+        </div>
 
         <!-- Wizard Progress Steps -->
         <div class="wizard-steps">

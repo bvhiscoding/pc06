@@ -194,30 +194,33 @@
     <!-- Main Content -->
     <main class="content min-h-screen pt-[80px]">
       <div class="module-page px-6 pb-7 pt-6 lg:px-7">
-        <nav class="module-breadcrumb">
-          <span>Trang chủ</span>
-          <i data-lucide="chevron-right" class="h-4 w-4"></i>
-          <span>Vi phạm / Xử lý vi phạm</span>
-          <i data-lucide="chevron-right" class="h-4 w-4"></i>
-          <span>Lập biên bản / Quyết định xử lý</span>
-        </nav>
-
-        <section class="module-toolbar">
-          <div class="module-title">
-            <h1 class="flex items-center gap-2">
-              <a href="XuLyViPham.html" class="text-gray-400 hover:text-gray-900 transition-colors">
-                <i data-lucide="arrow-left" class="h-6 w-6"></i>
-              </a>
-              Lập quyết định xử lý vi phạm
-            </h1>
-            <div class="module-total">Ghi nhận thông tin biên bản và ban hành quyết định xử phạt hành chính</div>
+        <!-- Component: Breadcrumbs & Header Actions -->
+        <section class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-5">
+          <div class="flex items-center gap-2 text-[13px] font-medium text-[#6b7280]">
+            <i data-lucide="house" class="h-4 w-4 text-[#9098a5]"></i>
+            <span>Trang chủ</span>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
+            <span>Vi phạm / Xử lý vi phạm</span>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
+            <span>Lập biên bản / Quyết định xử lý</span>
           </div>
-          <div class="module-actions">
+          <div class="flex flex-wrap gap-3">
             <a class="module-action-btn module-action-secondary" href="XuLyViPham.html">
               <i data-lucide="x" class="h-4 w-4"></i>Hủy bỏ
             </a>
           </div>
         </section>
+
+        <!-- Component: Title & Description -->
+        <div class="mb-6 flex items-center gap-3">
+          <a href="XuLyViPham.html" class="grid h-10 w-10 place-items-center rounded-md border border-[#dfe5ed] bg-white text-gray-500 hover:text-gray-900 transition hover:bg-gray-50 shadow-sm shrink-0">
+            <i data-lucide="arrow-left" class="h-5 w-5"></i>
+          </a>
+          <div>
+            <h1 class="text-[20px] font-bold text-[#1e293b]">Lập quyết định xử lý vi phạm</h1>
+            <p class="text-[13px] text-gray-500">Ghi nhận thông tin biên bản và ban hành quyết định xử phạt hành chính</p>
+          </div>
+        </div>
 
         <!-- Form Card Container -->
         <section class="module-form-card">

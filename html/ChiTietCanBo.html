@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chi tiết cán bộ</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/quan-ly-ho-so.css">
+  <link rel="stylesheet" href="../styles/quan-ly-can-bo.css">
+</head>
+
+<body class="font-sans antialiased">
+  <div class="desktop-shell can-bo-shell min-h-screen">
+    <header class="app-header fixed left-0 right-0 top-0 z-30 flex h-[80px] items-center justify-between px-6 text-white">
+      <div class="flex h-full items-center"><img class="crest" src="../public/logocongan.png" alt="Logo Bộ Công an" /><div class="brand-copy ml-4"><div class="text-[22px] font-semibold leading-tight tracking-[0]">CÔNG AN TỈNH NINH BÌNH</div><div class="mt-1 text-[15px] font-medium tracking-[0] text-white/95">HỆ THỐNG QUẢN LÝ CƠ SỞ KINH DOANH CÓ ĐIỀU KIỆN VỀ AN NINH TRẬT TỰ</div></div></div>
+      <div class="topbar-actions flex h-full items-center gap-6">
+        <div class="topbar-menu-wrap"><button id="notificationToggle" class="topbar-icon-btn relative" type="button" aria-label="Thông báo" aria-expanded="false"><i data-lucide="bell" class="h-[26px] w-[26px]"></i><span id="notificationBadge" class="absolute right-0 top-1 grid h-5 min-w-5 place-items-center rounded-full bg-[#ff1e1e] px-1 text-[11px] font-semibold leading-none shadow">3</span></button><div id="notificationMenu" class="topbar-dropdown notification-dropdown" hidden><div class="dropdown-head"><span>Thông báo</span><button id="markAllReadBtn" type="button">Đánh dấu đã đọc</button></div><div id="notificationList" class="notification-list"></div></div></div>
+        <div class="topbar-menu-wrap"><button id="userMenuToggle" class="user-menu-btn" type="button" aria-label="Mở menu tài khoản" aria-expanded="false"><div class="grid h-[46px] w-[46px] place-items-center rounded-full bg-white text-[#cf0000] shadow-sm"><i data-lucide="user-round" class="h-7 w-7 fill-[#cf0000]/15"></i></div><div class="hidden text-left sm:block"><div class="text-[15px] font-semibold leading-5">Nguyễn Văn A</div><div class="text-[13px] font-medium text-white/92">Phòng CSQHCC về TTXH</div></div><i data-lucide="chevron-down" class="user-chevron h-5 w-5 text-white"></i></button><div id="userMenu" class="topbar-dropdown user-dropdown" hidden><div class="user-card"><div class="grid h-11 w-11 place-items-center rounded-full bg-[#fff2f2] text-[#cf0000]"><i data-lucide="user-round" class="h-6 w-6"></i></div><div><div class="user-name">Nguyễn Văn A</div><div class="user-role">Phòng CSQHCC về TTXH</div></div></div><a class="dropdown-action" href="HoSoCaNhan.html"><i data-lucide="id-card" class="h-4 w-4"></i>Thông tin tài khoản</a><a class="dropdown-action danger" href="DangNhap.html"><i data-lucide="log-out" class="h-4 w-4"></i>Đăng xuất</a></div></div>
+      </div>
+    </header>
+
+    <aside class="sidebar fixed bottom-0 left-0 top-[80px] z-20 px-2 text-white">
+      <div class="sidebar-scroll">
+        <div class="nav-section mt-0">Tổng quan</div><a href="#" class="nav-item mt-2"><i data-lucide="house"></i><span class="nav-copy">Dashboard</span></a>
+        <div class="nav-section">Nghiệp vụ</div><a href="QuanLyHoSo.html" class="nav-item mt-2"><i data-lucide="file-text"></i><span class="nav-copy">Quản lý hồ sơ</span></a><a href="CoSoDuLieuCSKD.html" class="nav-item"><i data-lucide="database"></i><span class="nav-copy">Cơ sở dữ liệu điều kiện CAKD-ANTT</span></a><a href="KiemTraCoSo.html" class="nav-item"><i data-lucide="clipboard-check"></i><span class="nav-copy">Kiểm tra cơ sở</span></a><a href="XuLyViPham.html" class="nav-item"><i data-lucide="octagon-alert"></i><span class="nav-copy">Xử lý vi phạm</span></a><a href="QuanLyPhanAnh.html" class="nav-item"><i data-lucide="message-square-warning"></i><span class="nav-copy">Quản lý phản ánh</span></a>
+        <div class="nav-section">Báo cáo</div><a href="BaoCao-ThongKe.html" class="nav-item mt-2"><i data-lucide="chart-column-big"></i><span class="nav-copy">Báo cáo - thống kê</span></a>
+        <div class="nav-section">Quản trị hệ thống</div><a href="QuanLyTaiKhoan.html" class="nav-item mt-2"><i data-lucide="users"></i><span class="nav-copy">Quản lý tài khoản</span></a><a href="MaTranPhanQuyen.html" class="nav-item"><i data-lucide="crosshair"></i><span class="nav-copy">Phân quyền vai trò</span></a><a href="QuanLyCanBo.html" class="nav-item active"><i data-lucide="users-round"></i><span class="nav-copy">Quản lý cán bộ</span></a><a href="NhatKyHeThong.html" class="nav-item"><i data-lucide="notebook-text"></i><span class="nav-copy">Nhật ký hệ thống</span></a><a href="CauHinhHeThong.html" class="nav-item"><i data-lucide="settings"></i><span class="nav-copy">Cấu hình hệ thống</span></a><a href="#" class="nav-item"><i data-lucide="archive-restore"></i><span class="nav-copy">Sao lưu dữ liệu</span></a>
+      </div>
+      <div class="sidebar-action"><button id="sidebarToggle" class="sidebar-toggle" type="button" aria-label="Thu gọn menu" aria-expanded="true"><i data-lucide="chevron-left" class="toggle-icon"></i><span class="collapse-label">Thu gọn</span></button></div>
+    </aside>
+
+    <main class="content min-h-screen pt-[80px]">
+      <div class="detail-page px-6 pb-12 pt-6 lg:px-7">
+        <section class="can-bo-head">
+          <div>
+            <div class="flex items-center gap-2 text-[13px] font-medium text-[#41506a]"><span>Trang chủ</span><i data-lucide="chevron-right" class="h-4 w-4 text-[#6d7788]"></i><span>Quản trị hệ thống</span><i data-lucide="chevron-right" class="h-4 w-4 text-[#6d7788]"></i><span>Quản lý cán bộ</span><i data-lucide="chevron-right" class="h-4 w-4 text-[#6d7788]"></i><span>Chi tiết cán bộ</span></div>
+            <h1 class="mt-7 text-[30px] font-extrabold leading-tight text-[#111827]">Chi tiết cán bộ</h1>
+          </div>
+          <div class="can-bo-actions"><a class="btn-light" href="QuanLyCanBo.html"><i data-lucide="arrow-left"></i>Quay lại danh sách</a><button id="editOfficerBtn" class="btn-red" type="button"><i data-lucide="pencil"></i>Chỉnh sửa</button></div>
+        </section>
+
+        <section class="profile-card mt-5">
+          <div class="profile-hero">
+            <img src="../public/CANB/CANB2.jpeg" alt="Ảnh cán bộ Nguyễn Lan" />
+            <div><h2>Nguyễn Lan</h2><span class="status-pill active-dot">Đang hoạt động</span></div>
+          </div>
+          <div class="profile-info">
+            <div class="info-row"><i data-lucide="user-round"></i><span>Họ và tên</span><strong>Nguyễn Lan</strong></div>
+            <div class="info-row"><i data-lucide="calendar-days"></i><span>Ngày sinh</span><strong>15/06/1992</strong></div>
+            <div class="info-row"><i data-lucide="venus-and-mars"></i><span>Giới tính</span><strong>Nữ</strong></div>
+            <div class="info-row"><i data-lucide="briefcase-business"></i><span>Chức vụ</span><strong>Cán bộ xử lý hồ sơ</strong></div>
+            <div class="info-row"><i data-lucide="building-2"></i><span>Đơn vị công tác</span><strong>Phòng Cảnh sát QLHC về TTXH</strong></div>
+            <div class="info-row"><i data-lucide="id-card"></i><span>Số CCCD/CMND</span><strong>034192000123</strong></div>
+            <div class="info-row"><i data-lucide="phone"></i><span>Số điện thoại</span><strong>0987 654 321</strong></div>
+            <div class="info-row"><i data-lucide="mail"></i><span>Email</span><strong>nguyenlan@congan.gov.vn</strong></div>
+            <div class="info-row"><i data-lucide="map-pin"></i><span>Địa chỉ</span><strong>Số 123, Đường Lê Lợi, Phường Đông Thành, Thành phố Ninh Bình, Tỉnh Ninh Bình</strong></div>
+            <div class="info-row"><i data-lucide="calendar-plus"></i><span>Ngày tạo</span><strong>01/03/2023 08:30</strong></div>
+            <div class="info-row"><i data-lucide="user-plus"></i><span>Người tạo</span><strong>Nguyễn Văn A (Phòng CSQHCC về TTXH)</strong></div>
+            <div class="info-row"><i data-lucide="user-round-cog"></i><span>Tài khoản</span><strong>Nguyễn Lan - nguyenlan123</strong></div>
+          </div>
+        </section>
+
+        <section class="profile-card assignment-card mt-7">
+          <h2><i data-lucide="map-pin"></i>Phân công địa bàn</h2>
+          <div class="overflow-x-auto">
+            <table class="assignment-table">
+              <thead><tr><th>STT</th><th>Địa bàn</th><th>Loại địa bàn</th><th>Phạm vi quản lý</th><th>Ngày phân công</th><th>Trạng thái</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>TP. Ninh Bình</td><td>Thành phố</td><td>Toàn bộ địa bàn</td><td>01/03/2023</td><td><span class="status-pill">Đang hiệu lực</span></td></tr>
+                <tr><td>2</td><td>H. Hoa Lư</td><td>Huyện</td><td>Toàn bộ địa bàn</td><td>01/03/2023</td><td><span class="status-pill">Đang hiệu lực</span></td></tr>
+                <tr><td>3</td><td>P. Đông Thành</td><td>Phường</td><td>Khu vực 1, 2, 3</td><td>01/03/2023</td><td><span class="status-pill">Đang hiệu lực</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="mt-5 text-center"><button class="btn-light" type="button"><i data-lucide="map"></i>Xem bản đồ phân công</button></div>
+        </section>
+      </div>
+    </main>
+  </div>
+  <script src="../scripts/layout-sync.js"></script>
+  <script src="../scripts/quan-ly-can-bo.js"></script>
+</body>
+</html>

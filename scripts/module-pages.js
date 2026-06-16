@@ -78,7 +78,10 @@ const declarationRows = [
   ['KB-2026-0188', 'Lưu trú', 'Khách sạn Tràng An', 'P. Đông Thành', '03 khách', '07:30 15/06/2026', 'Chờ duyệt', 'Nguyễn Văn A'],
   ['KB-2026-0187', 'Tài sản', 'Cầm đồ Phát Lộc', 'P. Tân Thành', 'Xe máy SH 150i', '20:10 14/06/2026', 'Cần bổ sung', 'Trần Văn K'],
   ['KB-2026-0186', 'Lưu trú', 'Nhà nghỉ Bình Minh', 'P. Nam Thành', '05 khách', '18:45 14/06/2026', 'Đã hoàn thành', 'Phạm Thị H'],
-  ['KB-2026-0185', 'Báo cáo định kỳ', 'Karaoke Hoa Sen', 'P. Đông Thành', 'Tháng 06/2026', '10:15 13/06/2026', 'Đang xử lý', 'Nguyễn Văn A']
+  ['KB-2026-0185', 'Báo cáo định kỳ', 'Karaoke Hoa Sen', 'P. Đông Thành', 'Tháng 06/2026', '10:15 13/06/2026', 'Đang xử lý', 'Nguyễn Văn A'],
+  ['KB-2026-0184', 'Lưu trú', 'Nhà nghỉ Cát Tường', 'P. Phúc Thành', '02 khách (Nộp muộn)', '09:00 12/06/2026', 'Nộp muộn', 'Phạm Thị H'],
+  ['KB-2026-0183', 'Tài sản', 'Cầm đồ Kim Long', 'P. Nam Bình', 'Điện thoại iPhone 15', '15:30 11/06/2026', 'Có cảnh báo', 'Trần Văn K'],
+  ['KB-2026-0182', 'Báo cáo định kỳ', 'Khách sạn Hoa Lư', 'P. Đông Thành', 'Tháng 05/2026', '08:45 10/06/2026', 'Chờ xử lý', 'Nguyễn Văn A']
 ];
 
 const procedureRows = [
@@ -204,10 +207,16 @@ const moduleConfigs = {
     description: 'Cán bộ tiếp nhận, lọc, xem chi tiết, duyệt, từ chối hoặc yêu cầu bổ sung khai báo.',
     action: 'Duyệt hàng loạt',
     entities: ['DeclarationStay', 'AssetTransaction', 'PeriodicReport', 'Notification'],
-    filters: filters(['Từ khóa', 'Loại khai báo', 'Cơ sở', 'Địa bàn', 'Trạng thái', 'Ngày gửi']),
-    tabs: ['Tất cả', 'Chờ duyệt', 'Đã duyệt', 'Cần bổ sung', 'Từ chối'],
+    filters: filters(['Từ khóa', 'Loại khai báo', 'Cơ sở', 'Địa bàn', 'Trạng thái', 'Ngày gửi', 'Mức độ cảnh báo']),
+    tabs: ['Khai báo lưu trú', 'Khai báo tài sản', 'Báo cáo định kỳ', 'Nộp muộn', 'Có cảnh báo', 'Chờ xử lý'],
     columns: ['Mã khai báo', 'Loại', 'Cơ sở', 'Địa bàn', 'Nội dung', 'Ngày gửi', 'Trạng thái', 'Cán bộ'],
     rows: declarationRows,
+    stats: [
+      ['Tổng khai báo', '128', 'Đã tiếp nhận trong tháng'],
+      ['Chờ xử lý', '18', 'Cần duyệt trong ngày'],
+      ['Cảnh báo đối soát', '03', 'Hệ thống tự động phát hiện'],
+      ['Nộp muộn', '05', 'Cần gửi nhắc nhở cơ sở']
+    ],
     details: [['Chờ duyệt', '18'], ['Cần bổ sung', '12'], ['Khai báo lưu trú', '86'], ['Khai báo tài sản', '40']],
     workflow: ['Tiếp nhận khai báo', 'Kiểm tra trường bắt buộc', 'Đối chiếu dữ liệu liên quan', 'Duyệt hoặc yêu cầu bổ sung'],
     docs: ['Tệp CCCD đính kèm', 'Ảnh tài sản', 'Phiếu báo cáo định kỳ']
@@ -497,7 +506,11 @@ function section(title, icon, fields, mode = 'grid') {
 
 function filters(labels) {
   return labels.map((label) => {
-    const options = /vai trò/i.test(label) ? roleOptions : /xã|phường|địa bàn/i.test(label) ? wardOptions : /trạng thái|kết quả/i.test(label) ? statusOptions : null;
+    const options = /vai trò/i.test(label) ? roleOptions 
+      : /xã|phường|địa bàn/i.test(label) ? wardOptions 
+      : /trạng thái|kết quả/i.test(label) ? statusOptions 
+      : /cảnh báo/i.test(label) ? ['Bình thường', 'Trung bình', 'Cao', 'Nghi vấn']
+      : null;
     return { label, options };
   });
 }
@@ -505,6 +518,7 @@ function filters(labels) {
 const currentModule = document.querySelector('#moduleApp')?.dataset.module || 'accounts';
 const config = moduleConfigs[currentModule] || moduleConfigs.accounts;
 const noSidePanelModules = new Set(['accounts', 'procedure-admin', 'notifications-center', 'activity-log', 'declaration-admin', 'my-business', 'business-dashboard']);
+const modulesWithoutStats = new Set(['declaration-admin', 'procedure-admin', 'notifications-center', 'accounts', 'activity-log']);
 
 const state = {
   query: '',
@@ -512,7 +526,8 @@ const state = {
   page: 1,
   pageSize: 10,
   sortIndex: null,
-  sortDir: 1
+  sortDir: 1,
+  selectedDeclarationId: 'KB-2026-0188'
 };
 
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({
@@ -606,6 +621,7 @@ function sidebarTemplate() {
         <div class="nav-section">Cấu hình</div>
         ${navItem('DanhMuc.html', 'folder', 'Danh mục dùng chung')}
         ${navItem('QuanLyTaiKhoan.html', 'users', 'Người dùng & phân quyền', ['accounts', 'permissions', 'area-assignment', 'profile'])}
+        ${navItem('QuanLyCanBo.html', 'users-round', 'Quản lý cán bộ')}
         ${navItem('NhatKyHeThong.html', 'history', 'Nhật ký hệ thống', ['activity-log'])}
         ${navItem('CauHinhHeThong.html', 'settings', 'Cấu hình hệ thống', ['system-config'])}
       </div>
@@ -631,44 +647,80 @@ function filtersTemplate() {
   return `<section class="filter-panel">
     <div class="grid grid-cols-12 gap-x-7 gap-y-4">
       ${filtersConfig.map((filter, index) => {
-        const span = index === 0 ? 'col-span-12 xl:col-span-4' : 'col-span-12 md:col-span-4 xl:col-span-2';
-        if (filter.options) {
-          return `<label class="${span}"><span class="form-label">${esc(filter.label)}</span><span class="field-wrap block"><select class="field appearance-none font-medium" data-filter><option>-- Tất cả --</option>${filter.options.map((option) => `<option>${esc(option)}</option>`).join('')}</select><i data-lucide="chevron-down" class="field-icon h-4 w-4"></i></span></label>`;
-        }
-        const type = /ngày|thời gian|khoảng/i.test(filter.label) ? 'date' : 'text';
-        return `<label class="${span}"><span class="form-label">${esc(filter.label)}</span><span class="field-wrap block"><input class="field" type="${type}" ${index === 0 ? 'id="keywordInput"' : 'data-filter'} placeholder="Nhập ${esc(filter.label.toLowerCase())}..." /><i data-lucide="${index === 0 ? 'search' : type === 'date' ? 'calendar-days' : 'filter'}" class="field-icon"></i></span></label>`;
-      }).join('')}
+    const span = index === 0 ? 'col-span-12 xl:col-span-4' : 'col-span-12 md:col-span-4 xl:col-span-2';
+    if (filter.options) {
+      return `<label class="${span}"><span class="form-label">${esc(filter.label)}</span><span class="field-wrap block"><select class="field appearance-none font-medium" data-filter><option>-- Tất cả --</option>${filter.options.map((option) => `<option>${esc(option)}</option>`).join('')}</select><i data-lucide="chevron-down" class="field-icon h-4 w-4"></i></span></label>`;
+    }
+    const type = /ngày|thời gian|khoảng/i.test(filter.label) ? 'date' : 'text';
+    return `<label class="${span}"><span class="form-label">${esc(filter.label)}</span><span class="field-wrap block"><input class="field" type="${type}" ${index === 0 ? 'id="keywordInput"' : 'data-filter'} placeholder="Nhập ${esc(filter.label.toLowerCase())}..." /><i data-lucide="${index === 0 ? 'search' : type === 'date' ? 'calendar-days' : 'filter'}" class="field-icon"></i></span></label>`;
+  }).join('')}
     </div>
     <div class="mt-4 flex flex-wrap justify-end gap-3">
-      <button class="btn btn-secondary" type="button" data-state="loading"><i data-lucide="loader-circle"></i>Loading</button>
-      <button class="btn btn-secondary" type="button" data-state="empty"><i data-lucide="inbox"></i>Empty</button>
       <button class="btn btn-secondary" type="button" data-reset><i data-lucide="rotate-ccw"></i>Đặt lại</button>
       <button class="btn btn-primary" type="button" data-search><i data-lucide="search"></i>Tìm kiếm</button>
     </div>
   </section>`;
 }
 
+function renderTabLabel(tab, index) {
+  if (currentModule === 'declaration-admin') {
+    let count = 0;
+    if (tab === 'Khai báo lưu trú') count = 86;
+    else if (tab === 'Khai báo tài sản') count = 40;
+    else if (tab === 'Báo cáo định kỳ') count = 25;
+    else if (tab === 'Nộp muộn') count = 5;
+    else if (tab === 'Có cảnh báo') count = 3;
+    else if (tab === 'Chờ xử lý') count = 18;
+
+    if (count > 0) {
+      let badgeClass = 'bg-slate-100 text-slate-700';
+      if (tab === 'Có cảnh báo' || tab === 'Nộp muộn') {
+        badgeClass = 'bg-[#fff2f2] text-[#e53e3e] border border-[#fed7d7]';
+      } else if (tab === 'Chờ xử lý') {
+        badgeClass = 'bg-[#fffaf0] text-[#dd6b20] border border-[#fbd38d]';
+      }
+      return `${esc(tab)} <span class="ml-1.5 inline-flex items-center justify-center px-1.5 py-0.5 text-[11px] font-bold rounded-full ${badgeClass}">${count}</span>`;
+    }
+  }
+  return esc(tab);
+}
+
 function tableTemplate() {
   if (!config.columns || !config.rows) return '';
   const tabs = config.tabs || ['Tất cả', 'Đang xử lý', 'Đã hoàn thành'];
-  const importBtn = currentModule === 'accounts'
-    ? `<a href="ImportDuLieu.html" class="btn btn-secondary" style="display: inline-flex; align-items: center; gap: 0.25rem;"><i data-lucide="file-up"></i>Import dữ liệu</a>`
-    : '';
-  return `
-    ${filtersTemplate()}
-    <div class="module-tabs">${tabs.map((tab, index) => `<button class="tab ${index === state.activeTab ? 'active' : ''}" type="button" data-tab="${index}">${esc(tab)}</button>`).join('')}</div>
-    <section class="content-panel overflow-hidden">
+  const bulkBtn = currentModule === 'declaration-admin' ? '' : '<button class="btn btn-secondary" type="button" data-bulk><i data-lucide="check-square"></i>Chọn nhiều</button>';
+  const panelHead = currentModule === 'declaration-admin' ? '' : `
       <div class="panel-head">
         <div></div>
-        <div class="flex gap-2">${importBtn}<button class="btn btn-secondary" type="button" data-bulk><i data-lucide="check-square"></i>Chọn nhiều</button><button class="btn btn-secondary" type="button" data-toast="Đã mô phỏng xuất CSV"><i data-lucide="file-spreadsheet"></i>Xuất CSV</button></div>
-      </div>
+        <div class="flex gap-2">${bulkBtn}</div>
+      </div>`;
+  return `
+    ${filtersTemplate()}
+    <div class="module-tabs">${tabs.map((tab, index) => `<button class="tab ${index === state.activeTab ? 'active' : ''}" type="button" data-tab="${index}">${renderTabLabel(tab, index)}</button>`).join('')}</div>
+    <section class="content-panel overflow-hidden">
+      ${panelHead}
       <div class="table-wrap"><table class="data-table module-table w-full">
         <thead><tr><th class="w-[48px]"><input type="checkbox" aria-label="Chọn tất cả" /></th><th class="w-[56px]">STT</th>${config.columns.map((col, index) => `<th><button type="button" data-sort="${index}" class="font-semibold">${esc(col)}</button></th>`).join('')}<th class="w-[116px]">Thao tác</th></tr></thead>
         <tbody id="moduleTableBody"></tbody>
       </table></div>
-      <div class="flex flex-col gap-3 border-t border-[#edf1f6] px-4 py-3 text-[13px] font-semibold text-[#647083] md:flex-row md:items-center md:justify-between">
+    </section>
+    <section id="table-footer-component" class="table-footer-component mt-5 flex flex-col gap-4 text-[14px] text-[#5f6877] md:flex-row md:items-center md:justify-between">
+      <div class="flex flex-wrap items-center gap-3">
         <div id="resultSummary"></div>
-        <div class="flex items-center gap-2"><select id="pageSizeSelect" class="field h-10 w-[124px] appearance-none font-medium"><option value="10">10 / trang</option><option value="20">20 / trang</option><option value="50">50 / trang</option></select><div id="pagination" class="flex gap-2"></div></div>
+        <select id="pageSizeSelect" class="field h-10 w-[120px] appearance-none pr-8 text-left font-medium">
+          <option value="10">10 / trang</option>
+          <option value="20">20 / trang</option>
+          <option value="50">50 / trang</option>
+        </select>
+      </div>
+      <div id="pagination" class="flex flex-wrap items-center gap-2"></div>
+      <div class="flex items-center gap-2">
+        <a href="ImportDuLieu.html" class="inline-flex h-10 items-center gap-2 rounded-md border border-[#d9dfe8] bg-white px-4 text-[14px] font-bold text-[#202833] shadow-sm transition hover:border-[#c50000] hover:text-[#c50000] hover:bg-[#fffafa]">
+          <i data-lucide="file-up" class="h-4 w-4"></i>Nhập dữ liệu
+        </a>
+        <button class="inline-flex h-10 items-center gap-2 rounded-md border border-[#d9dfe8] bg-white px-4 text-[14px] font-bold text-[#202833] shadow-sm transition hover:border-[#c50000] hover:text-[#c50000] hover:bg-[#fffafa]" type="button" data-toast="Đã tạo file Excel kết xuất dữ liệu.">
+          <i data-lucide="file-spreadsheet" class="h-4 w-4"></i>Xuất dữ liệu
+        </button>
       </div>
     </section>`;
 }
@@ -676,13 +728,30 @@ function tableTemplate() {
 function renderRows() {
   const body = document.querySelector('#moduleTableBody');
   if (!body || !config.rows) return;
-  let rows = config.rows.filter((row) => !state.query || normalize(row.join(' ')).includes(normalize(state.query)));
-  if (state.sortIndex !== null) {
-    rows = [...rows].sort((a, b) => String(a[state.sortIndex]).localeCompare(String(b[state.sortIndex]), 'vi') * state.sortDir);
+  let rows = config.rows;
+  if (currentModule === 'declaration-admin') {
+    const tabName = config.tabs[state.activeTab];
+    if (tabName === 'Khai báo lưu trú') {
+      rows = rows.filter(row => row[1] === 'Lưu trú');
+    } else if (tabName === 'Khai báo tài sản') {
+      rows = rows.filter(row => row[1] === 'Tài sản');
+    } else if (tabName === 'Báo cáo định kỳ') {
+      rows = rows.filter(row => row[1] === 'Báo cáo định kỳ');
+    } else if (tabName === 'Nộp muộn') {
+      rows = rows.filter(row => normalize(row[6]).includes('muon') || normalize(row[4]).includes('muon'));
+    } else if (tabName === 'Có cảnh báo') {
+      rows = rows.filter(row => normalize(row[6]).includes('canh bao') || normalize(row[4]).includes('canh bao'));
+    } else if (tabName === 'Chờ xử lý') {
+      rows = rows.filter(row => normalize(row[6]).includes('cho duyet') || normalize(row[6]).includes('dang xu ly') || normalize(row[6]).includes('cho xu ly'));
+    }
   }
-  const total = rows.length;
+  let filteredRows = rows.filter((row) => !state.query || normalize(row.join(' ')).includes(normalize(state.query)));
+  if (state.sortIndex !== null) {
+    filteredRows = [...filteredRows].sort((a, b) => String(a[state.sortIndex]).localeCompare(String(b[state.sortIndex]), 'vi') * state.sortDir);
+  }
+  const total = filteredRows.length;
   const start = (state.page - 1) * state.pageSize;
-  const visibleRows = rows.slice(start, start + state.pageSize);
+  const visibleRows = filteredRows.slice(start, start + state.pageSize);
   if (!visibleRows.length) {
     body.innerHTML = `<tr><td class="empty-state" colspan="${config.columns.length + 3}">Không có dữ liệu phù hợp. Hãy đổi bộ lọc hoặc tạo bản ghi mới.</td></tr>`;
   } else {
@@ -704,10 +773,24 @@ function renderPagination(total) {
   if (!pagination) return;
   const totalPages = Math.max(1, Math.ceil(total / state.pageSize));
   state.page = Math.min(state.page, totalPages);
+
+  const pages = [];
+  for (let page = 1; page <= totalPages; page += 1) {
+    if (page === 1 || page === totalPages || Math.abs(page - state.page) <= 1) {
+      pages.push(page);
+    } else if (pages[pages.length - 1] !== '...') {
+      pages.push('...');
+    }
+  }
+
   pagination.innerHTML = `
     <button class="pager-btn" type="button" data-page="${state.page - 1}" ${state.page === 1 ? 'disabled' : ''}><i data-lucide="chevron-left" class="h-5 w-5"></i></button>
-    <button class="pager-btn active" type="button">${state.page}/${totalPages}</button>
-    <button class="pager-btn" type="button" data-page="${state.page + 1}" ${state.page === totalPages ? 'disabled' : ''}><i data-lucide="chevron-right" class="h-5 w-5"></i></button>`;
+    ${pages.map((page) => page === '...'
+      ? '<span class="pager-btn wide">...</span>'
+      : `<button class="pager-btn${page === state.page ? ' active' : ''}" type="button" data-page="${page}">${page}</button>`
+    ).join('')}
+    <button class="pager-btn" type="button" data-page="${state.page + 1}" ${state.page === totalPages ? 'disabled' : ''}><i data-lucide="chevron-right" class="h-5 w-5"></i></button>
+  `;
 }
 
 function formTemplate() {
@@ -769,7 +852,8 @@ function statePanel() {
 }
 
 function contentTemplate() {
-  const mainContent = [statsTemplate(config.stats), tableTemplate(), formTemplate(), permissionTemplate()].filter(Boolean).join('');
+  const showStats = config.stats && !modulesWithoutStats.has(currentModule);
+  const mainContent = [showStats ? statsTemplate(config.stats) : '', tableTemplate(), formTemplate(), permissionTemplate()].filter(Boolean).join('');
   const pageBody = noSidePanelModules.has(currentModule)
     ? `<div class="module-main-stack">${mainContent}</div>`
     : `<div class="module-layout"><div class="module-main-stack">${mainContent}</div>${sidePanelsTemplate()}</div>`;
@@ -777,12 +861,17 @@ function contentTemplate() {
   return `
     <main class="content min-h-screen pt-[80px]">
       <div class="module-page px-6 pb-8 pt-6 lg:px-7">
-        <nav class="module-breadcrumb"><i data-lucide="house" class="h-4 w-4 text-[#9098a5]"></i><span>Trang chủ</span><i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i><span>${esc(config.section)}</span></nav>
-        <section class="module-toolbar">
-          <div class="module-title"><h1>${esc(config.title)}</h1><p>${esc(config.description)}</p></div>
-          <div class="module-actions"><button class="btn btn-secondary" type="button" data-toast="Đã mô phỏng in/xuất dữ liệu"><i data-lucide="printer"></i>In / Xuất</button><button class="btn btn-primary" type="button" data-open-modal><i data-lucide="${esc(config.icon)}"></i>${esc(config.action)}</button></div>
+        <section class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-5">
+          <div class="flex items-center gap-2 text-[13px] font-medium text-[#6b7280]">
+            <i data-lucide="house" class="h-4 w-4 text-[#9098a5]"></i>
+            <span>Trang chủ</span>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
+            <span>${esc(config.section)}</span>
+          </div>
+          <div class="flex flex-wrap gap-3">
+            <button class="btn btn-primary" type="button" data-open-modal><i data-lucide="${esc(config.icon)}"></i>${esc(config.action)}</button>
+          </div>
         </section>
-        ${entityStrip()}
         ${pageBody}
       </div>
     </main>`;
@@ -797,17 +886,364 @@ function modalBodyTemplate() {
   }
 
   if (currentModule === 'declaration-admin') {
-    const detailConfig = declarationDetailConfig();
-    return `<div class="form-section"><div class="form-section-title"><i data-lucide="file-search" class="h-4 w-4 text-[#c50000]"></i>Chi tiết khai báo</div>
-      <div class="panel-subtitle mb-3">Chi tiết khai báo được mở trong drawer/modal từ danh sách quản lý khai báo.</div>
-      <div class="detail-list">${detailConfig.details.map((item) => `<div class="detail-row"><span class="detail-label">${esc(item[0])}</span><span class="detail-value">${esc(item[1])}</span></div>`).join('')}</div>
-    </div>${detailConfig.formSections.map((sec) => `<div class="form-section"><div class="form-section-title"><i data-lucide="${esc(sec.icon)}" class="h-4 w-4 text-[#c50000]"></i>${esc(sec.title)}</div><div class="${sec.mode === 'textarea' ? '' : 'form-row'}">${sec.fields.map((field) => fieldTemplate(field, sec.mode)).join('')}</div></div>`).join('')}`;
+    const selectedId = state.selectedDeclarationId || 'KB-2026-0188';
+    const row = declarationRows.find(r => r[0] === selectedId) || declarationRows[0];
+    const code = row[0];
+    const type = row[1];
+    const businessName = row[2];
+    const ward = row[3];
+    const summary = row[4];
+    const date = row[5];
+    const status = row[6];
+    const officer = row[7];
+
+    let detailFieldsHTML = '';
+    let crossCheckHTML = '';
+    let filesHTML = '';
+    let historyHTML = '';
+
+    if (type === 'Lưu trú') {
+      detailFieldsHTML = `
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <span class="text-xs text-slate-500 font-bold block">LOẠI KHAI BÁO</span>
+            <span class="text-sm font-semibold text-slate-800">Khai báo lưu trú</span>
+          </div>
+          <div>
+            <span class="text-xs text-slate-500 font-bold block">SỐ LƯỢNG KHÁCH</span>
+            <span class="text-sm font-semibold text-slate-800">03 khách</span>
+          </div>
+          <div class="col-span-2">
+            <span class="text-xs text-slate-500 font-bold block mb-1">DANH SÁCH KHÁCH LƯU TRÚ</span>
+            <div class="border border-slate-200 rounded-md overflow-hidden text-xs">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold">
+                    <th class="p-2">Họ và tên</th>
+                    <th class="p-2">CCCD/Hộ chiếu</th>
+                    <th class="p-2">Phòng</th>
+                    <th class="p-2">Thời gian</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 text-slate-700">
+                  <tr>
+                    <td class="p-2 font-medium">Nguyễn Minh Quân</td>
+                    <td class="p-2">035092012345</td>
+                    <td class="p-2">305</td>
+                    <td class="p-2">15/06 - 16/06</td>
+                  </tr>
+                  <tr>
+                    <td class="p-2 font-medium">Phạm Thanh Hải</td>
+                    <td class="p-2">037095001234</td>
+                    <td class="p-2">305</td>
+                    <td class="p-2">15/06 - 16/06</td>
+                  </tr>
+                  <tr>
+                    <td class="p-2 font-medium">Vũ Thị Mai</td>
+                    <td class="p-2">038096005678</td>
+                    <td class="p-2">306</td>
+                    <td class="p-2">15/06 - 17/06</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      `;
+
+      filesHTML = `
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
+          <div class="flex items-center justify-between p-2.5 border border-slate-200 rounded-lg bg-slate-50 hover:bg-slate-100 transition cursor-pointer" type="button" data-toast="Đang tải tệp danh_sach_khach.xlsx...">
+            <span class="flex items-center gap-2 text-xs font-semibold text-slate-700">
+              <i data-lucide="file-spreadsheet" class="w-4 h-4 text-emerald-600"></i> danh_sach_khach.xlsx
+            </span>
+            <span class="text-xs font-bold text-[#c50000]">Tải</span>
+          </div>
+          <div class="flex items-center justify-between p-2.5 border border-slate-200 rounded-lg bg-slate-50 hover:bg-slate-100 transition cursor-pointer" type="button" data-toast="Đang xem ảnh CCCD...">
+            <span class="flex items-center gap-2 text-xs font-semibold text-slate-700">
+              <i data-lucide="image" class="w-4 h-4 text-blue-600"></i> anh_cccd_nguyenminhquan.jpg
+            </span>
+            <span class="text-xs font-bold text-[#c50000]">Xem</span>
+          </div>
+        </div>
+      `;
+
+      let alertBadge = '<span class="px-2 py-0.5 text-xs font-semibold rounded bg-green-100 text-green-800 border border-green-200">Đã khớp thông tin</span>';
+      let detailsText = 'Họ tên và số định danh trùng khớp 100% với Cơ sở dữ liệu quốc gia về dân cư. Không phát hiện yếu tố nghi vấn hoặc tiền sự.';
+      if (status === 'Có cảnh báo') {
+        alertBadge = '<span class="px-2 py-0.5 text-xs font-semibold rounded bg-red-100 text-red-800 border border-red-200">Có cảnh báo</span>';
+        detailsText = 'Thông tin đối soát phát hiện người nộp khai báo thuộc diện cần xác minh tạm trú theo quy định phòng chống dịch/ANTT.';
+      } else if (status === 'Nộp muộn') {
+        alertBadge = '<span class="px-2 py-0.5 text-xs font-semibold rounded bg-amber-100 text-amber-800 border border-amber-200">Nộp muộn</span>';
+        detailsText = 'Thông tin đối soát phát hiện cơ sở nộp khai báo trễ hơn 24 giờ kể từ khi khách nhận phòng.';
+      }
+
+      crossCheckHTML = `
+        <div class="p-3 border border-slate-200 rounded-lg bg-slate-50">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-bold text-slate-500">KẾT QUẢ ĐỐI SOÁT TỰ ĐỘNG</span>
+            ${alertBadge}
+          </div>
+          <p class="text-xs text-slate-700 leading-relaxed font-semibold">
+            ${detailsText}
+          </p>
+        </div>
+      `;
+
+      historyHTML = `
+        <div class="timeline text-xs font-semibold text-slate-700">
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div>
+              <div class="text-[12px] font-bold text-slate-800">${date}</div>
+              <div class="text-[11px] text-slate-500">Cơ sở gửi khai báo thành công (Người thực hiện: Lê Văn D)</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot bg-blue-500 border-blue-200"></div>
+            <div>
+              <div class="text-[12px] font-bold text-slate-800">${date.split(' ')[0]} 07:32</div>
+              <div class="text-[11px] text-slate-500">Hệ thống thực hiện đối soát tự động (Kết quả: OK)</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot bg-amber-500 border-amber-200"></div>
+            <div>
+              <div class="text-[12px] font-bold text-slate-800">${date.split(' ')[0]} 08:00</div>
+              <div class="text-[11px] text-slate-500">Cán bộ ${officer} mở tiếp nhận hồ sơ và rà soát</div>
+            </div>
+          </div>
+        </div>
+      `;
+
+    } else if (type === 'Tài sản') {
+      detailFieldsHTML = `
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <span class="text-xs text-slate-500 font-bold block">LOẠI GIAO DỊCH</span>
+            <span class="text-sm font-semibold text-slate-800">Cầm cố tài sản</span>
+          </div>
+          <div>
+            <span class="text-xs text-slate-500 font-bold block">GIÁ TRỊ GIAO DỊCH</span>
+            <span class="text-sm font-semibold text-slate-800">${summary.includes('SH') ? '45.000.000 VNĐ' : '15.000.000 VNĐ'}</span>
+          </div>
+          <div class="col-span-2">
+            <span class="text-xs text-slate-500 font-bold block">TÊN VÀ CHI TIẾT TÀI SẢN</span>
+            <span class="text-sm font-semibold text-slate-800 block">${summary}</span>
+            <span class="text-xs text-slate-500 block mt-1">Biển số: 35B1-123.45 | Số khung: RLH51-99214 | Số máy: JF51E-01254</span>
+          </div>
+        </div>
+      `;
+
+      filesHTML = `
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
+          <div class="flex items-center justify-between p-2.5 border border-slate-200 rounded-lg bg-slate-50 hover:bg-slate-100 transition cursor-pointer" type="button" data-toast="Mở PDF hợp đồng...">
+            <span class="flex items-center gap-2 text-xs font-semibold text-slate-700">
+              <i data-lucide="file-text" class="w-4 h-4 text-red-600"></i> hop_dong_cam_co.pdf
+            </span>
+            <span class="text-xs font-bold text-[#c50000]">Xem</span>
+          </div>
+          <div class="flex items-center justify-between p-2.5 border border-slate-200 rounded-lg bg-slate-50 hover:bg-slate-100 transition cursor-pointer" type="button" data-toast="Xem hình ảnh xe máy...">
+            <span class="flex items-center gap-2 text-xs font-semibold text-slate-700">
+              <i data-lucide="image" class="w-4 h-4 text-blue-600"></i> anh_xe_giao_dich.jpg
+            </span>
+            <span class="text-xs font-bold text-[#c50000]">Xem</span>
+          </div>
+        </div>
+      `;
+
+      let alertBadge = '<span class="px-2 py-0.5 text-xs font-semibold rounded bg-red-100 text-red-800 border border-red-200">Có cảnh báo</span>';
+      let detailsText = 'Phát hiện biển kiểm soát 35B1-123.45 được đăng ký dưới tên Nguyễn Văn X, không phải người giao dịch Trần Quốc Bảo. Số khung RLH51... trùng khớp với danh sách xe đang bị truy tìm trong vụ án trộm cắp tài sản ngày 10/06/2026 tại CA Huyện Gia Viễn.';
+      
+      if (status === 'Đã hoàn thành') {
+        alertBadge = '<span class="px-2 py-0.5 text-xs font-semibold rounded bg-green-100 text-green-800 border border-green-200">Đã khớp / Xác minh xong</span>';
+        detailsText = 'Đã liên hệ chủ cũ xác nhận giao dịch ủy quyền hợp pháp. Tài sản được chấp nhận phê duyệt.';
+      } else if (status === 'Cần bổ sung') {
+        alertBadge = '<span class="px-2 py-0.5 text-xs font-semibold rounded bg-amber-100 text-amber-800 border border-amber-200">Cần bổ sung</span>';
+        detailsText = 'Cán bộ yêu cầu bổ sung giấy ủy quyền hoặc chứng từ chứng minh nguồn gốc tài sản giao dịch.';
+      }
+
+      crossCheckHTML = `
+        <div class="p-3 border border-red-200 rounded-lg bg-red-50/50">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-bold text-red-600">KẾT QUẢ ĐỐI SOÁT TỰ ĐỘNG</span>
+            ${alertBadge}
+          </div>
+          <p class="text-xs text-red-800 leading-relaxed font-semibold">
+            ${detailsText}
+          </p>
+        </div>
+      `;
+
+      historyHTML = `
+        <div class="timeline text-xs font-semibold text-slate-700">
+          <div class="timeline-item">
+            <div class="timeline-dot bg-red-500 border-red-200"></div>
+            <div>
+              <div class="text-[12px] font-bold text-slate-800">${date}</div>
+              <div class="text-[11px] text-slate-500">Cơ sở đăng tải khai báo giao dịch tài sản (Người thực hiện: Trần Văn K)</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot bg-red-600 border-red-300"></div>
+            <div>
+              <div class="text-[12px] font-bold text-red-600">${date.split(' ')[0]} 20:12</div>
+              <div class="text-[11px] text-red-500">Hệ thống kích hoạt cảnh báo đối soát danh mục tang vật trộm cắp</div>
+            </div>
+          </div>
+        </div>
+      `;
+
+    } else {
+      // Báo cáo định kỳ
+      detailFieldsHTML = `
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <span class="text-xs text-slate-500 font-bold block">LOẠI BÁO CÁO</span>
+            <span class="text-sm font-semibold text-slate-800">Báo cáo định kỳ ANTT</span>
+          </div>
+          <div>
+            <span class="text-xs text-slate-500 font-bold block">KỲ BÁO CÁO</span>
+            <span class="text-sm font-semibold text-slate-800">${summary}</span>
+          </div>
+          <div class="col-span-2">
+            <span class="text-xs text-slate-500 font-bold block mb-1">CHỈ TIÊU VÀ SỐ LIỆU PHÁT SINH TRONG KỲ</span>
+            <div class="grid grid-cols-3 gap-2 text-center text-xs">
+              <div class="p-2 border border-slate-200 rounded bg-slate-50">
+                <span class="text-slate-500 block font-semibold">Lượt khách</span>
+                <span class="text-sm font-bold text-slate-800">326</span>
+              </div>
+              <div class="p-2 border border-slate-200 rounded bg-slate-50">
+                <span class="text-slate-500 block font-semibold">Sự cố ANTT</span>
+                <span class="text-sm font-bold text-slate-800">0</span>
+              </div>
+              <div class="p-2 border border-slate-200 rounded bg-slate-50">
+                <span class="text-slate-500 block font-semibold">Nghỉ việc/Mới</span>
+                <span class="text-sm font-bold text-slate-800">03 nv mới</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      filesHTML = `
+        <div class="grid grid-cols-1 gap-2 mt-2">
+          <div class="flex items-center justify-between p-2.5 border border-slate-200 rounded-lg bg-slate-50 hover:bg-slate-100 transition cursor-pointer" type="button" data-toast="Mở báo cáo PDF...">
+            <span class="flex items-center gap-2 text-xs font-semibold text-slate-700">
+              <i data-lucide="file-text" class="w-4 h-4 text-indigo-600"></i> bao_cao_dinh_ky_thang_6.pdf
+            </span>
+            <span class="text-xs font-bold text-[#c50000]">Xem</span>
+          </div>
+        </div>
+      `;
+
+      crossCheckHTML = `
+        <div class="p-3 border border-slate-200 rounded-lg bg-slate-50">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-bold text-slate-500">KẾT QUẢ ĐỐI SOÁT TỰ ĐỘNG</span>
+            <span class="px-2 py-0.5 text-xs font-semibold rounded bg-green-100 text-green-800 border border-green-200">Đúng hạn</span>
+          </div>
+          <p class="text-xs text-slate-700 leading-relaxed font-semibold">
+            Báo cáo được nộp đúng hạn định kỳ trước ngày 15 hàng tháng. Số liệu đầy đủ, các thông tin nhân sự trùng khớp với khai báo lưu trú.
+          </p>
+        </div>
+      `;
+
+      historyHTML = `
+        <div class="timeline text-xs font-semibold text-slate-700">
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div>
+              <div class="text-[12px] font-bold text-slate-800">${date}</div>
+              <div class="text-[11px] text-slate-500">Cơ sở hoàn tất nộp báo cáo định kỳ (Người thực hiện: Nguyễn Văn A)</div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    return `
+      <!-- Thông tin cơ sở & Người khai -->
+      <div class="form-section">
+        <div class="form-section-title">
+          <i data-lucide="store" class="h-4 w-4 text-[#c50000]"></i>Thông tin cơ sở & Người khai
+        </div>
+        <div class="grid grid-cols-2 gap-y-2.5 gap-x-4 text-xs font-semibold text-slate-700">
+          <div>
+            <span class="text-slate-400 block font-bold text-[11px]">TÊN CƠ SỞ</span>
+            <span class="text-slate-800 font-bold">${esc(businessName)}</span>
+          </div>
+          <div>
+            <span class="text-slate-400 block font-bold text-[11px]">ĐỊA BÀN PHÂN CẤP</span>
+            <span class="text-slate-800">${esc(ward)}, Ninh Bình</span>
+          </div>
+          <div>
+            <span class="text-slate-400 block font-bold text-[11px]">NGƯỜI GỬI KHAI BÁO</span>
+            <span class="text-slate-800">${type === 'Lưu trú' ? 'Lê Văn D (Chủ cơ sở)' : type === 'Tài sản' ? 'Trần Quốc Bảo (Khách hàng)' : 'Lê Văn D (Quản lý)'}</span>
+          </div>
+          <div>
+            <span class="text-slate-400 block font-bold text-[11px]">CCCD NGƯỜI GỬI</span>
+            <span class="text-slate-800 font-mono">035092004812</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Toàn bộ nội dung khai báo -->
+      <div class="form-section">
+        <div class="form-section-title">
+          <i data-lucide="file-text" class="h-4 w-4 text-[#c50000]"></i>Chi tiết nội dung khai báo (${esc(code)})
+        </div>
+        ${detailFieldsHTML}
+      </div>
+
+      <!-- Kết quả đối soát -->
+      <div class="form-section">
+        <div class="form-section-title">
+          <i data-lucide="scan-search" class="h-4 w-4 text-[#c50000]"></i>Kết quả đối soát hệ thống
+        </div>
+        ${crossCheckHTML}
+      </div>
+
+      <!-- File đính kèm -->
+      <div class="form-section">
+        <div class="form-section-title">
+          <i data-lucide="paperclip" class="h-4 w-4 text-[#c50000]"></i>Tài liệu & File đính kèm
+        </div>
+        ${filesHTML}
+      </div>
+
+      <!-- Lịch sử xử lý -->
+      <div class="form-section">
+        <div class="form-section-title">
+          <i data-lucide="history" class="h-4 w-4 text-[#c50000]"></i>Lịch sử và tiến trình xử lý
+        </div>
+        ${historyHTML}
+      </div>
+    `;
   }
 
   return `<div class="form-section"><div class="form-section-title"><i data-lucide="clipboard-check" class="h-4 w-4 text-[#c50000]"></i>Xác nhận thao tác</div>
     <div class="form-row"><label><span class="form-label">Màn hình</span><input class="field" value="${esc(config.title)}" /></label><label><span class="form-label">Trạng thái sau thao tác</span><input class="field" value="Đang xử lý" /></label></div>
     <label class="mt-3 block"><span class="form-label">Ghi chú xử lý</span><textarea class="field textarea-field">Thao tác mô phỏng nhưng có phản hồi UI, validation, modal xác nhận và ghi nhận luồng xử lý theo plan.</textarea></label>
   </div>`;
+}
+
+function modalFooterTemplate() {
+  if (currentModule === 'declaration-admin') {
+    return `
+      <button class="btn btn-secondary mr-auto" type="button" data-close-modal>Đóng</button>
+      <button class="btn bg-orange-500 hover:bg-orange-600 text-white font-bold px-4 py-2 rounded-md shadow-sm flex items-center gap-1.5 transition text-xs" type="button" data-declaration-action="supplement">
+        <i data-lucide="edit-3" class="w-4 h-4"></i> Yêu cầu bổ sung
+      </button>
+      <button class="btn bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded-md shadow-sm flex items-center gap-1.5 transition text-xs" type="button" data-declaration-action="verify">
+        <i data-lucide="shield-alert" class="w-4 h-4"></i> Cần xác minh
+      </button>
+      <button class="btn bg-green-600 hover:bg-green-700 text-white font-bold px-4 py-2 rounded-md shadow-sm flex items-center gap-1.5 transition text-xs" type="button" data-declaration-action="approve">
+        <i data-lucide="check-circle" class="w-4 h-4"></i> Chấp nhận
+      </button>
+    `;
+  }
+  return `<button class="btn btn-secondary" type="button" data-close-modal>Hủy bỏ</button><button class="btn btn-primary" type="button" data-confirm-action><i data-lucide="check"></i>Xác nhận</button>`;
 }
 
 function modalTemplate() {
@@ -818,7 +1254,7 @@ function modalTemplate() {
     <section class="module-modal" role="dialog" aria-modal="true" aria-labelledby="moduleModalTitle">
       <div class="module-modal-head"><h2 id="moduleModalTitle" class="module-modal-title">${esc(modalTitle)}</h2><button class="close-icon-btn" type="button" data-close-modal aria-label="Đóng"><i data-lucide="x" class="h-5 w-5"></i></button></div>
       <div class="module-modal-body">${modalBodyTemplate()}</div>
-      <div class="module-modal-foot"><button class="btn btn-secondary" type="button" data-close-modal>Hủy bỏ</button><button class="btn btn-primary" type="button" data-confirm-action><i data-lucide="check"></i>Xác nhận</button></div>
+      <div class="module-modal-foot">${modalFooterTemplate()}</div>
     </section>
   </div><div id="toast" class="toast"></div>`;
 }
@@ -907,8 +1343,26 @@ function bindInteractions() {
     const page = event.target.closest('[data-page]');
     const sort = event.target.closest('[data-sort]');
     const toggleCheck = event.target.closest('[data-toggle-check]');
+    const declAction = event.target.closest('[data-declaration-action]');
 
     if (openModal) {
+      const tr = openModal.closest('tr');
+      if (tr && currentModule === 'declaration-admin') {
+        const idCell = tr.querySelector('td:nth-child(3)');
+        if (idCell) {
+          state.selectedDeclarationId = idCell.textContent.trim();
+        }
+      }
+      if (currentModule === 'declaration-admin') {
+        const modalBody = document.querySelector('.module-modal-body');
+        if (modalBody) {
+          modalBody.innerHTML = modalBodyTemplate();
+        }
+        const modalFoot = document.querySelector('.module-modal-foot');
+        if (modalFoot) {
+          modalFoot.innerHTML = modalFooterTemplate();
+        }
+      }
       modal.hidden = false;
       lucide.createIcons();
     }
@@ -917,12 +1371,32 @@ function bindInteractions() {
       modal.hidden = true;
       showToast('Đã xác nhận thao tác và ghi nhận vào luồng xử lý.');
     }
+    if (declAction) {
+      const actionType = declAction.dataset.declarationAction;
+      modal.hidden = true;
+      let msg = '';
+      if (actionType === 'approve') msg = 'Đã phê duyệt chấp nhận khai báo thành công.';
+      if (actionType === 'supplement') msg = 'Đã gửi yêu cầu bổ sung thông tin tới cơ sở.';
+      if (actionType === 'verify') msg = 'Đã đánh dấu khai báo cần xác minh bổ sung.';
+      showToast(msg);
+      if (state.selectedDeclarationId) {
+        const row = declarationRows.find(r => r[0] === state.selectedDeclarationId);
+        if (row) {
+          if (actionType === 'approve') row[6] = 'Đã hoàn thành';
+          if (actionType === 'supplement') row[6] = 'Cần bổ sung';
+          if (actionType === 'verify') row[6] = 'Có cảnh báo';
+          renderRows();
+        }
+      }
+    }
     if (toastButton) showToast(toastButton.dataset.toast || 'Đã thực hiện thao tác mô phỏng.');
     if (stateButton) setDemoState(stateButton.dataset.state);
     if (tab) {
       state.activeTab = Number(tab.dataset.tab);
       document.querySelectorAll('[data-tab]').forEach((button) => button.classList.toggle('active', button === tab));
-      showToast(`Đã chuyển tab ${tab.textContent.trim()}`);
+      const tabText = tab.childNodes[0].textContent.trim();
+      showToast(`Đã chuyển tab ${tabText}`);
+      renderRows();
     }
     if (page && !page.disabled) {
       state.page = Number(page.dataset.page);

@@ -159,12 +159,13 @@ function renderRows(filtered) {
   const rows = filtered.slice(startIndex, startIndex + state.pageSize);
 
   if (!rows.length) {
-    els.body.innerHTML = '<tr><td class="empty-state" colspan="11">Không tìm thấy hồ sơ phù hợp với điều kiện lọc.</td></tr>';
+    els.body.innerHTML = '<tr><td class="empty-state" colspan="12">Không tìm thấy hồ sơ phù hợp với điều kiện lọc.</td></tr>';
     return;
   }
 
   els.body.innerHTML = rows.map((record, index) => `
         <tr>
+          <td class="text-center"><input type="checkbox" aria-label="Chọn dòng ${startIndex + index + 1}" /></td>
           <td class="text-center">${startIndex + index + 1}</td>
           <td class="text-center font-semibold text-[#ff0000]">${escapeHTML(record.id)}</td>
           <td>${escapeHTML(record.procedure)}</td>

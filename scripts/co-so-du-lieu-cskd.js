@@ -64,7 +64,7 @@ const els = {
   searchBtn: document.querySelector('#searchBtn'),
   resetBtn: document.querySelector('#resetBtn'),
   body: document.querySelector('#businessBody'),
-  totalCount: document.querySelector('#totalCount'),
+  resultSummary: document.querySelector('#resultSummary'),
   pageSize: document.querySelector('#pageSizeSelect'),
   pagination: document.querySelector('#pagination'),
   exportBtn: document.querySelector('#exportBtn'),
@@ -86,16 +86,16 @@ const normalize = (value) => String(value ?? '').toLowerCase().normalize('NFD').
 const uniqueValues = (key) => [...new Set(businesses.map((item) => item[key]))].sort((a, b) => a.localeCompare(b, 'vi'));
 
 const statusClass = {
-  'Đang hoạt động': 'badge-active',
-  'Tạm dừng': 'badge-paused',
-  'Ngừng hoạt động': 'badge-stopped'
+  'Đang hoạt động': 'st-green',
+  'Tạm dừng': 'st-orange',
+  'Ngừng hoạt động': 'st-red'
 };
 
 const licenseClass = {
-  'Đã cấp': 'badge-valid',
-  'Sắp hết hạn': 'badge-expiring',
-  'Chưa cấp': 'badge-missing',
-  'Không thuộc diện': 'badge-not-required'
+  'Đã cấp': 'st-green',
+  'Sắp hết hạn': 'st-orange',
+  'Chưa cấp': 'st-red',
+  'Không thuộc diện': 'st-gray'
 };
 
 function fillSelect(select, values) {
@@ -132,25 +132,26 @@ function renderRows(filtered) {
   const rows = filtered.slice(startIndex, startIndex + state.pageSize);
 
   if (!rows.length) {
-    els.body.innerHTML = '<tr><td class="database-empty" colspan="8">Không tìm thấy cơ sở phù hợp với điều kiện lọc.</td></tr>';
+    els.body.innerHTML = '<tr><td class="empty-state" colspan="9">Không tìm thấy cơ sở phù hợp với điều kiện lọc.</td></tr>';
     return;
   }
 
   els.body.innerHTML = rows.map((item) => `
     <tr>
-      <td>${escapeHTML(item.code)}</td>
-      <td class="business-name">${escapeHTML(item.name)}</td>
+      <td class="text-center"><input type="checkbox" aria-label="Chọn dòng ${item.code}" /></td>
+      <td class="text-center font-medium">${escapeHTML(item.code)}</td>
+      <td class="business-name fw-semibold">${escapeHTML(item.name)}</td>
       <td>${escapeHTML(item.type)}</td>
       <td class="business-address">${escapeHTML(item.address)}</td>
-      <td>${escapeHTML(item.owner)}</td>
-      <td><span class="badge ${statusClass[item.status]}">${escapeHTML(item.status)}</span></td>
-      <td><span class="badge ${licenseClass[item.license]}">${escapeHTML(item.license)}</span></td>
-      <td class="action-cell">
-        <button class="row-action${state.openActionId === item.code ? ' is-open' : ''}" type="button" data-action-toggle="${escapeHTML(item.code)}" aria-label="Mở thao tác cơ sở ${escapeHTML(item.code)}">
-          <i data-lucide="ellipsis" class="h-4 w-4"></i>
+      <td class="text-center">${escapeHTML(item.owner)}</td>
+      <td class="text-center"><span class="status ${statusClass[item.status]}">${escapeHTML(item.status)}</span></td>
+      <td class="text-center"><span class="status ${licenseClass[item.license]}">${escapeHTML(item.license)}</span></td>
+      <td class="action-cell text-center">
+        <button class="btn-icon mx-auto${state.openActionId === item.code ? ' is-open' : ''}" type="button" data-action-toggle="${escapeHTML(item.code)}" aria-label="Mở thao tác cơ sở ${escapeHTML(item.code)}">
+          <i data-lucide="ellipsis-vertical" class="h-5 w-5"></i>
         </button>
         ${state.openActionId === item.code ? `
-          <div class="database-action-menu">
+          <div class="row-action-menu">
             <button type="button" data-row-action="detail" data-id="${escapeHTML(item.code)}"><i data-lucide="eye" class="h-4 w-4"></i>Xem chi tiết</button>
             <button type="button" data-row-action="edit" data-id="${escapeHTML(item.code)}"><i data-lucide="square-pen" class="h-4 w-4"></i>Chỉnh sửa</button>
             <button type="button" data-row-action="license" data-id="${escapeHTML(item.code)}"><i data-lucide="shield-check" class="h-4 w-4"></i>Giấy phép</button>
@@ -188,7 +189,10 @@ function renderPagination(filtered) {
 
 function render() {
   const filtered = getFilteredBusinesses();
-  els.totalCount.textContent = formatTotal(state.query || state.type !== 'Tất cả' || state.status !== 'Tất cả' || state.license !== 'Tất cả' ? filtered.length : 1248);
+  const total = state.query || state.type !== 'Tất cả' || state.status !== 'Tất cả' || state.license !== 'Tất cả' ? filtered.length : 1248;
+  const start = filtered.length === 0 ? 0 : (state.page - 1) * state.pageSize + 1;
+  const end = Math.min(state.page * state.pageSize, filtered.length);
+  els.resultSummary.textContent = `Hiển thị ${start} - ${end} trong tổng số ${total.toLocaleString('vi-VN')} cơ sở`;
   renderRows(filtered);
   renderPagination(filtered);
   lucide.createIcons();

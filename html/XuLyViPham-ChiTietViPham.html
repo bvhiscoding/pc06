@@ -259,209 +259,184 @@
 
     <!-- Main Content -->
     <main class="content min-h-screen pt-[80px]">
-      <div class="module-page px-6 pb-7 pt-6 lg:px-7">
-        <nav class="module-breadcrumb">
-          <span>Trang chủ</span>
-          <i data-lucide="chevron-right" class="h-4 w-4"></i>
-          <span>Vi phạm / Xử lý vi phạm</span>
-          <i data-lucide="chevron-right" class="h-4 w-4"></i>
-          <span>Chi tiết quyết định vi phạm</span>
-        </nav>
-
-        <section class="module-toolbar">
-          <div class="module-title">
-            <h1 class="flex items-center gap-2">
-              <a href="XuLyViPham.html" class="text-gray-400 hover:text-gray-900 transition-colors">
-                <i data-lucide="arrow-left" class="h-6 w-6"></i>
-              </a>
-              Chi tiết quyết định vi phạm
-            </h1>
-            <div class="module-total">VP-2024-0012</div>
+      <div class="px-6 pb-8 pt-6 lg:px-7">
+        <!-- Component: Breadcrumbs & Header Actions -->
+        <section class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-5">
+          <div class="flex items-center gap-2 text-[13px] font-medium text-[#6b7280]">
+            <i data-lucide="house" class="h-4 w-4 text-[#9098a5]"></i>
+            <span>Trang chủ</span>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
+            <span>Xử lý vi phạm</span>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
+            <span>Chi tiết quyết định xử phạt</span>
           </div>
-          <div class="module-actions">
-            <a class="module-action-btn module-action-primary bg-blue-600 border-blue-600 text-white flex items-center gap-1.5" href="XuLyViPham-CapNhatXuLy.html">
-              <i data-lucide="refresh-cw" class="h-4 w-4"></i>Cập nhật tiến độ
+          <div class="flex flex-wrap gap-3">
+            <button onclick="window.print()" class="inline-flex h-[42px] items-center gap-2 rounded-md border border-[#d9dfe8] bg-white px-5 text-[14px] font-medium text-[#202833] shadow-sm transition hover:border-[#c50000] hover:text-[#c50000] hover:bg-[#fffafa]" type="button">
+              <i data-lucide="printer" class="h-4.5 w-4.5"></i>
+              In quyết định
+            </button>
+            <a href="XuLyViPham-CapNhatXuLy.html" class="inline-flex h-[42px] items-center gap-2 rounded-md bg-[#c50000] px-6 text-[14px] font-semibold text-white shadow-[0_6px_13px_rgba(192,0,0,0.24)] transition hover:bg-[#ad0000]">
+              <i data-lucide="refresh-cw" class="h-4.5 w-4.5"></i>
+              Cập nhật trạng thái
             </a>
           </div>
         </section>
 
-        <!-- Grid Layout 2 Columns -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-          
-          <!-- Column Left -->
-          <div class="space-y-6">
-            
-            <!-- Card 1: Thông tin cơ sở vi phạm -->
-            <div class="details-card">
-              <h3 class="details-title">
-                <i data-lucide="store" class="h-5 w-5 text-blue-600"></i> Thông tin cơ sở vi phạm
-              </h3>
-              <div class="info-row">
-                <span class="info-label">Tên cơ sở</span>
-                <span class="info-value text-blue-600">Khách sạn Hoa Lư</span>
-              </div>
-              <div class="info-row">
-                <span class="info-label">Người đại diện</span>
-                <span class="info-value">Nguyễn Văn A</span>
-              </div>
-              <div class="info-row">
-                <span class="info-label">Số điện thoại</span>
-                <span class="info-value">02293871234</span>
-              </div>
-              <div class="info-row">
-                <span class="info-label">Địa chỉ hoạt động</span>
-                <span class="info-value">Số 1 Đường Trần Hưng Đạo, P. Đông Thành, TP. Ninh Bình</span>
-              </div>
-              <div class="info-row">
-                <span class="info-label">Loại hình kinh doanh</span>
-                <span class="info-value">Cơ sở kinh doanh dịch vụ lưu trú</span>
-              </div>
-            </div>
-
-            <!-- Card 2: Chi tiết hành vi vi phạm -->
-            <div class="details-card">
-              <h3 class="details-title">
-                <i data-lucide="alert-triangle" class="h-5 w-5 text-blue-600"></i> Chi tiết hành vi vi phạm
-              </h3>
-              <div class="info-row">
-                <span class="info-label">Số biên bản</span>
-                <span class="info-value">BB-2024-0048</span>
-              </div>
-              <div class="info-row">
-                <span class="info-label">Ngày lập biên bản</span>
-                <span class="info-value">20/05/2024 15:30</span>
-              </div>
-              <div class="info-row">
-                <span class="info-label">Hành vi vi phạm</span>
-                <span class="info-value leading-relaxed text-gray-800">
-                  Không thực hiện đầy đủ các quy định về an toàn phòng cháy và chữa cháy tại cơ sở kinh doanh dịch vụ lưu trú theo quy định của pháp luật hiện hành.
-                </span>
-              </div>
-              <div class="info-row">
-                <span class="info-label">Mức độ vi phạm</span>
-                <span class="info-value">
-                  <span class="bg-red-100 text-red-800 px-2 py-0.5 rounded text-xs font-bold">Nặng (Nghiêm trọng)</span>
-                </span>
-              </div>
-              <div class="info-row">
-                <span class="info-label">Biện pháp khắc phục</span>
-                <span class="info-value leading-relaxed text-gray-700">
-                  Yêu cầu tạm đình chỉ hoạt động khu vực tầng 5 của khách sạn cho đến khi hoàn thành nghiệm thu bổ sung hệ thống thiết bị PCCC theo quy chuẩn.
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Column Right -->
-          <div class="space-y-6">
-            
-            <!-- Card 3: Quyết định xử phạt -->
-            <div class="details-card">
-              <h3 class="details-title">
-                <i data-lucide="gavel" class="h-5 w-5 text-blue-600"></i> Quyết định xử phạt hành chính
-              </h3>
-              <div class="info-row">
-                <span class="info-label">Số quyết định</span>
-                <span class="info-value">QĐ-XP-2024-0129</span>
-              </div>
-              <div class="info-row">
-                <span class="info-label">Ngày ra quyết định</span>
-                <span class="info-value">25/05/2024</span>
-              </div>
-              <div class="info-row">
-                <span class="info-label">Cơ quan ban hành</span>
-                <span class="info-value">Phòng CS QLHC về TTXH - Công an tỉnh Ninh Bình</span>
-              </div>
-              <div class="info-row">
-                <span class="info-label">Người ký quyết định</span>
-                <span class="info-value">Thượng tá Trần Văn B (Trưởng phòng)</span>
-              </div>
-              <div class="info-row">
-                <span class="info-label">Hình thức xử phạt</span>
-                <span class="info-value">Phạt tiền</span>
-              </div>
-              <div class="info-row">
-                <span class="info-label">Số tiền phạt</span>
-                <span class="info-value text-red-600 text-[15px] font-black">15.000.000 VNĐ</span>
-              </div>
-              <div class="info-row">
-                <span class="info-label">Xử phạt bổ sung</span>
-                <span class="info-value leading-relaxed text-gray-700">
-                  Tước quyền sử dụng Giấy chứng nhận đủ điều kiện về ANTT trong thời hạn 02 tháng kể từ ngày quyết định có hiệu lực.
-                </span>
-              </div>
-              <div class="info-row">
-                <span class="info-label">Trạng thái thi hành</span>
-                <span class="info-value">
-                  <span class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-xs font-bold inline-flex items-center gap-1">
-                    <i data-lucide="clock" class="h-3.5 w-3.5"></i> Chưa thi hành
-                  </span>
-                </span>
-              </div>
-            </div>
-
-            <!-- Card 4: Tài liệu đính kèm -->
-            <div class="details-card">
-              <h3 class="details-title">
-                <i data-lucide="paperclip" class="h-5 w-5 text-blue-600"></i> Hồ sơ, tài liệu liên quan
-              </h3>
-              <div class="space-y-3">
-                <a href="#" class="file-attachment-box">
-                  <i data-lucide="file-text" class="h-7 w-7 text-red-500"></i>
-                  <div class="flex-1 min-w-0">
-                    <p class="text-xs font-bold text-gray-900 truncate">BienBanViPham_2024_0048.pdf</p>
-                    <p class="text-[10px] text-gray-500 font-medium">2.1 MB</p>
-                  </div>
-                  <i data-lucide="download" class="h-4 w-4 text-gray-400 hover:text-gray-900 transition-colors"></i>
-                </a>
-                
-                <a href="#" class="file-attachment-box">
-                  <i data-lucide="file-text" class="h-7 w-7 text-red-500"></i>
-                  <div class="flex-1 min-w-0">
-                    <p class="text-xs font-bold text-gray-900 truncate">QuyetDinhXuPhat_2024_0129.pdf</p>
-                    <p class="text-[10px] text-gray-500 font-medium">1.8 MB</p>
-                  </div>
-                  <i data-lucide="download" class="h-4 w-4 text-gray-400 hover:text-gray-900 transition-colors"></i>
-                </a>
-              </div>
-            </div>
-
-            <!-- Card 5: Lịch sử thi hành -->
-            <div class="details-card">
-              <h3 class="details-title">
-                <i data-lucide="history" class="h-5 w-5 text-blue-600"></i> Lịch sử xử lý & thi hành
-              </h3>
-              <div class="timeline">
-                <div class="timeline-item active">
-                  <div class="timeline-marker"></div>
-                  <div class="timeline-time">25/05/2024 09:00</div>
-                  <div class="timeline-title">Ban hành quyết định xử phạt</div>
-                  <div class="timeline-desc">Quyết định xử phạt số QĐ-XP-2024-0129 do Thượng tá Trần Văn B ký ban hành chính thức.</div>
-                </div>
-                <div class="timeline-item">
-                  <div class="timeline-marker"></div>
-                  <div class="timeline-time">20/05/2024 15:30</div>
-                  <div class="timeline-title">Lập biên bản vi phạm</div>
-                  <div class="timeline-desc">Lập biên bản ghi nhận hành vi vi phạm an toàn PCCC số BB-2024-0048 tại cơ sở.</div>
-                </div>
-              </div>
-            </div>
-
+        <!-- Component: Title & Description -->
+        <div class="mb-6 flex items-center gap-3">
+          <a href="XuLyViPham.html" class="grid h-10 w-10 place-items-center rounded-md border border-[#dfe5ed] bg-white text-gray-500 hover:text-gray-900 transition hover:bg-gray-50 shadow-sm shrink-0">
+            <i data-lucide="arrow-left" class="h-5 w-5"></i>
+          </a>
+          <div>
+            <h1 class="text-[20px] font-bold text-[#1e293b] uppercase tracking-wide">Chi tiết quyết định xử phạt</h1>
+            <p class="text-[13px] text-gray-500">Số quyết định: <strong class="text-[#c50000]">124/QĐ-XPHC</strong></p>
           </div>
         </div>
 
-        <!-- Actions Bar -->
-        <div class="actions-bar flex justify-end gap-3 border-t pt-4">
-          <a href="XuLyViPham.html" class="filter-btn filter-reset">
+        <!-- Vertical Stack Layout (Full Width Sections) -->
+        <div class="space-y-6 mb-6">
+          
+          <!-- Card 1: Thông tin quyết định xử phạt -->
+          <div class="details-card">
+            <h3 class="details-title">
+              <i data-lucide="gavel" class="h-5 w-5 text-[#c50000]"></i> Thông tin quyết định xử phạt
+            </h3>
+            <div class="info-row">
+              <span class="info-label">Số quyết định</span>
+              <span class="info-value">124/QĐ-XPHC</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Ngày ban hành</span>
+              <span class="info-value">25/05/2024</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Cơ quan ban hành</span>
+              <span class="info-value">Phòng CS QLHC về TTXH - Công an tỉnh Ninh Bình</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Người ký quyết định</span>
+              <span class="info-value">Thượng tá Trần Văn B (Trưởng phòng)</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Cơ sở vi phạm</span>
+              <span class="info-value text-blue-600 font-bold text-[14px]">Khách sạn Hoa Lư</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Địa chỉ hoạt động</span>
+              <span class="info-value">Số 1 Đường Trần Hưng Đạo, P. Đông Thành, TP. Ninh Bình</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Hành vi vi phạm</span>
+              <span class="info-value leading-relaxed text-gray-800 font-medium">
+                Không thực hiện đầy đủ các quy định về an toàn phòng cháy và chữa cháy tại cơ sở kinh doanh dịch vụ lưu trú theo quy định của pháp luật hiện hành.
+              </span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Hình thức xử phạt chính</span>
+              <span class="info-value text-[#c50000] text-[15px] font-bold">Phạt tiền: 15.000.000 VNĐ</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Hình thức xử phạt bổ sung</span>
+              <span class="info-value leading-relaxed text-gray-700">
+                Tước quyền sử dụng Giấy chứng nhận đủ điều kiện về ANTT trong thời hạn 02 tháng kể từ ngày quyết định có hiệu lực.
+              </span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Biện pháp khắc phục</span>
+              <span class="info-value leading-relaxed text-gray-700">
+                Yêu cầu tạm đình chỉ hoạt động khu vực tầng 5 của khách sạn cho đến khi hoàn thành nghiệm thu bổ sung hệ thống thiết bị PCCC theo quy chuẩn.
+              </span>
+            </div>
+          </div>
+
+          <!-- Card 2: Trạng thái thi hành -->
+          <div class="details-card">
+            <h3 class="details-title">
+              <i data-lucide="shield-alert" class="h-5 w-5 text-[#c50000]"></i> Trạng thái thi hành
+            </h3>
+            <div class="info-row">
+              <span class="info-label">Trạng thái</span>
+              <span class="info-value">
+                <span class="bg-red-50 text-red-700 border border-red-200 px-3 py-1 rounded-full text-xs font-bold inline-flex items-center gap-1">
+                  <i data-lucide="clock" class="h-3.5 w-3.5"></i> Chưa thi hành
+                </span>
+              </span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Hạn khắc phục</span>
+              <span class="info-value text-red-600 font-bold">30/05/2024</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Đội xử lý</span>
+              <span class="info-value font-medium text-gray-800">Đội QLHC về TTXH TP. Ninh Bình</span>
+            </div>
+          </div>
+
+          <!-- Card 3: Tiến trình thi hành -->
+          <div class="details-card">
+            <h3 class="details-title">
+              <i data-lucide="history" class="h-5 w-5 text-[#c50000]"></i> Lịch sử xử lý & thi hành
+            </h3>
+            <div class="timeline">
+              <div class="timeline-item active">
+                <div class="timeline-marker"></div>
+                <div class="timeline-time">25/05/2024 09:00</div>
+                <div class="timeline-title">Ban hành quyết định xử phạt</div>
+                <div class="timeline-desc">Quyết định xử phạt số QĐ-XP-2024-0129 do Thượng tá Trần Văn B ký ban hành chính thức.</div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-time">20/05/2024 15:30</div>
+                <div class="timeline-title">Lập biên bản vi phạm</div>
+                <div class="timeline-desc">Lập biên bản ghi nhận hành vi vi phạm an toàn PCCC số BB-2024-0048 tại cơ sở.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 4: Hồ sơ, tài liệu liên quan -->
+          <div class="details-card">
+            <h3 class="details-title">
+              <i data-lucide="paperclip" class="h-5 w-5 text-[#c50000]"></i> Hồ sơ, tài liệu liên quan
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <a href="#" class="file-attachment-box">
+                <i data-lucide="file-text" class="h-7 w-7 text-red-500 shrink-0"></i>
+                <div class="flex-1 min-w-0">
+                  <p class="text-xs font-bold text-gray-900 truncate">BienBanViPham_2024_0048.pdf</p>
+                  <p class="text-[10px] text-gray-500 font-medium">2.1 MB</p>
+                </div>
+                <i data-lucide="download" class="h-4 w-4 text-gray-400 hover:text-gray-900 transition-colors shrink-0"></i>
+              </a>
+              
+              <a href="#" class="file-attachment-box">
+                <i data-lucide="file-text" class="h-7 w-7 text-red-500 shrink-0"></i>
+                <div class="flex-1 min-w-0">
+                  <p class="text-xs font-bold text-gray-900 truncate">QuyetDinhXuPhat_2024_0129.pdf</p>
+                  <p class="text-[10px] text-gray-500 font-medium">1.8 MB</p>
+                </div>
+                <i data-lucide="download" class="h-4 w-4 text-gray-400 hover:text-gray-900 transition-colors shrink-0"></i>
+              </a>
+            </div>
+          </div>
+          
+        </div>
+
+        <!-- Bottom Actions Bar -->
+        <div class="flex justify-end gap-3 pt-5 border-t border-gray-200">
+          <a href="XuLyViPham.html" class="inline-flex h-[42px] items-center gap-2 rounded-md border border-[#d9dfe8] bg-white px-5 text-[14px] font-medium text-[#202833] shadow-sm transition hover:border-[#c50000] hover:text-[#c50000] hover:bg-[#fffafa]">
+            <i data-lucide="arrow-left" class="h-4.5 w-4.5"></i>
             Quay lại
           </a>
-          <button onclick="window.print()" class="filter-btn filter-reset flex items-center gap-1.5">
-            <i data-lucide="printer" class="h-4 w-4"></i> In quyết định
+          <button onclick="window.print()" class="inline-flex h-[42px] items-center gap-2 rounded-md border border-[#d9dfe8] bg-white px-5 text-[14px] font-medium text-[#202833] shadow-sm transition hover:border-[#c50000] hover:text-[#c50000] hover:bg-[#fffafa]" type="button">
+            <i data-lucide="printer" class="h-4.5 w-4.5"></i>
+            In quyết định
           </button>
-          <a href="XuLyViPham-CapNhatXuLy.html" class="filter-btn filter-submit bg-blue-600 border-blue-600 text-white flex items-center gap-1.5">
-            <i data-lucide="refresh-cw" class="h-4 w-4"></i> Cập nhật tiến độ
+          <a href="XuLyViPham-CapNhatXuLy.html" class="inline-flex h-[42px] items-center gap-2 rounded-md bg-[#c50000] px-6 text-[14px] font-semibold text-white shadow-[0_6px_13px_rgba(192,0,0,0.24)] transition hover:bg-[#ad0000]">
+            <i data-lucide="refresh-cw" class="h-4.5 w-4.5"></i>
+            Cập nhật trạng thái
           </a>
         </div>
+      </div>
 
       </div>
     </main>

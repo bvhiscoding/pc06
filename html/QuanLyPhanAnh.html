@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../styles/quan-ly-ho-so.css">
+  <link rel="stylesheet" href="../styles/design-system.css">
   <link rel="stylesheet" href="../styles/admin-danh-sach.css">
 </head>
 
@@ -145,127 +145,130 @@
     </aside>
 
     <main class="content min-h-screen pt-[80px]">
-      <div class="module-page px-6 pb-7 pt-6 lg:px-7">
-        <nav class="module-breadcrumb" aria-label="Breadcrumb">
-          <span>Trang chủ</span>
-          <i data-lucide="chevron-right" class="h-4 w-4"></i>
-          <span>Quản lý phản ánh</span>
-          <i data-lucide="chevron-right" class="h-4 w-4"></i>
-          <span>Danh sách phản ánh</span>
-        </nav>
-
-        <section class="module-toolbar">
-          <div class="module-title">
-            <h1>Danh sách phản ánh</h1>
-            <div class="module-total">Tổng số: <strong id="moduleTotal">128 phản ánh</strong></div>
+      <div class="px-6 pb-8 pt-6 lg:px-7">
+        <!-- Component: Breadcrumbs & Header Actions -->
+        <section class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-5">
+          <div class="flex items-center gap-2 text-[13px] font-medium text-[#6b7280]">
+            <i data-lucide="house" class="h-4 w-4 text-[#9098a5]"></i>
+            <span>Trang chủ</span>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
+            <span>Quản lý phản ánh</span>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
+            <span>Danh sách phản ánh</span>
           </div>
-          <div class="module-actions">
-            <button class="module-action-btn module-action-secondary" type="button" data-module-action="Xuất Excel danh sách phản ánh">
-              <i data-lucide="file-spreadsheet" class="h-4 w-4"></i>
-              Xuất Excel
-            </button>
-            <button class="module-action-btn module-action-secondary" type="button" data-module-action="Xuất PDF danh sách phản ánh">
-              <i data-lucide="file-text" class="h-4 w-4"></i>
-              Xuất PDF
-            </button>
-            <button class="module-action-btn module-action-primary" type="button" data-route="QuanLyPhanAnh-TaoMoiPhanAnh.html">
+          <div class="flex flex-wrap gap-3">
+            <button class="btn-primary" type="button" data-route="QuanLyPhanAnh-TaoMoiPhanAnh.html">
               <i data-lucide="plus" class="h-4 w-4"></i>
               Tạo mới phản ánh
             </button>
           </div>
         </section>
 
-        <section id="moduleFilter" class="module-filter feedback" aria-label="Bộ lọc phản ánh">
-          <label class="filter-field">
-            <span>Từ khóa</span>
-            <span class="field-wrap block">
-              <input class="field" type="text" data-filter="query" placeholder="Tìm theo mã, tên người phản ánh, nội dung..." />
-              <i data-lucide="search" class="field-icon"></i>
-            </span>
-          </label>
-          <label class="filter-field">
-            <span>Trạng thái</span>
-            <span class="field-wrap block">
-              <select class="field appearance-none font-medium" data-filter="status" data-all-label="Chọn trạng thái"></select>
-              <i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>
-            </span>
-          </label>
-          <label class="filter-field">
-            <span>Chủ đề</span>
-            <span class="field-wrap block">
-              <select class="field appearance-none font-medium" data-filter="topic" data-all-label="Chọn chủ đề"></select>
-              <i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>
-            </span>
-          </label>
-          <label class="filter-field">
-            <span>Cơ sở phản ánh</span>
-            <span class="field-wrap block">
-              <select class="field appearance-none font-medium" data-filter="business" data-all-label="Chọn cơ sở"></select>
-              <i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>
-            </span>
-          </label>
-          <label class="filter-field">
-            <span>Ngày tiếp nhận từ</span>
-            <span class="field-wrap block">
-              <input class="field" type="date" data-filter="dateFrom" />
-              <i data-lucide="calendar-days" class="field-icon h-4 w-4"></i>
-            </span>
-          </label>
-          <label class="filter-field">
-            <span>Ngày tiếp nhận đến</span>
-            <span class="field-wrap block">
-              <input class="field" type="date" data-filter="dateTo" />
-              <i data-lucide="calendar-days" class="field-icon h-4 w-4"></i>
-            </span>
-          </label>
-          <div class="filter-actions">
-            <button id="resetBtn" class="filter-btn filter-reset" type="button">
+        <!-- Component: Filter Panel -->
+        <section id="moduleFilter" class="panel rounded-[7px] border border-[#e0e5ed] bg-white p-5 shadow-panel" aria-label="Bộ lọc phản ánh">
+          <div class="grid grid-cols-12 gap-x-7 gap-y-4">
+            <label class="col-span-12 xl:col-span-4">
+              <span class="form-label">Từ khóa</span>
+              <span class="field-wrap block">
+                <input class="field" type="text" data-filter="query" placeholder="Tìm theo mã, tên người phản ánh, nội dung..." />
+                <i data-lucide="search" class="field-icon"></i>
+              </span>
+            </label>
+            <label class="col-span-12 md:col-span-4 xl:col-span-2">
+              <span class="form-label">Trạng thái</span>
+              <span class="field-wrap block">
+                <select class="field appearance-none font-medium" data-filter="status" data-all-label="Chọn trạng thái"></select>
+                <i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>
+              </span>
+            </label>
+            <label class="col-span-12 md:col-span-4 xl:col-span-3">
+              <span class="form-label">Chủ đề</span>
+              <span class="field-wrap block">
+                <select class="field appearance-none font-medium" data-filter="topic" data-all-label="Chọn chủ đề"></select>
+                <i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>
+              </span>
+            </label>
+            <label class="col-span-12 md:col-span-4 xl:col-span-3">
+              <span class="form-label">Cơ sở phản ánh</span>
+              <span class="field-wrap block">
+                <select class="field appearance-none font-medium" data-filter="business" data-all-label="Chọn cơ sở"></select>
+                <i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>
+              </span>
+            </label>
+            <label class="col-span-12 sm:col-span-6 xl:col-span-3">
+              <span class="form-label">Ngày tiếp nhận từ</span>
+              <span class="field-wrap block">
+                <input class="field" type="date" data-filter="dateFrom" />
+                <i data-lucide="calendar-days" class="field-icon"></i>
+              </span>
+            </label>
+            <label class="col-span-12 sm:col-span-6 xl:col-span-3">
+              <span class="form-label">Ngày tiếp nhận đến</span>
+              <span class="field-wrap block">
+                <input class="field" type="date" data-filter="dateTo" />
+                <i data-lucide="calendar-days" class="field-icon"></i>
+              </span>
+            </label>
+          </div>
+          <div class="mt-4 flex justify-end gap-3">
+            <button id="resetBtn" class="btn-secondary" type="button">
               <i data-lucide="rotate-ccw" class="h-4 w-4"></i>
               Đặt lại
             </button>
-            <button id="searchBtn" class="filter-btn filter-submit" type="button">
+            <button id="searchBtn" class="btn-primary" type="button">
               <i data-lucide="search" class="h-4 w-4"></i>
               Tìm kiếm
             </button>
           </div>
         </section>
 
-        <section class="module-table-card">
-          <div class="module-table-scroll">
-            <table class="module-table">
+        <!-- Component: Records Data Table -->
+        <section class="panel-soft mt-4 overflow-hidden rounded-[7px] border border-[#e4e9f0] bg-white shadow-soft">
+          <div class="overflow-x-auto">
+            <table class="data-table w-full">
               <thead>
                 <tr>
-                  <th class="center">STT</th>
+                  <th class="w-[48px]"><input type="checkbox" aria-label="Chọn tất cả" /></th>
+                  <th class="w-[60px] text-center">STT</th>
                   <th>Mã phản ánh</th>
                   <th>Người phản ánh / Doanh nghiệp</th>
                   <th>Chủ đề</th>
-                  <th>Ngày tiếp nhận</th>
-                  <th class="center">Trạng thái xử lý</th>
+                  <th class="w-[150px] text-center">Ngày tiếp nhận</th>
+                  <th class="w-[140px] text-center">Trạng thái xử lý</th>
                   <th>Cán bộ phụ trách</th>
-                  <th class="center">Thao tác</th>
+                  <th class="w-[90px] text-center">Thao tác</th>
                 </tr>
               </thead>
               <tbody id="moduleTableBody"></tbody>
             </table>
           </div>
-          <div class="module-pagination">
-            <div class="page-size-control">
-              <span>Hiển thị</span>
-              <select id="pageSizeSelect" class="field appearance-none">
-                <option value="10" selected>10</option>
-                <option value="20">20</option>
-                <option value="50">50</option>
-              </select>
-              <span>trên 128 bản ghi</span>
-            </div>
-            <div class="pager-list" id="pagination"></div>
+        </section>
+
+        <!-- Component: Table Footer & Pagination -->
+        <section id="table-footer-component" class="table-footer-component mt-5 flex flex-col gap-4 text-[14px] text-[#5f6877] md:flex-row md:items-center md:justify-between">
+          <div class="flex flex-wrap items-center gap-3">
+            <div id="resultSummary">Hiển thị 1 - 10 trong tổng số 128 bản ghi</div>
+            <select id="pageSizeSelect" class="field h-10 w-[120px] appearance-none pr-8 text-left font-medium">
+              <option value="10" selected>10 / trang</option>
+              <option value="20">20 / trang</option>
+              <option value="50">50 / trang</option>
+            </select>
+          </div>
+          <div id="pagination" class="flex flex-wrap items-center gap-2"></div>
+          <div class="flex items-center gap-2">
+            <a href="ImportDuLieu.html" class="inline-flex h-10 items-center gap-2 rounded-md border border-[#d9dfe8] bg-white px-4 text-[14px] font-bold text-[#202833] shadow-sm transition hover:border-[#c50000] hover:text-[#c50000] hover:bg-[#fffafa]">
+              <i data-lucide="file-up" class="h-4 w-4"></i>Nhập dữ liệu
+            </a>
+            <button class="inline-flex h-10 items-center gap-2 rounded-md border border-[#d9dfe8] bg-white px-4 text-[14px] font-bold text-[#202833] shadow-sm transition hover:border-[#c50000] hover:text-[#c50000] hover:bg-[#fffafa]" type="button" data-module-action="Xuất Excel danh sách phản ánh">
+              <i data-lucide="file-spreadsheet" class="h-4 w-4"></i>Xuất dữ liệu
+            </button>
           </div>
         </section>
       </div>
     </main>
   </div>
   <script src="../scripts/layout-sync.js"></script>
-  <script src="../scripts/quan-ly-phan-anh.js"></script>
+  <script src="../scripts/quan-ly-phan-anh.js?v=2"></script>
 </body>
 
 </html>

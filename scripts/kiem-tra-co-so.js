@@ -3,26 +3,28 @@
     totalCount: 120,
     summaryNoun: 'bản ghi',
     dateKey: 'dateIso',
-    searchKeys: ['code', 'type', 'unit', 'inspector', 'status'],
+    searchKeys: ['code', 'establishment', 'type', 'unit', 'inspector', 'status'],
     filters: {
       type: ['Định kỳ', 'Đột xuất'],
       status: ['Đạt', 'Không đạt', 'Đang thực hiện', 'Chờ kiểm tra lại', 'Hủy']
     },
     badge: {
-      'Đạt': 'badge-green',
-      'Không đạt': 'badge-red',
-      'Đang thực hiện': 'badge-blue',
-      'Chờ kiểm tra lại': 'badge-orange',
-      'Hủy': 'badge-gray'
+      'Đạt': 'st-green',
+      'Không đạt': 'st-red',
+      'Đang thực hiện': 'st-blue',
+      'Chờ kiểm tra lại': 'st-orange',
+      'Hủy': 'st-gray'
     },
     actions: [
       { label: 'Xem chi tiết', icon: 'eye', route: 'KiemTraCoSo-ChiTietKiemTra.html' },
-      { label: 'Chỉnh sửa', icon: 'square-pen', route: 'KiemTraCoSo-ChinhSuaKiemTra.html' },
+      { label: 'Chỉnh sửa', icon: 'square-pen', route: 'KiemTraCoSo-ChiTietKiemTra.html?edit=true' },
       { label: 'Cập nhật kết quả', icon: 'refresh-cw', route: 'KiemTraCoSo-ChiTietKiemTra.html' }
     ],
     columns: [
+      { type: 'checkbox' },
       { type: 'index' },
       { key: 'code', type: 'code' },
+      { key: 'establishment' },
       { key: 'type' },
       { key: 'unit' },
       { key: 'inspector' },
@@ -35,16 +37,16 @@
       { title: 'Kế hoạch mới', text: 'Một kế hoạch kiểm tra định kỳ vừa được tạo.', time: '1 giờ trước', icon: 'clipboard-check' }
     ],
     records: [
-      { id: 'KT-2024-0001', code: 'KT-2024-0001', type: 'Định kỳ', unit: 'Phòng CS QLHC về TTXH', inspector: 'Nguyễn Văn A', date: '15/05/2024', dateIso: '2024-05-15', status: 'Đạt' },
-      { id: 'KT-2024-0002', code: 'KT-2024-0002', type: 'Đột xuất', unit: 'Đội QLHC về TTXH - CA TP. Ninh Bình', inspector: 'Trần Thị B', date: '12/05/2024', dateIso: '2024-05-12', status: 'Không đạt' },
-      { id: 'KT-2024-0003', code: 'KT-2024-0003', type: 'Định kỳ', unit: 'Phòng Cảnh sát PCCC và CNCH', inspector: 'Phạm Văn C', date: '10/05/2024', dateIso: '2024-05-10', status: 'Đạt' },
-      { id: 'KT-2024-0004', code: 'KT-2024-0004', type: 'Đột xuất', unit: 'Đội QLHC về TTXH - CA huyện Hoa Lư', inspector: 'Lê Văn D', date: '08/05/2024', dateIso: '2024-05-08', status: 'Không đạt' },
-      { id: 'KT-2024-0005', code: 'KT-2024-0005', type: 'Định kỳ', unit: 'Phòng CS QLHC về TTXH', inspector: 'Nguyễn Văn A', date: '05/05/2024', dateIso: '2024-05-05', status: 'Đạt' },
-      { id: 'KT-2024-0006', code: 'KT-2024-0006', type: 'Định kỳ', unit: 'Phòng CS QLHC về TTXH', inspector: 'Trần Thị B', date: '02/05/2024', dateIso: '2024-05-02', status: 'Đang thực hiện' },
-      { id: 'KT-2024-0007', code: 'KT-2024-0007', type: 'Đột xuất', unit: 'Đội QLHC về TTXH - CA huyện Gia Viễn', inspector: 'Phạm Văn C', date: '28/04/2024', dateIso: '2024-04-28', status: 'Không đạt' },
-      { id: 'KT-2024-0008', code: 'KT-2024-0008', type: 'Định kỳ', unit: 'Phòng CS QLHC về TTXH', inspector: 'Lê Văn D', date: '25/04/2024', dateIso: '2024-04-25', status: 'Đạt' },
-      { id: 'KT-2024-0009', code: 'KT-2024-0009', type: 'Đột xuất', unit: 'Đội QLHC về TTXH - CA TP. Ninh Bình', inspector: 'Nguyễn Văn A', date: '22/04/2024', dateIso: '2024-04-22', status: 'Chờ kiểm tra lại' },
-      { id: 'KT-2024-0010', code: 'KT-2024-0010', type: 'Định kỳ', unit: 'Phòng Cảnh sát PCCC và CNCH', inspector: 'Trần Thị B', date: '20/04/2024', dateIso: '2024-04-20', status: 'Hủy' }
+      { id: 'KT-2024-0001', code: 'KT-2024-0001', establishment: 'Khách sạn Hoa Lư', type: 'Định kỳ', unit: 'Phòng CS QLHC về TTXH', inspector: 'Nguyễn Văn A', date: '15/05/2024', dateIso: '2024-05-15', status: 'Đạt' },
+      { id: 'KT-2024-0002', code: 'KT-2024-0002', establishment: 'Karaoke New Star', type: 'Đột xuất', unit: 'Đội QLHC về TTXH - CA TP. Ninh Bình', inspector: 'Trần Thị B', date: '12/05/2024', dateIso: '2024-05-12', status: 'Không đạt' },
+      { id: 'KT-2024-0003', code: 'KT-2024-0003', establishment: 'Công ty TNHH Hoàng Gia', type: 'Định kỳ', unit: 'Phòng Cảnh sát PCCC và CNCH', inspector: 'Phạm Văn C', date: '10/05/2024', dateIso: '2024-05-10', status: 'Đạt' },
+      { id: 'KT-2024-0004', code: 'KT-2024-0004', establishment: 'Công ty CP DV Bảo vệ An Ninh', type: 'Đột xuất', unit: 'Đội QLHC về TTXH - CA huyện Hoa Lư', inspector: 'Lê Văn D', date: '08/05/2024', dateIso: '2024-05-08', status: 'Không đạt' },
+      { id: 'KT-2024-0005', code: 'KT-2024-0005', establishment: 'Nhà nghỉ Hoàng Long', type: 'Định kỳ', unit: 'Phòng CS QLHC về TTXH', inspector: 'Nguyễn Văn A', date: '05/05/2024', dateIso: '2024-05-05', status: 'Đạt' },
+      { id: 'KT-2024-0006', code: 'KT-2024-0006', establishment: 'Khách sạn The Reed', type: 'Định kỳ', unit: 'Phòng CS QLHC về TTXH', inspector: 'Trần Thị B', date: '02/05/2024', dateIso: '2024-05-02', status: 'Đang thực hiện' },
+      { id: 'KT-2024-0007', code: 'KT-2024-0007', establishment: 'Karaoke Queen', type: 'Đột xuất', unit: 'Đội QLHC về TTXH - CA huyện Gia Viễn', inspector: 'Phạm Văn C', date: '28/04/2024', dateIso: '2024-04-28', status: 'Không đạt' },
+      { id: 'KT-2024-0008', code: 'KT-2024-0008', establishment: 'Cơ sở Massage Tô Châu', type: 'Định kỳ', unit: 'Phòng CS QLHC về TTXH', inspector: 'Lê Văn D', date: '25/04/2024', dateIso: '2024-04-25', status: 'Đạt' },
+      { id: 'KT-2024-0009', code: 'KT-2024-0009', establishment: 'Công ty TNHH MTV X', type: 'Đột xuất', unit: 'Đội QLHC về TTXH - CA TP. Ninh Bình', inspector: 'Nguyễn Văn A', date: '22/04/2024', dateIso: '2024-04-22', status: 'Chờ kiểm tra lại' },
+      { id: 'KT-2024-0010', code: 'KT-2024-0010', establishment: 'Khách sạn Ninh Bình Legend', type: 'Định kỳ', unit: 'Phòng Cảnh sát PCCC và CNCH', inspector: 'Trần Thị B', date: '20/04/2024', dateIso: '2024-04-20', status: 'Hủy' }
     ]
   };
 
@@ -59,7 +61,7 @@ function initModuleList(config) {
     resetBtn: document.querySelector('#resetBtn'),
     body: document.querySelector('#moduleTableBody'),
     total: document.querySelector('#moduleTotal'),
-    summary: document.querySelector('#moduleSummary'),
+    summary: document.querySelector('#resultSummary'),
     pageSize: document.querySelector('#pageSizeSelect'),
     pagination: document.querySelector('#pagination'),
     notificationToggle: document.querySelector('#notificationToggle'),
@@ -112,34 +114,40 @@ function initModuleList(config) {
   }
 
   function cell(record, column) {
-    if (column.type === 'index') return `<td class="center">${record.__index}</td>`;
+    if (column.type === 'checkbox') return `<td class="text-center"><input type="checkbox" aria-label="Chọn dòng ${record.code || record.id}" /></td>`;
+    if (column.type === 'index') return `<td class="text-center font-medium">${record.__index}</td>`;
     const value = column.render ? column.render(record) : getValue(record, column.key);
-    if (column.type === 'code') return `<td><span class="${column.red ? 'red-code' : 'code-link'}">${escapeHTML(value)}</span></td>`;
-    if (column.type === 'badge') return `<td class="${column.center ? 'center' : ''}"><span class="module-badge ${config.badge[value] || 'badge-gray'}">${escapeHTML(value)}</span></td>`;
-    if (column.type === 'stack') return `<td><span class="primary-text">${escapeHTML(getValue(record, column.primary))}</span><span class="secondary-text">${escapeHTML(getValue(record, column.secondary))}</span></td>`;
-    if (column.type === 'datetime') return `<td class="nowrap">${escapeHTML(value.date)}<br>${escapeHTML(value.time)}</td>`;
-    return `<td class="${column.center ? 'center' : ''}${column.nowrap ? ' nowrap' : ''}">${escapeHTML(value)}</td>`;
+    if (column.type === 'code') return `<td class="text-center font-medium text-[#ff0000]">${escapeHTML(value)}</td>`;
+    if (column.type === 'badge') return `<td class="${column.center ? 'text-center' : ''}"><span class="status ${config.badge[value] || 'st-gray'}">${escapeHTML(value)}</span></td>`;
+    if (column.type === 'stack') return `<td><span class="primary-text fw-semibold">${escapeHTML(getValue(record, column.primary))}</span><span class="secondary-text">${escapeHTML(getValue(record, column.secondary))}</span></td>`;
+    if (column.type === 'datetime') return `<td class="nowrap text-center">${escapeHTML(value.date)}<br>${escapeHTML(value.time)}</td>`;
+    return `<td class="${column.center ? 'text-center' : ''}${column.nowrap ? ' nowrap' : ''}">${escapeHTML(value)}</td>`;
   }
 
   function go(route, id) {
-    window.location.href = `${route}${id ? `?id=${encodeURIComponent(id)}` : ''}`;
+    if (id) {
+      const separator = route.includes('?') ? '&' : '?';
+      window.location.href = `${route}${separator}id=${encodeURIComponent(id)}`;
+    } else {
+      window.location.href = route;
+    }
   }
 
   function renderRows(filtered) {
     const start = (state.page - 1) * state.pageSize;
     const rows = filtered.slice(start, start + state.pageSize);
     if (!rows.length) {
-      els.body.innerHTML = `<tr><td class="module-empty" colspan="${config.columns.length + 1}">Khong tim thay du lieu phu hop voi dieu kien loc.</td></tr>`;
+      els.body.innerHTML = `<tr><td class="empty-state" colspan="${config.columns.length + 1}">Không tìm thấy dữ liệu phù hợp với điều kiện lọc.</td></tr>`;
       return;
     }
     els.body.innerHTML = rows.map((record, index) => {
       const row = { ...record, __index: start + index + 1 };
       return `<tr>${config.columns.map((column) => cell(row, column)).join('')}
-        <td class="action-cell">
-          <button class="row-action${state.openActionId === record.id ? ' is-open' : ''}" type="button" data-action-toggle="${escapeHTML(record.id)}" aria-label="Mo thao tac ${escapeHTML(record.id)}">
-            <i data-lucide="ellipsis-vertical" class="h-4 w-4"></i>
+        <td class="action-cell text-center">
+          <button class="btn-icon mx-auto${state.openActionId === record.id ? ' is-open' : ''}" type="button" data-action-toggle="${escapeHTML(record.id)}" aria-label="Mở thao tác ${escapeHTML(record.id)}">
+            <i data-lucide="ellipsis-vertical" class="h-5 w-5"></i>
           </button>
-          ${state.openActionId === record.id ? `<div class="module-action-menu">${config.actions.map((action) => `<button type="button" data-action-route="${escapeHTML(action.route)}" data-id="${escapeHTML(record.id)}"><i data-lucide="${escapeHTML(action.icon)}" class="h-4 w-4"></i>${escapeHTML(action.label)}</button>`).join('')}</div>` : ''}
+          ${state.openActionId === record.id ? `<div class="row-action-menu">${config.actions.map((action) => `<button type="button" data-action-route="${escapeHTML(action.route)}" data-id="${escapeHTML(record.id)}"><i data-lucide="${escapeHTML(action.icon)}" class="h-4 w-4"></i>${escapeHTML(action.label)}</button>`).join('')}</div>` : ''}
         </td>
       </tr>`;
     }).join('');
@@ -151,8 +159,8 @@ function initModuleList(config) {
     state.page = Math.min(state.page, totalPages);
     const start = total ? (state.page - 1) * state.pageSize + 1 : 0;
     const end = Math.min(state.page * state.pageSize, total);
-    if (els.summary) els.summary.textContent = `Hien thi ${start} - ${end} trong tong so ${total.toLocaleString('vi-VN')} ${config.summaryNoun}`;
-    if (els.total) els.total.textContent = `${total.toLocaleString('vi-VN')} ${config.summaryNoun}`;
+    if (els.summary) els.summary.textContent = `Hiển thị ${start} - ${end} trong tổng số ${total.toLocaleString('vi-VN')} ${config.summaryNoun || 'bản ghi'}`;
+    if (els.total) els.total.textContent = `${total.toLocaleString('vi-VN')} ${config.summaryNoun || 'bản ghi'}`;
     const pages = [];
     for (let page = 1; page <= totalPages; page += 1) {
       if (page === 1 || page === totalPages || Math.abs(page - state.page) <= 1) pages.push(page);

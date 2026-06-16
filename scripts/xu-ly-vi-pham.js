@@ -1,59 +1,54 @@
 (() => {
   const config = {
-    totalCount: 128,
-    summaryNoun: 'vi phạm',
-    dateKey: 'dateIso',
-    searchKeys: ['code', 'facility', 'address', 'violation', 'severity', 'status', 'unit'],
+    totalCount: 12,
+    summaryNoun: 'quyết định',
+    dateKey: 'issueDate',
+    searchKeys: ['decisionNum', 'facility', 'address', 'violation', 'status'],
     filters: {
-      facility: ['Khách sạn Hoa Lư', 'Quán Karaoke New Star', 'Công ty TNHH Bảo vệ An Ninh', 'Nhà nghỉ Hoàng Gia', 'Cửa hàng cầm đồ Minh Phát'],
-      violation: ['Không chấp hành quy định về PCCC', 'Sử dụng lao động không khai báo tạm trú', 'Không đảm bảo điều kiện về ANTT', 'Không thực hiện chế độ báo cáo', 'Không lưu giữ thông tin khách hàng'],
       severity: ['Nhẹ', 'Trung bình', 'Nặng'],
-      status: ['Mới phát hiện', 'Đang xử lý', 'Chờ khắc phục', 'Đã khắc phục', 'Đã xử lý', 'Tái phạm'],
-      unit: ['Đội QLHC về TTXH TP. Ninh Bình', 'Phòng CS QLHC về TTXH', 'Đội QLHC về TTXH H. Hoa Lư', 'Đội QLHC về TTXH H. Nho Quan']
+      status: ['Chưa thi hành', 'Đang thi hành', 'Đã thi hành'],
+      unit: ['Công an tỉnh Ninh Bình', 'Công an TP. Ninh Bình', 'Công an huyện Hoa Lư', 'Công an huyện Nho Quan']
     },
     badge: {
-      'Nhẹ': 'badge-green',
-      'Trung bình': 'badge-orange',
-      'Nặng': 'badge-red',
-      'Mới phát hiện': 'badge-purple',
-      'Đang xử lý': 'badge-blue',
-      'Chờ khắc phục': 'badge-orange',
-      'Đã khắc phục': 'badge-green',
-      'Đã xử lý': 'badge-blue',
-      'Tái phạm': 'badge-purple'
+      'Nhẹ': 'st-green',
+      'Trung bình': 'st-orange',
+      'Nặng': 'st-red',
+      'Chưa thi hành': 'st-red',
+      'Đang thi hành': 'st-orange',
+      'Đã thi hành': 'st-green'
     },
     actions: [
       { label: 'Xem chi tiết', icon: 'eye', route: 'XuLyViPham-ChiTietViPham.html' },
-      { label: 'Chỉnh sửa', icon: 'square-pen', route: 'XuLyViPham-ChiTietViPham.html' },
-      { label: 'Cập nhật xử lý', icon: 'refresh-cw', route: 'XuLyViPham-CapNhatXuLy.html' }
+      { label: 'Cập nhật tiến độ', icon: 'refresh-cw', route: 'XuLyViPham-CapNhatXuLy.html' }
     ],
     columns: [
+      { type: 'checkbox' },
       { type: 'index' },
-      { key: 'code', type: 'code', red: true },
+      { key: 'decisionNum', type: 'code', red: true },
       { type: 'stack', primary: 'facility', secondary: 'address' },
       { key: 'violation' },
-      { key: 'severity', type: 'badge' },
-      { type: 'datetime', render: (record) => ({ date: record.detectedDate, time: record.detectedTime }) },
-      { key: 'status', type: 'badge', center: true },
-      { key: 'deadline', nowrap: true },
-      { key: 'unit' }
+      { key: 'penaltyForm' },
+      { key: 'issueDate', nowrap: true },
+      { key: 'status', type: 'badge', center: true }
     ],
     notifications: [
-      { title: 'Vi phạm mới phát hiện', text: 'VP000126 cần được phân công xử lý.', time: '6 phút trước', icon: 'octagon-alert' },
-      { title: 'Hạn khắc phục sắp tới', text: 'VP000121 còn 2 ngày đến hạn khắc phục.', time: '40 phút trước', icon: 'calendar-days' },
-      { title: 'Cơ sở đã khắc phục', text: 'Nhà nghỉ Hoàng Gia gửi báo cáo khắc phục.', time: '1 giờ trước', icon: 'shield-check' }
+      { title: 'Quyết định mới ban hành', text: 'QĐ 124/QĐ-XPHC cần được theo dõi.', time: '6 phút trước', icon: 'octagon-alert' },
+      { title: 'Sắp hết hạn thi hành', text: 'QĐ 128/QĐ-XPHC còn 2 ngày đến hạn khắc phục.', time: '40 phút trước', icon: 'calendar-days' },
+      { title: 'Cơ sở đã nộp phạt', text: 'Khách sạn Hoa Lư đã nộp biên lai thu tiền.', time: '1 giờ trước', icon: 'shield-check' }
     ],
     records: [
-      { id: 'VP000128', code: 'VP000128', facility: 'Khách sạn Hoa Lư', address: 'Số 12, Trần Hưng Đạo, TP. Ninh Bình', violation: 'Không chấp hành quy định về PCCC', severity: 'Nặng', detectedDate: '20/05/2024', detectedTime: '10:15', dateIso: '2024-05-20', status: 'Đang xử lý', deadline: '30/05/2024', unit: 'Đội QLHC về TTXH TP. Ninh Bình' },
-      { id: 'VP000127', code: 'VP000127', facility: 'Quán Karaoke New Star', address: '68 Lê Thái Tổ, TP. Ninh Bình', violation: 'Sử dụng lao động không khai báo tạm trú', severity: 'Trung bình', detectedDate: '19/05/2024', detectedTime: '14:30', dateIso: '2024-05-19', status: 'Chờ khắc phục', deadline: '02/06/2024', unit: 'Đội QLHC về TTXH TP. Ninh Bình' },
-      { id: 'VP000126', code: 'VP000126', facility: 'Công ty TNHH Bảo vệ An Ninh', address: 'KCN Khánh Phú, Yên Khánh, NB', violation: 'Không đảm bảo điều kiện về ANTT', severity: 'Nặng', detectedDate: '18/05/2024', detectedTime: '09:05', dateIso: '2024-05-18', status: 'Mới phát hiện', deadline: '28/05/2024', unit: 'Phòng CS QLHC về TTXH' },
-      { id: 'VP000125', code: 'VP000125', facility: 'Nhà nghỉ Hoàng Gia', address: '99 Nguyễn Huệ, TP. Ninh Bình', violation: 'Không thực hiện chế độ báo cáo', severity: 'Nhẹ', detectedDate: '17/05/2024', detectedTime: '16:20', dateIso: '2024-05-17', status: 'Đã khắc phục', deadline: '22/05/2024', unit: 'Đội QLHC về TTXH TP. Ninh Bình' },
-      { id: 'VP000124', code: 'VP000124', facility: 'Cửa hàng cầm đồ Minh Phát', address: '32 Tràng An, TP. Ninh Bình', violation: 'Không lưu giữ thông tin khách hàng', severity: 'Trung bình', detectedDate: '16/05/2024', detectedTime: '11:45', dateIso: '2024-05-16', status: 'Đã xử lý', deadline: '20/05/2024', unit: 'Đội QLHC về TTXH TP. Ninh Bình' },
-      { id: 'VP000123', code: 'VP000123', facility: 'Bar Luxury Club', address: '01 Đinh Tiên Hoàng, TP. Ninh Bình', violation: 'Hoạt động quá thời gian quy định', severity: 'Nặng', detectedDate: '15/05/2024', detectedTime: '23:40', dateIso: '2024-05-15', status: 'Tái phạm', deadline: '25/05/2024', unit: 'Phòng CS QLHC về TTXH' },
-      { id: 'VP000122', code: 'VP000122', facility: 'Dịch vụ lưu trú Tràng An', address: 'Thôn Vụng Lầm, Hoa Lư, Ninh Bình', violation: 'Không lưu giữ thông tin khách hàng', severity: 'Trung bình', detectedDate: '14/05/2024', detectedTime: '08:20', dateIso: '2024-05-14', status: 'Đã xử lý', deadline: '21/05/2024', unit: 'Đội QLHC về TTXH H. Hoa Lư' },
-      { id: 'VP000121', code: 'VP000121', facility: 'Karaoke Ruby', address: '25 Lê Đại Hành, TP. Ninh Bình', violation: 'Không đảm bảo điều kiện về ANTT', severity: 'Nặng', detectedDate: '13/05/2024', detectedTime: '22:15', dateIso: '2024-05-13', status: 'Chờ khắc phục', deadline: '18/05/2024', unit: 'Đội QLHC về TTXH TP. Ninh Bình' },
-      { id: 'VP000120', code: 'VP000120', facility: 'Hotel Minh Châu', address: '07 Nguyễn Công Trứ, TP. Ninh Bình', violation: 'Sử dụng lao động không khai báo tạm trú', severity: 'Nhẹ', detectedDate: '12/05/2024', detectedTime: '09:30', dateIso: '2024-05-12', status: 'Đã khắc phục', deadline: '19/05/2024', unit: 'Phòng CS QLHC về TTXH' },
-      { id: 'VP000119', code: 'VP000119', facility: 'Cầm đồ An Phát', address: '15 Tam Điệp, Ninh Bình', violation: 'Không thực hiện chế độ báo cáo', severity: 'Trung bình', detectedDate: '11/05/2024', detectedTime: '13:10', dateIso: '2024-05-11', status: 'Đang xử lý', deadline: '24/05/2024', unit: 'Đội QLHC về TTXH H. Nho Quan' }
+      { id: 'VP001', decisionNum: '124/QĐ-XPHC', facility: 'Khách sạn Hoa Lư', address: 'Số 1 Trần Hưng Đạo, P. Đông Thành, TP. Ninh Bình', violation: 'Không thực hiện đầy đủ các điều kiện về ANTT', penaltyForm: 'Phạt tiền: 15.000.000đ', issueDate: '25/05/2024', status: 'Chưa thi hành', severity: 'Nặng', unit: 'Công an tỉnh Ninh Bình' },
+      { id: 'VP002', decisionNum: '125/QĐ-XPHC', facility: 'Quán Karaoke New Star', address: 'Số 68 Lê Thái Tổ, TP. Ninh Bình', violation: 'Sử dụng lao động không khai báo tạm trú', penaltyForm: 'Phạt tiền: 5.000.000đ', issueDate: '24/05/2024', status: 'Đang thi hành', severity: 'Trung bình', unit: 'Công an TP. Ninh Bình' },
+      { id: 'VP003', decisionNum: '126/QĐ-XPHC', facility: 'Nhà nghỉ Hoàng Gia', address: 'Số 99 Nguyễn Huệ, TP. Ninh Bình', violation: 'Không thực hiện chế độ báo cáo định kỳ', penaltyForm: 'Phạt tiền: 3.000.000đ', issueDate: '23/05/2024', status: 'Đã thi hành', severity: 'Nhẹ', unit: 'Công an TP. Ninh Bình' },
+      { id: 'VP004', decisionNum: '127/QĐ-XPHC', facility: 'Bar Luxury Club', address: 'Số 1 Đinh Tiên Hoàng, TP. Ninh Bình', violation: 'Hoạt động quá giờ quy định', penaltyForm: 'Phạt tiền: 10.000.000đ', issueDate: '22/05/2024', status: 'Chưa thi hành', severity: 'Nặng', unit: 'Công an tỉnh Ninh Bình' },
+      { id: 'VP005', decisionNum: '128/QĐ-XPHC', facility: 'Cầm đồ Minh Phát', address: 'Số 32 Tràng An, TP. Ninh Bình', violation: 'Không lưu giữ thông tin khách hàng cầm cố', penaltyForm: 'Phạt tiền: 4.500.000đ', issueDate: '21/05/2024', status: 'Đang thi hành', severity: 'Trung bình', unit: 'Công an TP. Ninh Bình' },
+      { id: 'VP006', decisionNum: '129/QĐ-XPHC', facility: 'Dịch vụ lưu trú Tràng An', address: 'Thôn Vụng Lầm, xã Trường Yên, H. Hoa Lư', violation: 'Không khai báo lưu trú cho khách nước ngoài', penaltyForm: 'Phạt tiền: 7.500.000đ', issueDate: '20/05/2024', status: 'Đã thi hành', severity: 'Trung bình', unit: 'Công an huyện Hoa Lư' },
+      { id: 'VP007', decisionNum: '130/QĐ-XPHC', facility: 'Karaoke Ruby', address: 'Số 25 Lê Đại Hành, TP. Ninh Bình', violation: 'Không đảm bảo điều kiện PCCC', penaltyForm: 'Phạt tiền: 20.000.000đ', issueDate: '19/05/2024', status: 'Chưa thi hành', severity: 'Nặng', unit: 'Công an TP. Ninh Bình' },
+      { id: 'VP008', decisionNum: '131/QĐ-XPHC', facility: 'Hotel Minh Châu', address: 'Số 7 Nguyễn Công Trứ, TP. Ninh Bình', violation: 'Không lập sổ quản lý dịch vụ', penaltyForm: 'Phạt tiền: 2.000.000đ', issueDate: '18/05/2024', status: 'Đã thi hành', severity: 'Nhẹ', unit: 'Công an TP. Ninh Bình' },
+      { id: 'VP009', decisionNum: '132/QĐ-XPHC', facility: 'Cầm đồ An Phát', address: 'Số 15 đường Tam Điệp, H. Nho Quan', violation: 'Nhận cầm cố tài sản không chính chủ', penaltyForm: 'Phạt tiền: 6.000.000đ', issueDate: '17/05/2024', status: 'Đã thi hành', severity: 'Trung bình', unit: 'Công an huyện Nho Quan' },
+      { id: 'VP010', decisionNum: '133/QĐ-XPHC', facility: 'Massage Đại Dương', address: 'Số 88 Ngô Gia Tự, TP. Ninh Bình', violation: 'Hoạt động quá giờ quy định', penaltyForm: 'Phạt tiền: 8.000.000đ', issueDate: '16/05/2024', status: 'Đang thi hành', severity: 'Trung bình', unit: 'Công an TP. Ninh Bình' },
+      { id: 'VP011', decisionNum: '134/QĐ-XPHC', facility: 'Nhà nghỉ Bình Minh', address: 'Số 14 Nam Thành, TP. Ninh Bình', violation: 'Không thực hiện chế độ báo cáo', penaltyForm: 'Phạt tiền: 1.500.000đ', issueDate: '15/05/2024', status: 'Đã thi hành', severity: 'Nhẹ', unit: 'Công an TP. Ninh Bình' },
+      { id: 'VP012', decisionNum: '135/QĐ-XPHC', facility: 'Vũ trường New Life', address: 'Phố Bình Chương, P. Nam Bình, TP. Ninh Bình', violation: 'Không đảm bảo an ninh trật tự', penaltyForm: 'Phạt tiền: 12.000.000đ', issueDate: '14/05/2024', status: 'Chưa thi hành', severity: 'Nặng', unit: 'Công an TP. Ninh Bình' }
     ]
   };
 
@@ -61,14 +56,14 @@
 })();
 
 function initModuleList(config) {
-  const state = { page: 1, pageSize: 10, filters: {}, openActionId: '' };
+  const state = { page: 1, pageSize: 10, filters: {}, openActionId: '', activeTabStatus: '__all' };
   const allValue = '__all';
   const els = {
     searchBtn: document.querySelector('#searchBtn'),
     resetBtn: document.querySelector('#resetBtn'),
     body: document.querySelector('#moduleTableBody'),
     total: document.querySelector('#moduleTotal'),
-    summary: document.querySelector('#moduleSummary'),
+    summary: document.querySelector('#resultSummary'),
     pageSize: document.querySelector('#pageSizeSelect'),
     pagination: document.querySelector('#pagination'),
     notificationToggle: document.querySelector('#notificationToggle'),
@@ -111,23 +106,43 @@ function initModuleList(config) {
   }
 
   function getFilteredRecords() {
-    return config.records.filter((record) => Object.entries(state.filters).every(([key, value]) => {
-      if (isAll(value)) return true;
-      if (key === 'query') return normalize(config.searchKeys.map((searchKey) => getValue(record, searchKey)).join(' ')).includes(normalize(value));
-      if (key === 'dateFrom') return String(getValue(record, config.dateKey) || '') >= value;
-      if (key === 'dateTo') return String(getValue(record, config.dateKey) || '') <= value;
-      return String(getValue(record, key) || '') === value;
-    }));
+    return config.records.filter((record) => {
+      if (state.activeTabStatus && state.activeTabStatus !== '__all') {
+        if (record.status !== state.activeTabStatus) return false;
+      }
+      return Object.entries(state.filters).every(([key, value]) => {
+        if (isAll(value)) return true;
+        if (key === 'query') return normalize(config.searchKeys.map((searchKey) => getValue(record, searchKey)).join(' ')).includes(normalize(value));
+        if (key === 'dateFrom') {
+          const parts = (getValue(record, 'issueDate') || '').split('/');
+          if (parts.length === 3) {
+            const iso = `${parts[2]}-${parts[1]}-${parts[0]}`;
+            return iso >= value;
+          }
+          return true;
+        }
+        if (key === 'dateTo') {
+          const parts = (getValue(record, 'issueDate') || '').split('/');
+          if (parts.length === 3) {
+            const iso = `${parts[2]}-${parts[1]}-${parts[0]}`;
+            return iso <= value;
+          }
+          return true;
+        }
+        return String(getValue(record, key) || '') === value;
+      });
+    });
   }
 
   function cell(record, column) {
-    if (column.type === 'index') return `<td class="center">${record.__index}</td>`;
+    if (column.type === 'checkbox') return `<td class="text-center"><input type="checkbox" aria-label="Chọn dòng ${record.code || record.id}" /></td>`;
+    if (column.type === 'index') return `<td class="text-center font-medium">${record.__index}</td>`;
     const value = column.render ? column.render(record) : getValue(record, column.key);
-    if (column.type === 'code') return `<td><span class="${column.red ? 'red-code' : 'code-link'}">${escapeHTML(value)}</span></td>`;
-    if (column.type === 'badge') return `<td class="${column.center ? 'center' : ''}"><span class="module-badge ${config.badge[value] || 'badge-gray'}">${escapeHTML(value)}</span></td>`;
-    if (column.type === 'stack') return `<td><span class="primary-text">${escapeHTML(getValue(record, column.primary))}</span><span class="secondary-text">${escapeHTML(getValue(record, column.secondary))}</span></td>`;
-    if (column.type === 'datetime') return `<td class="nowrap">${escapeHTML(value.date)}<br>${escapeHTML(value.time)}</td>`;
-    return `<td class="${column.center ? 'center' : ''}${column.nowrap ? ' nowrap' : ''}">${escapeHTML(value)}</td>`;
+    if (column.type === 'code') return `<td class="text-center font-medium text-[#ff0000]">${escapeHTML(value)}</td>`;
+    if (column.type === 'badge') return `<td class="${column.center ? 'text-center' : ''}"><span class="status ${config.badge[value] || 'st-gray'}">${escapeHTML(value)}</span></td>`;
+    if (column.type === 'stack') return `<td><span class="primary-text fw-semibold">${escapeHTML(getValue(record, column.primary))}</span><span class="secondary-text">${escapeHTML(getValue(record, column.secondary))}</span></td>`;
+    if (column.type === 'datetime') return `<td class="nowrap text-center">${escapeHTML(value.date)}<br>${escapeHTML(value.time)}</td>`;
+    return `<td class="${column.center ? 'text-center' : ''}${column.nowrap ? ' nowrap' : ''}">${escapeHTML(value)}</td>`;
   }
 
   function go(route, id) {
@@ -138,17 +153,17 @@ function initModuleList(config) {
     const start = (state.page - 1) * state.pageSize;
     const rows = filtered.slice(start, start + state.pageSize);
     if (!rows.length) {
-      els.body.innerHTML = `<tr><td class="module-empty" colspan="${config.columns.length + 1}">Khong tim thay du lieu phu hop voi dieu kien loc.</td></tr>`;
+      els.body.innerHTML = `<tr><td class="empty-state" colspan="${config.columns.length + 1}">Không tìm thấy dữ liệu phù hợp với điều kiện lọc.</td></tr>`;
       return;
     }
     els.body.innerHTML = rows.map((record, index) => {
       const row = { ...record, __index: start + index + 1 };
       return `<tr>${config.columns.map((column) => cell(row, column)).join('')}
-        <td class="action-cell">
-          <button class="row-action${state.openActionId === record.id ? ' is-open' : ''}" type="button" data-action-toggle="${escapeHTML(record.id)}" aria-label="Mo thao tac ${escapeHTML(record.id)}">
-            <i data-lucide="ellipsis-vertical" class="h-4 w-4"></i>
+        <td class="action-cell text-center">
+          <button class="btn-icon mx-auto${state.openActionId === record.id ? ' is-open' : ''}" type="button" data-action-toggle="${escapeHTML(record.id)}" aria-label="Mở thao tác ${escapeHTML(record.id)}">
+            <i data-lucide="ellipsis-vertical" class="h-5 w-5"></i>
           </button>
-          ${state.openActionId === record.id ? `<div class="module-action-menu">${config.actions.map((action) => `<button type="button" data-action-route="${escapeHTML(action.route)}" data-id="${escapeHTML(record.id)}"><i data-lucide="${escapeHTML(action.icon)}" class="h-4 w-4"></i>${escapeHTML(action.label)}</button>`).join('')}</div>` : ''}
+          ${state.openActionId === record.id ? `<div class="row-action-menu">${config.actions.map((action) => `<button type="button" data-action-route="${escapeHTML(action.route)}" data-id="${escapeHTML(record.id)}"><i data-lucide="${escapeHTML(action.icon)}" class="h-4 w-4"></i>${escapeHTML(action.label)}</button>`).join('')}</div>` : ''}
         </td>
       </tr>`;
     }).join('');
@@ -160,8 +175,8 @@ function initModuleList(config) {
     state.page = Math.min(state.page, totalPages);
     const start = total ? (state.page - 1) * state.pageSize + 1 : 0;
     const end = Math.min(state.page * state.pageSize, total);
-    if (els.summary) els.summary.textContent = `Hien thi ${start} - ${end} trong tong so ${total.toLocaleString('vi-VN')} ${config.summaryNoun}`;
-    if (els.total) els.total.textContent = `${total.toLocaleString('vi-VN')} ${config.summaryNoun}`;
+    if (els.summary) els.summary.textContent = `Hiển thị ${start} - ${end} trong tổng số ${total.toLocaleString('vi-VN')} ${config.summaryNoun || 'quyết định'}`;
+    if (els.total) els.total.textContent = `${total.toLocaleString('vi-VN')} ${config.summaryNoun || 'quyết định'}`;
     const pages = [];
     for (let page = 1; page <= totalPages; page += 1) {
       if (page === 1 || page === totalPages || Math.abs(page - state.page) <= 1) pages.push(page);
@@ -230,19 +245,47 @@ function initModuleList(config) {
     renderNotifications();
     safeCreateIcons();
   });
+  function updateTabCounts() {
+    const counts = { '__all': config.records.length, 'Chưa thi hành': 0, 'Đang thi hành': 0, 'Đã thi hành': 0 };
+    config.records.forEach((record) => {
+      if (counts[record.status] !== undefined) {
+        counts[record.status]++;
+      }
+    });
+    document.querySelectorAll('#statusTabs [data-tab-status]').forEach((btn) => {
+      const status = btn.dataset.tabStatus;
+      const baseLabel = status === '__all' ? 'Tất cả' : status;
+      btn.textContent = `${baseLabel} (${counts[status]})`;
+    });
+  }
+
   els.searchBtn?.addEventListener('click', applyFilters);
   els.resetBtn?.addEventListener('click', () => {
     document.querySelectorAll('[data-filter]').forEach((input) => {
       if (input.tagName === 'SELECT') input.selectedIndex = 0;
       else input.value = '';
     });
+    state.activeTabStatus = '__all';
+    document.querySelectorAll('#statusTabs [data-tab-status]').forEach((btn) => btn.classList.remove('active'));
+    document.querySelector('#statusTabs [data-tab-status="__all"]')?.classList.add('active');
     state.page = 1;
     syncState();
     render();
   });
+
+  document.querySelector('#statusTabs')?.addEventListener('click', (event) => {
+    const btn = event.target.closest('[data-tab-status]');
+    if (!btn) return;
+    document.querySelectorAll('#statusTabs [data-tab-status]').forEach((b) => b.classList.remove('active'));
+    btn.classList.add('active');
+    state.activeTabStatus = btn.dataset.tabStatus;
+    state.page = 1;
+    render();
+  });
+
   document.querySelectorAll('select[data-filter], input[type="date"][data-filter], #pageSizeSelect').forEach((input) => input.addEventListener('change', applyFilters));
   document.querySelectorAll('[data-route]').forEach((button) => button.addEventListener('click', () => go(button.dataset.route)));
-  document.querySelectorAll('[data-module-action]').forEach((button) => button.addEventListener('click', () => alert(button.dataset.moduleAction || 'Dang cap nhat')));
+  document.querySelectorAll('[data-module-action]').forEach((button) => button.addEventListener('click', () => alert(button.dataset.moduleAction || 'Đang cập nhật')));
   els.pagination?.addEventListener('click', (event) => {
     const button = event.target.closest('[data-page]');
     if (!button || button.disabled) return;
@@ -270,6 +313,7 @@ function initModuleList(config) {
 
   fillSelects();
   syncState();
+  updateTabCounts();
   renderNotifications();
   render();
   window.addEventListener('load', () => safeCreateIcons());

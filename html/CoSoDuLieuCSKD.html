@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../styles/quan-ly-ho-so.css">
+  <link rel="stylesheet" href="../styles/design-system.css">
   <link rel="stylesheet" href="../styles/co-so-du-lieu-cskd.css">
 </head>
 
@@ -145,93 +145,92 @@
     </aside>
 
     <main class="content min-h-screen pt-[80px]">
-      <div class="database-page px-6 pb-7 pt-5 lg:px-7">
-        <section class="database-toolbar">
-          <h1>Danh sách cơ sở kinh doanh</h1>
-          <div class="toolbar-actions">
-            <a href="ImportDuLieu.html" class="toolbar-btn toolbar-btn-secondary" style="display: inline-flex; align-items: center; gap: 0.5rem;">
-              <i data-lucide="upload" class="h-4 w-4"></i>
-              Import Excel
-            </a>
-            <button id="exportBtn" class="toolbar-btn toolbar-btn-secondary" type="button">
-              <i data-lucide="download" class="h-4 w-4"></i>
-              Xuất Excel
-            </button>
-            <button id="addBusinessBtn" class="toolbar-btn toolbar-btn-primary" type="button">
+      <div class="px-6 pb-8 pt-6 lg:px-7">
+        <!-- Component: Breadcrumbs & Header Actions -->
+        <section class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-5">
+          <div class="flex items-center gap-2 text-[13px] font-medium text-[#6b7280]">
+            <i data-lucide="house" class="h-4 w-4 text-[#9098a5]"></i>
+            <span>Trang chủ</span>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
+            <span>Cơ sở dữ liệu CSKD-ANTT</span>
+          </div>
+          <div class="flex flex-wrap gap-3">
+            <button id="addBusinessBtn" class="btn-primary" type="button">
               <i data-lucide="plus" class="h-4 w-4"></i>
               Thêm mới cơ sở
             </button>
           </div>
         </section>
 
-        <section class="database-filter" aria-label="Bộ lọc cơ sở kinh doanh">
-          <label class="filter-field filter-search">
-            <span>Tìm kiếm</span>
-            <span class="field-wrap block">
-              <input id="searchInput" class="field" type="text" placeholder="Nhập mã cơ sở, tên cơ sở, địa chỉ, chủ cơ sở..." />
-              <i data-lucide="search" class="field-icon"></i>
-            </span>
-          </label>
+        <!-- Component: Filter Panel -->
+        <section id="filter-panel-component" class="panel rounded-[7px] border border-[#e0e5ed] bg-white p-5 shadow-panel">
+          <div class="grid grid-cols-12 gap-x-7 gap-y-4">
+            <label class="col-span-12 xl:col-span-4">
+              <span class="form-label">Tìm kiếm</span>
+              <span class="field-wrap block">
+                <input id="searchInput" class="field" type="text" placeholder="Nhập mã cơ sở, tên cơ sở, địa chỉ, chủ cơ sở..." />
+                <i data-lucide="search" class="field-icon"></i>
+              </span>
+            </label>
 
-          <label class="filter-field">
-            <span>Loại hình</span>
-            <span class="field-wrap block">
-              <select id="typeSelect" class="field appearance-none font-medium">
-                <option value="Tất cả">-- Tất cả --</option>
-              </select>
-              <i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>
-            </span>
-          </label>
+            <label class="col-span-12 md:col-span-4 xl:col-span-3">
+              <span class="form-label">Loại hình</span>
+              <span class="field-wrap block">
+                <select id="typeSelect" class="field appearance-none font-medium">
+                  <option value="Tất cả">-- Tất cả --</option>
+                </select>
+                <i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>
+              </span>
+            </label>
 
-          <label class="filter-field">
-            <span>Trạng thái</span>
-            <span class="field-wrap block">
-              <select id="statusSelect" class="field appearance-none font-medium">
-                <option value="Tất cả">-- Tất cả --</option>
-              </select>
-              <i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>
-            </span>
-          </label>
+            <label class="col-span-12 md:col-span-4 xl:col-span-3">
+              <span class="form-label">Trạng thái</span>
+              <span class="field-wrap block">
+                <select id="statusSelect" class="field appearance-none font-medium">
+                  <option value="Tất cả">-- Tất cả --</option>
+                </select>
+                <i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>
+              </span>
+            </label>
 
-          <label class="filter-field">
-            <span>Giấy phép ANTT</span>
-            <span class="field-wrap block">
-              <select id="licenseSelect" class="field appearance-none font-medium">
-                <option value="Tất cả">-- Tất cả --</option>
-              </select>
-              <i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>
-            </span>
-          </label>
+            <label class="col-span-12 md:col-span-4 xl:col-span-2">
+              <span class="form-label">Giấy phép ANTT</span>
+              <span class="field-wrap block">
+                <select id="licenseSelect" class="field appearance-none font-medium">
+                  <option value="Tất cả">-- Tất cả --</option>
+                </select>
+                <i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>
+              </span>
+            </label>
+          </div>
 
-          <div class="filter-actions">
-            <button id="resetBtn" class="filter-btn filter-reset" type="button">
+          <div class="mt-4 flex justify-end gap-3">
+            <button id="resetBtn" class="btn-secondary" type="button">
               <i data-lucide="rotate-ccw" class="h-4 w-4"></i>
               Đặt lại
             </button>
-            <button id="searchBtn" class="filter-btn filter-submit" type="button">
+            <button id="searchBtn" class="btn-primary" type="button">
               <i data-lucide="search" class="h-4 w-4"></i>
               Tìm kiếm
             </button>
           </div>
         </section>
 
-        <section class="result-line">
-          <span>Tổng số: <strong id="totalCount">1.248 cơ sở</strong></span>
-        </section>
-
-        <section class="database-table-card">
-          <div class="table-scroll">
-            <table class="business-table">
+        <!-- Component: Records Data Table -->
+        <section class="panel-soft mt-4 overflow-hidden rounded-[7px] border border-[#e4e9f0] bg-white shadow-soft">
+          <div class="overflow-x-auto">
+            <table class="data-table w-full">
               <thead>
                 <tr>
-                  <th>Mã cơ sở</th>
+                  <th class="w-[48px]"><input type="checkbox" aria-label="Chọn tất cả" /></th>
+                  <th class="w-[118px]">Mã cơ sở</th>
                   <th>Tên cơ sở</th>
-                  <th>Loại hình</th>
+                  <th class="w-[128px]">Loại hình</th>
                   <th>Địa chỉ</th>
                   <th>Chủ cơ sở</th>
-                  <th>Trạng thái</th>
-                  <th>Giấy phép ANTT</th>
-                  <th>Thao tác</th>
+                  <th class="w-[130px] text-center">Trạng thái</th>
+                  <th class="w-[140px] text-center">Giấy phép ANTT</th>
+                  <th class="w-[90px] text-center">Thao tác</th>
                 </tr>
               </thead>
               <tbody id="businessBody"></tbody>
@@ -239,24 +238,32 @@
           </div>
         </section>
 
-        <section class="database-pagination">
-          <div class="page-size-control">
-            <span>Hiển thị</span>
-            <select id="pageSizeSelect" class="field appearance-none">
-              <option value="10" selected>10</option>
-              <option value="20">20</option>
-              <option value="50">50</option>
+        <!-- Component: Table Footer & Pagination -->
+        <section id="table-footer-component" class="table-footer-component mt-5 flex flex-col gap-4 text-[14px] text-[#5f6877] md:flex-row md:items-center md:justify-between">
+          <div class="flex flex-wrap items-center gap-3">
+            <div id="resultSummary">Hiển thị 1 - 10 trong tổng số 1.248 cơ sở</div>
+            <select id="pageSizeSelect" class="field h-10 w-[120px] appearance-none pr-8 text-left font-medium">
+              <option value="10" selected>10 / trang</option>
+              <option value="20">20 / trang</option>
+              <option value="50">50 / trang</option>
             </select>
-            <span>trên 1 trang</span>
           </div>
-          <div id="pagination" class="pager-list"></div>
+          <div id="pagination" class="flex flex-wrap items-center gap-2"></div>
+          <div class="flex items-center gap-2">
+            <a href="ImportDuLieu.html" class="inline-flex h-10 items-center gap-2 rounded-md border border-[#d9dfe8] bg-white px-4 text-[14px] font-bold text-[#202833] shadow-sm transition hover:border-[#c50000] hover:text-[#c50000] hover:bg-[#fffafa]">
+              <i data-lucide="file-up" class="h-4 w-4"></i>Nhập dữ liệu
+            </a>
+            <button id="exportBtn" class="inline-flex h-10 items-center gap-2 rounded-md border border-[#d9dfe8] bg-white px-4 text-[14px] font-bold text-[#202833] shadow-sm transition hover:border-[#c50000] hover:text-[#c50000] hover:bg-[#fffafa]" type="button">
+              <i data-lucide="file-spreadsheet" class="h-4 w-4"></i>Xuất dữ liệu
+            </button>
+          </div>
         </section>
       </div>
     </main>
   </div>
 
   <script src="../scripts/layout-sync.js"></script>
-  <script src="../scripts/co-so-du-lieu-cskd.js"></script>
+  <script src="../scripts/co-so-du-lieu-cskd.js?v=2"></script>
 </body>
 
 </html>

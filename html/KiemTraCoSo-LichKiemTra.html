@@ -144,8 +144,31 @@
     </aside>
     <main class="content min-h-screen pt-[80px]">
       <div class="module-page px-6 pb-7 pt-6 lg:px-7">
-        <nav class="module-breadcrumb"><span>Trang chủ</span><i data-lucide="chevron-right" class="h-4 w-4"></i><span>Kiểm tra cơ sở</span><i data-lucide="chevron-right" class="h-4 w-4"></i><span>Lịch kiểm tra</span></nav>
-        <section class="module-toolbar"><div class="module-title"><h1>Lịch kiểm tra</h1><div class="module-total">Tháng 05/2024</div></div><div class="module-actions"><a class="module-action-btn module-action-secondary" href="KiemTraCoSo.html"><i data-lucide="arrow-left" class="h-4 w-4"></i>Quay lại</a><a class="module-action-btn module-action-primary" href="KiemTraCoSo-ChinhSuaKiemTra.html"><i data-lucide="square-pen" class="h-4 w-4"></i>Chỉnh sửa</a></div></section>
+        <!-- Component: Breadcrumbs & Header Actions -->
+        <section class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-5">
+          <div class="flex items-center gap-2 text-[13px] font-medium text-[#6b7280]">
+            <i data-lucide="house" class="h-4 w-4 text-[#9098a5]"></i>
+            <span>Trang chủ</span>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
+            <span>Kiểm tra cơ sở</span>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
+            <span>Lịch kiểm tra</span>
+          </div>
+          <div class="flex flex-wrap gap-3">
+            <a class="module-action-btn module-action-secondary" href="KiemTraCoSo.html">
+              <i data-lucide="arrow-left" class="h-4 w-4"></i>Quay lại
+            </a>
+            <a class="module-action-btn module-action-primary" href="KiemTraCoSo-ChiTietKiemTra.html?id=KT-2024-0001&edit=true">
+              <i data-lucide="square-pen" class="h-4 w-4"></i>Chỉnh sửa
+            </a>
+          </div>
+        </section>
+
+        <!-- Component: Title & Description -->
+        <div class="mb-6">
+          <h1 class="text-[20px] font-bold text-[#1e293b]">Lịch kiểm tra</h1>
+          <p class="text-[13px] text-gray-500">Tháng 05/2024</p>
+        </div>
         <section class="module-form-card"><h2 class="module-section-title">Danh sách lịch kiểm tra</h2><div class="module-detail-grid"><div class="module-detail-item"><span>Loại kiểm tra</span><strong>Định kỳ</strong></div><div class="module-detail-item"><span>Đơn vị thực hiện</span><strong>Phòng CS QLHC về TTXH</strong></div><div class="module-detail-item"><span>Người kiểm tra</span><strong>Nguyễn Văn A</strong></div><div class="module-detail-item"><span>Ngày kiểm tra</span><strong>15/05/2024</strong></div><div class="module-detail-item"><span>Trạng thái</span><strong><span class="module-badge badge-green">Đạt</span></strong></div><div class="module-detail-item"><span>Cơ sở</span><strong>Khách sạn Hoa Lư</strong></div></div></section>
       </div>
     </main>

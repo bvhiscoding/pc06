@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../styles/quan-ly-ho-so.css">
+  <link rel="stylesheet" href="../styles/design-system.css">
   <link rel="stylesheet" href="../styles/admin-danh-sach.css">
   <link rel="stylesheet" href="../styles/module-pages.css">
 </head>
@@ -146,119 +146,143 @@
     </aside>
 
     <main class="content min-h-screen pt-[80px]">
-      <div class="module-page px-6 pb-7 pt-6 lg:px-7">
-        <nav class="module-breadcrumb" aria-label="Breadcrumb">
-          <span>Trang chủ</span>
-          <i data-lucide="chevron-right" class="h-4 w-4"></i>
-          <span>Vi phạm / Xử lý vi phạm</span>
-          <i data-lucide="chevron-right" class="h-4 w-4"></i>
-          <span>Danh sách vi phạm</span>
-        </nav>
-
-        <section class="module-toolbar">
-          <div class="module-title">
-            <h1>Danh sách vi phạm</h1>
-            <div class="module-total">Tổng số: <strong id="moduleTotal">128 vi phạm</strong></div>
+      <div class="px-6 pb-8 pt-6 lg:px-7">
+        <!-- Component: Breadcrumbs & Header Actions -->
+        <section class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-5">
+          <div class="flex items-center gap-2 text-[13px] font-medium text-[#6b7280]">
+            <i data-lucide="house" class="h-4 w-4 text-[#9098a5]"></i>
+            <span>Trang chủ</span>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
+            <span>Xử lý vi phạm</span>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
+            <span>Danh sách quyết định</span>
           </div>
-          <div class="module-actions">
-            <button class="module-action-btn module-action-secondary" type="button" data-reconcile-open>
-              <i data-lucide="scan-search" class="h-4 w-4"></i>
+          <div class="flex flex-wrap gap-3">
+            <button class="btn-ghost" type="button" data-reconcile-open>
+              <i data-lucide="scan-search" class="h-[18px] w-[18px]"></i>
               Đối soát nghi vấn
             </button>
-            <button class="module-action-btn module-action-secondary" type="button" data-module-action="Xuất Excel danh sách vi phạm">
-              <i data-lucide="download" class="h-4 w-4"></i>
-              Xuất Excel
-            </button>
-            <button class="module-action-btn module-action-primary" type="button" data-route="XuLyViPham-ThemViPham.html">
-              <i data-lucide="plus" class="h-4 w-4"></i>
-              Thêm vi phạm
+            <button class="btn-primary" type="button" data-route="XuLyViPham-ThemViPham.html">
+              <i data-lucide="plus" class="h-5 w-5"></i>
+              Thêm quyết định
             </button>
           </div>
         </section>
 
-        <section id="moduleFilter" class="module-filter violation" aria-label="Bộ lọc vi phạm">
-          <label class="filter-field">
-            <span>Từ khóa</span>
-            <span class="field-wrap block">
-              <input class="field" type="text" data-filter="query" placeholder="Tìm theo mã vi phạm, tên cơ sở..." />
-              <i data-lucide="search" class="field-icon"></i>
-            </span>
-          </label>
-          <label class="filter-field">
-            <span>Mức độ vi phạm</span>
-            <span class="field-wrap block">
-              <select class="field appearance-none font-medium" data-filter="severity" data-all-label="Chọn mức độ"></select>
-              <i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>
-            </span>
-          </label>
-          <label class="filter-field">
-            <span>Trạng thái xử lý</span>
-            <span class="field-wrap block">
-              <select class="field appearance-none font-medium" data-filter="status" data-all-label="Chọn trạng thái"></select>
-              <i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>
-            </span>
-          </label>
-          <label class="filter-field">
-            <span>Đơn vị/Đội xử lý</span>
-            <span class="field-wrap block">
-              <select class="field appearance-none font-medium" data-filter="unit" data-all-label="Chọn đơn vị"></select>
-              <i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>
-            </span>
-          </label>
-          <label class="filter-field">
-            <span>Từ ngày</span>
-            <span class="field-wrap block">
-              <input class="field" type="date" data-filter="dateFrom" />
-              <i data-lucide="calendar-days" class="field-icon h-4 w-4"></i>
-            </span>
-          </label>
-          <label class="filter-field">
-            <span>Đến ngày</span>
-            <span class="field-wrap block">
-              <input class="field" type="date" data-filter="dateTo" />
-              <i data-lucide="calendar-days" class="field-icon h-4 w-4"></i>
-            </span>
-          </label>
-          <div class="filter-actions">
-            <button id="resetBtn" class="filter-btn filter-reset" type="button">Đặt lại</button>
-            <button id="searchBtn" class="filter-btn filter-submit" type="button">
-              <i data-lucide="search" class="h-4 w-4"></i>
+        <!-- Component: Filter Panel -->
+        <section id="moduleFilter" class="panel rounded-[7px] border border-[#e0e5ed] bg-white p-5 shadow-panel">
+          <div class="grid grid-cols-12 gap-x-7 gap-y-4">
+            <label class="col-span-12 xl:col-span-4">
+              <span class="form-label">Tìm kiếm</span>
+              <span class="field-wrap block">
+                <input class="field" type="text" data-filter="query" placeholder="Tìm theo số quyết định, tên cơ sở..." />
+                <i data-lucide="search" class="field-icon"></i>
+              </span>
+            </label>
+
+            <label class="col-span-12 md:col-span-4 xl:col-span-2">
+              <span class="form-label">Mức độ vi phạm</span>
+              <span class="field-wrap block">
+                <select class="field appearance-none font-medium" data-filter="severity" data-all-label="-- Tất cả --"></select>
+                <i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>
+              </span>
+            </label>
+
+            <label class="col-span-12 md:col-span-4 xl:col-span-3">
+              <span class="form-label">Trạng thái thi hành</span>
+              <span class="field-wrap block">
+                <select class="field appearance-none font-medium" data-filter="status" data-all-label="-- Tất cả --"></select>
+                <i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>
+              </span>
+            </label>
+
+            <label class="col-span-12 md:col-span-4 xl:col-span-3">
+              <span class="form-label">Đơn vị/Đội xử lý</span>
+              <span class="field-wrap block">
+                <select class="field appearance-none font-medium" data-filter="unit" data-all-label="-- Tất cả --"></select>
+                <i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>
+              </span>
+            </label>
+
+            <label class="col-span-12 sm:col-span-6 xl:col-span-3">
+              <span class="form-label">Ngày ban hành từ</span>
+              <span class="field-wrap block">
+                <input class="field" type="date" data-filter="dateFrom" />
+                <i data-lucide="calendar-days" class="field-icon"></i>
+              </span>
+            </label>
+
+            <label class="col-span-12 sm:col-span-6 xl:col-span-3">
+              <span class="form-label">Ngày ban hành đến</span>
+              <span class="field-wrap block">
+                <input class="field" type="date" data-filter="dateTo" />
+                <i data-lucide="calendar-days" class="field-icon"></i>
+              </span>
+            </label>
+          </div>
+
+          <div class="mt-4 flex justify-end gap-3">
+            <button id="resetBtn" class="btn-secondary" type="button">
+              <i data-lucide="rotate-ccw" class="h-4 w-4"></i>
+              Đặt lại
+            </button>
+            <button id="searchBtn" class="btn-primary" type="button">
+              <i data-lucide="search" class="h-[18px] w-[18px]"></i>
               Tìm kiếm
             </button>
           </div>
         </section>
 
-        <section class="module-table-card">
-          <div class="module-table-scroll">
-            <table class="module-table wide">
+        <!-- Component: Status Tabs Section -->
+        <section id="status-tabs-component" class="tabs-bar mt-4">
+          <div id="statusTabs" class="flex flex-wrap gap-3">
+            <button class="tab active" data-tab-status="__all">Tất cả (12)</button>
+            <button class="tab" data-tab-status="Chưa thi hành">Chưa thi hành (4)</button>
+            <button class="tab" data-tab-status="Đang thi hành">Đang thi hành (3)</button>
+            <button class="tab" data-tab-status="Đã thi hành">Đã thi hành (5)</button>
+          </div>
+        </section>
+
+        <!-- Component: Records Data Table -->
+        <section class="panel-soft mt-4 overflow-hidden rounded-[7px] border border-[#e4e9f0] bg-white shadow-soft">
+          <div class="overflow-x-auto">
+            <table class="data-table w-full">
               <thead>
                 <tr>
-                  <th class="center">STT</th>
-                  <th>Mã vi phạm</th>
-                  <th>Cơ sở liên quan</th>
-                  <th>Loại vi phạm</th>
-                  <th>Mức độ</th>
-                  <th>Ngày phát hiện</th>
-                  <th class="center">Trạng thái xử lý</th>
-                  <th>Hạn khắc phục</th>
-                  <th>Đơn vị/Đội xử lý</th>
-                  <th class="center">Thao tác</th>
+                  <th class="w-[48px]"><input type="checkbox" aria-label="Chọn tất cả" /></th>
+                  <th class="w-[60px] text-center">STT</th>
+                  <th class="w-[140px]">Số quyết định</th>
+                  <th class="w-[220px]">Cơ sở vi phạm</th>
+                  <th class="w-[280px]">Hành vi vi phạm</th>
+                  <th class="w-[180px]">Hình thức xử phạt</th>
+                  <th class="w-[130px] text-center">Ngày ban hành</th>
+                  <th class="w-[150px] text-center">Trạng thái thi hành</th>
+                  <th class="w-[90px] text-center">Thao tác</th>
                 </tr>
               </thead>
               <tbody id="moduleTableBody"></tbody>
             </table>
           </div>
-          <div class="module-pagination">
-            <div class="page-size-control">
-              <span>Hiển thị</span>
-              <select id="pageSizeSelect" class="field appearance-none">
-                <option value="10" selected>10</option>
-                <option value="20">20</option>
-                <option value="50">50</option>
-              </select>
-              <span>trên 128 bản ghi</span>
-            </div>
-            <div class="pager-list" id="pagination"></div>
+        </section>
+
+        <!-- Component: Table Footer & Pagination -->
+        <section id="table-footer-component" class="table-footer-component mt-5 flex flex-col gap-4 text-[14px] text-[#5f6877] md:flex-row md:items-center md:justify-between">
+          <div class="flex flex-wrap items-center gap-3">
+            <div id="resultSummary">Hiển thị 1 - 10 trong tổng số 128 quyết định</div>
+            <select id="pageSizeSelect" class="field h-10 w-[120px] appearance-none pr-8 text-left font-medium">
+              <option value="10" selected>10 / trang</option>
+              <option value="20">20 / trang</option>
+              <option value="50">50 / trang</option>
+            </select>
+          </div>
+          <div id="pagination" class="flex flex-wrap items-center gap-2"></div>
+          <div class="flex items-center gap-2">
+            <a href="ImportDuLieu.html" class="inline-flex h-10 items-center gap-2 rounded-md border border-[#d9dfe8] bg-white px-4 text-[14px] font-bold text-[#202833] shadow-sm transition hover:border-[#c50000] hover:text-[#c50000] hover:bg-[#fffafa]">
+              <i data-lucide="file-up" class="h-4 w-4"></i>Nhập dữ liệu
+            </a>
+            <button class="inline-flex h-10 items-center gap-2 rounded-md border border-[#d9dfe8] bg-white px-4 text-[14px] font-bold text-[#202833] shadow-sm transition hover:border-[#c50000] hover:text-[#c50000] hover:bg-[#fffafa]" type="button" data-module-action="Xuất Excel danh sách vi phạm">
+              <i data-lucide="file-spreadsheet" class="h-4 w-4"></i>Xuất dữ liệu
+            </button>
           </div>
         </section>
       </div>
@@ -301,7 +325,7 @@
     </section>
   </div>
   <script src="../scripts/layout-sync.js"></script>
-  <script src="../scripts/xu-ly-vi-pham.js"></script>
+  <script src="../scripts/xu-ly-vi-pham.js?v=2"></script>
 </body>
 
 </html>
