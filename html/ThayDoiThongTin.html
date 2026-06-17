@@ -10,59 +10,85 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../styles/public-pages.css">
+  <script src="../scripts/auth.js"></script>
 </head>
 <body>
 
 <!-- HEADER -->
-<header class="pub-header">
-  <a href="../index.html" class="pub-header-brand">
+<header class="custom-header">
+  <a href="../index.html" class="custom-brand">
     <img src="../public/logocongan.png" alt="Logo Bộ Công an">
-    <div class="pub-brand-text">
+    <div class="custom-brand-text">
       <h1>CÔNG AN TỈNH NINH BÌNH</h1>
       <p>HỆ THỐNG QUẢN LÝ CƠ SỞ KINH DOANH CÓ ĐIỀU KIỆN VỀ ANTT</p>
     </div>
   </a>
+
   <nav>
-    <ul class="pub-nav">
-      <li class="pub-nav-item">
-        <a href="../index.html" class="pub-nav-link">
+    <ul class="custom-nav">
+      <li class="custom-nav-item" id="nav-home">
+        <a class="custom-nav-link" href="../index.html">
           <i data-lucide="home"></i> Trang chủ
         </a>
       </li>
-      <li class="pub-nav-item">
-        <a href="#" class="pub-nav-link"><i data-lucide="map"></i> Bản đồ số</a>
-      </li>
-      <li class="pub-nav-item">
-        <a class="pub-nav-link active">
-          <i data-lucide="file-text"></i> Thủ tục <i data-lucide="chevron-down" class="chevron"></i>
+      <li class="custom-nav-item" id="nav-map">
+        <a class="custom-nav-link" href="../index.html?tab=map">
+          <i data-lucide="map"></i> Bản đồ số
         </a>
-        <div class="pub-nav-dropdown">
+      </li>
+      <li class="custom-nav-item active" id="nav-procedures">
+        <a class="custom-nav-link" href="../index.html?tab=procedures">
+          <i data-lucide="file-text"></i> Thủ tục <i data-lucide="chevron-down" class="ml-0.5"></i>
+        </a>
+        <div class="custom-nav-dropdown">
           <a href="DangKyCoSo.html">Đăng ký cơ sở mới</a>
           <a href="ThayDoiThongTin.html">Khai báo thay đổi</a>
-          <a href="#">Danh mục thủ tục</a>
+          <a href="../index.html?tab=procedures">Danh mục thủ tục</a>
         </div>
       </li>
-      <li class="pub-nav-item">
-        <a href="TheoDoiHoSo.html" class="pub-nav-link"><i data-lucide="search"></i> Tra cứu hồ sơ</a>
-      </li>
-      <li class="pub-nav-item">
-        <a class="pub-nav-link">
-          <i data-lucide="headset"></i> Hỗ trợ <i data-lucide="chevron-down" class="chevron"></i>
+      <li class="custom-nav-item" id="nav-search">
+        <a class="custom-nav-link" href="../index.html?tab=search">
+          <i data-lucide="search"></i> Tra cứu hồ sơ
         </a>
-        <div class="pub-nav-dropdown">
-          <a href="#">Hướng dẫn quy trình</a>
-          <a href="#">Biểu mẫu tải về</a>
-          <a href="#">Câu hỏi thường gặp</a>
+      </li>
+      <li class="custom-nav-item" id="nav-support">
+        <a class="custom-nav-link" href="../index.html?tab=feedback">
+          <i data-lucide="headset"></i> Hỗ trợ <i data-lucide="chevron-down" class="ml-0.5"></i>
+        </a>
+        <div class="custom-nav-dropdown">
+          <a href="HuongDanSuDung.html">Hướng dẫn sử dụng</a>
+          <a href="TinTucThongBao.html">Tin tức & Thông báo</a>
+          <a href="CauHoiThuongGap.html">Câu hỏi thường gặp</a>
+          <a href="LienHeHoTro.html">Liên hệ hỗ trợ</a>
+          <a href="../index.html?tab=feedback">Tiếp nhận phản ánh</a>
         </div>
       </li>
     </ul>
   </nav>
-  <div class="pub-header-auth">
-    <a href="DangNhap.html" class="pub-login-btn">
-      <i data-lucide="user"></i> Đăng nhập
+
+  <!-- Auth widget: populated by JS below -->
+  <div id="headerAuthArea">
+    <a class="custom-login-btn" href="DangNhap.html">
+      <i data-lucide="user"></i>
+      Đăng nhập
     </a>
   </div>
 </header>
+
+<!-- ── Auth-gate modal ──────────────────────────────── -->
+<div id="authGateModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.55);backdrop-filter:blur(3px);align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:20px;padding:36px 40px 32px;max-width:420px;width:90%;box-shadow:0 24px 56px rgba(0,0,0,0.22);text-align:center;">
+    <div style="width:56px;height:56px;border-radius:50%;background:#fff2f2;display:grid;place-items:center;margin:0 auto 16px;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#bd0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    </div>
+    <h3 style="font-size:18px;font-weight:700;color:#1b2430;margin:0 0 8px;">Yêu cầu đăng nhập</h3>
+    <p style="font-size:14px;color:#6b7280;margin:0 0 24px;line-height:1.55;">Chức năng này yêu cầu bạn đăng nhập vào hệ thống. Vui lòng đăng nhập để tiếp tục.</p>
+    <div style="display:flex;gap:12px;justify-content:center;">
+      <button id="authGateCancel" style="flex:1;height:44px;border-radius:8px;border:1.5px solid #d1d5db;background:#fff;font-size:14px;font-weight:600;color:#374151;cursor:pointer;">Hủy</button>
+      <a href="DangNhap.html" style="flex:1;height:44px;border-radius:8px;background:linear-gradient(180deg,#ed000b,#d80008);font-size:14px;font-weight:700;color:#fff;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;">Đăng nhập ngay</a>
+    </div>
+  </div>
+</div>
 
 <!-- BREADCRUMB -->
 <div class="pub-breadcrumb">
@@ -71,13 +97,7 @@
   <span style="color:#374151;font-weight:600">Khai báo thay đổi thông tin</span>
 </div>
 
-<!-- PAGE HERO -->
-<div style="background:#fff;border-bottom:1px solid #e5e7eb;padding:16px 40px 20px">
-  <h1 style="font-size:22px;font-weight:700;color:#111827;margin:0 0 4px;text-transform:uppercase;letter-spacing:.3px">Khai báo thay đổi thông tin</h1>
-  <p style="font-size:14px;color:#6b7280;margin:0">Khai báo thay đổi thông tin cơ sở kinh doanh đã được cấp Giấy chứng nhận đủ điều kiện về ANTT</p>
-</div>
-
-<div class="pub-main" style="padding-top:0">
+<div class="pub-main" style="padding-top:20px">
   <!-- STEP BAR (3 steps) -->
   <div class="step-bar" style="margin:20px 0 12px">
     <div class="step-item active" id="step-item-1">
@@ -707,11 +727,122 @@
 </div>
 
 <!-- FOOTER -->
-<footer class="pub-footer">
+<footer class="custom-footer-copyright">
   © 2026 Công an tỉnh Ninh Bình. Tất cả quyền được bảo lưu.
 </footer>
 
 <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // ── AUTHENTICATION & ACCESS CONTROL ────────────────────────
+    const session = typeof Auth !== 'undefined' ? Auth.getSession() : null;
+    const authArea = document.getElementById('headerAuthArea');
+    const authModal = document.getElementById('authGateModal');
+    const authCancel = document.getElementById('authGateCancel');
+
+    // 1. Cập nhật header widget
+    if (session && authArea) {
+      authArea.innerHTML = `
+        <div class="topbar-menu-wrap" style="position:relative; z-index:1000; font-family:'Roboto',sans-serif;">
+          <button id="publicUserMenuToggle" class="user-menu-btn" type="button" aria-label="Mở menu tài khoản" aria-expanded="false" style="display:flex; align-items:center; gap:12px; background:transparent; border:none; cursor:pointer; padding:4px 10px; border-radius:8px; transition:background 160ms ease; text-align:left; outline:none; height:46px;">
+            <div style="width:38px; height:38px; border-radius:50%; color:white; font-weight:900; font-size:14px; display:grid; place-items:center; background:${session.avatarColor || '#bd0000'}; flex-shrink:0;">
+              ${session.avatar}
+            </div>
+            <div class="hidden text-left sm:block" style="display:block;"><div style="font-size:15px; font-weight:600; color:#ffffff; line-height:1.2;">${session.name}</div><div style="font-size:12px; font-weight:500; color:rgba(255,255,255,0.85); margin-top:2px;">${session.unit}</div></div>
+            <i data-lucide="chevron-down" class="user-chevron" style="color:#ffffff; width:16px; height:16px; transition:transform 160ms ease;"></i>
+          </button>
+          <div id="publicUserMenu" class="topbar-dropdown user-dropdown" style="display:none; position:absolute; right:0; top:calc(100% + 12px); z-index:999; overflow:hidden; border:1px solid #e3e8f0; border-radius:12px; background:#fff; color:#1f2937; box-shadow:0 18px 42px rgba(15,23,42,0.18); width:260px;">
+            <!-- Arrow Caret -->
+            <div style="position:absolute; right:20px; top:-6px; width:12px; height:12px; border-left:1px solid #e3e8f0; border-top:1px solid #e3e8f0; background:#fff; transform:rotate(45deg); z-index:1;"></div>
+            <div class="user-card" style="display:flex; align-items:center; gap:12px; border-bottom:1px solid #edf1f6; padding:15px; position:relative; z-index:2; background:#fff;">
+              <div style="width:38px; height:38px; border-radius:50%; color:white; font-weight:900; font-size:14px; display:grid; place-items:center; background:${session.avatarColor || '#bd0000'}">
+                ${session.avatar}
+              </div>
+              <div>
+                <div class="user-name" style="color:#111827; font-size:14px; font-weight:700;">${session.name}</div>
+                <div class="user-role" style="margin-top:3px; color:#6b7280; font-size:11px; font-weight:600; line-height:1.35;">${session.unit}</div>
+              </div>
+            </div>
+            <!-- Actions -->
+            <div style="position:relative; z-index:2; background:#fff;">
+              ${session.role === 'admin' 
+                ? `<a class="dropdown-action" href="Dashboard.html" style="display:flex; width:100%; align-items:center; gap:10px; padding:12px 15px; color:#273140; font-size:13px; font-weight:600; text-decoration:none; box-sizing:border-box;"><i data-lucide="layout-dashboard" style="width:16px; height:16px;"></i>Trang quản trị (Admin)</a>`
+                : `<a class="dropdown-action" href="CongCSKD-HoSoCuaToi.html" style="display:flex; width:100%; align-items:center; gap:10px; padding:12px 15px; color:#273140; font-size:13px; font-weight:600; text-decoration:none; box-sizing:border-box;"><i data-lucide="store" style="width:16px; height:16px;"></i>Hồ sơ cơ sở của tôi</a>`
+              }
+              <a class="dropdown-action" href="HoSoCaNhan.html" style="display:flex; width:100%; align-items:center; gap:10px; padding:12px 15px; color:#273140; font-size:13px; font-weight:600; text-decoration:none; box-sizing:border-box;"><i data-lucide="id-card" style="width:16px; height:16px;"></i>Hồ sơ cá nhân</a>
+              <button class="dropdown-action danger" type="button" id="publicLogoutBtn">
+                <i data-lucide="log-out" style="width:16px; height:16px;"></i>Đăng xuất
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+      if (window.lucide) {
+        window.lucide.createIcons();
+      }
+      
+      const toggle = document.getElementById('publicUserMenuToggle');
+      const menu = document.getElementById('publicUserMenu');
+      
+      toggle?.addEventListener('click', (event) => {
+        event.stopPropagation();
+        const isOpen = toggle.classList.contains('is-open');
+        
+        if (isOpen) {
+          toggle.classList.remove('is-open');
+          toggle.setAttribute('aria-expanded', 'false');
+          if (menu) menu.style.display = 'none';
+        } else {
+          toggle.classList.add('is-open');
+          toggle.setAttribute('aria-expanded', 'true');
+          if (menu) menu.style.display = 'block';
+        }
+      });
+      
+      document.addEventListener('click', (event) => {
+        if (!event.target.closest('.topbar-menu-wrap')) {
+          toggle?.classList.remove('is-open');
+          toggle?.setAttribute('aria-expanded', 'false');
+          if (menu) menu.style.display = 'none';
+        }
+      });
+
+      document.getElementById('publicLogoutBtn')?.addEventListener('click', () => {
+        Auth.logout('DangNhap.html');
+      });
+    }
+
+    const protectedLinks = [
+      document.querySelector('.dropdown-feedback-link'),
+      document.querySelector('.sub-card-feedback')
+    ];
+
+    protectedLinks.forEach(link => {
+      if (!link) return;
+      
+      link.addEventListener('click', (e) => {
+        if (!session) {
+          e.preventDefault();
+          e.stopPropagation();
+          if (authModal) authModal.style.display = 'flex';
+        }
+      });
+    });
+
+    authCancel?.addEventListener('click', () => {
+      if (authModal) authModal.style.display = 'none';
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && authModal) {
+        authModal.style.display = 'none';
+      }
+    });
+
+    if (window.lucide) {
+      window.lucide.createIcons();
+    }
+  });
+
   lucide.createIcons();
 
   let currentStep = 1;

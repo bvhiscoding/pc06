@@ -16,8 +16,11 @@ html {
 }
 
 /* Base resets & fonts */
+body, .font-sans, button, input, select, textarea {
+  font-family: 'Roboto', Arial, sans-serif !important;
+}
+
 body {
-  font-family: 'Roboto', sans-serif;
   color: var(--text-dark);
   background-color: var(--bg-light);
   margin: 0;

@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="vi">
 
 <head>
@@ -90,53 +90,123 @@
 
     <main class="content min-h-screen pt-[80px]">
       <div class="px-6 pb-8 pt-6 lg:px-7">
-        <section class="can-bo-head">
-          <div>
-            <div class="flex items-center gap-2 text-[13px] font-medium text-[#41506a]">
-              <span>Trang chủ</span><i data-lucide="chevron-right" class="h-4 w-4 text-[#6d7788]"></i>
-              <span>Quản trị hệ thống</span><i data-lucide="chevron-right" class="h-4 w-4 text-[#6d7788]"></i>
-              <span>Quản lý cán bộ</span>
+        <!-- Component: Breadcrumbs & Header Actions -->
+        <section class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-5">
+          <div class="flex items-center gap-2 text-[13px] font-medium text-[#6b7280]">
+            <i data-lucide="house" class="h-4 w-4 text-[#9098a5]"></i>
+            <span>Trang chủ</span>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
+            <span>Quản trị hệ thống</span>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
+            <span>Quản lý cán bộ</span>
+          </div>
+          <div class="flex flex-wrap gap-3">
+            <button id="openOfficerModal" class="inline-flex h-[42px] items-center gap-2 rounded-md bg-[#c50000] px-5 text-[14px] font-semibold text-white shadow-[0_6px_13px_rgba(192,0,0,0.24)] transition hover:bg-[#ad0000]" type="button">
+              <i data-lucide="plus" class="h-[18px] w-[18px]"></i>
+              Thêm cán bộ
+            </button>
+          </div>
+        </section>
+        <!-- End Component: Breadcrumbs -->
+
+        <!-- Component: Search & Filter Panel -->
+        <section id="filter-panel-component" class="filter-panel-component rounded-[7px] border border-[#e0e5ed] bg-white p-5 shadow-panel">
+          <div class="grid grid-cols-12 gap-x-7 gap-y-4">
+            <label class="col-span-12 xl:col-span-6">
+              <span class="form-label">Tìm kiếm</span>
+              <span class="field-wrap block">
+                <input id="searchInput" class="field" type="text" placeholder="Tìm kiếm theo họ tên, username, số điện thoại..." />
+                <i data-lucide="search" class="field-icon"></i>
+              </span>
+            </label>
+
+            <label class="col-span-12 sm:col-span-6 xl:col-span-3">
+              <span class="form-label">Đơn vị</span>
+              <span class="field-wrap block">
+                <select id="unitSelect" class="field appearance-none font-medium"></select>
+                <i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>
+              </span>
+            </label>
+
+            <label class="col-span-12 sm:col-span-6 xl:col-span-3">
+              <span class="form-label">Chức vụ</span>
+              <span class="field-wrap block">
+                <select id="positionSelect" class="field appearance-none font-medium"></select>
+                <i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>
+              </span>
+            </label>
+
+            <label class="col-span-12 sm:col-span-6 xl:col-span-3">
+              <span class="form-label">Vai trò</span>
+              <span class="field-wrap block">
+                <select id="roleSelect" class="field appearance-none font-medium"></select>
+                <i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>
+              </span>
+            </label>
+
+            <label class="col-span-12 sm:col-span-6 xl:col-span-3">
+              <span class="form-label">Trạng thái</span>
+              <span class="field-wrap block">
+                <select id="statusSelect" class="field appearance-none font-medium"></select>
+                <i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>
+              </span>
+            </label>
+
+            <div class="col-span-12 md:col-span-6 xl:col-span-6 flex items-end justify-end gap-3 h-[66px] pb-[1px]">
+              <button id="resetBtn"
+                class="inline-flex h-[42px] items-center gap-2 rounded-md border border-[#d9dfe8] bg-white px-6 text-[14px] font-medium text-[#202833] shadow-sm transition hover:bg-[#f8fafc]"
+                type="button">
+                <i data-lucide="rotate-ccw" class="h-4 w-4"></i>
+                Đặt lại
+              </button>
+              <button id="searchBtn"
+                class="inline-flex h-[42px] items-center gap-2 rounded-md bg-[#c50000] px-7 text-[14px] font-semibold text-white shadow-[0_6px_13px_rgba(192,0,0,0.24)] transition hover:bg-[#ad0000]"
+                type="button">
+                <i data-lucide="search" class="h-[18px] w-[18px]"></i>
+                Tìm kiếm
+              </button>
             </div>
           </div>
-          <div class="can-bo-actions">
-            <button id="openOfficerModal" class="btn-red" type="button"><i data-lucide="plus"></i>Thêm cán bộ</button>
-            <button class="btn-light" type="button"><i data-lucide="download"></i>Xuất Excel</button>
-          </div>
         </section>
+        <!-- End Component: Search & Filter Panel -->
 
-        <section class="officer-panel mt-5">
-          <div class="filter-grid">
-            <label class="field-wrap officer-search">
-              <input id="searchInput" class="field" type="text" placeholder="Tìm kiếm theo họ tên, username, số điện thoại..." />
-              <i data-lucide="search" class="field-icon"></i>
-            </label>
-            <label><span class="form-label">Đơn vị</span><span class="field-wrap block"><select id="unitSelect" class="field appearance-none"></select><i data-lucide="chevron-down" class="field-icon h-4 w-4"></i></span></label>
-            <label><span class="form-label">Chức vụ</span><span class="field-wrap block"><select id="positionSelect" class="field appearance-none"></select><i data-lucide="chevron-down" class="field-icon h-4 w-4"></i></span></label>
-            <label><span class="form-label">Vai trò</span><span class="field-wrap block"><select id="roleSelect" class="field appearance-none"></select><i data-lucide="chevron-down" class="field-icon h-4 w-4"></i></span></label>
-            <label><span class="form-label">Trạng thái</span><span class="field-wrap block"><select id="statusSelect" class="field appearance-none"></select><i data-lucide="chevron-down" class="field-icon h-4 w-4"></i></span></label>
-            <button id="searchBtn" class="btn-red self-end" type="button"><i data-lucide="search"></i>Tìm kiếm</button>
-            <button id="resetBtn" class="btn-light self-end" type="button"><i data-lucide="rotate-cw"></i>Đặt lại</button>
-          </div>
-
-        </section>
-
-        <section class="officer-table-panel mt-4 overflow-hidden rounded-[7px] border border-[#e4e9f0] bg-white shadow-soft">
+        <!-- Component: Records Data Table -->
+        <section id="data-table-component" class="data-table-component mt-4 overflow-hidden rounded-[7px] border border-[#e4e9f0] bg-white shadow-soft">
           <div class="overflow-x-auto">
-            <table class="data-table officer-table w-full">
+            <table class="data-table w-full">
               <thead>
                 <tr>
-                  <th>STT</th><th>Họ và tên</th><th>Username</th><th>Vai trò</th><th>Chức vụ</th><th>Đơn vị</th><th>Số điện thoại</th><th>Trạng thái</th><th>Ngày tạo</th><th>Thao tác</th>
+                  <th class="w-[48px]"><input type="checkbox" aria-label="Chọn tất cả" /></th>
+                  <th class="w-[52px]">STT</th><th>Họ và tên</th><th>Username</th><th>Vai trò</th><th>Chức vụ</th><th>Đơn vị</th><th>Số điện thoại</th><th>Trạng thái</th><th>Ngày tạo</th><th>Thao tác</th>
                 </tr>
               </thead>
               <tbody id="officerBody"></tbody>
             </table>
           </div>
-
         </section>
+        <!-- End Component: Records Data Table -->
 
-        <section class="officer-foot mt-5">
-          <div id="resultSummary">Hiển thị 1 đến 6 của 6 cán bộ</div>
-          <div id="pagination" class="flex items-center gap-2"></div>
+        <!-- Component: Pagination & Action Buttons -->
+        <section id="table-footer-component"
+          class="table-footer-component mt-5 flex flex-col gap-4 text-[14px] text-[#5f6877] md:flex-row md:items-center md:justify-between">
+          <div class="flex flex-wrap items-center gap-3">
+            <div id="resultSummary">Hiển thị 1 - 6 của 6 cán bộ</div>
+            <select id="pageSizeSelect" class="field h-10 w-[120px] appearance-none pr-8 text-left font-medium">
+              <option value="6" selected>6 / trang</option>
+              <option value="10">10 / trang</option>
+              <option value="20">20 / trang</option>
+              <option value="50">50 / trang</option>
+            </select>
+          </div>
+          <div id="pagination" class="flex flex-wrap items-center gap-2"></div>
+          <div class="flex items-center gap-2">
+            <button class="inline-flex h-10 items-center gap-2 rounded-md border border-[#d9dfe8] bg-white px-4 text-[14px] font-bold text-[#202833] shadow-sm transition hover:border-[#c50000] hover:text-[#c50000] hover:bg-[#fffafa]" type="button">
+              <i data-lucide="file-up" class="h-4 w-4"></i>Nhập dữ liệu
+            </button>
+            <button class="inline-flex h-10 items-center gap-2 rounded-md border border-[#d9dfe8] bg-white px-4 text-[14px] font-bold text-[#202833] shadow-sm transition hover:border-[#c50000] hover:text-[#c50000] hover:bg-[#fffafa]" type="button">
+              <i data-lucide="file-spreadsheet" class="h-4 w-4"></i>Xuất dữ liệu
+            </button>
+          </div>
         </section>
       </div>
     </main>

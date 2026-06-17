@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="vi">
 
 <head>
@@ -15,6 +15,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../styles/quan-ly-ho-so.css">
+  <link rel="stylesheet" href="../styles/module-pages.css">
   <link rel="stylesheet" href="../styles/admin-danh-sach.css">
   <style>
     /* Premium category styles */
@@ -327,18 +328,11 @@
           <span>Danh mục dùng chung</span>
         </nav>
 
-        <section class="module-toolbar">
-          <div class="module-title">
-            <h1>Danh mục dùng chung</h1>
-            <div class="module-total">Hệ thống quản lý danh mục cốt lõi dùng chung toàn ngành</div>
-          </div>
-        </section>
-
         <!-- Split Grid Layout (25% - 75%) -->
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
           
           <!-- Column 1: Category Groups (25%) -->
-          <div class="category-card">
+          <div class="category-card min-h-[calc(100vh-160px)] flex flex-col">
             <span class="block mb-3 text-[11px] font-bold text-gray-500 uppercase tracking-wide">Nhóm danh mục</span>
             <!-- Search input for tree nodes -->
             <div class="mb-3 relative">
@@ -346,11 +340,12 @@
               <input type="text" id="treeSearch" class="field text-xs pl-8 py-1.5 w-full" placeholder="Tìm kiếm nhóm danh mục..." />
             </div>
             <!-- jsTree Container -->
-            <div id="jstree_container" class="text-sm mt-3 overflow-y-auto max-h-[600px]"></div>
+            <div id="jstree_container" class="text-sm mt-3 overflow-y-auto flex-1 max-h-[70vh]"></div>
           </div>
 
           <!-- Column 2 & 3: Category Items Table (75%) -->
-          <div class="category-card lg:col-span-3">
+          <div class="category-card lg:col-span-3 min-h-[calc(100vh-160px)] flex flex-col justify-between">
+            <div>
             <div class="flex flex-col sm:flex-row justify-between sm:items-center border-b pb-3 mb-4 gap-3">
               <h3 class="text-sm font-bold text-gray-900 uppercase tracking-wide flex items-center gap-1.5" id="tableCardHeader">
                 <i data-lucide="list" class="h-4.5 w-4.5 text-blue-600"></i> Danh mục: Loại hình cơ sở
@@ -385,8 +380,10 @@
               </table>
             </div>
 
+            </div>
+
             <!-- Table Footer / Pagination -->
-            <div class="flex justify-between items-center mt-4 text-xs font-semibold text-gray-500">
+            <div class="flex justify-between items-center mt-6 pt-4 border-t border-gray-100 text-xs font-semibold text-gray-500">
               <span id="paginationSummary">Hiển thị 1-6 trên 12 kết quả</span>
               <div class="flex gap-1" id="paginationControls">
                 <button class="pager-btn" disabled><i data-lucide="chevron-left" class="h-4 w-4"></i></button>

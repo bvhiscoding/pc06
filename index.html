@@ -59,9 +59,10 @@
             <i data-lucide="headset"></i> Hỗ trợ <i data-lucide="chevron-down" class="ml-0.5"></i>
           </a>
           <div class="custom-nav-dropdown">
-            <a href="#">Hướng dẫn quy trình</a>
-            <a href="#">Biểu mẫu tải về</a>
-            <a href="#">Câu hỏi thường gặp</a>
+            <a href="html/HuongDanSuDung.html">Hướng dẫn sử dụng</a>
+            <a href="html/TinTucThongBao.html">Tin tức & Thông báo</a>
+            <a href="html/CauHoiThuongGap.html">Câu hỏi thường gặp</a>
+            <a href="html/LienHeHoTro.html">Liên hệ hỗ trợ</a>
             <a href="#" data-tab="feedback" class="dropdown-feedback-link">Tiếp nhận phản ánh</a>
           </div>
         </li>
@@ -239,14 +240,14 @@
           </div>
 
           <div class="sub-cards-grid">
-            <a href="#" class="sub-card">
+            <a href="html/HuongDanSuDung.html" class="sub-card">
               <div class="sub-card-left">
                 <div class="sub-card-icon">
-                  <i data-lucide="help-circle"></i>
+                  <i data-lucide="book-open"></i>
                 </div>
                 <div class="sub-card-text">
-                  <h3>Hướng dẫn thủ tục</h3>
-                  <p>Tìm hiểu quy trình, thành phần hồ sơ và cách thực hiện.</p>
+                  <h3>Hướng dẫn sử dụng</h3>
+                  <p>Xem tài liệu hướng dẫn và video mô phỏng thao tác.</p>
                 </div>
               </div>
               <div class="sub-card-arrow">
@@ -254,14 +255,14 @@
               </div>
             </a>
 
-            <a href="#" class="sub-card">
+            <a href="html/TinTucThongBao.html" class="sub-card">
               <div class="sub-card-left">
                 <div class="sub-card-icon">
-                  <i data-lucide="download"></i>
+                  <i data-lucide="bell"></i>
                 </div>
                 <div class="sub-card-text">
-                  <h3>Biểu mẫu tải về</h3>
-                  <p>Tải các mẫu đơn, tờ khai và giấy tờ liên quan.</p>
+                  <h3>Tin tức & Thông báo</h3>
+                  <p>Cập nhật các thông báo mới và quy định quản lý ANTT.</p>
                 </div>
               </div>
               <div class="sub-card-arrow">
@@ -269,7 +270,7 @@
               </div>
             </a>
 
-            <a href="#" class="sub-card">
+            <a href="html/CauHoiThuongGap.html" class="sub-card">
               <div class="sub-card-left">
                 <div class="sub-card-icon">
                   <i data-lucide="message-square"></i>
@@ -284,7 +285,7 @@
               </div>
             </a>
 
-            <a href="#" class="sub-card sub-card-feedback" data-tab="feedback">
+            <a href="html/LienHeHoTro.html" class="sub-card">
               <div class="sub-card-left">
                 <div class="sub-card-icon">
                   <i data-lucide="phone"></i>
@@ -674,10 +675,6 @@
 
   <!-- VIEW 2: MAP VIEW (Original Digital Map) -->
   <main id="map-view" class="view-container public-map-page">
-    <section class="public-title">
-      <h1>Bản đồ số GIS</h1>
-      <p>Tra cứu thông tin cơ sở kinh doanh có điều kiện về an ninh trật tự trên địa bàn tỉnh Ninh Bình</p>
-    </section>
 
     <section class="gis-filter public-filter">
       <label>
@@ -782,22 +779,15 @@
             <label><input type="checkbox" data-map-layer="facilityLabels"> Hiển thị nhãn cơ sở</label>
             <label><input type="checkbox" data-map-layer="administrative" checked> Hiển thị ranh giới hành chính</label>
             <label><input type="checkbox" data-map-layer="roads" checked> Hiển thị giao thông</label>
-            <label><input type="checkbox" data-map-layer="water"> Hiển thị sông, hồ</label>
+            <label><input type="checkbox" data-map-layer="water" checked> Hiển thị sông, hồ</label>
             <label style="margin-top: 4px; border-top: 1px solid #e5e7eb; padding-top: 6px;"><input type="checkbox" id="riskHeatmapToggle"> Bản đồ nhiệt rủi ro</label>
           </section>
         </div>
         <div class="map-legend">
-          <h2>Chú thích trạng thái</h2>
-          <div><span class="marker-dot green"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Đang hoạt động</div>
-          <div><span class="marker-dot yellow"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Tạm dừng hoạt động
-          </div>
-          <div><span class="marker-dot gray"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Ngừng hoạt động</div>
-          <div><span class="marker-dot orange"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Giấy phép sắp hết
-            hạn</div>
-          <div><span class="marker-dot red"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Giấy phép hết hạn / Bị
-            thu hồi</div>
-          <div><span class="marker-dot purple"><i data-lucide="triangle-alert" class="h-3.5 w-3.5"></i></span>Có vi phạm
-            / Rủi ro cao</div>
+          <h2>Thống kê loại hình</h2>
+          <section id="mapLegendList" class="map-legend-list" style="max-height: 200px; overflow-y: auto; display: grid; gap: 8px; padding-top: 4px; padding-right: 12px; box-sizing: border-box;">
+            <!-- Dynamically populated -->
+          </section>
         </div>
 
         <article id="facilityPopup" class="facility-popup anchor-right" hidden>
@@ -866,7 +856,7 @@
           <label><input type="checkbox" data-map-layer="facilityLabels"> Hiển thị nhãn cơ sở</label>
           <label><input type="checkbox" data-map-layer="administrative" checked> Hiển thị ranh giới hành chính</label>
           <label><input type="checkbox" data-map-layer="roads" checked> Hiển thị giao thông</label>
-          <label><input type="checkbox" data-map-layer="water"> Hiển thị sông, hồ</label>
+          <label><input type="checkbox" data-map-layer="water" checked> Hiển thị sông, hồ</label>
         </section>
       </aside>
     </section>
@@ -1055,6 +1045,13 @@
       const searchView = document.getElementById('search-view');
       const feedbackView = document.getElementById('feedback-view');
 
+      // Initialize body class if map tab is active on load
+      const initialActiveItem = document.querySelector('.custom-nav-item.active .custom-nav-link');
+      const initialActiveTab = initialActiveItem ? initialActiveItem.getAttribute('data-tab') : null;
+      if (initialActiveTab === 'map' && window.innerWidth > 1380) {
+        document.body.classList.add('map-mode-active');
+      }
+
       // Helper function to hide all views
       function hideAllViews() {
         homepageView.classList.add('hidden');
@@ -1068,6 +1065,12 @@
       function switchTab(tab) {
         hideAllViews();
         navItems.forEach(nav => nav.classList.remove('active'));
+
+        if (tab === 'map' && window.innerWidth > 1380) {
+          document.body.classList.add('map-mode-active');
+        } else {
+          document.body.classList.remove('map-mode-active');
+        }
 
         if (tab === 'home') {
           document.getElementById('nav-home')?.classList.add('active');
@@ -1260,37 +1263,35 @@
       }
 
       // 2. Kiểm soát truy cập các nút cần đăng nhập
-      const protectedLinks = [
-        document.querySelector('a[href="html/DangKy.html"]'), // Card Đăng ký cơ sở
-        document.querySelector('a[href="html/QuanLyHoSo.html"]'), // Card Nộp hồ sơ trực tuyến
-        document.querySelector('.custom-nav-dropdown a[href="html/DangKy.html"]'), // Dropdown Đăng ký
-        document.querySelector('.custom-nav-dropdown a[href="html/QuanLyHoSo.html"]'), // Dropdown Khai báo thay đổi
-        document.querySelector('a[href="html/DangKy.html"].sub-card'), // Subcard Đăng ký
-        document.querySelector('a[href="html/QuanLyHoSo.html"].sub-card'), // Subcard Khai báo
-        document.querySelector('.dropdown-feedback-link'), // Phản ánh dropdown
-        document.querySelector('.sub-card-feedback') // Phản ánh sub-card
+      const protectedSelectors = [
+        'a[href="html/DangKyCoSo.html"]',
+        'a[href="html/ThayDoiThongTin.html"]',
+        'a[href="html/TheoDoiHoSo.html"]',
+        'a[href="html/CoSoCuaToi.html"]',
+        '.dropdown-feedback-link',
+        '.sub-card-feedback'
       ];
 
-      protectedLinks.forEach(link => {
-        if (!link) return;
-        
-        link.addEventListener('click', (e) => {
-          if (!session) {
-            e.preventDefault();
-            e.stopPropagation();
-            if (authModal) authModal.style.display = 'flex';
-          } else {
-            // Nếu đã đăng nhập user thường, chặn truy cập vào Dashboard/Quản lý nếu họ bấm link trỏ tới trang Quản lý
-            if (session.role !== 'admin') {
-              const targetHref = link.getAttribute('href') || '';
-              // Cho phép truy cập vào các trang dành riêng cho cơ sở nếu có
-              if (targetHref.includes('QuanLyHoSo.html') || targetHref.includes('CoSoDuLieuCSKD.html')) {
-                // Đổi hướng đến trang dành riêng cho cơ sở nếu cần, ở đây tạm thời chuyển tới CongCSKD-HoSoCuaToi.html
-                e.preventDefault();
-                window.location.href = 'html/CongCSKD-HoSoCuaToi.html';
+      protectedSelectors.forEach(selector => {
+        document.querySelectorAll(selector).forEach(link => {
+          link.addEventListener('click', (e) => {
+            if (!session) {
+              e.preventDefault();
+              e.stopPropagation();
+              if (authModal) authModal.style.display = 'flex';
+            } else {
+              // Nếu đã đăng nhập user thường, chặn truy cập vào Dashboard/Quản lý nếu họ bấm link trỏ tới trang Quản lý
+              if (session.role !== 'admin') {
+                const targetHref = link.getAttribute('href') || '';
+                // Cho phép truy cập vào các trang dành riêng cho cơ sở nếu có
+                if (targetHref.includes('QuanLyHoSo.html') || targetHref.includes('CoSoDuLieuCSKD.html')) {
+                  // Đổi hướng đến trang dành riêng cho cơ sở nếu cần, ở đây tạm thời chuyển tới CongCSKD-HoSoCuaToi.html
+                  e.preventDefault();
+                  window.location.href = 'html/CongCSKD-HoSoCuaToi.html';
+                }
               }
             }
-          }
+          });
         });
       });
 
@@ -1303,6 +1304,16 @@
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && authModal) {
           authModal.style.display = 'none';
+        }
+      });
+
+      window.addEventListener('resize', () => {
+        const activeItem = document.querySelector('.custom-nav-item.active .custom-nav-link');
+        const activeTab = activeItem ? activeItem.getAttribute('data-tab') : null;
+        if (activeTab === 'map' && window.innerWidth > 1380) {
+          document.body.classList.add('map-mode-active');
+        } else {
+          document.body.classList.remove('map-mode-active');
         }
       });
 

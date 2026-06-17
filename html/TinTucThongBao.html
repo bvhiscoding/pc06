@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tin tức & Thông báo – Công an tỉnh Ninh Bình</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/public-pages.css">
+  <script src="../scripts/auth.js"></script>
+  <style>
+    .news-card {
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+    }
+    .news-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+    }
+    .pulse-dot {
+      box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+      animation: pulse 1.6s infinite;
+    }
+    @keyframes pulse {
+      70% {
+        box-shadow: 0 0 0 8px rgba(239, 68, 68, 0);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="custom-header">
+  <a href="../index.html" class="custom-brand">
+    <img src="../public/logocongan.png" alt="Logo Bộ Công an">
+    <div class="custom-brand-text">
+      <h1>CÔNG AN TỈNH NINH BÌNH</h1>
+      <p>HỆ THỐNG QUẢN LÝ CƠ SỞ KINH DOANH CÓ ĐIỀU KIỆN VỀ ANTT</p>
+    </div>
+  </a>
+
+  <nav>
+    <ul class="custom-nav">
+      <li class="custom-nav-item" id="nav-home">
+        <a class="custom-nav-link" href="../index.html">
+          <i data-lucide="home"></i> Trang chủ
+        </a>
+      </li>
+      <li class="custom-nav-item" id="nav-map">
+        <a class="custom-nav-link" href="../index.html?tab=map">
+          <i data-lucide="map"></i> Bản đồ số
+        </a>
+      </li>
+      <li class="custom-nav-item" id="nav-procedures">
+        <a class="custom-nav-link" href="../index.html?tab=procedures">
+          <i data-lucide="file-text"></i> Thủ tục <i data-lucide="chevron-down" class="ml-0.5"></i>
+        </a>
+        <div class="custom-nav-dropdown">
+          <a href="DangKyCoSo.html">Đăng ký cơ sở mới</a>
+          <a href="ThayDoiThongTin.html">Khai báo thay đổi</a>
+          <a href="../index.html?tab=procedures">Danh mục thủ tục</a>
+        </div>
+      </li>
+      <li class="custom-nav-item" id="nav-search">
+        <a class="custom-nav-link" href="../index.html?tab=search">
+          <i data-lucide="search"></i> Tra cứu hồ sơ
+        </a>
+      </li>
+      <li class="custom-nav-item active" id="nav-support">
+        <a class="custom-nav-link" href="../index.html?tab=feedback">
+          <i data-lucide="headset"></i> Hỗ trợ <i data-lucide="chevron-down" class="ml-0.5"></i>
+        </a>
+        <div class="custom-nav-dropdown">
+          <a href="HuongDanSuDung.html">Hướng dẫn sử dụng</a>
+          <a href="TinTucThongBao.html">Tin tức & Thông báo</a>
+          <a href="CauHoiThuongGap.html">Câu hỏi thường gặp</a>
+          <a href="LienHeHoTro.html">Liên hệ hỗ trợ</a>
+          <a href="../index.html?tab=feedback">Tiếp nhận phản ánh</a>
+        </div>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Auth widget: populated by JS below -->
+  <div id="headerAuthArea">
+    <a class="custom-login-btn" href="DangNhap.html">
+      <i data-lucide="user"></i>
+      Đăng nhập
+    </a>
+  </div>
+</header>
+
+<!-- ── Auth-gate modal ──────────────────────────────── -->
+<div id="authGateModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.55);backdrop-filter:blur(3px);align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:20px;padding:36px 40px 32px;max-width:420px;width:90%;box-shadow:0 24px 56px rgba(0,0,0,0.22);text-align:center;">
+    <div style="width:56px;height:56px;border-radius:50%;background:#fff2f2;display:grid;place-items:center;margin:0 auto 16px;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#bd0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    </div>
+    <h3 style="font-size:18px;font-weight:700;color:#1b2430;margin:0 0 8px;">Yêu cầu đăng nhập</h3>
+    <p style="font-size:14px;color:#6b7280;margin:0 0 24px;line-height:1.55;">Chức năng này yêu cầu bạn đăng nhập vào hệ thống. Vui lòng đăng nhập để tiếp tục.</p>
+    <div style="display:flex;gap:12px;justify-content:center;">
+      <button id="authGateCancel" style="flex:1;height:44px;border-radius:8px;border:1.5px solid #d1d5db;background:#fff;font-size:14px;font-weight:600;color:#374151;cursor:pointer;">Hủy</button>
+      <a href="DangNhap.html" style="flex:1;height:44px;border-radius:8px;background:linear-gradient(180deg,#ed000b,#d80008);font-size:14px;font-weight:700;color:#fff;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;">Đăng nhập ngay</a>
+    </div>
+  </div>
+</div>
+
+<!-- BREADCRUMB -->
+<div class="pub-breadcrumb">
+  <a href="../index.html">Trang chủ</a>
+  <i data-lucide="chevron-right" style="width:14px;height:14px;color:#d1d5db"></i>
+  <span>Hỗ trợ</span>
+  <i data-lucide="chevron-right" style="width:14px;height:14px;color:#d1d5db"></i>
+  <span style="color:#374151;font-weight:600">Tin tức & Thông báo</span>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="pub-main max-w-7xl mx-auto px-10 box-sizing-border-box" style="padding-top: 24px;">
+  <!-- Title and Search controls -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-200 pb-4 mb-6 gap-4">
+    <h1 class="text-2xl font-bold text-slate-800">Tin tức & Thông báo</h1>
+    <div class="relative w-72">
+      <input type="text" id="newsSearchInput" placeholder="Tìm kiếm tin tức, thông báo..." class="w-full h-10 pl-10 pr-4 rounded-lg border border-slate-200 focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 text-sm" />
+      <i data-lucide="search" class="absolute left-3.5 top-3 w-4 h-4 text-slate-400"></i>
+    </div>
+  </div>
+  
+  <!-- Urgent ticker banner signature element -->
+  <div class="flex items-center gap-3.5 bg-red-50 border border-red-200/60 rounded-xl p-3.5 mb-6 shadow-sm">
+    <div class="w-2.5 h-2.5 rounded-full bg-red-600 pulse-dot flex-shrink-0"></div>
+    <span class="text-xs font-bold text-red-700 tracking-wide uppercase flex-shrink-0">Khẩn cấp:</span>
+    <marquee class="text-xs text-red-900 font-semibold cursor-pointer" scrollamount="4">
+      Từ ngày 01/07/2026, Công an tỉnh Ninh Bình chính thức áp dụng mẫu Giấy chứng nhận đủ điều kiện ANTT điện tử có mã QR động để các cơ sở tra cứu nhanh chóng. Yêu cầu các chủ cơ sở thực hiện đăng ký và đồng bộ hồ sơ.
+    </marquee>
+  </div>
+
+  <!-- Sub-navigation Tabs -->
+  <div class="tab-pills mb-6">
+    <button class="tab-pill active" onclick="switchNewsTab('all', this)">
+      <i data-lucide="layout-grid"></i> Tất cả bài viết
+    </button>
+    <button class="tab-pill" onclick="switchNewsTab('notification', this)">
+      <i data-lucide="bell"></i> Thông báo hệ thống
+    </button>
+    <button class="tab-pill" onclick="switchNewsTab('policy', this)">
+      <i data-lucide="scale"></i> Văn bản quy phạm pháp luật
+    </button>
+    <button class="tab-pill" onclick="switchNewsTab('event', this)">
+      <i data-lucide="calendar"></i> Sự kiện & Tin tức địa bàn
+    </button>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="newsGrid">
+    <!-- Featured Card 1 (Notification) -->
+    <div class="news-card flex flex-col bg-white border border-slate-200/60 rounded-xl overflow-hidden shadow-sm" data-category="notification">
+      <div class="relative h-48 bg-slate-900 flex items-center justify-center text-white">
+        <i data-lucide="shield-alert" class="w-16 h-16 text-red-500 opacity-60"></i>
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 to-transparent"></div>
+        <span class="absolute top-4 left-4 bg-red-600 text-white text-[10px] font-bold tracking-wider uppercase px-2.5 py-1 rounded">Mới nhất</span>
+      </div>
+      <div class="p-5 flex-1 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center gap-3 text-[11px] text-slate-400 font-semibold mb-2">
+            <span>Thông báo hệ thống</span>
+            <span>•</span>
+            <span>15/06/2026</span>
+          </div>
+          <h3 class="font-bold text-base text-slate-800 leading-snug hover:text-red-700 transition duration-150 mb-2 cursor-pointer">
+            Nâng cấp phân hệ Khai báo lưu trú và liên kết dữ liệu định danh VNeID
+          </h3>
+          <p class="text-xs text-slate-500 leading-relaxed line-clamp-3">
+            Hệ thống chính thức nâng cấp tính năng cho phép đồng bộ trực tiếp thông tin khách lưu trú từ thẻ CCCD gắn chip qua ứng dụng VNeID, giảm thiểu thao tác nhập thủ công cho khách sạn, nhà nghỉ.
+          </p>
+        </div>
+        <div class="pt-4 mt-4 border-t border-slate-100 flex justify-between items-center text-xs">
+          <span class="font-bold text-red-600 hover:text-red-800 transition cursor-pointer flex items-center gap-1">Đọc tiếp <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></span>
+          <span class="text-slate-400">CA tỉnh Ninh Bình</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2 (Policy) -->
+    <div class="news-card flex flex-col bg-white border border-slate-200/60 rounded-xl overflow-hidden shadow-sm" data-category="policy">
+      <div class="relative h-48 bg-slate-900 flex items-center justify-center text-white">
+        <i data-lucide="scale" class="w-16 h-16 text-yellow-500 opacity-60"></i>
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 to-transparent"></div>
+      </div>
+      <div class="p-5 flex-1 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center gap-3 text-[11px] text-slate-400 font-semibold mb-2">
+            <span>Quy phạm pháp luật</span>
+            <span>•</span>
+            <span>10/06/2026</span>
+          </div>
+          <h3 class="font-bold text-base text-slate-800 leading-snug hover:text-red-700 transition duration-150 mb-2 cursor-pointer">
+            Hướng dẫn áp dụng Nghị định mới về điều kiện an toàn phòng cháy chữa cháy
+          </h3>
+          <p class="text-xs text-slate-500 leading-relaxed line-clamp-3">
+            Chi tiết các thay đổi trong quy chuẩn thẩm duyệt thiết kế PCCC đối với cơ sở kinh doanh dịch vụ karaoke, vũ trường trên địa bàn tỉnh Ninh Bình, áp dụng từ quý III năm 2026.
+          </p>
+        </div>
+        <div class="pt-4 mt-4 border-t border-slate-100 flex justify-between items-center text-xs">
+          <span class="font-bold text-red-600 hover:text-red-800 transition cursor-pointer flex items-center gap-1">Đọc tiếp <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></span>
+          <span class="text-slate-400">Phòng QLHC</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3 (Event) -->
+    <div class="news-card flex flex-col bg-white border border-slate-200/60 rounded-xl overflow-hidden shadow-sm" data-category="event">
+      <div class="relative h-48 bg-slate-900 flex items-center justify-center text-white">
+        <i data-lucide="award" class="w-16 h-16 text-blue-500 opacity-60"></i>
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 to-transparent"></div>
+      </div>
+      <div class="p-5 flex-1 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center gap-3 text-[11px] text-slate-400 font-semibold mb-2">
+            <span>Sự kiện & Hoạt động</span>
+            <span>•</span>
+            <span>08/06/2026</span>
+          </div>
+          <h3 class="font-bold text-base text-slate-800 leading-snug hover:text-red-700 transition duration-150 mb-2 cursor-pointer">
+            Công an TP. Ninh Bình tăng cường kiểm tra định kỳ các cơ sở kinh doanh cầm đồ
+          </h3>
+          <p class="text-xs text-slate-500 leading-relaxed line-clamp-3">
+            Tăng cường giám sát, kiểm tra hành chính việc chấp hành quy định lưu trữ sổ sách quản lý tài sản thế chấp và niêm yết lãi suất đối với các cơ sở cầm đồ trên địa bàn thành phố.
+          </p>
+        </div>
+        <div class="pt-4 mt-4 border-t border-slate-100 flex justify-between items-center text-xs">
+          <span class="font-bold text-red-600 hover:text-red-800 transition cursor-pointer flex items-center gap-1">Đọc tiếp <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></span>
+          <span class="text-slate-400">CA TP. Ninh Bình</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="custom-footer-copyright">
+  © 2026 Công an tỉnh Ninh Bình. Tất cả quyền được bảo lưu.
+</footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Session widget setup
+    const session = typeof Auth !== 'undefined' ? Auth.getSession() : null;
+    const authArea = document.getElementById('headerAuthArea');
+    if (session && authArea) {
+      authArea.innerHTML = `
+        <div class="topbar-menu-wrap" style="position:relative; z-index:1000; font-family:'Roboto',sans-serif;">
+          <button id="publicUserMenuToggle" class="user-menu-btn" type="button" aria-label="Mở menu tài khoản" style="display:flex; align-items:center; gap:12px; background:transparent; border:none; cursor:pointer; padding:4px 10px; border-radius:8px; height:46px;">
+            <div style="width:38px; height:38px; border-radius:50%; color:white; font-weight:900; font-size:14px; display:grid; place-items:center; background:${session.avatarColor || '#bd0000'}; flex-shrink:0;">
+              ${session.avatar}
+            </div>
+            <div style="text-align:left;"><div style="font-size:15px; font-weight:600; color:#ffffff; line-height:1.2;">${session.name}</div><div style="font-size:12px; font-weight:500; color:rgba(255,255,255,0.85); margin-top:2px;">${session.unit}</div></div>
+            <i data-lucide="chevron-down" style="color:#ffffff; width:16px; height:16px;"></i>
+          </button>
+        </div>
+      `;
+    }
+    
+    // Lucide Icons init
+    if (window.lucide) {
+      window.lucide.createIcons();
+    }
+
+    // Search filter logic
+    const searchInput = document.getElementById('newsSearchInput');
+    searchInput.addEventListener('input', (e) => {
+      const term = e.target.value.toLowerCase().trim();
+      const cards = document.querySelectorAll('.news-card');
+      cards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        if (text.includes(term)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  // Tab switching logic
+  function switchNewsTab(category, btn) {
+    document.querySelectorAll('.tab-pill').forEach(pill => pill.classList.remove('active'));
+    btn.classList.add('active');
+
+    const cards = document.querySelectorAll('.news-card');
+    cards.forEach(card => {
+      if (category === 'all' || card.getAttribute('data-category') === category) {
+        card.style.display = 'flex';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+</script>
+</body>
+</html>

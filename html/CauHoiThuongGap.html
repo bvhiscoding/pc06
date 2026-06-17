@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Câu hỏi thường gặp – Công an tỉnh Ninh Bình</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/public-pages.css">
+  <script src="../scripts/auth.js"></script>
+  <style>
+    .faq-item {
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      background: #fff;
+      transition: all 0.2s ease;
+    }
+    .faq-item.active {
+      border-color: var(--red);
+      box-shadow: var(--shadow-sm);
+    }
+    .faq-question {
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--text-main);
+      user-select: none;
+    }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.25s cubic-bezier(0, 1, 0, 1);
+      padding: 0 20px;
+      color: var(--text-muted);
+      font-size: 13.5px;
+      line-height: 1.6;
+    }
+    .faq-item.active .faq-answer {
+      max-height: 500px;
+      padding-bottom: 20px;
+      transition: max-height 0.25s cubic-bezier(1, 0, 1, 0);
+    }
+    .faq-item.active .faq-chevron {
+      transform: rotate(180deg);
+      color: var(--red);
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="custom-header">
+  <a href="../index.html" class="custom-brand">
+    <img src="../public/logocongan.png" alt="Logo Bộ Công an">
+    <div class="custom-brand-text">
+      <h1>CÔNG AN TỈNH NINH BÌNH</h1>
+      <p>HỆ THỐNG QUẢN LÝ CƠ SỞ KINH DOANH CÓ ĐIỀU KIỆN VỀ ANTT</p>
+    </div>
+  </a>
+
+  <nav>
+    <ul class="custom-nav">
+      <li class="custom-nav-item" id="nav-home">
+        <a class="custom-nav-link" href="../index.html">
+          <i data-lucide="home"></i> Trang chủ
+        </a>
+      </li>
+      <li class="custom-nav-item" id="nav-map">
+        <a class="custom-nav-link" href="../index.html?tab=map">
+          <i data-lucide="map"></i> Bản đồ số
+        </a>
+      </li>
+      <li class="custom-nav-item" id="nav-procedures">
+        <a class="custom-nav-link" href="../index.html?tab=procedures">
+          <i data-lucide="file-text"></i> Thủ tục <i data-lucide="chevron-down" class="ml-0.5"></i>
+        </a>
+        <div class="custom-nav-dropdown">
+          <a href="DangKyCoSo.html">Đăng ký cơ sở mới</a>
+          <a href="ThayDoiThongTin.html">Khai báo thay đổi</a>
+          <a href="../index.html?tab=procedures">Danh mục thủ tục</a>
+        </div>
+      </li>
+      <li class="custom-nav-item" id="nav-search">
+        <a class="custom-nav-link" href="../index.html?tab=search">
+          <i data-lucide="search"></i> Tra cứu hồ sơ
+        </a>
+      </li>
+      <li class="custom-nav-item active" id="nav-support">
+        <a class="custom-nav-link" href="../index.html?tab=feedback">
+          <i data-lucide="headset"></i> Hỗ trợ <i data-lucide="chevron-down" class="ml-0.5"></i>
+        </a>
+        <div class="custom-nav-dropdown">
+          <a href="HuongDanSuDung.html">Hướng dẫn sử dụng</a>
+          <a href="TinTucThongBao.html">Tin tức & Thông báo</a>
+          <a href="CauHoiThuongGap.html">Câu hỏi thường gặp</a>
+          <a href="LienHeHoTro.html">Liên hệ hỗ trợ</a>
+          <a href="../index.html?tab=feedback">Tiếp nhận phản ánh</a>
+        </div>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Auth widget: populated by JS below -->
+  <div id="headerAuthArea">
+    <a class="custom-login-btn" href="DangNhap.html">
+      <i data-lucide="user"></i>
+      Đăng nhập
+    </a>
+  </div>
+</header>
+
+<!-- ── Auth-gate modal ──────────────────────────────── -->
+<div id="authGateModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.55);backdrop-filter:blur(3px);align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:20px;padding:36px 40px 32px;max-width:420px;width:90%;box-shadow:0 24px 56px rgba(0,0,0,0.22);text-align:center;">
+    <div style="width:56px;height:56px;border-radius:50%;background:#fff2f2;display:grid;place-items:center;margin:0 auto 16px;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#bd0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    </div>
+    <h3 style="font-size:18px;font-weight:700;color:#1b2430;margin:0 0 8px;">Yêu cầu đăng nhập</h3>
+    <p style="font-size:14px;color:#6b7280;margin:0 0 24px;line-height:1.55;">Chức năng này yêu cầu bạn đăng nhập vào hệ thống. Vui lòng đăng nhập để tiếp tục.</p>
+    <div style="display:flex;gap:12px;justify-content:center;">
+      <button id="authGateCancel" style="flex:1;height:44px;border-radius:8px;border:1.5px solid #d1d5db;background:#fff;font-size:14px;font-weight:600;color:#374151;cursor:pointer;">Hủy</button>
+      <a href="DangNhap.html" style="flex:1;height:44px;border-radius:8px;background:linear-gradient(180deg,#ed000b,#d80008);font-size:14px;font-weight:700;color:#fff;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;">Đăng nhập ngay</a>
+    </div>
+  </div>
+</div>
+
+<!-- BREADCRUMB -->
+<div class="pub-breadcrumb">
+  <a href="../index.html">Trang chủ</a>
+  <i data-lucide="chevron-right" style="width:14px;height:14px;color:#d1d5db"></i>
+  <span>Hỗ trợ</span>
+  <i data-lucide="chevron-right" style="width:14px;height:14px;color:#d1d5db"></i>
+  <span style="color:#374151;font-weight:600">Câu hỏi thường gặp</span>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="pub-main max-w-5xl mx-auto px-10 box-sizing-border-box" style="padding-top: 24px;">
+  <!-- Title and Search controls -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-200 pb-4 mb-6 gap-4">
+    <h1 class="text-2xl font-bold text-slate-800">Câu hỏi thường gặp (FAQ)</h1>
+    <div class="relative w-72">
+      <input type="text" id="faqSearchInput" placeholder="Tìm câu hỏi của bạn..." class="w-full h-10 pl-10 pr-4 rounded-lg border border-slate-200 focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 text-sm" />
+      <i data-lucide="search" class="absolute left-3.5 top-3 w-4 h-4 text-slate-400"></i>
+    </div>
+  </div>
+  
+  <div class="tab-pills mb-6">
+    <button class="tab-pill active" onclick="filterFaq('all', this)">
+      Tất cả câu hỏi
+    </button>
+    <button class="tab-pill" onclick="filterFaq('account', this)">
+      Tài khoản & Đăng nhập
+    </button>
+    <button class="tab-pill" onclick="filterFaq('file', this)">
+      Hồ sơ & Thủ tục
+    </button>
+    <button class="tab-pill" onclick="filterFaq('pccc', this)">
+      An toàn PCCC
+    </button>
+  </div>
+
+  <div class="flex flex-col gap-4" id="faqList">
+    <!-- FAQ 1 (Account) -->
+    <div class="faq-item" data-category="account">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span>Làm thế nào để cơ sở kinh doanh đăng ký tài khoản lần đầu trên hệ thống?</span>
+        <i data-lucide="chevron-down" class="faq-chevron w-5 h-5 text-slate-400 transition-transform"></i>
+      </div>
+      <div class="faq-answer">
+        Để đăng ký tài khoản lần đầu, chủ cơ sở mang bản gốc Giấy đăng ký kinh doanh và CCCD đến Bộ phận tiếp nhận của Công an cấp huyện hoặc Phòng Cảnh sát QLHC để được xác minh danh tính và cấp tài khoản qua email hoặc số điện thoại đăng ký.
+      </div>
+    </div>
+
+    <!-- FAQ 2 (File) -->
+    <div class="faq-item" data-category="file">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span>Thời gian giải quyết hồ sơ cấp mới Giấy chứng nhận đủ điều kiện ANTT là bao lâu?</span>
+        <i data-lucide="chevron-down" class="faq-chevron w-5 h-5 text-slate-400 transition-transform"></i>
+      </div>
+      <div class="faq-answer">
+        Theo quy định, trong vòng 05 ngày làm việc kể từ ngày nhận đủ hồ sơ hợp lệ qua hệ thống trực tuyến, cơ quan Công an có thẩm quyền sẽ thực hiện thẩm định thực tế và cấp Giấy chứng nhận. Trường hợp không cấp sẽ trả lời bằng văn bản nêu rõ lý do.
+      </div>
+    </div>
+
+    <!-- FAQ 3 (PCCC) -->
+    <div class="faq-item" data-category="pccc">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span>Cơ sở Karaoke cần chuẩn bị những hồ sơ PCCC nào khi nộp hồ sơ ANTT?</span>
+        <i data-lucide="chevron-down" class="faq-chevron w-5 h-5 text-slate-400 transition-transform"></i>
+      </div>
+      <div class="faq-answer">
+        Các cơ sở Karaoke bắt buộc phải đính kèm: (1) Văn bản nghiệm thu về phòng cháy và chữa cháy đối với công trình xây dựng; (2) Biên bản kiểm tra an toàn PCCC gần nhất trong vòng 6 tháng; (3) Sơ đồ các lối thoát hiểm và vị trí bố trí bình chữa cháy.
+      </div>
+    </div>
+
+    <!-- FAQ 4 (File) -->
+    <div class="faq-item" data-category="file">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span>Nếu hồ sơ của tôi bị "Yêu cầu bổ sung", tôi phải làm gì?</span>
+        <i data-lucide="chevron-down" class="faq-chevron w-5 h-5 text-slate-400 transition-transform"></i>
+      </div>
+      <div class="faq-answer">
+        Khi hồ sơ có trạng thái "Yêu cầu bổ sung", bạn sẽ nhận được thông báo chi tiết lỗi hoặc tài liệu thiếu từ cán bộ xử lý. Vào mục "Theo dõi hồ sơ", click chọn hồ sơ bị lỗi, cập nhật thông tin hoặc upload lại file đúng theo yêu cầu rồi bấm "Gửi lại hồ sơ".
+      </div>
+    </div>
+  </div>
+
+  <!-- Call to action signature element -->
+  <div class="mt-12 bg-slate-50 border border-slate-200 rounded-xl p-8 text-center flex flex-col items-center">
+    <div class="w-12 h-12 rounded-full bg-red-50 text-red-600 flex items-center justify-center mb-4">
+      <i data-lucide="help-circle" class="w-6 h-6"></i>
+    </div>
+    <h3 class="font-bold text-lg text-slate-800 mb-2">Bạn không tìm thấy câu trả lời?</h3>
+    <p class="text-sm text-slate-500 max-w-lg mb-6 leading-relaxed">
+      Hãy gửi phản ánh kiến nghị trực tuyến hoặc liên hệ trực tiếp với bộ phận hỗ trợ kỹ thuật để được giải đáp chi tiết nhất.
+    </p>
+    <div class="flex gap-4">
+      <a href="../index.html?tab=feedback" class="btn btn-outline">
+        <i data-lucide="send"></i> Gửi phản ánh
+      </a>
+      <a href="LienHeHoTro.html" class="btn btn-primary">
+        <i data-lucide="phone"></i> Liên hệ hỗ trợ
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="custom-footer-copyright">
+  © 2026 Công an tỉnh Ninh Bình. Tất cả quyền được bảo lưu.
+</footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Session widget setup
+    const session = typeof Auth !== 'undefined' ? Auth.getSession() : null;
+    const authArea = document.getElementById('headerAuthArea');
+    if (session && authArea) {
+      authArea.innerHTML = `
+        <div class="topbar-menu-wrap" style="position:relative; z-index:1000; font-family:'Roboto',sans-serif;">
+          <button id="publicUserMenuToggle" class="user-menu-btn" type="button" aria-label="Mở menu tài khoản" style="display:flex; align-items:center; gap:12px; background:transparent; border:none; cursor:pointer; padding:4px 10px; border-radius:8px; height:46px;">
+            <div style="width:38px; height:38px; border-radius:50%; color:white; font-weight:900; font-size:14px; display:grid; place-items:center; background:${session.avatarColor || '#bd0000'}; flex-shrink:0;">
+              ${session.avatar}
+            </div>
+            <div style="text-align:left;"><div style="font-size:15px; font-weight:600; color:#ffffff; line-height:1.2;">${session.name}</div><div style="font-size:12px; font-weight:500; color:rgba(255,255,255,0.85); margin-top:2px;">${session.unit}</div></div>
+            <i data-lucide="chevron-down" style="color:#ffffff; width:16px; height:16px;"></i>
+          </button>
+        </div>
+      `;
+    }
+    
+    // Lucide Icons init
+    if (window.lucide) {
+      window.lucide.createIcons();
+    }
+
+    // Search filter logic
+    const searchInput = document.getElementById('faqSearchInput');
+    searchInput.addEventListener('input', (e) => {
+      const term = e.target.value.toLowerCase().trim();
+      const items = document.querySelectorAll('.faq-item');
+      items.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        if (text.includes(term)) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  // Accordion toggle logic
+  function toggleFaq(header) {
+    const item = header.closest('.faq-item');
+    const isActive = item.classList.contains('active');
+    
+    document.querySelectorAll('.faq-item').forEach(el => {
+      el.classList.remove('active');
+    });
+    
+    if (!isActive) {
+      item.classList.add('active');
+    }
+  }
+
+  // Tab filtering logic
+  function filterFaq(category, btn) {
+    document.querySelectorAll('.tab-pill').forEach(pill => pill.classList.remove('active'));
+    btn.classList.add('active');
+
+    const items = document.querySelectorAll('.faq-item');
+    items.forEach(item => {
+      if (category === 'all' || item.getAttribute('data-category') === category) {
+        item.style.display = 'block';
+      } else {
+        item.style.display = 'none';
+      }
+    });
+  }
+</script>
+</body>
+</html>

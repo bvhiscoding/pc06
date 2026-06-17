@@ -67,7 +67,8 @@ function renderRows() {
 
   body.innerHTML = visible.length ? visible.map((item, index) => `
     <tr>
-      <td>${start + index + 1}</td>
+      <td class="text-center"><input type="checkbox" aria-label="Chọn dòng ${start + index + 1}" /></td>
+      <td class="text-center">${start + index + 1}</td>
       <td>${escapeHTML(item.name)}</td>
       <td>${escapeHTML(item.username)}</td>
       <td><span class="role-tag ${escapeHTML(item.roleClass)}">${escapeHTML(item.role)}</span></td>
@@ -87,12 +88,12 @@ function renderRows() {
         ` : ''}
       </td>
     </tr>
-  `).join('') : '<tr><td class="empty-state" colspan="10">Không tìm thấy cán bộ phù hợp với điều kiện lọc.</td></tr>';
+  `).join('') : '<tr><td class="empty-state" colspan="11">Không tìm thấy cán bộ phù hợp với điều kiện lọc.</td></tr>';
 
   const summary = $('#resultSummary');
   if (summary) {
     const end = Math.min(start + state.pageSize, rows.length);
-    summary.textContent = `Hiển thị ${rows.length ? start + 1 : 0} đến ${end} của ${rows.length} cán bộ`;
+    summary.textContent = `Hiển thị ${rows.length ? start + 1 : 0} - ${end} trong tổng số ${rows.length} cán bộ`;
   }
   renderPagination(rows.length);
   window.lucide?.createIcons();
@@ -102,9 +103,23 @@ function renderPagination(total) {
   const pagination = $('#pagination');
   if (!pagination) return;
   const totalPages = Math.max(1, Math.ceil(total / state.pageSize));
+  state.page = Math.min(state.page, totalPages);
+
+  const pages = [];
+  for (let page = 1; page <= totalPages; page += 1) {
+    if (page === 1 || page === totalPages || Math.abs(page - state.page) <= 1) {
+      pages.push(page);
+    } else if (pages[pages.length - 1] !== '...') {
+      pages.push('...');
+    }
+  }
+
   pagination.innerHTML = `
     <button class="pager-btn" type="button" data-page="${state.page - 1}" ${state.page === 1 ? 'disabled' : ''}><i data-lucide="chevron-left" class="h-5 w-5"></i></button>
-    <button class="pager-btn active" type="button">1</button>
+    ${pages.map((page) => page === '...'
+      ? '<span class="pager-btn">...</span>'
+      : `<button class="pager-btn${page === state.page ? ' active' : ''}" type="button" data-page="${page}">${page}</button>`
+    ).join('')}
     <button class="pager-btn" type="button" data-page="${state.page + 1}" ${state.page === totalPages ? 'disabled' : ''}><i data-lucide="chevron-right" class="h-5 w-5"></i></button>`;
 }
 
@@ -307,6 +322,12 @@ function bindEvents() {
       state.page = 1;
       renderRows();
     });
+  });
+
+  $('#pageSizeSelect')?.addEventListener('change', (event) => {
+    state.pageSize = Number(event.target.value);
+    state.page = 1;
+    renderRows();
   });
 
   $('#pagination')?.addEventListener('click', (event) => {

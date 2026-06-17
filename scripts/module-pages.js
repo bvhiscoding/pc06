@@ -85,10 +85,16 @@ const declarationRows = [
 ];
 
 const procedureRows = [
-  ['ANTT-001', 'Cấp mới giấy chứng nhận đủ điều kiện ANTT', 'Cấp phép', '15 ngày', '05 biểu mẫu', 'Đang hoạt động', '12/06/2026'],
-  ['ANTT-002', 'Cấp đổi giấy chứng nhận đủ điều kiện ANTT', 'Cấp phép', '10 ngày', '04 biểu mẫu', 'Đang hoạt động', '11/06/2026'],
-  ['ANTT-003', 'Cấp lại giấy chứng nhận đủ điều kiện ANTT', 'Cấp phép', '07 ngày', '03 biểu mẫu', 'Đang hoạt động', '10/06/2026'],
-  ['ANTT-004', 'Khai báo thay đổi thông tin cơ sở', 'Khai báo', '05 ngày', '02 biểu mẫu', 'Chờ duyệt', '09/06/2026']
+  ['TTHC-0001', 'Cấp mới Giấy chứng nhận đăng ký kinh doanh', 'Đăng ký kinh doanh', 'Phòng CS QLHC về TTXH', '03 ngày làm việc', 'Mẫu đơn.docx', 'Đang hiệu lực', '15/05/2024'],
+  ['TTHC-0002', 'Cấp đổi Giấy chứng nhận đăng ký kinh doanh', 'Đăng ký kinh doanh', 'Phòng CS QLHC về TTXH', '02 ngày làm việc', 'Mẫu đơn.docx', 'Đang hiệu lực', '10/06/2024'],
+  ['TTHC-0003', 'Cấp lại Giấy chứng nhận đăng ký kinh doanh', 'Đăng ký kinh doanh', 'Phòng CS QLHC về TTXH', '02 ngày làm việc', 'Mẫu đơn.docx', 'Đang hiệu lực', '10/06/2024'],
+  ['TTHC-0004', 'Thông báo tạm ngưng kinh doanh của doanh nghiệp', 'Đăng ký kinh doanh', 'Phòng CS QLHC về TTXH', '03 ngày làm việc', 'Mẫu đơn.docx', 'Đang hiệu lực', '09/06/2024'],
+  ['TTHC-0005', 'Thông báo tiếp tục kinh doanh trước thời hạn đã thông báo', 'Đăng ký kinh doanh', 'Phòng CS QLHC về TTXH', '02 ngày làm việc', 'Mẫu đơn.docx', 'Đang hiệu lực', '08/06/2024'],
+  ['TTHC-0006', 'Giải thể doanh nghiệp', 'Đăng ký kinh doanh', 'Phòng CS QLHC về TTXH', '05 ngày làm việc', 'Mẫu đơn.docx', 'Tạm dừng', '07/06/2024'],
+  ['TTHC-0007', 'Cấp Giấy chứng nhận đủ điều kiện về ANTT (Cơ sở kinh doanh có điều kiện)', 'Quản lý ANTT', 'Phòng CS QLHC về TTXH', '05 ngày làm việc', 'Mẫu đơn.docx', 'Đang hiệu lực', '05/06/2024'],
+  ['TTHC-0008', 'Cấp lại Giấy chứng nhận đủ điều kiện về ANTT', 'Quản lý ANTT', 'Phòng CS QLHC về TTXH', '03 ngày làm việc', 'Mẫu đơn.docx', 'Hết hiệu lực', '01/06/2024'],
+  ['TTHC-0009', 'Thu hồi Giấy chứng nhận đủ điều kiện về ANTT', 'Quản lý ANTT', 'Phòng CS QLHC về TTXH', '03 ngày làm việc', 'Mẫu đơn.docx', 'Đang hiệu lực', '28/05/2024'],
+  ['TTHC-0010', 'Xác nhận thay đổi nội dung đăng ký doanh nghiệp', 'Đăng ký kinh doanh', 'Phòng CS QLHC về TTXH', '02 ngày làm việc', 'Mẫu đơn.docx', 'Đang hiệu lực', '25/05/2024']
 ];
 
 const logRows = [
@@ -101,7 +107,7 @@ const logRows = [
 const moduleConfigs = {
   profile: {
     title: 'Hồ sơ cá nhân',
-    section: 'Người dùng và phân quyền',
+    section: 'Người dùng',
     icon: 'id-card',
     description: 'Thông tin cán bộ, vai trò, địa bàn phụ trách và bảo mật tài khoản.',
     action: 'Cập nhật thông tin',
@@ -118,7 +124,7 @@ const moduleConfigs = {
   },
   accounts: {
     title: 'Danh sách tài khoản',
-    section: 'Người dùng và phân quyền',
+    section: 'Người dùng',
     icon: 'users',
     description: 'Quản lý cán bộ, vai trò, đơn vị, địa bàn và trạng thái truy cập hệ thống.',
     action: 'Thêm tài khoản',
@@ -133,7 +139,7 @@ const moduleConfigs = {
   },
   'account-form': {
     title: 'Thêm / sửa tài khoản',
-    section: 'Người dùng và phân quyền',
+    section: 'Người dùng',
     icon: 'user-plus',
     description: 'Biểu mẫu nhiều nhóm thông tin, có điều kiện theo vai trò chủ cơ sở hoặc cán bộ xã/phường.',
     action: 'Lưu tài khoản',
@@ -150,7 +156,7 @@ const moduleConfigs = {
   },
   permissions: {
     title: 'Ma trận phân quyền',
-    section: 'Người dùng và phân quyền',
+    section: 'Người dùng',
     icon: 'shield-check',
     description: 'Thiết lập quyền theo module: xem, thêm, sửa, xóa mềm, duyệt, xuất dữ liệu và quản trị.',
     action: 'Lưu phân quyền',
@@ -160,9 +166,29 @@ const moduleConfigs = {
     workflow: ['Chọn vai trò', 'Chọn quyền theo hàng/cột', 'Cảnh báo quyền nhạy cảm', 'Lưu RolePermission'],
     docs: ['Danh sách quyền chuẩn', 'Lịch sử thay đổi quyền', 'Tài khoản bị ảnh hưởng']
   },
+  roles: {
+    title: 'Quản lý vai trò',
+    section: 'Người dùng',
+    icon: 'shield-check',
+    description: 'Quản lý vai trò, mô tả và gắn quyền cụ thể module cho từng vai trò cán bộ hoặc cơ sở.',
+    action: 'Thêm vai trò',
+    entities: ['Role', 'Permission', 'RolePermission'],
+    filters: filters(['Từ khóa', 'Trạng thái']),
+    columns: ['Mã vai trò', 'Tên vai trò', 'Mô tả vai trò', 'Số người dùng', 'Số quyền hạn', 'Trạng thái', 'Cập nhật cuối'],
+    rows: [
+      ['ROLE-0001', 'Quản trị hệ thống', 'Quản trị toàn bộ chức năng hệ thống, cấu hình hệ thống và sao lưu', '2', '63/63', 'Đang hoạt động', '15/05/2024'],
+      ['ROLE-0002', 'Lãnh đạo đơn vị', 'Xem báo cáo thống kê, duyệt các hồ sơ quan trọng và phê duyệt thủ tục', '5', '48/63', 'Đang hoạt động', '10/06/2024'],
+      ['ROLE-0003', 'Cán bộ PC06', 'Tiếp nhận hồ sơ, thẩm định thực tế, đề xuất xử lý và lập biên bản kiểm tra', '18', '42/63', 'Đang hoạt động', '10/06/2024'],
+      ['ROLE-0004', 'Công an xã/phường', 'Tiếp nhận khai báo tạm trú, khai báo tài sản và hỗ trợ kiểm tra cơ sở', '12', '25/63', 'Đang hoạt động', '09/06/2024'],
+      ['ROLE-0005', 'Chủ cơ sở kinh doanh', 'Khai báo lưu trú, báo cáo định kỳ và gửi hồ sơ xin cấp phép', '128', '12/63', 'Đang hoạt động', '08/06/2024']
+    ],
+    details: [['Tổng số vai trò', '5'], ['Vai trò cán bộ', '4'], ['Vai trò cơ sở', '1'], ['Quyền hạn tối đa', '63']],
+    workflow: ['Tạo vai trò mới', 'Mô tả phạm vi vai trò', 'Tích chọn quyền hạn trong ma trận', 'Lưu cấu hình và phân quyền'],
+    docs: ['Quy chế phân quyền PC06', 'Danh mục module nghiệp vụ', 'Nhật ký phân quyền gần đây']
+  },
   'area-assignment': {
     title: 'Phân công địa bàn',
-    section: 'Người dùng và phân quyền',
+    section: 'Người dùng',
     icon: 'map',
     description: 'Giao xã/phường, loại phân công chính/phối hợp, thời hạn và trạng thái hiệu lực cho cán bộ.',
     action: 'Thêm phân công',
@@ -225,17 +251,16 @@ const moduleConfigs = {
   'checklist-template': checklistConfig(),
   'procedure-detail': procedureDetailConfig(),
   'procedure-admin': {
-    title: 'Quản trị thủ tục',
-    section: 'Thủ tục hành chính',
+    title: 'Quản lý thủ tục',
+    section: 'Danh mục',
     icon: 'clipboard-list',
-    description: 'Quản lý thủ tục công khai, thành phần hồ sơ, phiên bản, biểu mẫu và trạng thái áp dụng.',
-    action: 'Thêm thủ tục',
+    description: 'Quản lý thủ tục hành chính công khai, thành phần hồ sơ, phiên bản, biểu mẫu và trạng thái áp dụng.',
+    action: 'Thêm thủ tục mới',
     entities: ['Procedure', 'BusinessType', 'DocumentType'],
-    filters: filters(['Từ khóa', 'Loại hình', 'Đối tượng', 'Trạng thái', 'Ngày cập nhật']),
-    tabs: ['Đang công khai', 'Bản nháp', 'Ngừng áp dụng', 'Chờ duyệt'],
-    columns: ['Mã thủ tục', 'Tên thủ tục', 'Lĩnh vực', 'Thời hạn', 'Biểu mẫu', 'Trạng thái', 'Cập nhật'],
+    filters: filters(['Từ khóa', 'Nhóm thủ tục', 'Lĩnh vực', 'Cơ quan thực hiện', 'Trạng thái']),
+    columns: ['Mã thủ tục', 'Tên thủ tục', 'Nhóm thủ tục', 'Cơ quan thực hiện', 'Thời hạn giải quyết', 'Tệp đính kèm', 'Trạng thái', 'Cập nhật'],
     rows: procedureRows,
-    details: [['Thủ tục công khai', '12'], ['Bản nháp', '03'], ['Có biểu mẫu', '10'], ['Sắp hết hiệu lực', '01']],
+    details: [['Thủ tục công khai', '32'], ['Đang hiệu lực', '28'], ['Tạm dừng', '02'], ['Hết hiệu lực', '02']],
     workflow: ['Soạn nội dung', 'Gắn biểu mẫu', 'Xem trước công khai', 'Đăng công khai hoặc ngừng áp dụng'],
     docs: ['Mẫu đơn đề nghị', 'Căn cứ pháp lý', 'Lịch sử phiên bản']
   },
@@ -256,7 +281,6 @@ const moduleConfigs = {
     docs: ['Dữ liệu cũ', 'Dữ liệu mới', 'Thông tin phiên đăng nhập']
   },
   'system-config': systemConfig(),
-  'data-import': importConfig(),
   'seed-data': seedConfig(),
   'module-check': moduleCheckConfig(),
   'frontend-security': securityConfig(),
@@ -414,24 +438,6 @@ function systemConfig() {
   };
 }
 
-function importConfig() {
-  return {
-    title: 'Quản lý import dữ liệu',
-    section: 'Vận hành hệ thống',
-    icon: 'file-up',
-    description: 'Import Excel theo luồng chọn loại dữ liệu, tải mẫu, upload, kiểm tra lỗi, xác nhận và tải file lỗi.',
-    action: 'Upload Excel',
-    entities: ['DataImportJob', 'Business', 'BusinessPerson', 'Ward', 'DocumentType'],
-    stats: [['File chờ xử lý', '03', 'Excel cơ sở và cán bộ'], ['Dòng hợp lệ', '1.248', 'Qua kiểm tra cấu trúc'], ['Dòng lỗi', '17', 'Có file lỗi để tải'], ['Import gần nhất', '14/06', 'Hoàn thành']],
-    filters: filters(['Loại dữ liệu', 'Người tải', 'Trạng thái', 'Ngày tải']),
-    columns: ['Tên file', 'Loại dữ liệu', 'Tổng dòng', 'Hợp lệ', 'Lỗi', 'Người tải', 'Trạng thái', 'Ngày tải'],
-    rows: [['cskd_ninhbinh_062026.xlsx', 'Cơ sở kinh doanh', '850', '838', '12', 'Nguyễn Văn A', 'Chờ duyệt', '15/06/2026'], ['canbo_dia_ban.xlsx', 'Cán bộ', '124', '124', '0', 'Phạm Thị H', 'Đã hoàn thành', '14/06/2026'], ['giayphep_mau.xlsx', 'Giấy phép', '274', '269', '5', 'Trần Văn K', 'Cần bổ sung', '13/06/2026']],
-    details: [['Bước hiện tại', 'Kiểm tra dữ liệu'], ['Loại import', 'Cơ sở, nhân sự, xã/phường, danh mục, giấy phép'], ['Không tạo trùng', 'Kiểm tra mã cơ sở/mã cán bộ'], ['Tải file lỗi', 'Có']],
-    workflow: ['Chọn loại dữ liệu', 'Tải file mẫu', 'Upload Excel', 'Kiểm tra hợp lệ/lỗi', 'Xác nhận import', 'Tải file lỗi nếu có'],
-    docs: ['Mẫu import cơ sở', 'File lỗi gần nhất', 'Lịch sử import']
-  };
-}
-
 function seedConfig() {
   return {
     title: 'Seed Data Manager',
@@ -527,7 +533,8 @@ const state = {
   pageSize: 10,
   sortIndex: null,
   sortDir: 1,
-  selectedDeclarationId: 'KB-2026-0188'
+  selectedDeclarationId: 'KB-2026-0188',
+  openActionId: ''
 };
 
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({
@@ -538,9 +545,9 @@ const normalize = (value) => String(value ?? '').toLowerCase().normalize('NFD').
 
 function statusClass(value) {
   const text = normalize(value);
-  if (/qua han|khoa|bo sung|canh bao|loi|that bai|cao/.test(text)) return 'st-red';
-  if (/cho|nhap|dang xu ly|dang soan/.test(text)) return 'st-orange';
-  if (/duyet|hoat dong|con hieu luc|cong khai|thanh cong|dung han|hoan thanh|san sang/.test(text)) return 'st-green';
+  if (/qua han|khoa|bo sung|canh bao|loi|that bai|cao|het hieu luc/.test(text)) return 'st-red';
+  if (/cho|nhap|dang xu ly|dang soan|tam dung/.test(text)) return 'st-orange';
+  if (/duyet|hoat dong|con hieu luc|cong khai|thanh cong|dung han|hoan thanh|san sang|dang hieu luc/.test(text)) return 'st-green';
   return 'st-blue';
 }
 
@@ -611,8 +618,6 @@ function sidebarTemplate() {
         ${navItem('KiemTraCoSo.html', 'clipboard-check', 'Kiểm tra cơ sở', ['checklist-template'])}
         ${navItem('XuLyViPham.html', 'octagon-alert', 'Vi phạm / Xử lý vi phạm')}
         ${navItem('QuanLyPhanAnh.html', 'message-square-warning', 'Phản ánh kiến nghị')}
-        <div class="nav-section">Cổng cơ sở</div>
-        ${navItem('CongCSKD-HoSoCuaToi.html', 'store', 'Hồ sơ cơ sở của tôi', ['my-business'])}
         <div class="nav-section">Báo cáo</div>
         ${navItem('BaoCao-ThongKe.html', 'chart-column-big', 'Báo cáo - thống kê')}
         <div class="nav-section">Thủ tục & thông báo</div>
@@ -620,7 +625,8 @@ function sidebarTemplate() {
         ${navItem('TrungTamThongBao.html', 'bell-ring', 'Trung tâm thông báo', ['notifications-center'])}
         <div class="nav-section">Cấu hình</div>
         ${navItem('DanhMuc.html', 'folder', 'Danh mục dùng chung')}
-        ${navItem('QuanLyTaiKhoan.html', 'users', 'Người dùng & phân quyền', ['accounts', 'permissions', 'area-assignment', 'profile'])}
+        ${navItem('QuanLyTaiKhoan.html', 'users', 'Người dùng', ['accounts', 'area-assignment', 'profile'])}
+        ${navItem('QuanLyVaiTro.html', 'shield-check', 'Quản lý vai trò', ['roles', 'permissions'])}
         ${navItem('QuanLyCanBo.html', 'users-round', 'Quản lý cán bộ')}
         ${navItem('NhatKyHeThong.html', 'history', 'Nhật ký hệ thống', ['activity-log'])}
         ${navItem('CauHinhHeThong.html', 'settings', 'Cấu hình hệ thống', ['system-config'])}
@@ -644,6 +650,45 @@ function statsTemplate(stats = commonStats) {
 
 function filtersTemplate() {
   const filtersConfig = config.filters || filters(['Từ khóa', 'Trạng thái', 'Địa bàn', 'Ngày tạo']);
+
+  if (currentModule === 'roles') {
+    return `<section class="filter-panel">
+      <div class="grid grid-cols-12 gap-x-7 gap-y-4">
+        <!-- Extended Search Field (Từ khóa) -->
+        <label class="col-span-12 md:col-span-6 xl:col-span-6">
+          <span class="form-label">Từ khóa</span>
+          <span class="field-wrap block">
+            <input class="field" id="keywordInput" placeholder="Nhập từ khóa..." />
+            <i data-lucide="search" class="field-icon"></i>
+          </span>
+        </label>
+        
+        <!-- Status Select (Trạng thái) -->
+        <label class="col-span-12 md:col-span-3 xl:col-span-3">
+          <span class="form-label">Trạng thái</span>
+          <span class="field-wrap block">
+            <select class="field appearance-none font-medium" data-filter>
+              <option>-- Tất cả --</option>
+              <option>Đang hoạt động</option>
+              <option>Tạm dừng</option>
+            </select>
+            <i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>
+          </span>
+        </label>
+        
+        <!-- Inline Action Buttons (Reset and Search) -->
+        <div class="col-span-12 md:col-span-3 xl:col-span-3 flex items-end justify-end gap-3 h-[66px] pb-[1px]">
+          <button class="inline-flex h-[42px] items-center gap-2 rounded-md border border-[#d9dfe8] bg-white px-6 text-[14px] font-medium text-[#202833] shadow-sm transition hover:bg-[#f8fafc]" type="button" data-reset>
+            <i data-lucide="rotate-ccw" class="h-4 w-4"></i>Đặt lại
+          </button>
+          <button class="inline-flex h-[42px] items-center gap-2 rounded-md bg-[#c50000] px-7 text-[14px] font-semibold text-white shadow-[0_6px_13px_rgba(192,0,0,0.24)] transition hover:bg-[#ad0000]" type="button" data-search>
+            <i data-lucide="search" class="h-[18px] w-[18px]"></i>Tìm kiếm
+          </button>
+        </div>
+      </div>
+    </section>`;
+  }
+
   return `<section class="filter-panel">
     <div class="grid grid-cols-12 gap-x-7 gap-y-4">
       ${filtersConfig.map((filter, index) => {
@@ -656,8 +701,8 @@ function filtersTemplate() {
   }).join('')}
     </div>
     <div class="mt-4 flex flex-wrap justify-end gap-3">
-      <button class="btn btn-secondary" type="button" data-reset><i data-lucide="rotate-ccw"></i>Đặt lại</button>
-      <button class="btn btn-primary" type="button" data-search><i data-lucide="search"></i>Tìm kiếm</button>
+      <button class="inline-flex h-[42px] items-center gap-2 rounded-md border border-[#d9dfe8] bg-white px-6 text-[14px] font-medium text-[#202833] shadow-sm transition hover:bg-[#f8fafc]" type="button" data-reset><i data-lucide="rotate-ccw" class="h-4 w-4"></i>Đặt lại</button>
+      <button class="inline-flex h-[42px] items-center gap-2 rounded-md bg-[#c50000] px-7 text-[14px] font-semibold text-white shadow-[0_6px_13px_rgba(192,0,0,0.24)] transition hover:bg-[#ad0000]" type="button" data-search><i data-lucide="search" class="h-[18px] w-[18px]"></i>Tìm kiếm</button>
     </div>
   </section>`;
 }
@@ -687,18 +732,9 @@ function renderTabLabel(tab, index) {
 
 function tableTemplate() {
   if (!config.columns || !config.rows) return '';
-  const tabs = config.tabs || ['Tất cả', 'Đang xử lý', 'Đã hoàn thành'];
-  const bulkBtn = currentModule === 'declaration-admin' ? '' : '<button class="btn btn-secondary" type="button" data-bulk><i data-lucide="check-square"></i>Chọn nhiều</button>';
-  const panelHead = currentModule === 'declaration-admin' ? '' : `
-      <div class="panel-head">
-        <div></div>
-        <div class="flex gap-2">${bulkBtn}</div>
-      </div>`;
   return `
     ${filtersTemplate()}
-    <div class="module-tabs">${tabs.map((tab, index) => `<button class="tab ${index === state.activeTab ? 'active' : ''}" type="button" data-tab="${index}">${renderTabLabel(tab, index)}</button>`).join('')}</div>
     <section class="content-panel overflow-hidden">
-      ${panelHead}
       <div class="table-wrap"><table class="data-table module-table w-full">
         <thead><tr><th class="w-[48px]"><input type="checkbox" aria-label="Chọn tất cả" /></th><th class="w-[56px]">STT</th>${config.columns.map((col, index) => `<th><button type="button" data-sort="${index}" class="font-semibold">${esc(col)}</button></th>`).join('')}<th class="w-[116px]">Thao tác</th></tr></thead>
         <tbody id="moduleTableBody"></tbody>
@@ -715,10 +751,10 @@ function tableTemplate() {
       </div>
       <div id="pagination" class="flex flex-wrap items-center gap-2"></div>
       <div class="flex items-center gap-2">
-        <a href="ImportDuLieu.html" class="inline-flex h-10 items-center gap-2 rounded-md border border-[#d9dfe8] bg-white px-4 text-[14px] font-bold text-[#202833] shadow-sm transition hover:border-[#c50000] hover:text-[#c50000] hover:bg-[#fffafa]">
+        <button class="inline-flex h-10 items-center gap-2 rounded-md border border-[#d9dfe8] bg-white px-4 text-[14px] font-bold text-[#202833] shadow-sm transition hover:border-[#c50000] hover:text-[#c50000] hover:bg-[#fffafa]" type="button">
           <i data-lucide="file-up" class="h-4 w-4"></i>Nhập dữ liệu
-        </a>
-        <button class="inline-flex h-10 items-center gap-2 rounded-md border border-[#d9dfe8] bg-white px-4 text-[14px] font-bold text-[#202833] shadow-sm transition hover:border-[#c50000] hover:text-[#c50000] hover:bg-[#fffafa]" type="button" data-toast="Đã tạo file Excel kết xuất dữ liệu.">
+        </button>
+        <button class="inline-flex h-10 items-center gap-2 rounded-md border border-[#d9dfe8] bg-white px-4 text-[14px] font-bold text-[#202833] shadow-sm transition hover:border-[#c50000] hover:text-[#c50000] hover:bg-[#fffafa]" type="button">
           <i data-lucide="file-spreadsheet" class="h-4 w-4"></i>Xuất dữ liệu
         </button>
       </div>
@@ -729,22 +765,6 @@ function renderRows() {
   const body = document.querySelector('#moduleTableBody');
   if (!body || !config.rows) return;
   let rows = config.rows;
-  if (currentModule === 'declaration-admin') {
-    const tabName = config.tabs[state.activeTab];
-    if (tabName === 'Khai báo lưu trú') {
-      rows = rows.filter(row => row[1] === 'Lưu trú');
-    } else if (tabName === 'Khai báo tài sản') {
-      rows = rows.filter(row => row[1] === 'Tài sản');
-    } else if (tabName === 'Báo cáo định kỳ') {
-      rows = rows.filter(row => row[1] === 'Báo cáo định kỳ');
-    } else if (tabName === 'Nộp muộn') {
-      rows = rows.filter(row => normalize(row[6]).includes('muon') || normalize(row[4]).includes('muon'));
-    } else if (tabName === 'Có cảnh báo') {
-      rows = rows.filter(row => normalize(row[6]).includes('canh bao') || normalize(row[4]).includes('canh bao'));
-    } else if (tabName === 'Chờ xử lý') {
-      rows = rows.filter(row => normalize(row[6]).includes('cho duyet') || normalize(row[6]).includes('dang xu ly') || normalize(row[6]).includes('cho xu ly'));
-    }
-  }
   let filteredRows = rows.filter((row) => !state.query || normalize(row.join(' ')).includes(normalize(state.query)));
   if (state.sortIndex !== null) {
     filteredRows = [...filteredRows].sort((a, b) => String(a[state.sortIndex]).localeCompare(String(b[state.sortIndex]), 'vi') * state.sortDir);
@@ -752,14 +772,98 @@ function renderRows() {
   const total = filteredRows.length;
   const start = (state.page - 1) * state.pageSize;
   const visibleRows = filteredRows.slice(start, start + state.pageSize);
+  function actionCellTemplate(start, index) {
+    const rowId = String(start + index);
+    if (currentModule === 'activity-log') {
+      return `
+        <td class="text-center action-cell">
+          <button class="mx-auto grid h-9 w-9 place-items-center rounded-md border border-[#dfe5ed] bg-white shadow-sm transition hover:border-[#c90000] hover:text-[#c90000]" type="button" data-action-toggle="${rowId}" aria-label="Mở thao tác"><i data-lucide="ellipsis-vertical" class="h-5 w-5"></i></button>
+          ${state.openActionId === rowId ? `
+            <div class="row-action-menu">
+              <button type="button" data-toast="Đã mô phỏng thao tác xử lý"><i data-lucide="more-horizontal" class="h-4 w-4"></i>Xử lý</button>
+            </div>
+          ` : ''}
+        </td>
+      `;
+    }
+    if (currentModule === 'accounts') {
+      return `
+        <td class="text-center action-cell">
+          <button class="mx-auto grid h-9 w-9 place-items-center rounded-md border border-[#dfe5ed] bg-white shadow-sm transition hover:border-[#c90000] hover:text-[#c90000]" type="button" data-action-toggle="${rowId}" aria-label="Mở thao tác"><i data-lucide="ellipsis-vertical" class="h-5 w-5"></i></button>
+          ${state.openActionId === rowId ? `
+            <div class="row-action-menu">
+              <button type="button" data-toast="Đã mô phỏng chỉnh sửa tài khoản"><i data-lucide="pencil" class="h-4 w-4"></i>Chỉnh sửa</button>
+              <button type="button" data-toast="Đã tạm khóa tài khoản"><i data-lucide="lock" class="h-4 w-4"></i>Tạm khóa</button>
+            </div>
+          ` : ''}
+        </td>
+      `;
+    }
+    if (currentModule === 'roles') {
+      return `
+        <td class="text-center action-cell">
+          <button class="mx-auto grid h-9 w-9 place-items-center rounded-md border border-[#dfe5ed] bg-white shadow-sm transition hover:border-[#c90000] hover:text-[#c90000]" type="button" data-action-toggle="${rowId}" aria-label="Mở thao tác"><i data-lucide="ellipsis-vertical" class="h-5 w-5"></i></button>
+          ${state.openActionId === rowId ? `
+            <div class="row-action-menu">
+              <button type="button" data-edit-role="${rowId}"><i data-lucide="pencil" class="h-4 w-4"></i>Chỉnh sửa vai trò</button>
+              <button type="button" data-route="MaTranPhanQuyen.html"><i data-lucide="shield-check" class="h-4 w-4"></i>Xem ma trận quyền</button>
+              <button type="button" data-toast="Đã tạm khóa vai trò này" style="color:#c50000"><i data-lucide="ban" class="h-4 w-4"></i>Khóa vai trò</button>
+            </div>
+          ` : ''}
+        </td>
+      `;
+    }
+    if (currentModule === 'procedure-admin') {
+      const rowData = visibleRows[index];
+      const procedureCode = rowData ? rowData[0] : '';
+      return `
+        <td class="text-center action-cell">
+          <button class="mx-auto grid h-9 w-9 place-items-center rounded-md border border-[#dfe5ed] bg-white shadow-sm transition hover:border-[#c90000] hover:text-[#c90000]" type="button" data-action-toggle="${rowId}" aria-label="Mở thao tác"><i data-lucide="ellipsis-vertical" class="h-5 w-5"></i></button>
+          ${state.openActionId === rowId ? `
+            <div class="row-action-menu">
+              <button type="button" data-route="ThuTuc-ChiTiet.html?id=${procedureCode}"><i data-lucide="eye" class="h-4 w-4"></i>Xem chi tiết</button>
+              <button type="button" data-route="ThuTuc-ThemMoi.html?mode=edit&id=${procedureCode}"><i data-lucide="pencil" class="h-4 w-4"></i>Chỉnh sửa</button>
+              <button type="button" data-toast="Đã tải xuống tệp đính kèm"><i data-lucide="download" class="h-4 w-4"></i>Tải xuống (PDF)</button>
+              <button type="button" data-toast="Đã ngưng hiệu lực thủ tục"><i data-lucide="ban" class="h-4 w-4"></i>Ngưng hiệu lực</button>
+              <button type="button" data-toast="Đã xóa thủ tục" style="color:#c50000"><i data-lucide="trash-2" class="h-4 w-4"></i>Xóa</button>
+            </div>
+          ` : ''}
+        </td>
+      `;
+    }
+    if (currentModule === 'notifications-center') {
+      return `
+        <td class="text-center action-cell">
+          <button class="mx-auto grid h-9 w-9 place-items-center rounded-md border border-[#dfe5ed] bg-white shadow-sm transition hover:border-[#c90000] hover:text-[#c90000]" type="button" data-action-toggle="${rowId}" aria-label="Mở thao tác"><i data-lucide="ellipsis-vertical" class="h-5 w-5"></i></button>
+          ${state.openActionId === rowId ? `
+            <div class="row-action-menu">
+              <button type="button" data-open-modal><i data-lucide="eye" class="h-4 w-4"></i>Xem chi tiết</button>
+              <button type="button" data-toast="Đã đánh dấu đã đọc"><i data-lucide="check" class="h-4 w-4"></i>Đánh dấu đã đọc</button>
+              <button type="button" data-toast="Đã xóa thông báo" style="color:#c50000"><i data-lucide="trash-2" class="h-4 w-4"></i>Xóa thông báo</button>
+            </div>
+          ` : ''}
+        </td>
+      `;
+    }
+    return `
+      <td class="text-center"><div class="flex justify-center gap-2"><button class="grid h-9 w-9 place-items-center rounded-md border border-[#dfe5ed] bg-white shadow-sm" type="button" data-open-modal aria-label="Xem chi tiết"><i data-lucide="eye" class="h-4 w-4"></i></button><button class="grid h-9 w-9 place-items-center rounded-md border border-[#dfe5ed] bg-white shadow-sm" type="button" data-toast="Đã mô phỏng thao tác xử lý" aria-label="Xử lý"><i data-lucide="more-horizontal" class="h-4 w-4"></i></button></div></td>
+    `;
+  }
+
   if (!visibleRows.length) {
     body.innerHTML = `<tr><td class="empty-state" colspan="${config.columns.length + 3}">Không có dữ liệu phù hợp. Hãy đổi bộ lọc hoặc tạo bản ghi mới.</td></tr>`;
   } else {
     body.innerHTML = visibleRows.map((row, index) => `<tr>
       <td class="text-center"><input type="checkbox" aria-label="Chọn dòng ${start + index + 1}" /></td>
       <td class="text-center">${start + index + 1}</td>
-      ${row.map((cell, cellIndex) => `<td class="${cellIndex === 0 ? 'font-semibold text-[#ff0000]' : 'text-center'}">${cellIndex >= row.length - 3 || /trạng thái|kết quả|mức độ/i.test(config.columns[cellIndex]) ? `<span class="status ${statusClass(cell)}">${esc(cell)}</span>` : esc(cell)}</td>`).join('')}
-      <td class="text-center"><div class="flex justify-center gap-2"><button class="grid h-9 w-9 place-items-center rounded-md border border-[#dfe5ed] bg-white shadow-sm" type="button" data-open-modal aria-label="Xem chi tiết"><i data-lucide="eye" class="h-4 w-4"></i></button><button class="grid h-9 w-9 place-items-center rounded-md border border-[#dfe5ed] bg-white shadow-sm" type="button" data-toast="Đã mô phỏng thao tác xử lý" aria-label="Xử lý"><i data-lucide="more-horizontal" class="h-4 w-4"></i></button></div></td>
+      ${row.map((cell, cellIndex) => {
+        const colName = config.columns[cellIndex] || '';
+        const isFileCol = /tệp đính kèm/i.test(colName);
+        const isStatusCol = /trạng thái|kết quả|mức độ|hiệu lực/i.test(colName) || (cellIndex >= row.length - 2 && currentModule !== 'procedure-admin');
+        if (isFileCol) return `<td class="text-center"><span class="inline-flex items-center justify-center gap-1.5 text-[#1267d8] font-semibold text-[13px]"><i data-lucide="file-text" class="h-4 w-4 flex-shrink-0"></i>${esc(cell)}</span></td>`;
+        return `<td class="${cellIndex === 0 ? 'font-semibold text-[#ff0000]' : 'text-center'}">${isStatusCol ? `<span class="status ${statusClass(cell)}">${esc(cell)}</span>` : esc(cell)}</td>`;
+      }).join('')}
+      ${actionCellTemplate(start, index)}
     </tr>`).join('');
   }
   const summary = document.querySelector('#resultSummary');
@@ -795,12 +899,16 @@ function renderPagination(total) {
 
 function formTemplate() {
   if (!config.formSections) return '';
+  const isSystemConfig = currentModule === 'system-config';
+  const bottomButtons = isSystemConfig
+    ? `<button class="inline-flex h-[42px] items-center gap-2 rounded-md bg-[#c50000] px-7 text-[14px] font-semibold text-white shadow-[0_6px_13px_rgba(192,0,0,0.24)] transition hover:bg-[#ad0000]" type="button" data-toast="Đã lưu cấu hình hệ thống."><i data-lucide="save" class="h-[18px] w-[18px]"></i>Lưu cấu hình</button>`
+    : `<button class="btn btn-secondary" type="button" data-toast="Đã lưu nháp"><i data-lucide="save"></i>Lưu nháp</button><button class="btn btn-primary" type="button" data-open-modal><i data-lucide="${esc(config.icon)}"></i>${esc(config.action)}</button>`;
   return `<section class="content-panel"><div class="panel-head"><div><h2>Thông tin chi tiết</h2><div class="panel-subtitle">Các trường có dấu * là bắt buộc, lỗi hiển thị ngay dưới trường.</div></div><span class="status st-blue">Form nghiệp vụ</span></div><div class="panel-body">
     ${config.formSections.map((sec) => `<div class="form-section">
       <div class="form-section-title"><i data-lucide="${esc(sec.icon)}" class="h-4 w-4 text-[#c50000]"></i>${esc(sec.title)}</div>
       <div class="${sec.mode === 'textarea' ? '' : 'form-row'}">${sec.fields.map((field) => fieldTemplate(field, sec.mode)).join('')}</div>
     </div>`).join('')}
-    <div class="mt-4 flex flex-wrap justify-end gap-3"><button class="btn btn-secondary" type="button" data-toast="Đã lưu nháp"><i data-lucide="save"></i>Lưu nháp</button><button class="btn btn-primary" type="button" data-open-modal><i data-lucide="${esc(config.icon)}"></i>${esc(config.action)}</button></div>
+    <div class="mt-4 flex flex-wrap justify-end gap-3">${bottomButtons}</div>
   </div></section>`;
 }
 
@@ -854,9 +962,30 @@ function statePanel() {
 function contentTemplate() {
   const showStats = config.stats && !modulesWithoutStats.has(currentModule);
   const mainContent = [showStats ? statsTemplate(config.stats) : '', tableTemplate(), formTemplate(), permissionTemplate()].filter(Boolean).join('');
-  const pageBody = noSidePanelModules.has(currentModule)
-    ? `<div class="module-main-stack">${mainContent}</div>`
-    : `<div class="module-layout"><div class="module-main-stack">${mainContent}</div>${sidePanelsTemplate()}</div>`;
+  const pageBody = `<div class="module-main-stack">${mainContent}</div>`;
+
+  const isAccounts = currentModule === 'accounts';
+  const isActivityLog = currentModule === 'activity-log';
+  const isSystemConfig = currentModule === 'system-config';
+
+  let actionBtnHTML = '';
+  if (!isSystemConfig && !isActivityLog) {
+    if (isAccounts) {
+      actionBtnHTML = `<button class="inline-flex h-[42px] items-center gap-2 rounded-md bg-[#c50000] px-5 text-[14px] font-semibold text-white shadow-[0_6px_13px_rgba(192,0,0,0.24)] transition hover:bg-[#ad0000]" type="button" data-toast="Đã mô phỏng thêm tài khoản mới"><i data-lucide="plus" class="h-[18px] w-[18px]"></i>Thêm tài khoản</button>`;
+    } else if (currentModule === 'roles') {
+      actionBtnHTML = `<button class="inline-flex h-[42px] items-center gap-2 rounded-md bg-[#c50000] px-5 text-[14px] font-semibold text-white shadow-[0_6px_13px_rgba(192,0,0,0.24)] transition hover:bg-[#ad0000]" type="button" data-add-role-modal><i data-lucide="plus" class="h-[18px] w-[18px]"></i>Thêm vai trò mới</button>`;
+    } else if (currentModule === 'procedure-admin') {
+      actionBtnHTML = `<button class="inline-flex h-[42px] items-center gap-2 rounded-md bg-[#c50000] px-5 text-[14px] font-semibold text-white shadow-[0_6px_13px_rgba(192,0,0,0.24)] transition hover:bg-[#ad0000]" type="button" data-route="ThuTuc-ThemMoi.html"><i data-lucide="plus" class="h-[18px] w-[18px]"></i>Thêm thủ tục mới</button>`;
+    } else if (currentModule === 'notifications-center') {
+      actionBtnHTML = `<button class="inline-flex h-[42px] items-center gap-2 rounded-md bg-[#c50000] px-5 text-[14px] font-semibold text-white shadow-[0_6px_13px_rgba(192,0,0,0.24)] transition hover:bg-[#ad0000]" type="button" data-open-modal><i data-lucide="plus" class="h-[18px] w-[18px]"></i>${esc(config.action)}</button>`;
+    } else {
+      actionBtnHTML = `<button class="btn btn-primary" type="button" data-open-modal><i data-lucide="${esc(config.icon)}"></i>${esc(config.action)}</button>`;
+    }
+  }
+
+  const breadcrumbExtra = currentModule === 'procedure-admin'
+    ? `<i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i><span>${esc(config.title)}</span>`
+    : '';
 
   return `
     <main class="content min-h-screen pt-[80px]">
@@ -867,9 +996,10 @@ function contentTemplate() {
             <span>Trang chủ</span>
             <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
             <span>${esc(config.section)}</span>
+            ${breadcrumbExtra}
           </div>
           <div class="flex flex-wrap gap-3">
-            <button class="btn btn-primary" type="button" data-open-modal><i data-lucide="${esc(config.icon)}"></i>${esc(config.action)}</button>
+            ${actionBtnHTML}
           </div>
         </section>
         ${pageBody}
@@ -878,11 +1008,194 @@ function contentTemplate() {
 }
 
 function modalBodyTemplate() {
+  if (currentModule === 'notifications-center') {
+    if (state.selectedNotification) {
+      const n = state.selectedNotification;
+      return `
+        <div class="form-section">
+          <div class="form-section-title">
+            <i data-lucide="bell" class="h-4 w-4 text-[#c50000]"></i>Chi tiết thông báo
+          </div>
+          <div class="grid grid-cols-2 gap-y-3 gap-x-4 text-xs font-semibold text-slate-700">
+            <div class="col-span-2">
+              <span class="text-slate-400 block font-bold text-[11px] mb-1">TIÊU ĐỀ THÔNG BÁO</span>
+              <span class="text-slate-800 font-bold text-sm block bg-slate-50 p-2 border border-slate-100 rounded">${esc(n.title)}</span>
+            </div>
+            <div>
+              <span class="text-slate-400 block font-bold text-[11px] mb-1">PHÂN LOẠI</span>
+              <span class="text-slate-800 block bg-slate-50 p-2 border border-slate-100 rounded">${esc(n.type)}</span>
+            </div>
+            <div>
+              <span class="text-slate-400 block font-bold text-[11px] mb-1">ĐỐI TƯỢNG LIÊN QUAN</span>
+              <span class="text-slate-800 font-mono block bg-slate-50 p-2 border border-slate-100 rounded">${esc(n.related)}</span>
+            </div>
+            <div>
+              <span class="text-slate-400 block font-bold text-[11px] mb-1">NGƯỜI NHẬN</span>
+              <span class="text-slate-800 block bg-slate-50 p-2 border border-slate-100 rounded">${esc(n.receiver)}</span>
+            </div>
+            <div>
+              <span class="text-slate-400 block font-bold text-[11px] mb-1">ĐỘ ƯU TIÊN</span>
+              <span class="status ${statusClass(n.priority)} inline-block mt-1">${esc(n.priority)}</span>
+            </div>
+            <div>
+              <span class="text-slate-400 block font-bold text-[11px] mb-1">THỜI GIAN GỬI</span>
+              <span class="text-slate-800 block bg-slate-50 p-2 border border-slate-100 rounded">${esc(n.time)}</span>
+            </div>
+            <div class="col-span-2">
+              <span class="text-slate-400 block font-bold text-[11px] mb-1">TRẠNG THÁI</span>
+              <span class="status ${statusClass(n.status)} inline-block mt-1">${esc(n.status)}</span>
+            </div>
+          </div>
+        </div>
+      `;
+    } else {
+      return `
+        <div class="form-section">
+          <div class="form-section-title">
+            <i data-lucide="plus" class="h-4 w-4 text-[#c50000]"></i>Tạo thông báo mới
+          </div>
+          <div class="form-row">
+            <label><span class="form-label">Tiêu đề thông báo *</span><input class="field" placeholder="Nhập tiêu đề..." /></label>
+            <label>
+              <span class="form-label">Loại thông báo</span>
+              <span class="field-wrap block">
+                <select class="field appearance-none font-medium">
+                  <option>Hồ sơ</option>
+                  <option>Khai báo</option>
+                  <option>Kiểm tra</option>
+                  <option>Vi phạm</option>
+                  <option>Hệ thống</option>
+                </select>
+                <i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>
+              </span>
+            </label>
+          </div>
+          <div class="form-row mt-3">
+            <label>
+              <span class="form-label">Người nhận</span>
+              <span class="field-wrap block">
+                <select class="field appearance-none font-medium">
+                  <option>Tất cả</option>
+                  <option>Chủ cơ sở</option>
+                  <option>Cán bộ PC06</option>
+                  <option>Công an xã/phường</option>
+                </select>
+                <i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>
+              </span>
+            </label>
+            <label>
+              <span class="form-label">Độ ưu tiên</span>
+              <span class="field-wrap block">
+                <select class="field appearance-none font-medium">
+                  <option>Thường</option>
+                  <option>Trung bình</option>
+                  <option>Cao</option>
+                </select>
+                <i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>
+              </span>
+            </label>
+          </div>
+          <label class="mt-3 block"><span class="form-label">Nội dung thông báo *</span><textarea class="field textarea-field" placeholder="Nhập nội dung thông báo..."></textarea></label>
+        </div>
+      `;
+    }
+  }
   if (currentModule === 'accounts') {
     const accountConfig = moduleConfigs['account-form'];
     return `<div class="form-section"><div class="form-section-title"><i data-lucide="user-plus" class="h-4 w-4 text-[#c50000]"></i>Thêm / sửa tài khoản</div>
       <div class="panel-subtitle mb-3">Màn này được refactor thành modal trong danh sách tài khoản, không còn route HTML riêng.</div>
     </div>${accountConfig.formSections.map((sec) => `<div class="form-section"><div class="form-section-title"><i data-lucide="${esc(sec.icon)}" class="h-4 w-4 text-[#c50000]"></i>${esc(sec.title)}</div><div class="${sec.mode === 'textarea' ? '' : 'form-row'}">${sec.fields.map((field) => fieldTemplate(field, sec.mode)).join('')}</div></div>`).join('')}`;
+  }
+
+  if (currentModule === 'roles') {
+    const isEditing = state.selectedRoleId !== undefined && state.selectedRoleId !== null;
+    let code = '', name = '', desc = '', status = 'active';
+    
+    if (isEditing) {
+      const row = config.rows[state.selectedRoleId];
+      if (row) {
+        code = row[0];
+        name = row[1];
+        desc = row[2];
+        status = row[5] === 'Đang hoạt động' ? 'active' : 'inactive';
+      }
+    } else {
+      code = 'ROLE-000' + (config.rows.length + 1);
+    }
+
+    const modules = ['Hồ sơ CSKD', 'Khai báo từ cơ sở', 'Kiểm tra cơ sở', 'Vi phạm', 'Báo cáo', 'Danh mục', 'Người dùng'];
+    const actions = ['Xem', 'Thêm', 'Sửa', 'Xóa', 'Duyệt', 'Xuất'];
+
+    return `
+      <div class="form-section">
+        <div class="form-section-title">
+          <i data-lucide="shield-check" class="h-4 w-4 text-[#c50000]"></i>
+          Thông tin vai trò
+        </div>
+        <div class="form-row">
+          <label>
+            <span class="form-label">Mã vai trò *</span>
+            <input class="field bg-slate-50 font-mono" id="roleCode" value="${esc(code)}" disabled />
+          </label>
+          <label>
+            <span class="form-label">Tên vai trò *</span>
+            <input class="field" id="roleName" value="${esc(name)}" placeholder="VD: Cán bộ thẩm định" required />
+          </label>
+        </div>
+        <div class="form-row mt-3">
+          <label class="col-span-2">
+            <span class="form-label">Mô tả vai trò *</span>
+            <textarea class="field textarea-field" id="roleDesc" placeholder="Mô tả chức năng nhiệm vụ của vai trò..." required>${esc(desc)}</textarea>
+          </label>
+        </div>
+        
+        <div class="mt-3">
+          <span class="form-label mb-2 block">Trạng thái hoạt động</span>
+          <div class="flex gap-4">
+            <label class="flex items-center gap-1.5 cursor-pointer text-xs font-semibold">
+              <input type="radio" name="roleStatus" value="active" ${status === 'active' ? 'checked' : ''} class="accent-green-600" />
+              Đang hoạt động
+            </label>
+            <label class="flex items-center gap-1.5 cursor-pointer text-xs font-semibold">
+              <input type="radio" name="roleStatus" value="inactive" ${status === 'inactive' ? 'checked' : ''} class="accent-red-600" />
+              Tạm dừng
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section mt-4">
+        <div class="form-section-title">
+          <i data-lucide="shield-alert" class="h-4 w-4 text-[#c50000]"></i>
+          Gắn quyền cụ thể cho từng module
+        </div>
+        <div class="overflow-x-auto mt-2 rounded-lg border border-slate-100">
+          <table class="w-full text-left border-collapse text-xs font-semibold">
+            <thead>
+              <tr class="bg-slate-50 text-slate-500 font-bold border-b border-slate-100">
+                <th class="p-3">Module / Chức năng</th>
+                ${actions.map(act => `<th class="p-3 text-center">${esc(act)}</th>`).join('')}
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              ${modules.map((modName, rIdx) => `
+                <tr class="hover:bg-slate-50 transition-colors">
+                  <td class="p-3 text-slate-800 font-bold">${esc(modName)}</td>
+                  ${actions.map((_, cIdx) => {
+                    const isChecked = isEditing ? (rIdx + cIdx < 8) : (rIdx === 0 || cIdx === 0);
+                    return `
+                      <td class="p-3 text-center">
+                        <input type="checkbox" class="h-4 w-4 rounded border-slate-300 text-red-600 focus:ring-red-500 accent-red-600" ${isChecked ? 'checked' : ''} />
+                      </td>
+                    `;
+                  }).join('')}
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    `;
   }
 
   if (currentModule === 'declaration-admin') {
@@ -1229,6 +1542,13 @@ function modalBodyTemplate() {
 }
 
 function modalFooterTemplate() {
+  if (currentModule === 'notifications-center') {
+    if (state.selectedNotification) {
+      return `<button class="btn btn-secondary" type="button" data-close-modal>Đóng</button>`;
+    } else {
+      return `<button class="btn btn-secondary" type="button" data-close-modal>Hủy bỏ</button><button class="btn btn-primary" type="button" data-confirm-action><i data-lucide="check"></i>Gửi thông báo</button>`;
+    }
+  }
   if (currentModule === 'declaration-admin') {
     return `
       <button class="btn btn-secondary mr-auto" type="button" data-close-modal>Đóng</button>
@@ -1243,13 +1563,17 @@ function modalFooterTemplate() {
       </button>
     `;
   }
+  if (currentModule === 'roles') {
+    return `<button class="btn btn-secondary" type="button" data-close-modal>Hủy bỏ</button><button class="btn btn-primary" type="button" data-save-role-btn><i data-lucide="check"></i>Lưu vai trò</button>`;
+  }
   return `<button class="btn btn-secondary" type="button" data-close-modal>Hủy bỏ</button><button class="btn btn-primary" type="button" data-confirm-action><i data-lucide="check"></i>Xác nhận</button>`;
 }
 
 function modalTemplate() {
   const modalTitle = currentModule === 'accounts' ? 'Thêm / sửa tài khoản'
     : currentModule === 'declaration-admin' ? 'Chi tiết khai báo'
-      : config.action;
+      : currentModule === 'roles' ? (state.selectedRoleId !== undefined && state.selectedRoleId !== null ? 'Chỉnh sửa vai trò' : 'Thêm vai trò mới')
+        : config.action;
   return `<div id="moduleModal" class="modal-backdrop" hidden>
     <section class="module-modal" role="dialog" aria-modal="true" aria-labelledby="moduleModalTitle">
       <div class="module-modal-head"><h2 id="moduleModalTitle" class="module-modal-title">${esc(modalTitle)}</h2><button class="close-icon-btn" type="button" data-close-modal aria-label="Đóng"><i data-lucide="x" class="h-5 w-5"></i></button></div>
@@ -1344,6 +1668,9 @@ function bindInteractions() {
     const sort = event.target.closest('[data-sort]');
     const toggleCheck = event.target.closest('[data-toggle-check]');
     const declAction = event.target.closest('[data-declaration-action]');
+    const addRoleModal = event.target.closest('[data-add-role-modal]');
+    const editRole = event.target.closest('[data-edit-role]');
+    const saveRoleBtn = event.target.closest('[data-save-role-btn]');
 
     if (openModal) {
       const tr = openModal.closest('tr');
@@ -1353,7 +1680,24 @@ function bindInteractions() {
           state.selectedDeclarationId = idCell.textContent.trim();
         }
       }
-      if (currentModule === 'declaration-admin') {
+      if (tr && currentModule === 'notifications-center') {
+        const tds = tr.querySelectorAll('td');
+        if (tds.length >= 8) {
+          state.selectedNotification = {
+            title: tds[2].textContent.trim(),
+            type: tds[3].textContent.trim(),
+            receiver: tds[4].textContent.trim(),
+            related: tds[5].textContent.trim(),
+            priority: tds[6].textContent.trim(),
+            time: tds[7].textContent.trim(),
+            status: tds[8].textContent.trim()
+          };
+        }
+      } else if (currentModule === 'notifications-center') {
+        state.selectedNotification = null;
+      }
+
+      if (currentModule === 'declaration-admin' || currentModule === 'notifications-center') {
         const modalBody = document.querySelector('.module-modal-body');
         if (modalBody) {
           modalBody.innerHTML = modalBodyTemplate();
@@ -1362,11 +1706,71 @@ function bindInteractions() {
         if (modalFoot) {
           modalFoot.innerHTML = modalFooterTemplate();
         }
+        if (currentModule === 'notifications-center') {
+          const modalTitle = document.querySelector('#moduleModalTitle');
+          if (modalTitle) {
+            modalTitle.textContent = state.selectedNotification ? 'Chi tiết thông báo' : 'Tạo thông báo';
+          }
+        }
       }
       modal.hidden = false;
       lucide.createIcons();
     }
     if (closeModal) modal.hidden = true;
+
+    if (addRoleModal) {
+      state.selectedRoleId = null;
+      const modalBody = document.querySelector('.module-modal-body');
+      if (modalBody) modalBody.innerHTML = modalBodyTemplate();
+      const modalFoot = document.querySelector('.module-modal-foot');
+      if (modalFoot) modalFoot.innerHTML = modalFooterTemplate();
+      const modalTitle = document.querySelector('#moduleModalTitle');
+      if (modalTitle) modalTitle.textContent = 'Thêm vai trò mới';
+      modal.hidden = false;
+      lucide.createIcons();
+    }
+
+    if (editRole) {
+      const rId = Number(editRole.dataset.editRole);
+      state.selectedRoleId = rId;
+      const modalBody = document.querySelector('.module-modal-body');
+      if (modalBody) modalBody.innerHTML = modalBodyTemplate();
+      const modalFoot = document.querySelector('.module-modal-foot');
+      if (modalFoot) modalFoot.innerHTML = modalFooterTemplate();
+      const modalTitle = document.querySelector('#moduleModalTitle');
+      if (modalTitle) modalTitle.textContent = 'Chỉnh sửa vai trò';
+      modal.hidden = false;
+      lucide.createIcons();
+    }
+
+    if (saveRoleBtn) {
+      const nameVal = document.getElementById('roleName')?.value?.trim();
+      const descVal = document.getElementById('roleDesc')?.value?.trim();
+      const statusRadio = document.querySelector('input[name="roleStatus"]:checked');
+      const statusVal = statusRadio ? statusRadio.value : 'active';
+      const statusText = statusVal === 'active' ? 'Đang hoạt động' : 'Tạm dừng';
+
+      if (!nameVal || !descVal) {
+        showToast('Vui lòng điền đầy đủ thông tin vai trò (*).');
+        return;
+      }
+
+      if (state.selectedRoleId !== undefined && state.selectedRoleId !== null) {
+        // Edit mode
+        config.rows[state.selectedRoleId][1] = nameVal;
+        config.rows[state.selectedRoleId][2] = descVal;
+        config.rows[state.selectedRoleId][5] = statusText;
+        showToast('Cập nhật vai trò thành công.');
+      } else {
+        // Add mode
+        const codeVal = 'ROLE-000' + (config.rows.length + 1);
+        config.rows.push([codeVal, nameVal, descVal, '0', '15/63', statusText, '17/06/2026']);
+        showToast('Thêm vai trò mới thành công.');
+      }
+
+      modal.hidden = true;
+      renderRows();
+    }
     if (confirmAction) {
       modal.hidden = true;
       showToast('Đã xác nhận thao tác và ghi nhận vào luồng xử lý.');
@@ -1389,6 +1793,19 @@ function bindInteractions() {
         }
       }
     }
+    const actionToggle = event.target.closest('[data-action-toggle]');
+    if (actionToggle) {
+      state.openActionId = state.openActionId === actionToggle.dataset.actionToggle ? '' : actionToggle.dataset.actionToggle;
+      renderRows();
+      return;
+    }
+    if (!event.target.closest('.action-cell') && state.openActionId) {
+      state.openActionId = '';
+      renderRows();
+    }
+
+    const routeButton = event.target.closest('[data-route]');
+    if (routeButton) { window.location.href = routeButton.dataset.route; }
     if (toastButton) showToast(toastButton.dataset.toast || 'Đã thực hiện thao tác mô phỏng.');
     if (stateButton) setDemoState(stateButton.dataset.state);
     if (tab) {
@@ -1396,16 +1813,19 @@ function bindInteractions() {
       document.querySelectorAll('[data-tab]').forEach((button) => button.classList.toggle('active', button === tab));
       const tabText = tab.childNodes[0].textContent.trim();
       showToast(`Đã chuyển tab ${tabText}`);
+      state.openActionId = '';
       renderRows();
     }
     if (page && !page.disabled) {
       state.page = Number(page.dataset.page);
+      state.openActionId = '';
       renderRows();
     }
     if (sort) {
       const index = Number(sort.dataset.sort);
       state.sortDir = state.sortIndex === index ? state.sortDir * -1 : 1;
       state.sortIndex = index;
+      state.openActionId = '';
       renderRows();
     }
     if (toggleCheck) {
@@ -1418,11 +1838,13 @@ function bindInteractions() {
   document.querySelector('[data-search]')?.addEventListener('click', () => {
     state.query = document.querySelector('#keywordInput')?.value || '';
     state.page = 1;
+    state.openActionId = '';
     renderRows();
   });
   document.querySelector('[data-reset]')?.addEventListener('click', () => {
     state.query = '';
     state.page = 1;
+    state.openActionId = '';
     document.querySelectorAll('.field').forEach((field) => {
       if (field.id === 'keywordInput') field.value = '';
     });

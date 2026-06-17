@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="vi">
 
 <head>
@@ -262,24 +262,13 @@
             <div class="map-legend">
               <button id="legendToggle" class="legend-toggle" type="button" aria-expanded="false">
                 <i data-lucide="eye" class="h-4 w-4"></i>
-                Chú thích
+                Thống kê
               </button>
               <div class="legend-content">
-                <h2>Chú thích trạng thái</h2>
-                <div><span class="marker-dot green"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Đang hoạt động
-                </div>
-                <div><span class="marker-dot yellow"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Tạm dừng hoạt
-                  động</div>
-                <div><span class="marker-dot gray"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Ngừng hoạt động
-                </div>
-                <div><span class="marker-dot orange"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Giấy phép sắp
-                  hết hạn</div>
-                <div><span class="marker-dot red"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Giấy phép hết
-                  hạn
-                  / Bị thu hồi</div>
-                <div><span class="marker-dot purple"><i data-lucide="triangle-alert" class="h-3.5 w-3.5"></i></span>Có
-                  vi
-                  phạm / Rủi ro cao</div>
+                <h2>Thống kê loại hình</h2>
+                <section id="mapLegendList" class="map-legend-list" style="max-height: 180px; overflow-y: auto; display: grid; gap: 8px; margin-top: 10px; padding-top: 4px; padding-right: 12px; box-sizing: border-box;">
+                  <!-- Dynamically populated -->
+                </section>
               </div>
             </div>
 
@@ -424,7 +413,7 @@
               <label><input type="checkbox" data-map-layer="administrative" checked> Hiển thị ranh giới hành
                 chính</label>
               <label><input type="checkbox" data-map-layer="roads" checked> Hiển thị giao thông</label>
-              <label><input type="checkbox" data-map-layer="water"> Hiển thị sông, hồ</label>
+              <label><input type="checkbox" data-map-layer="water" checked> Hiển thị sông, hồ</label>
             </section>
           </aside>
         </section>

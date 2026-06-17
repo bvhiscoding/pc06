@@ -1245,7 +1245,7 @@ const state = {
     facilityLabels: false,
     administrative: true,
     roads: true,
-    water: false
+    water: true
   },
   selectedFacilityId: null,
   isHeatmapEnabled: false,
@@ -1398,6 +1398,13 @@ function applyLayerSettings() {
     map.setOptions({ styles: getMapStyles() });
   }
 
+  const gisMap = document.getElementById('gisMap');
+  if (gisMap) {
+    gisMap.classList.toggle('hide-water', !state.layers.water);
+    gisMap.classList.toggle('hide-roads', !state.layers.roads);
+    gisMap.classList.toggle('hide-admin', !state.layers.administrative);
+  }
+
   markers.forEach((marker) => {
     const facility = findFacility(marker.facilityId);
     if (facility) {
@@ -1532,11 +1539,44 @@ function renderStats(items = getFilteredFacilities()) {
   `).join('');
 }
 
+function renderTypeStatsLegend(items = getFilteredFacilities()) {
+  const legendList = document.getElementById('mapLegendList');
+  if (!legendList) return;
+
+  const counts = {};
+  items.forEach((item) => {
+    counts[item.type] = (counts[item.type] || 0) + 1;
+  });
+
+  const sortedTypes = Object.entries(counts)
+    .map(([type, count]) => ({ type, count }))
+    .sort((a, b) => b.count - a.count);
+
+  if (sortedTypes.length === 0) {
+    legendList.innerHTML = '<div style="color: #6b7280; font-size: 13px; padding: 4px 0;">Không có dữ liệu</div>';
+    return;
+  }
+
+  legendList.innerHTML = sortedTypes.map((item) => {
+    const iconUrl = typeIconUrl[item.type] || '../iconHKD/assets.png';
+    return `
+      <div style="display: flex; align-items: center; justify-content: space-between; font-size: 13px; font-weight: 500; color: #374151; padding: 2px 0;">
+        <span style="display: flex; align-items: center; gap: 8px;">
+          <img src="${escapeHTML(iconUrl)}" style="width: 18px; height: 18px; object-fit: contain;" alt="${escapeHTML(item.type)}">
+          <span>${escapeHTML(item.type)}</span>
+        </span>
+        <strong style="color: #b40000; font-size: 13px;">${item.count}</strong>
+      </div>
+    `;
+  }).join('');
+}
+
 function renderMapData() {
   const items = getFilteredFacilities();
   hideFacilityTooltip();
   renderNearbyList(items);
   renderStats(items);
+  renderTypeStatsLegend(items);
 
   if (!map) {
     lucide.createIcons();
@@ -2168,6 +2208,7 @@ setTimeout(() => {
 
 ensurePanelRestoreButton();
 bindEvents();
+applyLayerSettings();
 renderNotifications();
 renderNearbyList();
 renderStats();
