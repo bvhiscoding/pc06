@@ -814,6 +814,10 @@ body {
 /* ──────────────────────────────────────────
    15. PAGINATION
 ────────────────────────────────────────── */
+#pageSizeSelect {
+  width: 120px !important;
+}
+
 .pager-btn {
   display: grid;
   height: 40px;

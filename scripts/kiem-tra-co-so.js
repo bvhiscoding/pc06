@@ -1,19 +1,24 @@
 (() => {
+  /**
+   * kiem-tra-co-so.js — Kiểm tra cơ sở CSKD
+   * Dữ liệu được lấy từ AppData (app-data.js) và phân quyền theo session.
+   * Phụ thuộc: auth.js, app-data.js
+   */
+  const scopedRecords = window.AppData ? window.AppData.getKiemTra() : [];
+
   const config = {
-    totalCount: 120,
+    totalCount: scopedRecords.length,
     summaryNoun: 'bản ghi',
     dateKey: 'dateIso',
-    searchKeys: ['code', 'establishment', 'type', 'unit', 'inspector', 'status'],
+    searchKeys: ['code', 'establishment', 'type', 'unit', 'inspector', 'status', 'ket_qua'],
     filters: {
-      type: ['Định kỳ', 'Đột xuất'],
-      status: ['Đạt', 'Không đạt', 'Đang thực hiện', 'Chờ kiểm tra lại', 'Hủy']
+      type: ['Định kỳ', 'Đột xuất', 'Kế hoạch'],
+      status: ['Kế hoạch', 'Đã kiểm tra', 'Cần tái kiểm tra'],
     },
     badge: {
-      'Đạt': 'st-green',
-      'Không đạt': 'st-red',
-      'Đang thực hiện': 'st-blue',
-      'Chờ kiểm tra lại': 'st-orange',
-      'Hủy': 'st-gray'
+      'Kế hoạch': 'st-blue',
+      'Đã kiểm tra': 'st-green',
+      'Cần tái kiểm tra': 'st-orange',
     },
     actions: [
       { label: 'Xem chi tiết', icon: 'eye', route: 'KiemTraCoSo-ChiTietKiemTra.html' },
@@ -32,26 +37,16 @@
       { key: 'status', type: 'badge', center: true }
     ],
     notifications: [
-      { title: 'Cuộc kiểm tra sắp diễn ra', text: 'KT-2024-0006 cần chuẩn bị hồ sơ kiểm tra.', time: '10 phút trước', icon: 'calendar-days' },
-      { title: 'Có kết quả không đạt', text: 'KT-2024-0007 đã ghi nhận kết quả không đạt.', time: '35 phút trước', icon: 'triangle-alert' },
-      { title: 'Kế hoạch mới', text: 'Một kế hoạch kiểm tra định kỳ vừa được tạo.', time: '1 giờ trước', icon: 'clipboard-check' }
+      { title: 'Cuộc kiểm tra sắp diễn ra', text: 'KT-2026-0031 cần chuẩn bị hồ sơ kiểm tra.', time: '10 phút trước', icon: 'calendar-days' },
+      { title: 'Có cơ sở cần tái kiểm tra', text: 'KT-2026-0034 đã ghi nhận cần bổ sung và tái kiểm tra.', time: '35 phút trước', icon: 'triangle-alert' },
+      { title: 'Kế hoạch mới', text: 'Một kế hoạch kiểm tra vừa được lập cho địa bàn.', time: '1 giờ trước', icon: 'clipboard-check' }
     ],
-    records: [
-      { id: 'KT-2024-0001', code: 'KT-2024-0001', establishment: 'Khách sạn Hoa Lư', type: 'Định kỳ', unit: 'Phòng CS QLHC về TTXH', inspector: 'Nguyễn Văn A', date: '15/05/2024', dateIso: '2024-05-15', status: 'Đạt' },
-      { id: 'KT-2024-0002', code: 'KT-2024-0002', establishment: 'Karaoke New Star', type: 'Đột xuất', unit: 'Đội QLHC về TTXH - CA TP. Ninh Bình', inspector: 'Trần Thị B', date: '12/05/2024', dateIso: '2024-05-12', status: 'Không đạt' },
-      { id: 'KT-2024-0003', code: 'KT-2024-0003', establishment: 'Công ty TNHH Hoàng Gia', type: 'Định kỳ', unit: 'Phòng Cảnh sát PCCC và CNCH', inspector: 'Phạm Văn C', date: '10/05/2024', dateIso: '2024-05-10', status: 'Đạt' },
-      { id: 'KT-2024-0004', code: 'KT-2024-0004', establishment: 'Công ty CP DV Bảo vệ An Ninh', type: 'Đột xuất', unit: 'Đội QLHC về TTXH - CA huyện Hoa Lư', inspector: 'Lê Văn D', date: '08/05/2024', dateIso: '2024-05-08', status: 'Không đạt' },
-      { id: 'KT-2024-0005', code: 'KT-2024-0005', establishment: 'Nhà nghỉ Hoàng Long', type: 'Định kỳ', unit: 'Phòng CS QLHC về TTXH', inspector: 'Nguyễn Văn A', date: '05/05/2024', dateIso: '2024-05-05', status: 'Đạt' },
-      { id: 'KT-2024-0006', code: 'KT-2024-0006', establishment: 'Khách sạn The Reed', type: 'Định kỳ', unit: 'Phòng CS QLHC về TTXH', inspector: 'Trần Thị B', date: '02/05/2024', dateIso: '2024-05-02', status: 'Đang thực hiện' },
-      { id: 'KT-2024-0007', code: 'KT-2024-0007', establishment: 'Karaoke Queen', type: 'Đột xuất', unit: 'Đội QLHC về TTXH - CA huyện Gia Viễn', inspector: 'Phạm Văn C', date: '28/04/2024', dateIso: '2024-04-28', status: 'Không đạt' },
-      { id: 'KT-2024-0008', code: 'KT-2024-0008', establishment: 'Cơ sở Massage Tô Châu', type: 'Định kỳ', unit: 'Phòng CS QLHC về TTXH', inspector: 'Lê Văn D', date: '25/04/2024', dateIso: '2024-04-25', status: 'Đạt' },
-      { id: 'KT-2024-0009', code: 'KT-2024-0009', establishment: 'Công ty TNHH MTV X', type: 'Đột xuất', unit: 'Đội QLHC về TTXH - CA TP. Ninh Bình', inspector: 'Nguyễn Văn A', date: '22/04/2024', dateIso: '2024-04-22', status: 'Chờ kiểm tra lại' },
-      { id: 'KT-2024-0010', code: 'KT-2024-0010', establishment: 'Khách sạn Ninh Bình Legend', type: 'Định kỳ', unit: 'Phòng Cảnh sát PCCC và CNCH', inspector: 'Trần Thị B', date: '20/04/2024', dateIso: '2024-04-20', status: 'Hủy' }
-    ]
+    records: scopedRecords,
   };
 
   initModuleList(config);
 })();
+
 
 function initModuleList(config) {
   const state = { page: 1, pageSize: 10, filters: {}, openActionId: '' };

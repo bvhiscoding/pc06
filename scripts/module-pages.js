@@ -552,6 +552,12 @@ function statusClass(value) {
 }
 
 function headerTemplate() {
+  const session = (typeof Auth !== 'undefined') ? Auth.getSession() : null;
+  const sessionName = session?.name || 'Nguyễn Văn A';
+  const sessionUnit = session?.unit || 'Phòng CS QLHC về TTXH';
+  const sessionAvatar = session?.avatar || 'A';
+  const sessionAvatarColor = session?.avatarColor || '#bd0000';
+
   return `
     <header class="app-header fixed left-0 right-0 top-0 z-30 flex h-[80px] items-center justify-between px-6 text-white">
       <div class="flex h-full items-center">
@@ -583,12 +589,12 @@ function headerTemplate() {
         </div>
         <div class="topbar-menu-wrap">
           <button id="userMenuToggle" class="user-menu-btn" type="button" aria-label="Mở menu tài khoản" aria-expanded="false">
-            <div class="grid h-[46px] w-[46px] place-items-center rounded-full bg-white text-[#cf0000] shadow-sm"><i data-lucide="user-round" class="h-7 w-7 fill-[#cf0000]/15"></i></div>
-            <div class="hidden text-left sm:block"><div class="text-[15px] font-semibold leading-5">Nguyễn Văn A</div><div class="text-[13px] font-medium text-white/92">Phòng CS QLHC về TTXH</div></div>
+            <div class="grid h-[46px] w-[46px] place-items-center rounded-full shadow-sm text-white text-[18px] font-black" style="background:${sessionAvatarColor}">${sessionAvatar}</div>
+            <div class="hidden text-left sm:block"><div class="text-[15px] font-semibold leading-5">${sessionName}</div><div class="text-[13px] font-medium text-white/92">${sessionUnit}</div></div>
             <i data-lucide="chevron-down" class="user-chevron h-5 w-5 text-white"></i>
           </button>
           <div id="userMenu" class="topbar-dropdown user-dropdown" hidden>
-            <div class="user-card"><div class="grid h-11 w-11 place-items-center rounded-full bg-[#fff2f2] text-[#cf0000]"><i data-lucide="user-round" class="h-6 w-6"></i></div><div><div class="user-name">Nguyễn Văn A</div><div class="user-role">Phòng CS QLHC về TTXH</div></div></div>
+            <div class="user-card"><div class="grid h-11 w-11 place-items-center rounded-full text-white text-[16px] font-black" style="background:${sessionAvatarColor}">${sessionAvatar}</div><div><div class="user-name">${sessionName}</div><div class="user-role">${sessionUnit}</div></div></div>
             <a class="dropdown-action" href="HoSoCaNhan.html"><i data-lucide="id-card" class="h-4 w-4"></i>Hồ sơ cá nhân</a>
             <button class="dropdown-action" type="button" data-open-modal><i data-lucide="key-round" class="h-4 w-4"></i>Đổi mật khẩu</button>
             <a class="dropdown-action danger" href="DangNhap.html"><i data-lucide="log-out" class="h-4 w-4"></i>Đăng xuất</a>
@@ -743,7 +749,7 @@ function tableTemplate() {
     <section id="table-footer-component" class="table-footer-component mt-5 flex flex-col gap-4 text-[14px] text-[#5f6877] md:flex-row md:items-center md:justify-between">
       <div class="flex flex-wrap items-center gap-3">
         <div id="resultSummary"></div>
-        <select id="pageSizeSelect" class="field h-10 w-[120px] appearance-none pr-8 text-left font-medium">
+        <select id="pageSizeSelect" class="field h-10 w-[120px] appearance-none pr-8 text-left font-medium" style="width: 120px !important;">
           <option value="10">10 / trang</option>
           <option value="20">20 / trang</option>
           <option value="50">50 / trang</option>

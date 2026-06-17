@@ -41,22 +41,25 @@
 
   // Render danh sách tài khoản demo vào Drawer
   const demoAccounts = Auth.getDemoAccounts();
+  // Mật khẩu demo — khớp với ninh-binh-sync-3-accounts.json
   const passwords = {
-    'admin': 'admin123',
-    'cb.tranthi': 'canbo123',
+    'pc06.ninhbinh': '123456',
+    'dongthanh.ca': '123456',
+    'namthanh.ca': '123456',
     'congdan01': 'user123',
-    'doanhso.khaibao': 'user123'
+    'doanhso.khaibao': 'user123',
   };
 
   if (accList) {
     accList.innerHTML = demoAccounts.map(acc => {
-      const roleClass = acc.role === 'admin' ? 'role-admin' : 'role-user';
+      const roleLabel = acc.chuc_vu || (acc.role === 'admin' ? 'Cán bộ' : 'Người dân');
       return `
-        <button class="quick-acc-item ${roleClass}" type="button" data-username="${acc.username}">
+        <button class="quick-acc-item role-${acc.role}" type="button" data-username="${acc.username}">
           <div class="acc-avatar" style="background:${acc.avatarColor}">${acc.avatar}</div>
           <div class="acc-details">
             <div class="acc-name">${acc.name}</div>
-            <div class="acc-desc">${acc.unit} (${acc.role === 'admin' ? 'Cán bộ' : 'Người dân'})</div>
+            <div class="acc-desc">${acc.unit}</div>
+            <div class="acc-desc" style="font-size:11px;opacity:0.75;">${roleLabel}</div>
           </div>
         </button>
       `;

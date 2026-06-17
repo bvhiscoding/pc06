@@ -1,21 +1,23 @@
 (() => {
+  /**
+   * xu-ly-vi-pham.js — Xử lý vi phạm CSKD
+   * Dữ liệu được lấy từ AppData (app-data.js) và phân quyền theo session.
+   * Phụ thuộc: auth.js, app-data.js
+   */
+  const scopedRecords = window.AppData ? window.AppData.getViPham() : [];
+
   const config = {
-    totalCount: 12,
-    summaryNoun: 'quyết định',
-    dateKey: 'issueDate',
-    searchKeys: ['decisionNum', 'facility', 'address', 'violation', 'status'],
+    totalCount: scopedRecords.length,
+    summaryNoun: 'vi phạm',
+    dateKey: 'dateIso',
+    searchKeys: ['code', 'establishment', 'violation', 'handling', 'status', 'officer'],
     filters: {
-      severity: ['Nhẹ', 'Trung bình', 'Nặng'],
       status: ['Chưa thi hành', 'Đang thi hành', 'Đã thi hành'],
-      unit: ['Công an tỉnh Ninh Bình', 'Công an TP. Ninh Bình', 'Công an huyện Hoa Lư', 'Công an huyện Nho Quan']
     },
     badge: {
-      'Nhẹ': 'st-green',
-      'Trung bình': 'st-orange',
-      'Nặng': 'st-red',
       'Chưa thi hành': 'st-red',
       'Đang thi hành': 'st-orange',
-      'Đã thi hành': 'st-green'
+      'Đã thi hành': 'st-green',
     },
     actions: [
       { label: 'Xem chi tiết', icon: 'eye', route: 'XuLyViPham-ChiTietViPham.html' },
@@ -24,36 +26,24 @@
     columns: [
       { type: 'checkbox' },
       { type: 'index' },
-      { key: 'decisionNum', type: 'code', red: true },
-      { type: 'stack', primary: 'facility', secondary: 'address' },
+      { key: 'code', type: 'code' },
+      { key: 'establishment' },
       { key: 'violation' },
-      { key: 'penaltyForm' },
-      { key: 'issueDate', nowrap: true },
-      { key: 'status', type: 'badge', center: true }
+      { key: 'handling' },
+      { key: 'date', nowrap: true },
+      { key: 'status', type: 'badge', center: true },
     ],
     notifications: [
-      { title: 'Quyết định mới ban hành', text: 'QĐ 124/QĐ-XPHC cần được theo dõi.', time: '6 phút trước', icon: 'octagon-alert' },
-      { title: 'Sắp hết hạn thi hành', text: 'QĐ 128/QĐ-XPHC còn 2 ngày đến hạn khắc phục.', time: '40 phút trước', icon: 'calendar-days' },
-      { title: 'Cơ sở đã nộp phạt', text: 'Khách sạn Hoa Lư đã nộp biên lai thu tiền.', time: '1 giờ trước', icon: 'shield-check' }
+      { title: 'Vi phạm mới ghi nhận', text: 'VP-2026-0011 cần được theo dõi tiến độ thi hành.', time: '6 phút trước', icon: 'octagon-alert' },
+      { title: 'Sắp hết hạn thi hành', text: 'VP-2026-0012 cần bổ sung hồ sơ trong thời hạn.', time: '40 phút trước', icon: 'calendar-days' },
+      { title: 'Vi phạm đã thi hành', text: 'VP-2026-0013 đã hoàn tất thi hành quyết định.', time: '1 giờ trước', icon: 'shield-check' }
     ],
-    records: [
-      { id: 'VP001', decisionNum: '124/QĐ-XPHC', facility: 'Khách sạn Hoa Lư', address: 'Số 1 Trần Hưng Đạo, P. Đông Thành, TP. Ninh Bình', violation: 'Không thực hiện đầy đủ các điều kiện về ANTT', penaltyForm: 'Phạt tiền: 15.000.000đ', issueDate: '25/05/2024', status: 'Chưa thi hành', severity: 'Nặng', unit: 'Công an tỉnh Ninh Bình' },
-      { id: 'VP002', decisionNum: '125/QĐ-XPHC', facility: 'Quán Karaoke New Star', address: 'Số 68 Lê Thái Tổ, TP. Ninh Bình', violation: 'Sử dụng lao động không khai báo tạm trú', penaltyForm: 'Phạt tiền: 5.000.000đ', issueDate: '24/05/2024', status: 'Đang thi hành', severity: 'Trung bình', unit: 'Công an TP. Ninh Bình' },
-      { id: 'VP003', decisionNum: '126/QĐ-XPHC', facility: 'Nhà nghỉ Hoàng Gia', address: 'Số 99 Nguyễn Huệ, TP. Ninh Bình', violation: 'Không thực hiện chế độ báo cáo định kỳ', penaltyForm: 'Phạt tiền: 3.000.000đ', issueDate: '23/05/2024', status: 'Đã thi hành', severity: 'Nhẹ', unit: 'Công an TP. Ninh Bình' },
-      { id: 'VP004', decisionNum: '127/QĐ-XPHC', facility: 'Bar Luxury Club', address: 'Số 1 Đinh Tiên Hoàng, TP. Ninh Bình', violation: 'Hoạt động quá giờ quy định', penaltyForm: 'Phạt tiền: 10.000.000đ', issueDate: '22/05/2024', status: 'Chưa thi hành', severity: 'Nặng', unit: 'Công an tỉnh Ninh Bình' },
-      { id: 'VP005', decisionNum: '128/QĐ-XPHC', facility: 'Cầm đồ Minh Phát', address: 'Số 32 Tràng An, TP. Ninh Bình', violation: 'Không lưu giữ thông tin khách hàng cầm cố', penaltyForm: 'Phạt tiền: 4.500.000đ', issueDate: '21/05/2024', status: 'Đang thi hành', severity: 'Trung bình', unit: 'Công an TP. Ninh Bình' },
-      { id: 'VP006', decisionNum: '129/QĐ-XPHC', facility: 'Dịch vụ lưu trú Tràng An', address: 'Thôn Vụng Lầm, xã Trường Yên, H. Hoa Lư', violation: 'Không khai báo lưu trú cho khách nước ngoài', penaltyForm: 'Phạt tiền: 7.500.000đ', issueDate: '20/05/2024', status: 'Đã thi hành', severity: 'Trung bình', unit: 'Công an huyện Hoa Lư' },
-      { id: 'VP007', decisionNum: '130/QĐ-XPHC', facility: 'Karaoke Ruby', address: 'Số 25 Lê Đại Hành, TP. Ninh Bình', violation: 'Không đảm bảo điều kiện PCCC', penaltyForm: 'Phạt tiền: 20.000.000đ', issueDate: '19/05/2024', status: 'Chưa thi hành', severity: 'Nặng', unit: 'Công an TP. Ninh Bình' },
-      { id: 'VP008', decisionNum: '131/QĐ-XPHC', facility: 'Hotel Minh Châu', address: 'Số 7 Nguyễn Công Trứ, TP. Ninh Bình', violation: 'Không lập sổ quản lý dịch vụ', penaltyForm: 'Phạt tiền: 2.000.000đ', issueDate: '18/05/2024', status: 'Đã thi hành', severity: 'Nhẹ', unit: 'Công an TP. Ninh Bình' },
-      { id: 'VP009', decisionNum: '132/QĐ-XPHC', facility: 'Cầm đồ An Phát', address: 'Số 15 đường Tam Điệp, H. Nho Quan', violation: 'Nhận cầm cố tài sản không chính chủ', penaltyForm: 'Phạt tiền: 6.000.000đ', issueDate: '17/05/2024', status: 'Đã thi hành', severity: 'Trung bình', unit: 'Công an huyện Nho Quan' },
-      { id: 'VP010', decisionNum: '133/QĐ-XPHC', facility: 'Massage Đại Dương', address: 'Số 88 Ngô Gia Tự, TP. Ninh Bình', violation: 'Hoạt động quá giờ quy định', penaltyForm: 'Phạt tiền: 8.000.000đ', issueDate: '16/05/2024', status: 'Đang thi hành', severity: 'Trung bình', unit: 'Công an TP. Ninh Bình' },
-      { id: 'VP011', decisionNum: '134/QĐ-XPHC', facility: 'Nhà nghỉ Bình Minh', address: 'Số 14 Nam Thành, TP. Ninh Bình', violation: 'Không thực hiện chế độ báo cáo', penaltyForm: 'Phạt tiền: 1.500.000đ', issueDate: '15/05/2024', status: 'Đã thi hành', severity: 'Nhẹ', unit: 'Công an TP. Ninh Bình' },
-      { id: 'VP012', decisionNum: '135/QĐ-XPHC', facility: 'Vũ trường New Life', address: 'Phố Bình Chương, P. Nam Bình, TP. Ninh Bình', violation: 'Không đảm bảo an ninh trật tự', penaltyForm: 'Phạt tiền: 12.000.000đ', issueDate: '14/05/2024', status: 'Chưa thi hành', severity: 'Nặng', unit: 'Công an TP. Ninh Bình' }
-    ]
+    records: scopedRecords,
   };
 
   initModuleList(config);
 })();
+
 
 function initModuleList(config) {
   const state = { page: 1, pageSize: 10, filters: {}, openActionId: '', activeTabStatus: '__all' };

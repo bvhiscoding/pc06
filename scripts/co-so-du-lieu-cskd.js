@@ -1,41 +1,12 @@
-let businesses = JSON.parse(sessionStorage.getItem('mockBusinesses'));
-if (!businesses) {
-  const rawList = [
-    { code: 'CSDD01248', name: 'Khách sạn Ninh Bình Hotel', type: 'Khách sạn', address: 'Số 12, đường Trần Hưng Đạo, TP. Ninh Bình, Ninh Bình', owner: 'Nguyễn Văn Hùng', status: 'Đang hoạt động', license: 'Đã cấp' },
-    { code: 'CSDD01247', name: 'Karaoke New Star', type: 'Karaoke', address: 'Số 45, đường Lê Thái Tổ, TP. Ninh Bình, Ninh Bình', owner: 'Trần Văn Nam', status: 'Đang hoạt động', license: 'Đã cấp' },
-    { code: 'CSDD01246', name: 'Quán bar Paradise', type: 'Quán bar', address: 'Số 8, đường Nguyễn Huệ, TP. Ninh Bình, Ninh Bình', owner: 'Lê Minh Tuấn', status: 'Đang hoạt động', license: 'Đã cấp' },
-    { code: 'CSDD01245', name: 'Nhà hàng Tràng An', type: 'Nhà hàng', address: 'Thôn Tràng An, xã Trường Yên, H. Hoa Lư, Ninh Bình', owner: 'Phạm Thị Lan', status: 'Đang hoạt động', license: 'Đã cấp' },
-    { code: 'CSDD01244', name: 'Cửa hàng vàng Kim Phát', type: 'Kinh doanh vàng', address: 'Số 69, đường Đinh Tiên Hoàng, TP. Ninh Bình, Ninh Bình', owner: 'Đỗ Văn Phát', status: 'Đang hoạt động', license: 'Chưa cấp' },
-    { code: 'CSDD01243', name: 'Massage An Nhiên', type: 'Massage', address: 'Số 22, đường Lý Thái Tổ, TP. Ninh Bình, Ninh Bình', owner: 'Nguyễn Thị Hoa', status: 'Tạm dừng', license: 'Đã cấp' },
-    { code: 'CSDD01242', name: 'Game Center 68', type: 'Dịch vụ trò chơi điện tử', address: 'Số 68, đường Trần Hưng Đạo, TP. Ninh Bình, Ninh Bình', owner: 'Hoàng Văn Dũng', status: 'Đang hoạt động', license: 'Đã cấp' },
-    { code: 'CSDD01241', name: 'Cầm đồ Hoàng Long', type: 'Cầm đồ', address: 'Số 15, đường Hoàng Diệu, TP. Ninh Bình, Ninh Bình', owner: 'Vũ Quốc Long', status: 'Đang hoạt động', license: 'Đã cấp' },
-    { code: 'CSDD01240', name: 'Studio Mộc Miên', type: 'Dịch vụ chụp ảnh', address: 'Số 33, đường Lê Duẩn, TP. Ninh Bình, Ninh Bình', owner: 'Trương Thị Mai', status: 'Đang hoạt động', license: 'Không thuộc diện' },
-    { code: 'CSDD01239', name: 'Nhà nghỉ Bình An', type: 'Nhà nghỉ', address: 'Thôn 5, xã Ninh Nhất, TP. Ninh Bình, Ninh Bình', owner: 'Bùi Văn An', status: 'Ngừng hoạt động', license: 'Đã cấp' },
-    { code: 'CSDD01238', name: 'Khách sạn Hoa Lư', type: 'Khách sạn', address: 'Số 27, đường Trương Hán Siêu, TP. Ninh Bình, Ninh Bình', owner: 'Đinh Thị Hạnh', status: 'Đang hoạt động', license: 'Đã cấp' },
-    { code: 'CSDD01237', name: 'Karaoke Sao Mai', type: 'Karaoke', address: 'Số 9, đường Vân Giang, TP. Ninh Bình, Ninh Bình', owner: 'Ngô Văn Sơn', status: 'Tạm dừng', license: 'Đã cấp' },
-    { code: 'CSDD01236', name: 'Cầm đồ Tín Phát', type: 'Cầm đồ', address: 'P. Ninh Khánh, TP. Ninh Bình, Ninh Bình', owner: 'Dương Văn Tín', status: 'Đang hoạt động', license: 'Chưa cấp' },
-    { code: 'CSDD01235', name: 'Nhà hàng Bến Đò', type: 'Nhà hàng', address: 'P. Thanh Bình, TP. Ninh Bình, Ninh Bình', owner: 'Lương Thị Oanh', status: 'Đang hoạt động', license: 'Đã cấp' },
-    { code: 'CSDD01234', name: 'Bar Riverside', type: 'Quán bar', address: 'P. Nam Thành, TP. Ninh Bình, Ninh Bình', owner: 'Cao Văn Rạng', status: 'Ngừng hoạt động', license: 'Đã cấp' }
-  ];
+/**
+ * co-so-du-lieu-cskd.js — Cơ sở dữ liệu CSKD
+ * Dữ liệu được lấy từ AppData (app-data.js) và phân quyền theo session.
+ * Phụ thuộc: auth.js, app-data.js
+ */
 
-  businesses = rawList.map((b, i) => ({
-    ...b,
-    ownerId: b.ownerId || `03708${800000 + i}`,
-    phone: b.phone || `0912 ${100 + i} ${200 + i}`,
-    email: b.email || `${b.code.toLowerCase()}@gmail.com`,
-    website: b.website || `www.${b.code.toLowerCase()}.com.vn`,
-    taxCode: b.taxCode || `27008${10000 + i}`,
-    regNo: b.regNo || `27008${10000 + i}-001`,
-    estDate: b.estDate || '12/03/2018',
-    risk: b.risk || (i % 3 === 0 ? 'Thấp' : i % 3 === 1 ? 'Trung bình' : 'Cao'),
-    officer: b.officer || 'Đ/c Nguyễn Văn C',
-    rooms: b.rooms || (b.type === 'Khách sạn' ? '45' : '12'),
-    capacity: b.capacity || '150',
-    lat: b.lat || (20.25 + (i * 0.002)).toFixed(4),
-    lng: b.lng || (105.97 - (i * 0.002)).toFixed(4)
-  }));
-  sessionStorage.setItem('mockBusinesses', JSON.stringify(businesses));
-}
+// Lấy danh sách cơ sở đã được phân quyền theo session
+let businesses = window.AppData ? window.AppData.getBusinesses() : [];
+
 
 const notifications = [
   { title: 'Cơ sở mới được thêm', text: 'Khách sạn Hoa Lư vừa được cập nhật vào cơ sở dữ liệu.', time: '8 phút trước', icon: 'database' },
@@ -189,7 +160,7 @@ function renderPagination(filtered) {
 
 function render() {
   const filtered = getFilteredBusinesses();
-  const total = state.query || state.type !== 'Tất cả' || state.status !== 'Tất cả' || state.license !== 'Tất cả' ? filtered.length : 1248;
+  const total = filtered.length;
   const start = filtered.length === 0 ? 0 : (state.page - 1) * state.pageSize + 1;
   const end = Math.min(state.page * state.pageSize, filtered.length);
   els.resultSummary.textContent = `Hiển thị ${start} - ${end} trong tổng số ${total.toLocaleString('vi-VN')} cơ sở`;

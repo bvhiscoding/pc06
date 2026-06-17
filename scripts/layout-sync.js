@@ -295,7 +295,9 @@
         </button>`).join('');
     }
 
-    sidebarToggle?.addEventListener('click', () => {
+    sidebarToggle?.addEventListener('click', (event) => {
+      event.stopPropagation();
+      event.stopImmediatePropagation();
       const collapsed = shell?.classList.toggle('is-collapsed');
       sidebarToggle.setAttribute('aria-expanded', String(!collapsed));
     });
@@ -312,18 +314,21 @@
 
     notificationToggle?.addEventListener('click', (event) => {
       event.stopPropagation();
+      event.stopImmediatePropagation();
       const open = notificationMenu?.hidden;
       closeMenus();
       setOpen(notificationToggle, notificationMenu, Boolean(open));
     });
     userMenuToggle?.addEventListener('click', (event) => {
       event.stopPropagation();
+      event.stopImmediatePropagation();
       const open = userMenu?.hidden;
       closeMenus();
       setOpen(userMenuToggle, userMenu, Boolean(open));
     });
     markAllReadBtn?.addEventListener('click', (event) => {
       event.stopPropagation();
+      event.stopImmediatePropagation();
       if (notificationList) notificationList.innerHTML = '<div class="empty-state">Không còn thông báo chưa đọc.</div>';
       if (notificationBadge) notificationBadge.hidden = true;
       closeMenus();
