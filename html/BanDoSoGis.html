@@ -104,35 +104,31 @@
           <i data-lucide="file-text"></i>
           <span class="nav-copy">Quản lý hồ sơ</span>
         </a>
-        <a href="#" class="nav-item">
+        <a href="CoSoDuLieuCSKD.html" class="nav-item">
           <i data-lucide="database"></i>
           <span class="nav-copy">Cơ sở dữ liệu CSKD-ANTT</span>
         </a>
-        <a href="#" class="nav-item">
+        <a href="KiemTraCoSo.html" class="nav-item">
           <i data-lucide="clipboard-check"></i>
           <span class="nav-copy">Kiểm tra cơ sở</span>
         </a>
-        <a href="#" class="nav-item">
+        <a href="XuLyViPham.html" class="nav-item">
           <i data-lucide="octagon-alert"></i>
           <span class="nav-copy">Vi phạm / Xử lý vi phạm</span>
         </a>
-        <a href="#" class="nav-item">
+        <a href="QuanLyPhanAnh.html" class="nav-item">
           <i data-lucide="message-square-warning"></i>
           <span class="nav-copy">Phản ánh kiến nghị</span>
         </a>
 
         <div class="nav-section">Báo cáo</div>
-        <a href="#" class="nav-item mt-2">
-          <i data-lucide="chart-column-big"></i>
-          <span class="nav-copy">Báo cáo - thống kê</span>
-        </a>
+        <a href="BaoCao-ThongKe.html" class="nav-item mt-2"><i data-lucide="chart-column-big"></i>
+          <span class="nav-copy">Báo cáo - thống kê</span></a>
 
         <div class="nav-section">Cấu hình</div>
-        <a href="#" class="nav-item mt-2">
-          <i data-lucide="folder"></i>
+        <a href="DanhMuc.html" class="nav-item mt-2"><i data-lucide="folder"></i>
           <span class="nav-copy">Danh mục dùng chung</span>
-          <i data-lucide="chevron-down" class="ml-auto h-4 w-4 nav-copy"></i>
-        </a>
+          <i data-lucide="chevron-down" class="ml-auto h-4 w-4 nav-copy"></i></a>
         <a href="#" class="nav-item">
           <i data-lucide="settings"></i>
           <span class="nav-copy">Quản trị hệ thống</span>
@@ -151,7 +147,6 @@
     <main class="content min-h-screen pt-[80px]">
       <div class="gis-page px-6 pb-6 pt-6 lg:px-7">
         <section class="gis-heading">
-          <h1>Bản đồ số GIS</h1>
           <div class="gis-breadcrumb">
             <span>Trang chủ</span>
             <i data-lucide="chevron-right" class="h-4 w-4"></i>
@@ -170,11 +165,30 @@
           </label>
           <label>
             <span>Loại hình kinh doanh</span>
-            <select>
-              <option>Tất cả</option>
-              <option>Karaoke</option>
-              <option>Nhà nghỉ</option>
-              <option>Khách sạn</option>
+            <select id="legacyFilterType">
+              <option value="">Tất cả</option>
+              <option value="Karaoke">Karaoke</option>
+              <option value="Khách sạn">Khách sạn</option>
+              <option value="Nhà nghỉ">Nhà nghỉ</option>
+              <option value="Massage">Massage</option>
+              <option value="Bar">Bar</option>
+              <option value="Cầm đồ">Cầm đồ</option>
+              <option value="Khắc dấu">Khắc dấu</option>
+              <option value="Dịch vụ bảo vệ">Dịch vụ bảo vệ</option>
+              <option value="In ấn">In ấn</option>
+              <option value="Trò chơi điện tử">Trò chơi điện tử</option>
+              <option value="Casino">Casino</option>
+              <option value="Phẫu thuật thẩm mỹ">Phẫu thuật thẩm mỹ</option>
+              <option value="Chăm sóc da">Chăm sóc da</option>
+              <option value="Kinh doanh pháo hoa">Kinh doanh pháo hoa</option>
+              <option value="Súng bắn sơn">Súng bắn sơn</option>
+              <option value="Công cụ hỗ trợ">Công cụ hỗ trợ</option>
+              <option value="Vật liệu nổ công nghiệp">Vật liệu nổ công nghiệp</option>
+              <option value="Tiền chất thuốc nổ">Tiền chất thuốc nổ</option>
+              <option value="Thiết bị gây nhiễu, phá sóng">Thiết bị gây nhiễu, phá sóng</option>
+              <option value="Thiết bị định vị, phát tín hiệu">Thiết bị định vị, phát tín hiệu</option>
+              <option value="Cho thuê tài chính">Cho thuê tài chính</option>
+              <option value="Trụ sở Công an">Trụ sở Công an</option>
             </select>
           </label>
           <label>
@@ -237,30 +251,24 @@
               <button type="button" data-map-control="zoom-out"><i data-lucide="minus" class="h-6 w-6"></i></button>
               <button type="button" data-map-control="fit"><i data-lucide="scan" class="h-5 w-5"></i></button>
               <button type="button" data-map-control="locate"><i data-lucide="crosshair" class="h-5 w-5"></i></button>
-              <button type="button" data-map-control="radius" title="Khoanh vùng bán kính"><i data-lucide="circle-dot" class="h-5 w-5"></i></button>
-              <button type="button" data-map-control="polygon" title="Vẽ đa giác"><i data-lucide="pentagon" class="h-5 w-5"></i></button>
-              <button type="button" data-map-control="clear-region" title="Xóa vùng lọc"><i data-lucide="eraser" class="h-5 w-5"></i></button>
+              <button type="button" data-map-control="radius" title="Khoanh vùng bán kính"><i data-lucide="circle-dot"
+                  class="h-5 w-5"></i></button>
+              <button type="button" data-map-control="polygon" title="Vẽ đa giác"><i data-lucide="pentagon"
+                  class="h-5 w-5"></i></button>
+              <button type="button" data-map-control="clear-region" title="Xóa vùng lọc"><i data-lucide="eraser"
+                  class="h-5 w-5"></i></button>
             </div>
 
             <div class="map-legend">
               <button id="legendToggle" class="legend-toggle" type="button" aria-expanded="false">
                 <i data-lucide="eye" class="h-4 w-4"></i>
-                Chú thích
+                Thống kê
               </button>
               <div class="legend-content">
-                <h2>Chú thích trạng thái</h2>
-                <div><span class="marker-dot green"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Đang hoạt động
-                </div>
-                <div><span class="marker-dot yellow"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Tạm dừng hoạt
-                  động</div>
-                <div><span class="marker-dot gray"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Ngừng hoạt động
-                </div>
-                <div><span class="marker-dot orange"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Giấy phép sắp
-                  hết hạn</div>
-                <div><span class="marker-dot red"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Giấy phép hết hạn
-                  / Bị thu hồi</div>
-                <div><span class="marker-dot purple"><i data-lucide="triangle-alert" class="h-3.5 w-3.5"></i></span>Có vi
-                  phạm / Rủi ro cao</div>
+                <h2>Thống kê loại hình</h2>
+                <section id="mapLegendList" class="map-legend-list" style="max-height: 180px; overflow-y: auto; display: grid; gap: 8px; margin-top: 10px; padding-top: 4px; padding-right: 12px; box-sizing: border-box;">
+                  <!-- Dynamically populated -->
+                </section>
               </div>
             </div>
 
@@ -273,7 +281,7 @@
               <button id="openFacilitySheetBtn" class="popup-detail" type="button">Xem chi tiết</button>
             </article>
 
-            <div id="gisFooterStats" class="gis-footer-stats" aria-label="Thống kê nhanh trên bản đồ"></div>
+
 
             <aside id="facilityDetailSheet" class="facility-detail-sheet" aria-hidden="true">
               <div class="detail-sheet-head">
@@ -315,11 +323,27 @@
                   <select id="filterType">
                     <option value="">Tất cả</option>
                     <option value="Karaoke">Karaoke</option>
-                    <option value="Nhà nghỉ">Nhà nghỉ</option>
                     <option value="Khách sạn">Khách sạn</option>
-                    <option value="Bar">Bar</option>
+                    <option value="Nhà nghỉ">Nhà nghỉ</option>
                     <option value="Massage">Massage</option>
+                    <option value="Bar">Bar</option>
                     <option value="Cầm đồ">Cầm đồ</option>
+                    <option value="Khắc dấu">Khắc dấu</option>
+                    <option value="Dịch vụ bảo vệ">Dịch vụ bảo vệ</option>
+                    <option value="In ấn">In ấn</option>
+                    <option value="Trò chơi điện tử">Trò chơi điện tử</option>
+                    <option value="Casino">Casino</option>
+                    <option value="Phẫu thuật thẩm mỹ">Phẫu thuật thẩm mỹ</option>
+                    <option value="Chăm sóc da">Chăm sóc da</option>
+                    <option value="Kinh doanh pháo hoa">Kinh doanh pháo hoa</option>
+                    <option value="Súng bắn sơn">Súng bắn sơn</option>
+                    <option value="Công cụ hỗ trợ">Công cụ hỗ trợ</option>
+                    <option value="Vật liệu nổ công nghiệp">Vật liệu nổ công nghiệp</option>
+                    <option value="Tiền chất thuốc nổ">Tiền chất thuốc nổ</option>
+                    <option value="Thiết bị gây nhiễu, phá sóng">Thiết bị gây nhiễu, phá sóng</option>
+                    <option value="Thiết bị định vị, phát tín hiệu">Thiết bị định vị, phát tín hiệu</option>
+                    <option value="Cho thuê tài chính">Cho thuê tài chính</option>
+                    <option value="Trụ sở Công an">Trụ sở Công an</option>
                   </select>
                 </label>
                 <label>
@@ -352,10 +376,6 @@
           </div>
 
           <aside class="gis-side">
-            <button id="floatingPanelToggle" class="floating-panel-toggle" type="button" aria-expanded="true">
-              <i data-lucide="panel-right-close" class="h-5 w-5"></i>
-              <span>Thu gọn</span>
-            </button>
             <section class="gis-side-card">
               <div class="side-title">
                 <h2>Tổng quan trên bản đồ</h2>
@@ -389,10 +409,11 @@
 
             <section class="gis-side-card layer-card">
               <h2>Lớp hiển thị trên bản đồ</h2>
-              <label><input type="checkbox" data-map-layer="facilityLabels" checked> Hiển thị nhãn cơ sở</label>
-              <label><input type="checkbox" data-map-layer="administrative" checked> Hiển thị ranh giới hành chính</label>
+              <label><input type="checkbox" data-map-layer="facilityLabels"> Hiển thị nhãn cơ sở</label>
+              <label><input type="checkbox" data-map-layer="administrative" checked> Hiển thị ranh giới hành
+                chính</label>
               <label><input type="checkbox" data-map-layer="roads" checked> Hiển thị giao thông</label>
-              <label><input type="checkbox" data-map-layer="water"> Hiển thị sông, hồ</label>
+              <label><input type="checkbox" data-map-layer="water" checked> Hiển thị sông, hồ</label>
             </section>
           </aside>
         </section>
@@ -402,9 +423,12 @@
 
   <script src="https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js"></script>
   <script src="https://unpkg.com/deck.gl@latest/dist.min.js"></script>
+  <script src="../scripts/auth.js"></script>
+  <script src="../scripts/layout-sync.js"></script>
   <script src="../scripts/ban-do-so-gis.js"></script>
   <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA9oDzJjHCZH4iVCowyZ-UR9eG6X4qFpGY&callback=initMap&libraries=places,geometry"></script>
 </body>
 
 </html>
+

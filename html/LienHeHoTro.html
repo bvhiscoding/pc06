@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Liên hệ hỗ trợ – Công an tỉnh Ninh Bình</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/public-pages.css">
+  <script src="../scripts/auth.js"></script>
+  <style>
+    .contact-card-hover {
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+    .contact-card-hover:hover {
+      border-color: #bd0000;
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="custom-header">
+  <a href="../index.html" class="custom-brand">
+    <img src="../public/logocongan.png" alt="Logo Bộ Công an">
+    <div class="custom-brand-text">
+      <h1>CÔNG AN TỈNH NINH BÌNH</h1>
+      <p>HỆ THỐNG QUẢN LÝ CƠ SỞ KINH DOANH CÓ ĐIỀU KIỆN VỀ ANTT</p>
+    </div>
+  </a>
+
+  <nav>
+    <ul class="custom-nav">
+      <li class="custom-nav-item" id="nav-home">
+        <a class="custom-nav-link" href="../index.html">
+          <i data-lucide="home"></i> Trang chủ
+        </a>
+      </li>
+      <li class="custom-nav-item" id="nav-map">
+        <a class="custom-nav-link" href="../index.html?tab=map">
+          <i data-lucide="map"></i> Bản đồ số
+        </a>
+      </li>
+      <li class="custom-nav-item" id="nav-procedures">
+        <a class="custom-nav-link" href="../index.html?tab=procedures">
+          <i data-lucide="file-text"></i> Thủ tục <i data-lucide="chevron-down" class="ml-0.5"></i>
+        </a>
+        <div class="custom-nav-dropdown">
+          <a href="DangKyCoSo.html">Đăng ký cơ sở mới</a>
+          <a href="ThayDoiThongTin.html">Khai báo thay đổi</a>
+          <a href="../index.html?tab=procedures">Danh mục thủ tục</a>
+        </div>
+      </li>
+      <li class="custom-nav-item" id="nav-search">
+        <a class="custom-nav-link" href="../index.html?tab=search">
+          <i data-lucide="search"></i> Tra cứu hồ sơ
+        </a>
+      </li>
+      <li class="custom-nav-item active" id="nav-support">
+        <a class="custom-nav-link" href="../index.html?tab=feedback">
+          <i data-lucide="headset"></i> Hỗ trợ <i data-lucide="chevron-down" class="ml-0.5"></i>
+        </a>
+        <div class="custom-nav-dropdown">
+          <a href="HuongDanSuDung.html">Hướng dẫn sử dụng</a>
+          <a href="TinTucThongBao.html">Tin tức & Thông báo</a>
+          <a href="CauHoiThuongGap.html">Câu hỏi thường gặp</a>
+          <a href="LienHeHoTro.html">Liên hệ hỗ trợ</a>
+          <a href="../index.html?tab=feedback">Tiếp nhận phản ánh</a>
+        </div>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Auth widget: populated by JS below -->
+  <div id="headerAuthArea">
+    <a class="custom-login-btn" href="DangNhap.html">
+      <i data-lucide="user"></i>
+      Đăng nhập
+    </a>
+  </div>
+</header>
+
+<!-- ── Auth-gate modal ──────────────────────────────── -->
+<div id="authGateModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.55);backdrop-filter:blur(3px);align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:20px;padding:36px 40px 32px;max-width:420px;width:90%;box-shadow:0 24px 56px rgba(0,0,0,0.22);text-align:center;">
+    <div style="width:56px;height:56px;border-radius:50%;background:#fff2f2;display:grid;place-items:center;margin:0 auto 16px;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#bd0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    </div>
+    <h3 style="font-size:18px;font-weight:700;color:#1b2430;margin:0 0 8px;">Yêu cầu đăng nhập</h3>
+    <p style="font-size:14px;color:#6b7280;margin:0 0 24px;line-height:1.55;">Chức năng này yêu cầu bạn đăng nhập vào hệ thống. Vui lòng đăng nhập để tiếp tục.</p>
+    <div style="display:flex;gap:12px;justify-content:center;">
+      <button id="authGateCancel" style="flex:1;height:44px;border-radius:8px;border:1.5px solid #d1d5db;background:#fff;font-size:14px;font-weight:600;color:#374151;cursor:pointer;">Hủy</button>
+      <a href="DangNhap.html" style="flex:1;height:44px;border-radius:8px;background:linear-gradient(180deg,#ed000b,#d80008);font-size:14px;font-weight:700;color:#fff;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;">Đăng nhập ngay</a>
+    </div>
+  </div>
+</div>
+
+<!-- BREADCRUMB -->
+<div class="pub-breadcrumb">
+  <a href="../index.html">Trang chủ</a>
+  <i data-lucide="chevron-right" style="width:14px;height:14px;color:#d1d5db"></i>
+  <span>Hỗ trợ</span>
+  <i data-lucide="chevron-right" style="width:14px;height:14px;color:#d1d5db"></i>
+  <span style="color:#374151;font-weight:600">Liên hệ hỗ trợ</span>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="pub-main max-w-7xl mx-auto px-10 box-sizing-border-box" style="padding-top: 24px;">
+  <!-- Title -->
+  <div class="border-b border-slate-200 pb-4 mb-6">
+    <h1 class="text-2xl font-bold text-slate-800">Liên hệ hỗ trợ</h1>
+  </div>
+  <div class="pub-form-layout">
+    <!-- Left Column: Contact Cards -->
+    <div class="pub-form-main flex flex-col gap-5">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Hotline -->
+        <a href="tel:19001234" class="contact-card-hover p-5 border border-slate-200 rounded-xl bg-white shadow-sm flex items-start gap-4 text-decoration-none">
+          <div class="w-11 h-11 rounded-full bg-red-50 text-red-600 flex items-center justify-center flex-shrink-0">
+            <i data-lucide="phone" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h4 class="font-bold text-sm text-slate-800 mb-1">Tổng đài hỗ trợ</h4>
+            <span class="text-base font-extrabold text-red-600">1900 1234</span>
+            <p class="text-[11px] text-slate-400 mt-1">Từ thứ 2 đến thứ 6 (7:30 - 17:30)</p>
+          </div>
+        </a>
+        <!-- Email -->
+        <a href="mailto:hotro@ninhbinh-dkkd.gov.vn" class="contact-card-hover p-5 border border-slate-200 rounded-xl bg-white shadow-sm flex items-start gap-4 text-decoration-none">
+          <div class="w-11 h-11 rounded-full bg-red-50 text-red-600 flex items-center justify-center flex-shrink-0">
+            <i data-lucide="mail" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h4 class="font-bold text-sm text-slate-800 mb-1">Hòm thư điện tử</h4>
+            <span class="text-xs font-bold text-slate-700">hotro@ninhbinh-dkkd.gov.vn</span>
+            <p class="text-[11px] text-slate-400 mt-1">Giải đáp kỹ thuật trong vòng 12h</p>
+          </div>
+        </a>
+      </div>
+
+      <!-- GIS Map visual preview component signature -->
+      <div class="form-card">
+        <div class="form-card-title"><i data-lucide="map-pin"></i> TRUNG TÂM PHỤC VỤ HÀNH CHÍNH CÔNG</div>
+        <p class="text-xs text-slate-500 mb-4">Địa chỉ: Đường Trần Hưng Đạo, P. Đông Thành, TP. Ninh Bình, Tỉnh Ninh Bình</p>
+        <div class="relative w-full rounded-xl overflow-hidden border border-slate-200 bg-slate-100 flex items-center justify-center" style="height: 250px;">
+          <!-- SVG simulation of Ninh Binh Public Admin GIS Map -->
+          <svg class="absolute inset-0 w-full h-full" viewBox="0 0 500 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="500" height="250" fill="#E8F4FC"/>
+            <path d="M0 80C80 80 120 120 180 120C240 120 280 40 380 40C480 40 500 80 500 80" stroke="#90CAF9" stroke-width="20" stroke-linecap="round"/>
+            <path d="M120 0V250" stroke="#FFF" stroke-width="8"/>
+            <path d="M0 150H500" stroke="#FFF" stroke-width="12"/>
+            <path d="M350 0V250" stroke="#FFF" stroke-width="6"/>
+            <!-- Admin center location pin -->
+            <circle cx="350" cy="150" r="14" fill="#EF4444" fill-opacity="0.2"/>
+            <circle cx="350" cy="150" r="6" fill="#EF4444"/>
+            <!-- Text label -->
+            <rect x="230" y="105" width="240" height="30" rx="4" fill="#1E293B" fill-opacity="0.9"/>
+            <text x="350" y="124" fill="#FFF" font-family="Roboto" font-size="10" font-weight="700" text-anchor="middle">Trung tâm Hành chính công Tỉnh Ninh Bình</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Support Form -->
+    <div class="pub-form-sidebar">
+      <div class="side-card">
+        <div class="side-card-title"><i data-lucide="send"></i> GỬI YÊU CẦU HỖ TRỢ</div>
+        <form id="directContactForm" onsubmit="handleContactSubmit(event)" class="flex flex-col gap-4">
+          <div class="form-field">
+            <label class="text-xs">Họ và tên *</label>
+            <input type="text" placeholder="Nhập họ và tên" required />
+          </div>
+          <div class="form-field">
+            <label class="text-xs">Số điện thoại *</label>
+            <input type="tel" placeholder="Nhập số điện thoại" required />
+          </div>
+          <div class="form-field">
+            <label class="text-xs">Nội dung yêu cầu *</label>
+            <textarea placeholder="Mô tả chi tiết câu hỏi hoặc lỗi kỹ thuật gặp phải..." required rows="4" style="height: auto;"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary w-full justify-center mt-2">
+            <i data-lucide="send"></i> Gửi yêu cầu
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="custom-footer-copyright">
+  © 2026 Công an tỉnh Ninh Bình. Tất cả quyền được bảo lưu.
+</footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Session widget setup
+    const session = typeof Auth !== 'undefined' ? Auth.getSession() : null;
+    const authArea = document.getElementById('headerAuthArea');
+    if (session && authArea) {
+      authArea.innerHTML = `
+        <div class="topbar-menu-wrap" style="position:relative; z-index:1000; font-family:'Roboto',sans-serif;">
+          <button id="publicUserMenuToggle" class="user-menu-btn" type="button" aria-label="Mở menu tài khoản" style="display:flex; align-items:center; gap:12px; background:transparent; border:none; cursor:pointer; padding:4px 10px; border-radius:8px; height:46px;">
+            <div style="width:38px; height:38px; border-radius:50%; color:white; font-weight:900; font-size:14px; display:grid; place-items:center; background:${session.avatarColor || '#bd0000'}; flex-shrink:0;">
+              ${session.avatar}
+            </div>
+            <div style="text-align:left;"><div style="font-size:15px; font-weight:600; color:#ffffff; line-height:1.2;">${session.name}</div><div style="font-size:12px; font-weight:500; color:rgba(255,255,255,0.85); margin-top:2px;">${session.unit}</div></div>
+            <i data-lucide="chevron-down" style="color:#ffffff; width:16px; height:16px;"></i>
+          </button>
+        </div>
+      `;
+    }
+    
+    // Lucide Icons init
+    if (window.lucide) {
+      window.lucide.createIcons();
+    }
+  });
+
+  function handleContactSubmit(event) {
+    event.preventDefault();
+    alert('Yêu cầu hỗ trợ của bạn đã được gửi đi thành công! Chúng tôi sẽ liên hệ lại qua số điện thoại sớm nhất.');
+    document.getElementById('directContactForm').reset();
+  }
+</script>
+</body>
+</html>

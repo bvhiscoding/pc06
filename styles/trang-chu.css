@@ -16,8 +16,11 @@ html {
 }
 
 /* Base resets & fonts */
+body, .font-sans, button, input, select, textarea {
+  font-family: 'Roboto', Arial, sans-serif !important;
+}
+
 body {
-  font-family: 'Roboto', sans-serif;
   color: var(--text-dark);
   background-color: var(--bg-light);
   margin: 0;
@@ -167,6 +170,10 @@ body {
 .custom-nav-dropdown a:hover {
   background: #fff5f5;
   color: var(--primary-red);
+}
+
+#headerAuthArea {
+  justify-self: end;
 }
 
 /* Login Button */
@@ -1886,3 +1893,44 @@ body {
     justify-content: center;
   }
 }
+
+/* ── USER MENU SYNCED WITH ADMIN NAVBAR ────────── */
+.user-menu-btn:hover,
+.user-menu-btn.is-open {
+  background: rgba(255, 255, 255, 0.12) !important;
+}
+
+.user-menu-btn.is-open .user-chevron {
+  transform: rotate(180deg);
+}
+
+.dropdown-action {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 15px;
+  color: #273140;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: left;
+  transition: background 160ms ease, color 160ms ease;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.dropdown-action:hover {
+  background: #fff6f6;
+  color: #bd0000;
+}
+
+.dropdown-action.danger {
+  border-top: 1px solid #edf1f6;
+  color: #d00000;
+}
+
+.dropdown-action.danger:hover {
+  background: #fff0f0;
+}
+

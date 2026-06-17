@@ -1,0 +1,1150 @@
+{
+  "thong_tin_bo_du_lieu": {
+    "ma_bo_du_lieu": "NB-PC06-SYNC-3ACC-20260617",
+    "ten_bo_du_lieu": "Bộ dữ liệu đồng bộ 3 tài khoản, 2 role, tỉnh Ninh Bình",
+    "phien_ban": "2.1.0",
+    "ngay_tao": "2026-06-17T17:20:00+07:00",
+    "pham_vi": "Dữ liệu mẫu quản lý CSKD-ANTT tỉnh Ninh Bình",
+    "so_luong_ban_ghi": {
+      "co_so_kinh_doanh": 10,
+      "quan_ly_ho_so": 10,
+      "kiem_tra_co_so": 10,
+      "xu_ly_vi_pham": 10,
+      "bao_cao_thong_ke": 10,
+      "phan_cong_dia_ban": 10
+    },
+    "nguyen_tac": [
+      "Một nguồn dữ liệu dùng chung cho cấp tỉnh và cấp xã/phường.",
+      "Công an xã/phường chỉ nhìn thấy dữ liệu thuộc đúng địa bàn được phân công.",
+      "Công an tỉnh nhìn thấy toàn bộ dữ liệu trong phạm vi bộ dữ liệu.",
+      "Mọi hồ sơ, kiểm tra, vi phạm và báo cáo đều liên kết theo mã định danh duy nhất để tránh trùng lặp."
+    ]
+  },
+  "vai_tro": [
+    {
+      "ma_vai_tro": "CONG_AN_TINH",
+      "ten_vai_tro": "Công an tỉnh Ninh Bình",
+      "cap_quan_ly": "Tỉnh",
+      "pham_vi_du_lieu": "Toàn bộ dữ liệu trong tỉnh",
+      "quyen_nghiep_vu": [
+        "Xem toàn bộ cơ sở kinh doanh",
+        "Xem và phân công hồ sơ",
+        "Xem toàn bộ kế hoạch kiểm tra",
+        "Xem và theo dõi xử lý vi phạm",
+        "Xem báo cáo thống kê toàn tỉnh",
+        "Xem quản lý tài khoản và phân công địa bàn"
+      ]
+    },
+    {
+      "ma_vai_tro": "CONG_AN_XA",
+      "ten_vai_tro": "Công an xã/phường",
+      "cap_quan_ly": "Xã/Phường",
+      "pham_vi_du_lieu": "Chỉ dữ liệu thuộc xã/phường được phân công",
+      "quyen_nghiep_vu": [
+        "Xem cơ sở kinh doanh thuộc địa bàn",
+        "Tiếp nhận và xử lý hồ sơ thuộc địa bàn",
+        "Lập kế hoạch, cập nhật kiểm tra cơ sở thuộc địa bàn",
+        "Theo dõi vi phạm thuộc địa bàn",
+        "Xem báo cáo thống kê của địa bàn"
+      ]
+    }
+  ],
+  "don_vi_quan_ly": [
+    {
+      "ma_don_vi": "NB-PC06",
+      "ten_don_vi": "Phòng Cảnh sát QLHC về TTXH - Công an tỉnh Ninh Bình",
+      "cap_don_vi": "Tỉnh",
+      "tinh": "Ninh Bình"
+    },
+    {
+      "ma_don_vi": "NB-DT",
+      "ten_don_vi": "Công an phường Đông Thành",
+      "cap_don_vi": "Phường",
+      "phuong_xa": "Phường Đông Thành",
+      "quan_huyen": "Thành phố Ninh Bình",
+      "tinh": "Ninh Bình"
+    },
+    {
+      "ma_don_vi": "NB-NT",
+      "ten_don_vi": "Công an phường Nam Thành",
+      "cap_don_vi": "Phường",
+      "phuong_xa": "Phường Nam Thành",
+      "quan_huyen": "Thành phố Ninh Bình",
+      "tinh": "Ninh Bình"
+    }
+  ],
+  "tai_khoan": [
+    {
+      "ma_tai_khoan": "TK-NB-001",
+      "ten_dang_nhap": "pc06.ninhbinh",
+      "mat_khau_demo": "123456",
+      "ho_ten": "Nguyễn Văn A",
+      "cap_bac": "Thiếu tá",
+      "chuc_vu": "Cán bộ Phòng Cảnh sát QLHC về TTXH",
+      "ma_vai_tro": "CONG_AN_TINH",
+      "ma_don_vi": "NB-PC06",
+      "trang_thai": "Đang hoạt động",
+      "so_dien_thoai": "0912 345 678",
+      "email": "pc06.ninhbinh@demo.gov.vn",
+      "pham_vi_quan_ly": {
+        "tinh": "Ninh Bình",
+        "quan_huyen": [
+          "Thành phố Ninh Bình"
+        ],
+        "phuong_xa": [
+          "Phường Đông Thành",
+          "Phường Nam Thành"
+        ]
+      }
+    },
+    {
+      "ma_tai_khoan": "TK-NB-002",
+      "ten_dang_nhap": "dongthanh.ca",
+      "mat_khau_demo": "123456",
+      "ho_ten": "Trần Văn K",
+      "cap_bac": "Đại úy",
+      "chuc_vu": "Cán bộ Công an phường Đông Thành",
+      "ma_vai_tro": "CONG_AN_XA",
+      "ma_don_vi": "NB-DT",
+      "trang_thai": "Đang hoạt động",
+      "so_dien_thoai": "0977 210 123",
+      "email": "dongthanh.ca@demo.gov.vn",
+      "pham_vi_quan_ly": {
+        "tinh": "Ninh Bình",
+        "quan_huyen": [
+          "Thành phố Ninh Bình"
+        ],
+        "phuong_xa": [
+          "Phường Đông Thành"
+        ]
+      }
+    },
+    {
+      "ma_tai_khoan": "TK-NB-003",
+      "ten_dang_nhap": "namthanh.ca",
+      "mat_khau_demo": "123456",
+      "ho_ten": "Phạm Thị H",
+      "cap_bac": "Đại úy",
+      "chuc_vu": "Cán bộ Công an phường Nam Thành",
+      "ma_vai_tro": "CONG_AN_XA",
+      "ma_don_vi": "NB-NT",
+      "trang_thai": "Đang hoạt động",
+      "so_dien_thoai": "0988 400 124",
+      "email": "namthanh.ca@demo.gov.vn",
+      "pham_vi_quan_ly": {
+        "tinh": "Ninh Bình",
+        "quan_huyen": [
+          "Thành phố Ninh Bình"
+        ],
+        "phuong_xa": [
+          "Phường Nam Thành"
+        ]
+      }
+    }
+  ],
+  "danh_muc_dung_chung": {
+    "loai_hinh_kinh_doanh": [
+      {
+        "ma_loai_hinh": "KARAOKE",
+        "ten_loai_hinh": "Kinh doanh karaoke",
+        "muc_do_rui_ro": "Cao"
+      },
+      {
+        "ma_loai_hinh": "LUU_TRU",
+        "ten_loai_hinh": "Kinh doanh lưu trú",
+        "muc_do_rui_ro": "Trung bình"
+      },
+      {
+        "ma_loai_hinh": "CAM_DO",
+        "ten_loai_hinh": "Kinh doanh cầm đồ",
+        "muc_do_rui_ro": "Cao"
+      }
+    ],
+    "trang_thai_ho_so": [
+      "Chờ tiếp nhận",
+      "Đã tiếp nhận",
+      "Đang xử lý",
+      "Cần bổ sung",
+      "Đã hoàn thành",
+      "Từ chối",
+      "Quá hạn"
+    ],
+    "trang_thai_kiem_tra": [
+      "Kế hoạch",
+      "Đã kiểm tra",
+      "Cần tái kiểm tra"
+    ],
+    "trang_thai_vi_pham": [
+      "Chưa thi hành",
+      "Đang thi hành",
+      "Đã thi hành"
+    ],
+    "trang_thai_bao_cao": [
+      "Chờ xử lý",
+      "Đã tiếp nhận",
+      "Cần bổ sung",
+      "Đã hoàn thành"
+    ]
+  },
+  "co_so_kinh_doanh": [
+    {
+      "ma_co_so": "CS-NB-DT-001",
+      "ten_co_so": "Karaoke Hoa Sen",
+      "ma_loai_hinh": "KARAOKE",
+      "chu_co_so": "Nguyễn Văn B",
+      "so_giay_chung_nhan_antt": "NB-ANTT-0256",
+      "trang_thai_hoat_dong": "Đang hoạt động",
+      "muc_do_rui_ro": "Cao",
+      "dia_chi": {
+        "so_nha_duong_pho": "Số 12 Trần Hưng Đạo",
+        "phuong_xa": "Phường Đông Thành",
+        "quan_huyen": "Thành phố Ninh Bình",
+        "tinh": "Ninh Bình"
+      },
+      "don_vi_quan_ly_truc_tiep": "NB-DT",
+      "don_vi_cap_tinh_theo_doi": "NB-PC06",
+      "ngay_cap_nhat_cuoi": "2026-06-15T08:00:00+07:00"
+    },
+    {
+      "ma_co_so": "CS-NB-DT-002",
+      "ten_co_so": "Khách sạn Tràng An View",
+      "ma_loai_hinh": "LUU_TRU",
+      "chu_co_so": "Lê Thị C",
+      "so_giay_chung_nhan_antt": "NB-ANTT-0311",
+      "trang_thai_hoat_dong": "Đang hoạt động",
+      "muc_do_rui_ro": "Trung bình",
+      "dia_chi": {
+        "so_nha_duong_pho": "Số 45 Lê Thái Tổ",
+        "phuong_xa": "Phường Đông Thành",
+        "quan_huyen": "Thành phố Ninh Bình",
+        "tinh": "Ninh Bình"
+      },
+      "don_vi_quan_ly_truc_tiep": "NB-DT",
+      "don_vi_cap_tinh_theo_doi": "NB-PC06",
+      "ngay_cap_nhat_cuoi": "2026-06-14T14:10:00+07:00"
+    },
+    {
+      "ma_co_so": "CS-NB-DT-003",
+      "ten_co_so": "Nhà nghỉ Sen Vàng",
+      "ma_loai_hinh": "LUU_TRU",
+      "chu_co_so": "Hà Thị Q",
+      "so_giay_chung_nhan_antt": "NB-ANTT-0224",
+      "trang_thai_hoat_dong": "Đang hoạt động",
+      "muc_do_rui_ro": "Trung bình",
+      "dia_chi": {
+        "so_nha_duong_pho": "Số 17 Nguyễn Huệ",
+        "phuong_xa": "Phường Đông Thành",
+        "quan_huyen": "Thành phố Ninh Bình",
+        "tinh": "Ninh Bình"
+      },
+      "don_vi_quan_ly_truc_tiep": "NB-DT",
+      "don_vi_cap_tinh_theo_doi": "NB-PC06",
+      "ngay_cap_nhat_cuoi": "2026-06-12T07:50:00+07:00"
+    },
+    {
+      "ma_co_so": "CS-NB-DT-004",
+      "ten_co_so": "Cầm đồ Minh Quân",
+      "ma_loai_hinh": "CAM_DO",
+      "chu_co_so": "Tạ Quốc P",
+      "so_giay_chung_nhan_antt": "NB-ANTT-0451",
+      "trang_thai_hoat_dong": "Đang hoạt động",
+      "muc_do_rui_ro": "Cao",
+      "dia_chi": {
+        "so_nha_duong_pho": "Số 22 Lương Văn Tụy",
+        "phuong_xa": "Phường Đông Thành",
+        "quan_huyen": "Thành phố Ninh Bình",
+        "tinh": "Ninh Bình"
+      },
+      "don_vi_quan_ly_truc_tiep": "NB-DT",
+      "don_vi_cap_tinh_theo_doi": "NB-PC06",
+      "ngay_cap_nhat_cuoi": "2026-06-11T11:40:00+07:00"
+    },
+    {
+      "ma_co_so": "CS-NB-DT-005",
+      "ten_co_so": "Karaoke Thiên Thanh",
+      "ma_loai_hinh": "KARAOKE",
+      "chu_co_so": "Nguyễn Hoàng Z",
+      "so_giay_chung_nhan_antt": "NB-ANTT-0288",
+      "trang_thai_hoat_dong": "Tạm ngừng",
+      "muc_do_rui_ro": "Cao",
+      "dia_chi": {
+        "so_nha_duong_pho": "Số 68 Phan Bội Châu",
+        "phuong_xa": "Phường Đông Thành",
+        "quan_huyen": "Thành phố Ninh Bình",
+        "tinh": "Ninh Bình"
+      },
+      "don_vi_quan_ly_truc_tiep": "NB-DT",
+      "don_vi_cap_tinh_theo_doi": "NB-PC06",
+      "ngay_cap_nhat_cuoi": "2026-06-09T16:30:00+07:00"
+    },
+    {
+      "ma_co_so": "CS-NB-NT-001",
+      "ten_co_so": "Nhà nghỉ Bình Minh",
+      "ma_loai_hinh": "LUU_TRU",
+      "chu_co_so": "Trần Thị C",
+      "so_giay_chung_nhan_antt": "NB-ANTT-0188",
+      "trang_thai_hoat_dong": "Đang hoạt động",
+      "muc_do_rui_ro": "Trung bình",
+      "dia_chi": {
+        "so_nha_duong_pho": "Số 88 Đinh Tiên Hoàng",
+        "phuong_xa": "Phường Nam Thành",
+        "quan_huyen": "Thành phố Ninh Bình",
+        "tinh": "Ninh Bình"
+      },
+      "don_vi_quan_ly_truc_tiep": "NB-NT",
+      "don_vi_cap_tinh_theo_doi": "NB-PC06",
+      "ngay_cap_nhat_cuoi": "2026-06-15T09:30:00+07:00"
+    },
+    {
+      "ma_co_so": "CS-NB-NT-002",
+      "ten_co_so": "Cầm đồ Phát Lộc",
+      "ma_loai_hinh": "CAM_DO",
+      "chu_co_so": "Đinh Văn H",
+      "so_giay_chung_nhan_antt": "NB-ANTT-0402",
+      "trang_thai_hoat_dong": "Tạm ngừng",
+      "muc_do_rui_ro": "Cao",
+      "dia_chi": {
+        "so_nha_duong_pho": "Số 16 Lương Văn Tụy",
+        "phuong_xa": "Phường Nam Thành",
+        "quan_huyen": "Thành phố Ninh Bình",
+        "tinh": "Ninh Bình"
+      },
+      "don_vi_quan_ly_truc_tiep": "NB-NT",
+      "don_vi_cap_tinh_theo_doi": "NB-PC06",
+      "ngay_cap_nhat_cuoi": "2026-06-13T16:45:00+07:00"
+    },
+    {
+      "ma_co_so": "CS-NB-NT-003",
+      "ten_co_so": "Khách sạn Cố Đô",
+      "ma_loai_hinh": "LUU_TRU",
+      "chu_co_so": "Tô Thị S",
+      "so_giay_chung_nhan_antt": "NB-ANTT-0336",
+      "trang_thai_hoat_dong": "Đang hoạt động",
+      "muc_do_rui_ro": "Trung bình",
+      "dia_chi": {
+        "so_nha_duong_pho": "Số 29 Lê Đại Hành",
+        "phuong_xa": "Phường Nam Thành",
+        "quan_huyen": "Thành phố Ninh Bình",
+        "tinh": "Ninh Bình"
+      },
+      "don_vi_quan_ly_truc_tiep": "NB-NT",
+      "don_vi_cap_tinh_theo_doi": "NB-PC06",
+      "ngay_cap_nhat_cuoi": "2026-06-12T13:15:00+07:00"
+    },
+    {
+      "ma_co_so": "CS-NB-NT-004",
+      "ten_co_so": "Massage Đại Dương",
+      "ma_loai_hinh": "KARAOKE",
+      "chu_co_so": "Lý Thị U",
+      "so_giay_chung_nhan_antt": "NB-ANTT-0299",
+      "trang_thai_hoat_dong": "Đang hoạt động",
+      "muc_do_rui_ro": "Cao",
+      "dia_chi": {
+        "so_nha_duong_pho": "Số 41 Tràng An",
+        "phuong_xa": "Phường Nam Thành",
+        "quan_huyen": "Thành phố Ninh Bình",
+        "tinh": "Ninh Bình"
+      },
+      "don_vi_quan_ly_truc_tiep": "NB-NT",
+      "don_vi_cap_tinh_theo_doi": "NB-PC06",
+      "ngay_cap_nhat_cuoi": "2026-06-10T10:05:00+07:00"
+    },
+    {
+      "ma_co_so": "CS-NB-NT-005",
+      "ten_co_so": "Nhà nghỉ Trúc Xanh",
+      "ma_loai_hinh": "LUU_TRU",
+      "chu_co_so": "Vũ Văn C",
+      "so_giay_chung_nhan_antt": "NB-ANTT-0176",
+      "trang_thai_hoat_dong": "Ngừng hoạt động",
+      "muc_do_rui_ro": "Trung bình",
+      "dia_chi": {
+        "so_nha_duong_pho": "Số 09 Ngô Gia Tự",
+        "phuong_xa": "Phường Nam Thành",
+        "quan_huyen": "Thành phố Ninh Bình",
+        "tinh": "Ninh Bình"
+      },
+      "don_vi_quan_ly_truc_tiep": "NB-NT",
+      "don_vi_cap_tinh_theo_doi": "NB-PC06",
+      "ngay_cap_nhat_cuoi": "2026-06-08T14:25:00+07:00"
+    }
+  ],
+  "quan_ly_ho_so": [
+    {
+      "ma_ho_so": "HS-2026-00121",
+      "ten_thu_tuc": "Cấp mới giấy chứng nhận đủ điều kiện ANTT",
+      "ma_co_so": "CS-NB-DT-001",
+      "ten_co_so": "Karaoke Hoa Sen",
+      "chu_co_so": "Nguyễn Văn B",
+      "dia_ban": "Phường Đông Thành, Thành phố Ninh Bình",
+      "ngay_nop": "2026-05-18T08:20:00+07:00",
+      "han_xu_ly": "2026-06-18",
+      "trang_thai": "Chờ tiếp nhận",
+      "tai_khoan_cap_xa_tiep_nhan": "TK-NB-002",
+      "tai_khoan_cap_tinh_phu_trach": "TK-NB-001",
+      "don_vi_tiep_nhan": "NB-DT",
+      "don_vi_xu_ly": "NB-PC06"
+    },
+    {
+      "ma_ho_so": "HS-2026-00122",
+      "ten_thu_tuc": "Cấp lại giấy chứng nhận đủ điều kiện ANTT",
+      "ma_co_so": "CS-NB-DT-002",
+      "ten_co_so": "Khách sạn Tràng An View",
+      "chu_co_so": "Lê Thị C",
+      "dia_ban": "Phường Đông Thành, Thành phố Ninh Bình",
+      "ngay_nop": "2026-05-18T15:40:00+07:00",
+      "han_xu_ly": "2026-06-18",
+      "trang_thai": "Đã tiếp nhận",
+      "tai_khoan_cap_xa_tiep_nhan": "TK-NB-002",
+      "tai_khoan_cap_tinh_phu_trach": "TK-NB-001",
+      "don_vi_tiep_nhan": "NB-DT",
+      "don_vi_xu_ly": "NB-PC06"
+    },
+    {
+      "ma_ho_so": "HS-2026-00123",
+      "ten_thu_tuc": "Cấp đổi giấy chứng nhận đủ điều kiện ANTT",
+      "ma_co_so": "CS-NB-DT-003",
+      "ten_co_so": "Nhà nghỉ Sen Vàng",
+      "chu_co_so": "Hà Thị Q",
+      "dia_ban": "Phường Đông Thành, Thành phố Ninh Bình",
+      "ngay_nop": "2026-05-19T16:28:00+07:00",
+      "han_xu_ly": "2026-06-19",
+      "trang_thai": "Cần bổ sung",
+      "tai_khoan_cap_xa_tiep_nhan": "TK-NB-002",
+      "tai_khoan_cap_tinh_phu_trach": "TK-NB-001",
+      "don_vi_tiep_nhan": "NB-DT",
+      "don_vi_xu_ly": "NB-PC06"
+    },
+    {
+      "ma_ho_so": "HS-2026-00124",
+      "ten_thu_tuc": "Khai báo thay đổi thông tin cơ sở",
+      "ma_co_so": "CS-NB-DT-004",
+      "ten_co_so": "Cầm đồ Minh Quân",
+      "chu_co_so": "Tạ Quốc P",
+      "dia_ban": "Phường Đông Thành, Thành phố Ninh Bình",
+      "ngay_nop": "2026-05-20T09:10:00+07:00",
+      "han_xu_ly": "2026-06-20",
+      "trang_thai": "Đang xử lý",
+      "tai_khoan_cap_xa_tiep_nhan": "TK-NB-002",
+      "tai_khoan_cap_tinh_phu_trach": "TK-NB-001",
+      "don_vi_tiep_nhan": "NB-DT",
+      "don_vi_xu_ly": "NB-PC06"
+    },
+    {
+      "ma_ho_so": "HS-2026-00125",
+      "ten_thu_tuc": "Tạm dừng hoạt động",
+      "ma_co_so": "CS-NB-DT-005",
+      "ten_co_so": "Karaoke Thiên Thanh",
+      "chu_co_so": "Nguyễn Hoàng Z",
+      "dia_ban": "Phường Đông Thành, Thành phố Ninh Bình",
+      "ngay_nop": "2026-05-21T11:30:00+07:00",
+      "han_xu_ly": "2026-06-21",
+      "trang_thai": "Đã hoàn thành",
+      "tai_khoan_cap_xa_tiep_nhan": "TK-NB-002",
+      "tai_khoan_cap_tinh_phu_trach": "TK-NB-001",
+      "don_vi_tiep_nhan": "NB-DT",
+      "don_vi_xu_ly": "NB-PC06"
+    },
+    {
+      "ma_ho_so": "HS-2026-00126",
+      "ten_thu_tuc": "Cấp giấy chứng nhận đủ điều kiện ANTT",
+      "ma_co_so": "CS-NB-NT-001",
+      "ten_co_so": "Nhà nghỉ Bình Minh",
+      "chu_co_so": "Trần Thị C",
+      "dia_ban": "Phường Nam Thành, Thành phố Ninh Bình",
+      "ngay_nop": "2026-05-20T08:42:00+07:00",
+      "han_xu_ly": "2026-06-20",
+      "trang_thai": "Đang xử lý",
+      "tai_khoan_cap_xa_tiep_nhan": "TK-NB-003",
+      "tai_khoan_cap_tinh_phu_trach": "TK-NB-001",
+      "don_vi_tiep_nhan": "NB-NT",
+      "don_vi_xu_ly": "NB-PC06"
+    },
+    {
+      "ma_ho_so": "HS-2026-00127",
+      "ten_thu_tuc": "Cấp mới giấy chứng nhận đủ điều kiện ANTT",
+      "ma_co_so": "CS-NB-NT-002",
+      "ten_co_so": "Cầm đồ Phát Lộc",
+      "chu_co_so": "Đinh Văn H",
+      "dia_ban": "Phường Nam Thành, Thành phố Ninh Bình",
+      "ngay_nop": "2026-05-22T13:45:00+07:00",
+      "han_xu_ly": "2026-06-22",
+      "trang_thai": "Từ chối",
+      "tai_khoan_cap_xa_tiep_nhan": "TK-NB-003",
+      "tai_khoan_cap_tinh_phu_trach": "TK-NB-001",
+      "don_vi_tiep_nhan": "NB-NT",
+      "don_vi_xu_ly": "NB-PC06"
+    },
+    {
+      "ma_ho_so": "HS-2026-00128",
+      "ten_thu_tuc": "Cấp đổi giấy chứng nhận đủ điều kiện ANTT",
+      "ma_co_so": "CS-NB-NT-003",
+      "ten_co_so": "Khách sạn Cố Đô",
+      "chu_co_so": "Tô Thị S",
+      "dia_ban": "Phường Nam Thành, Thành phố Ninh Bình",
+      "ngay_nop": "2026-05-23T10:05:00+07:00",
+      "han_xu_ly": "2026-06-23",
+      "trang_thai": "Quá hạn",
+      "tai_khoan_cap_xa_tiep_nhan": "TK-NB-003",
+      "tai_khoan_cap_tinh_phu_trach": "TK-NB-001",
+      "don_vi_tiep_nhan": "NB-NT",
+      "don_vi_xu_ly": "NB-PC06"
+    },
+    {
+      "ma_ho_so": "HS-2026-00129",
+      "ten_thu_tuc": "Khai báo thay đổi thông tin cơ sở",
+      "ma_co_so": "CS-NB-NT-004",
+      "ten_co_so": "Massage Đại Dương",
+      "chu_co_so": "Lý Thị U",
+      "dia_ban": "Phường Nam Thành, Thành phố Ninh Bình",
+      "ngay_nop": "2026-05-24T09:55:00+07:00",
+      "han_xu_ly": "2026-06-24",
+      "trang_thai": "Đã tiếp nhận",
+      "tai_khoan_cap_xa_tiep_nhan": "TK-NB-003",
+      "tai_khoan_cap_tinh_phu_trach": "TK-NB-001",
+      "don_vi_tiep_nhan": "NB-NT",
+      "don_vi_xu_ly": "NB-PC06"
+    },
+    {
+      "ma_ho_so": "HS-2026-00130",
+      "ten_thu_tuc": "Ngừng hoạt động",
+      "ma_co_so": "CS-NB-NT-005",
+      "ten_co_so": "Nhà nghỉ Trúc Xanh",
+      "chu_co_so": "Vũ Văn C",
+      "dia_ban": "Phường Nam Thành, Thành phố Ninh Bình",
+      "ngay_nop": "2026-05-25T14:20:00+07:00",
+      "han_xu_ly": "2026-06-25",
+      "trang_thai": "Chờ tiếp nhận",
+      "tai_khoan_cap_xa_tiep_nhan": "TK-NB-003",
+      "tai_khoan_cap_tinh_phu_trach": "TK-NB-001",
+      "don_vi_tiep_nhan": "NB-NT",
+      "don_vi_xu_ly": "NB-PC06"
+    }
+  ],
+  "kiem_tra_co_so": [
+    {
+      "ma_kiem_tra": "KT-2026-0031",
+      "ma_co_so": "CS-NB-DT-001",
+      "ten_co_so": "Karaoke Hoa Sen",
+      "hinh_thuc_kiem_tra": "Kế hoạch",
+      "ngay_kiem_tra": "2026-06-11",
+      "trang_thai": "Kế hoạch",
+      "don_vi_chu_tri": "NB-DT",
+      "don_vi_phoi_hop": ["NB-PC06"],
+      "can_bo_cap_nhat": "TK-NB-002",
+      "ket_qua_tom_tat": "Đã lập kế hoạch kiểm tra điều kiện PCCC và ANTT.",
+      "de_xuat_xu_ly": "Chuẩn bị đoàn kiểm tra liên ngành."
+    },
+    {
+      "ma_kiem_tra": "KT-2026-0032",
+      "ma_co_so": "CS-NB-DT-001",
+      "ten_co_so": "Karaoke Hoa Sen",
+      "hinh_thuc_kiem_tra": "Định kỳ",
+      "ngay_kiem_tra": "2026-06-12",
+      "trang_thai": "Đã kiểm tra",
+      "don_vi_chu_tri": "NB-DT",
+      "don_vi_phoi_hop": ["NB-PC06"],
+      "can_bo_cap_nhat": "TK-NB-002",
+      "ket_qua_tom_tat": "Phát hiện thiếu sổ theo dõi nhân viên trực đêm.",
+      "de_xuat_xu_ly": "Yêu cầu cơ sở bổ sung hồ sơ quản lý nhân sự trực đêm."
+    },
+    {
+      "ma_kiem_tra": "KT-2026-0033",
+      "ma_co_so": "CS-NB-DT-002",
+      "ten_co_so": "Khách sạn Tràng An View",
+      "hinh_thuc_kiem_tra": "Định kỳ",
+      "ngay_kiem_tra": "2026-06-09",
+      "trang_thai": "Đã kiểm tra",
+      "don_vi_chu_tri": "NB-DT",
+      "don_vi_phoi_hop": ["NB-PC06"],
+      "can_bo_cap_nhat": "TK-NB-002",
+      "ket_qua_tom_tat": "Hồ sơ lưu trú đầy đủ, đề nghị duy trì chế độ báo cáo đúng hạn.",
+      "de_xuat_xu_ly": "Không."
+    },
+    {
+      "ma_kiem_tra": "KT-2026-0034",
+      "ma_co_so": "CS-NB-DT-003",
+      "ten_co_so": "Nhà nghỉ Sen Vàng",
+      "hinh_thuc_kiem_tra": "Đột xuất",
+      "ngay_kiem_tra": "2026-06-08",
+      "trang_thai": "Cần tái kiểm tra",
+      "don_vi_chu_tri": "NB-DT",
+      "don_vi_phoi_hop": ["NB-PC06"],
+      "can_bo_cap_nhat": "TK-NB-002",
+      "ket_qua_tom_tat": "Thiếu bản sao giấy chứng nhận PCCC còn hiệu lực tại hồ sơ lưu.",
+      "de_xuat_xu_ly": "Tái kiểm tra sau khi cơ sở bổ sung."
+    },
+    {
+      "ma_kiem_tra": "KT-2026-0035",
+      "ma_co_so": "CS-NB-DT-004",
+      "ten_co_so": "Cầm đồ Minh Quân",
+      "hinh_thuc_kiem_tra": "Định kỳ",
+      "ngay_kiem_tra": "2026-06-07",
+      "trang_thai": "Đã kiểm tra",
+      "don_vi_chu_tri": "NB-DT",
+      "don_vi_phoi_hop": ["NB-PC06"],
+      "can_bo_cap_nhat": "TK-NB-002",
+      "ket_qua_tom_tat": "Sổ theo dõi tài sản cầm cố cập nhật chưa đồng đều.",
+      "de_xuat_xu_ly": "Nhắc nhở cập nhật mẫu biểu chuẩn."
+    },
+    {
+      "ma_kiem_tra": "KT-2026-0041",
+      "ma_co_so": "CS-NB-NT-002",
+      "ten_co_so": "Cầm đồ Phát Lộc",
+      "hinh_thuc_kiem_tra": "Đột xuất",
+      "ngay_kiem_tra": "2026-06-10",
+      "trang_thai": "Cần tái kiểm tra",
+      "don_vi_chu_tri": "NB-NT",
+      "don_vi_phoi_hop": ["NB-PC06"],
+      "can_bo_cap_nhat": "TK-NB-003",
+      "ket_qua_tom_tat": "Cơ sở tạm ngừng hoạt động nhưng chưa hoàn tất cập nhật biến động giấy phép.",
+      "de_xuat_xu_ly": "Tái kiểm tra sau khi cơ sở nộp hồ sơ cập nhật."
+    },
+    {
+      "ma_kiem_tra": "KT-2026-0042",
+      "ma_co_so": "CS-NB-NT-001",
+      "ten_co_so": "Nhà nghỉ Bình Minh",
+      "hinh_thuc_kiem_tra": "Định kỳ",
+      "ngay_kiem_tra": "2026-06-06",
+      "trang_thai": "Đã kiểm tra",
+      "don_vi_chu_tri": "NB-NT",
+      "don_vi_phoi_hop": ["NB-PC06"],
+      "can_bo_cap_nhat": "TK-NB-003",
+      "ket_qua_tom_tat": "Cơ sở đáp ứng đủ điều kiện ANTT và khai báo lưu trú.",
+      "de_xuat_xu_ly": "Không."
+    },
+    {
+      "ma_kiem_tra": "KT-2026-0043",
+      "ma_co_so": "CS-NB-NT-003",
+      "ten_co_so": "Khách sạn Cố Đô",
+      "hinh_thuc_kiem_tra": "Kế hoạch",
+      "ngay_kiem_tra": "2026-06-14",
+      "trang_thai": "Kế hoạch",
+      "don_vi_chu_tri": "NB-NT",
+      "don_vi_phoi_hop": ["NB-PC06"],
+      "can_bo_cap_nhat": "TK-NB-003",
+      "ket_qua_tom_tat": "Lên lịch kiểm tra chuyên đề lưu trú và PCCC.",
+      "de_xuat_xu_ly": "Thông báo cơ sở chuẩn bị hồ sơ."
+    },
+    {
+      "ma_kiem_tra": "KT-2026-0044",
+      "ma_co_so": "CS-NB-NT-004",
+      "ten_co_so": "Massage Đại Dương",
+      "hinh_thuc_kiem_tra": "Đột xuất",
+      "ngay_kiem_tra": "2026-06-05",
+      "trang_thai": "Đã kiểm tra",
+      "don_vi_chu_tri": "NB-NT",
+      "don_vi_phoi_hop": ["NB-PC06"],
+      "can_bo_cap_nhat": "TK-NB-003",
+      "ket_qua_tom_tat": "Phát hiện hoạt động quá giờ trong hai ngày cuối tuần.",
+      "de_xuat_xu_ly": "Lập hồ sơ vi phạm hành chính."
+    },
+    {
+      "ma_kiem_tra": "KT-2026-0045",
+      "ma_co_so": "CS-NB-NT-005",
+      "ten_co_so": "Nhà nghỉ Trúc Xanh",
+      "hinh_thuc_kiem_tra": "Định kỳ",
+      "ngay_kiem_tra": "2026-06-04",
+      "trang_thai": "Đã kiểm tra",
+      "don_vi_chu_tri": "NB-NT",
+      "don_vi_phoi_hop": ["NB-PC06"],
+      "can_bo_cap_nhat": "TK-NB-003",
+      "ket_qua_tom_tat": "Đã ngừng hoạt động, biển hiệu chưa tháo gỡ hoàn toàn.",
+      "de_xuat_xu_ly": "Yêu cầu hoàn tất thủ tục ngừng kinh doanh."
+    }
+  ],
+  "xu_ly_vi_pham": [
+    {
+      "ma_vi_pham": "VP-2026-0011",
+      "ma_kiem_tra": "KT-2026-0032",
+      "ma_co_so": "CS-NB-DT-001",
+      "ten_co_so": "Karaoke Hoa Sen",
+      "hanh_vi_vi_pham": "Không cập nhật đầy đủ danh sách nhân viên trực đêm",
+      "hinh_thuc_xu_ly": "Cảnh báo và yêu cầu khắc phục trước ngày 25/06/2026",
+      "trang_thai": "Đang thi hành",
+      "don_vi_lap_bien_ban": "NB-DT",
+      "don_vi_theo_doi": "NB-PC06"
+    },
+    {
+      "ma_vi_pham": "VP-2026-0012",
+      "ma_kiem_tra": "KT-2026-0034",
+      "ma_co_so": "CS-NB-DT-003",
+      "ten_co_so": "Nhà nghỉ Sen Vàng",
+      "hanh_vi_vi_pham": "Thiếu hồ sơ PCCC còn hiệu lực tại nơi lưu trữ",
+      "hinh_thuc_xu_ly": "Yêu cầu bổ sung hồ sơ trong 07 ngày",
+      "trang_thai": "Chưa thi hành",
+      "don_vi_lap_bien_ban": "NB-DT",
+      "don_vi_theo_doi": "NB-PC06"
+    },
+    {
+      "ma_vi_pham": "VP-2026-0013",
+      "ma_kiem_tra": "KT-2026-0035",
+      "ma_co_so": "CS-NB-DT-004",
+      "ten_co_so": "Cầm đồ Minh Quân",
+      "hanh_vi_vi_pham": "Ghi chép sổ theo dõi tài sản cầm cố chưa đầy đủ",
+      "hinh_thuc_xu_ly": "Phạt tiền 2.500.000 đồng",
+      "trang_thai": "Đã thi hành",
+      "don_vi_lap_bien_ban": "NB-DT",
+      "don_vi_theo_doi": "NB-PC06"
+    },
+    {
+      "ma_vi_pham": "VP-2026-0014",
+      "ma_kiem_tra": "KT-2026-0031",
+      "ma_co_so": "CS-NB-DT-001",
+      "ten_co_so": "Karaoke Hoa Sen",
+      "hanh_vi_vi_pham": "Chưa niêm yết đầy đủ nội quy phòng cháy chữa cháy",
+      "hinh_thuc_xu_ly": "Nhắc nhở bằng văn bản",
+      "trang_thai": "Đã thi hành",
+      "don_vi_lap_bien_ban": "NB-DT",
+      "don_vi_theo_doi": "NB-PC06"
+    },
+    {
+      "ma_vi_pham": "VP-2026-0015",
+      "ma_kiem_tra": "KT-2026-0033",
+      "ma_co_so": "CS-NB-DT-002",
+      "ten_co_so": "Khách sạn Tràng An View",
+      "hanh_vi_vi_pham": "Nộp báo cáo định kỳ chậm 01 kỳ",
+      "hinh_thuc_xu_ly": "Cảnh báo và yêu cầu cam kết",
+      "trang_thai": "Đang thi hành",
+      "don_vi_lap_bien_ban": "NB-PC06",
+      "don_vi_theo_doi": "NB-PC06"
+    },
+    {
+      "ma_vi_pham": "VP-2026-0016",
+      "ma_kiem_tra": "KT-2026-0041",
+      "ma_co_so": "CS-NB-NT-002",
+      "ten_co_so": "Cầm đồ Phát Lộc",
+      "hanh_vi_vi_pham": "Chậm thông báo biến động tình trạng kinh doanh",
+      "hinh_thuc_xu_ly": "Phạt tiền 3.000.000 đồng",
+      "trang_thai": "Chưa thi hành",
+      "don_vi_lap_bien_ban": "NB-PC06",
+      "don_vi_theo_doi": "NB-PC06"
+    },
+    {
+      "ma_vi_pham": "VP-2026-0017",
+      "ma_kiem_tra": "KT-2026-0044",
+      "ma_co_so": "CS-NB-NT-004",
+      "ten_co_so": "Massage Đại Dương",
+      "hanh_vi_vi_pham": "Hoạt động quá giờ quy định",
+      "hinh_thuc_xu_ly": "Phạt tiền 8.000.000 đồng",
+      "trang_thai": "Đang thi hành",
+      "don_vi_lap_bien_ban": "NB-NT",
+      "don_vi_theo_doi": "NB-PC06"
+    },
+    {
+      "ma_vi_pham": "VP-2026-0018",
+      "ma_kiem_tra": "KT-2026-0045",
+      "ma_co_so": "CS-NB-NT-005",
+      "ten_co_so": "Nhà nghỉ Trúc Xanh",
+      "hanh_vi_vi_pham": "Chưa hoàn tất thủ tục ngừng hoạt động theo quy định",
+      "hinh_thuc_xu_ly": "Yêu cầu hoàn thiện hồ sơ trong 05 ngày",
+      "trang_thai": "Chưa thi hành",
+      "don_vi_lap_bien_ban": "NB-NT",
+      "don_vi_theo_doi": "NB-PC06"
+    },
+    {
+      "ma_vi_pham": "VP-2026-0019",
+      "ma_kiem_tra": "KT-2026-0042",
+      "ma_co_so": "CS-NB-NT-001",
+      "ten_co_so": "Nhà nghỉ Bình Minh",
+      "hanh_vi_vi_pham": "Thiếu biên bản huấn luyện PCCC nội bộ quý II",
+      "hinh_thuc_xu_ly": "Nhắc nhở và bổ sung hồ sơ",
+      "trang_thai": "Đã thi hành",
+      "don_vi_lap_bien_ban": "NB-NT",
+      "don_vi_theo_doi": "NB-PC06"
+    },
+    {
+      "ma_vi_pham": "VP-2026-0020",
+      "ma_kiem_tra": "KT-2026-0043",
+      "ma_co_so": "CS-NB-NT-003",
+      "ten_co_so": "Khách sạn Cố Đô",
+      "hanh_vi_vi_pham": "Chưa chuẩn bị đầy đủ sổ quản lý lưu trú theo mẫu mới",
+      "hinh_thuc_xu_ly": "Yêu cầu khắc phục trước đợt kiểm tra chính thức",
+      "trang_thai": "Đang thi hành",
+      "don_vi_lap_bien_ban": "NB-PC06",
+      "don_vi_theo_doi": "NB-PC06"
+    }
+  ],
+  "bao_cao_thong_ke": [
+    {
+      "ma_bao_cao": "BC-2026-DT-01",
+      "loai_bao_cao": "Báo cáo định kỳ ANTT tháng 01/2026",
+      "ma_co_so": "CS-NB-DT-001",
+      "ten_co_so": "Karaoke Hoa Sen",
+      "dia_ban": "Phường Đông Thành",
+      "ngay_gui": "2026-01-14T09:15:00+07:00",
+      "trang_thai": "Đã hoàn thành",
+      "tai_khoan_tiep_nhan_cap_xa": "TK-NB-002",
+      "tai_khoan_theo_doi_cap_tinh": "TK-NB-001"
+    },
+    {
+      "ma_bao_cao": "BC-2026-DT-02",
+      "loai_bao_cao": "Báo cáo định kỳ ANTT tháng 02/2026",
+      "ma_co_so": "CS-NB-DT-002",
+      "ten_co_so": "Khách sạn Tràng An View",
+      "dia_ban": "Phường Đông Thành",
+      "ngay_gui": "2026-02-14T10:20:00+07:00",
+      "trang_thai": "Đã tiếp nhận",
+      "tai_khoan_tiep_nhan_cap_xa": "TK-NB-002",
+      "tai_khoan_theo_doi_cap_tinh": "TK-NB-001"
+    },
+    {
+      "ma_bao_cao": "BC-2026-DT-03",
+      "loai_bao_cao": "Báo cáo định kỳ ANTT tháng 03/2026",
+      "ma_co_so": "CS-NB-DT-003",
+      "ten_co_so": "Nhà nghỉ Sen Vàng",
+      "dia_ban": "Phường Đông Thành",
+      "ngay_gui": "2026-03-15T08:45:00+07:00",
+      "trang_thai": "Cần bổ sung",
+      "tai_khoan_tiep_nhan_cap_xa": "TK-NB-002",
+      "tai_khoan_theo_doi_cap_tinh": "TK-NB-001"
+    },
+    {
+      "ma_bao_cao": "BC-2026-DT-04",
+      "loai_bao_cao": "Báo cáo định kỳ ANTT tháng 04/2026",
+      "ma_co_so": "CS-NB-DT-004",
+      "ten_co_so": "Cầm đồ Minh Quân",
+      "dia_ban": "Phường Đông Thành",
+      "ngay_gui": "2026-04-13T16:05:00+07:00",
+      "trang_thai": "Đã hoàn thành",
+      "tai_khoan_tiep_nhan_cap_xa": "TK-NB-002",
+      "tai_khoan_theo_doi_cap_tinh": "TK-NB-001"
+    },
+    {
+      "ma_bao_cao": "BC-2026-DT-05",
+      "loai_bao_cao": "Báo cáo định kỳ ANTT tháng 05/2026",
+      "ma_co_so": "CS-NB-DT-005",
+      "ten_co_so": "Karaoke Thiên Thanh",
+      "dia_ban": "Phường Đông Thành",
+      "ngay_gui": "2026-05-14T11:00:00+07:00",
+      "trang_thai": "Chờ xử lý",
+      "tai_khoan_tiep_nhan_cap_xa": "TK-NB-002",
+      "tai_khoan_theo_doi_cap_tinh": "TK-NB-001"
+    },
+    {
+      "ma_bao_cao": "BC-2026-NT-01",
+      "loai_bao_cao": "Báo cáo định kỳ ANTT tháng 01/2026",
+      "ma_co_so": "CS-NB-NT-001",
+      "ten_co_so": "Nhà nghỉ Bình Minh",
+      "dia_ban": "Phường Nam Thành",
+      "ngay_gui": "2026-01-13T09:00:00+07:00",
+      "trang_thai": "Đã hoàn thành",
+      "tai_khoan_tiep_nhan_cap_xa": "TK-NB-003",
+      "tai_khoan_theo_doi_cap_tinh": "TK-NB-001"
+    },
+    {
+      "ma_bao_cao": "BC-2026-NT-02",
+      "loai_bao_cao": "Báo cáo định kỳ ANTT tháng 02/2026",
+      "ma_co_so": "CS-NB-NT-002",
+      "ten_co_so": "Cầm đồ Phát Lộc",
+      "dia_ban": "Phường Nam Thành",
+      "ngay_gui": "2026-02-15T15:25:00+07:00",
+      "trang_thai": "Cần bổ sung",
+      "tai_khoan_tiep_nhan_cap_xa": "TK-NB-003",
+      "tai_khoan_theo_doi_cap_tinh": "TK-NB-001"
+    },
+    {
+      "ma_bao_cao": "BC-2026-NT-03",
+      "loai_bao_cao": "Báo cáo định kỳ ANTT tháng 03/2026",
+      "ma_co_so": "CS-NB-NT-003",
+      "ten_co_so": "Khách sạn Cố Đô",
+      "dia_ban": "Phường Nam Thành",
+      "ngay_gui": "2026-03-14T14:10:00+07:00",
+      "trang_thai": "Đã tiếp nhận",
+      "tai_khoan_tiep_nhan_cap_xa": "TK-NB-003",
+      "tai_khoan_theo_doi_cap_tinh": "TK-NB-001"
+    },
+    {
+      "ma_bao_cao": "BC-2026-NT-04",
+      "loai_bao_cao": "Báo cáo định kỳ ANTT tháng 04/2026",
+      "ma_co_so": "CS-NB-NT-004",
+      "ten_co_so": "Massage Đại Dương",
+      "dia_ban": "Phường Nam Thành",
+      "ngay_gui": "2026-04-14T17:40:00+07:00",
+      "trang_thai": "Chờ xử lý",
+      "tai_khoan_tiep_nhan_cap_xa": "TK-NB-003",
+      "tai_khoan_theo_doi_cap_tinh": "TK-NB-001"
+    },
+    {
+      "ma_bao_cao": "BC-2026-NT-05",
+      "loai_bao_cao": "Báo cáo định kỳ ANTT tháng 05/2026",
+      "ma_co_so": "CS-NB-NT-005",
+      "ten_co_so": "Nhà nghỉ Trúc Xanh",
+      "dia_ban": "Phường Nam Thành",
+      "ngay_gui": "2026-05-15T08:35:00+07:00",
+      "trang_thai": "Đã hoàn thành",
+      "tai_khoan_tiep_nhan_cap_xa": "TK-NB-003",
+      "tai_khoan_theo_doi_cap_tinh": "TK-NB-001"
+    }
+  ],
+  "phan_cong_dia_ban": [
+    {
+      "ma_phan_cong": "PC-001",
+      "ma_tai_khoan": "TK-NB-002",
+      "ho_ten": "Trần Văn K",
+      "dia_ban_duoc_giao": "Phường Đông Thành",
+      "loai_phan_cong": "Chính",
+      "tu_ngay": "2026-01-01",
+      "den_ngay": "2026-12-31",
+      "trang_thai": "Đang hiệu lực"
+    },
+    {
+      "ma_phan_cong": "PC-002",
+      "ma_tai_khoan": "TK-NB-003",
+      "ho_ten": "Phạm Thị H",
+      "dia_ban_duoc_giao": "Phường Nam Thành",
+      "loai_phan_cong": "Chính",
+      "tu_ngay": "2026-01-01",
+      "den_ngay": "2026-12-31",
+      "trang_thai": "Đang hiệu lực"
+    },
+    {
+      "ma_phan_cong": "PC-003",
+      "ma_tai_khoan": "TK-NB-001",
+      "ho_ten": "Nguyễn Văn A",
+      "dia_ban_duoc_giao": "Phường Đông Thành",
+      "loai_phan_cong": "Phối hợp",
+      "tu_ngay": "2026-01-01",
+      "den_ngay": "2026-12-31",
+      "trang_thai": "Đang hiệu lực"
+    },
+    {
+      "ma_phan_cong": "PC-004",
+      "ma_tai_khoan": "TK-NB-001",
+      "ho_ten": "Nguyễn Văn A",
+      "dia_ban_duoc_giao": "Phường Nam Thành",
+      "loai_phan_cong": "Phối hợp",
+      "tu_ngay": "2026-01-01",
+      "den_ngay": "2026-12-31",
+      "trang_thai": "Đang hiệu lực"
+    },
+    {
+      "ma_phan_cong": "PC-005",
+      "ma_tai_khoan": "TK-NB-002",
+      "ho_ten": "Trần Văn K",
+      "dia_ban_duoc_giao": "Phường Đông Thành",
+      "loai_phan_cong": "Chính",
+      "tu_ngay": "2025-01-01",
+      "den_ngay": "2025-12-31",
+      "trang_thai": "Hết hiệu lực"
+    },
+    {
+      "ma_phan_cong": "PC-006",
+      "ma_tai_khoan": "TK-NB-003",
+      "ho_ten": "Phạm Thị H",
+      "dia_ban_duoc_giao": "Phường Nam Thành",
+      "loai_phan_cong": "Chính",
+      "tu_ngay": "2025-01-01",
+      "den_ngay": "2025-12-31",
+      "trang_thai": "Hết hiệu lực"
+    },
+    {
+      "ma_phan_cong": "PC-007",
+      "ma_tai_khoan": "TK-NB-002",
+      "ho_ten": "Trần Văn K",
+      "dia_ban_duoc_giao": "Phường Đông Thành",
+      "loai_phan_cong": "Phối hợp",
+      "tu_ngay": "2026-03-01",
+      "den_ngay": "2026-06-30",
+      "trang_thai": "Đang hiệu lực"
+    },
+    {
+      "ma_phan_cong": "PC-008",
+      "ma_tai_khoan": "TK-NB-003",
+      "ho_ten": "Phạm Thị H",
+      "dia_ban_duoc_giao": "Phường Nam Thành",
+      "loai_phan_cong": "Phối hợp",
+      "tu_ngay": "2026-03-01",
+      "den_ngay": "2026-06-30",
+      "trang_thai": "Đang hiệu lực"
+    },
+    {
+      "ma_phan_cong": "PC-009",
+      "ma_tai_khoan": "TK-NB-001",
+      "ho_ten": "Nguyễn Văn A",
+      "dia_ban_duoc_giao": "Phường Đông Thành",
+      "loai_phan_cong": "Giám sát",
+      "tu_ngay": "2026-04-01",
+      "den_ngay": "2026-12-31",
+      "trang_thai": "Đang hiệu lực"
+    },
+    {
+      "ma_phan_cong": "PC-010",
+      "ma_tai_khoan": "TK-NB-001",
+      "ho_ten": "Nguyễn Văn A",
+      "dia_ban_duoc_giao": "Phường Nam Thành",
+      "loai_phan_cong": "Giám sát",
+      "tu_ngay": "2026-04-01",
+      "den_ngay": "2026-12-31",
+      "trang_thai": "Đang hiệu lực"
+    }
+  ],
+  "du_lieu_theo_tai_khoan": [
+    {
+      "ma_tai_khoan": "TK-NB-001",
+      "ten_dang_nhap": "pc06.ninhbinh",
+      "vai_tro": "Công an tỉnh Ninh Bình",
+      "nhin_thay": {
+        "co_so_kinh_doanh": [
+          "CS-NB-DT-001",
+          "CS-NB-DT-002",
+          "CS-NB-DT-003",
+          "CS-NB-DT-004",
+          "CS-NB-DT-005",
+          "CS-NB-NT-001",
+          "CS-NB-NT-002",
+          "CS-NB-NT-003",
+          "CS-NB-NT-004",
+          "CS-NB-NT-005"
+        ],
+        "quan_ly_ho_so": [
+          "HS-2026-00121",
+          "HS-2026-00122",
+          "HS-2026-00123",
+          "HS-2026-00124",
+          "HS-2026-00125",
+          "HS-2026-00126",
+          "HS-2026-00127",
+          "HS-2026-00128",
+          "HS-2026-00129",
+          "HS-2026-00130"
+        ],
+        "kiem_tra_co_so": [
+          "KT-2026-0031",
+          "KT-2026-0032",
+          "KT-2026-0033",
+          "KT-2026-0034",
+          "KT-2026-0035",
+          "KT-2026-0041",
+          "KT-2026-0042",
+          "KT-2026-0043",
+          "KT-2026-0044",
+          "KT-2026-0045"
+        ],
+        "xu_ly_vi_pham": [
+          "VP-2026-0011",
+          "VP-2026-0012",
+          "VP-2026-0013",
+          "VP-2026-0014",
+          "VP-2026-0015",
+          "VP-2026-0016",
+          "VP-2026-0017",
+          "VP-2026-0018",
+          "VP-2026-0019",
+          "VP-2026-0020"
+        ],
+        "bao_cao_thong_ke": [
+          "BC-2026-DT-01",
+          "BC-2026-DT-02",
+          "BC-2026-DT-03",
+          "BC-2026-DT-04",
+          "BC-2026-DT-05",
+          "BC-2026-NT-01",
+          "BC-2026-NT-02",
+          "BC-2026-NT-03",
+          "BC-2026-NT-04",
+          "BC-2026-NT-05"
+        ]
+      }
+    },
+    {
+      "ma_tai_khoan": "TK-NB-002",
+      "ten_dang_nhap": "dongthanh.ca",
+      "vai_tro": "Công an xã/phường",
+      "nhin_thay": {
+        "co_so_kinh_doanh": [
+          "CS-NB-DT-001",
+          "CS-NB-DT-002",
+          "CS-NB-DT-003",
+          "CS-NB-DT-004",
+          "CS-NB-DT-005"
+        ],
+        "quan_ly_ho_so": [
+          "HS-2026-00121",
+          "HS-2026-00122",
+          "HS-2026-00123",
+          "HS-2026-00124",
+          "HS-2026-00125"
+        ],
+        "kiem_tra_co_so": [
+          "KT-2026-0031",
+          "KT-2026-0032",
+          "KT-2026-0033",
+          "KT-2026-0034",
+          "KT-2026-0035"
+        ],
+        "xu_ly_vi_pham": [
+          "VP-2026-0011",
+          "VP-2026-0012",
+          "VP-2026-0013",
+          "VP-2026-0014",
+          "VP-2026-0015"
+        ],
+        "bao_cao_thong_ke": [
+          "BC-2026-DT-01",
+          "BC-2026-DT-02",
+          "BC-2026-DT-03",
+          "BC-2026-DT-04",
+          "BC-2026-DT-05"
+        ]
+      }
+    },
+    {
+      "ma_tai_khoan": "TK-NB-003",
+      "ten_dang_nhap": "namthanh.ca",
+      "vai_tro": "Công an xã/phường",
+      "nhin_thay": {
+        "co_so_kinh_doanh": [
+          "CS-NB-NT-001",
+          "CS-NB-NT-002",
+          "CS-NB-NT-003",
+          "CS-NB-NT-004",
+          "CS-NB-NT-005"
+        ],
+        "quan_ly_ho_so": [
+          "HS-2026-00126",
+          "HS-2026-00127",
+          "HS-2026-00128",
+          "HS-2026-00129",
+          "HS-2026-00130"
+        ],
+        "kiem_tra_co_so": [
+          "KT-2026-0041",
+          "KT-2026-0042",
+          "KT-2026-0043",
+          "KT-2026-0044",
+          "KT-2026-0045"
+        ],
+        "xu_ly_vi_pham": [
+          "VP-2026-0016",
+          "VP-2026-0017",
+          "VP-2026-0018",
+          "VP-2026-0019",
+          "VP-2026-0020"
+        ],
+        "bao_cao_thong_ke": [
+          "BC-2026-NT-01",
+          "BC-2026-NT-02",
+          "BC-2026-NT-03",
+          "BC-2026-NT-04",
+          "BC-2026-NT-05"
+        ]
+      }
+    }
+  ],
+  "quy_tac_dong_bo": {
+    "khoa_dinh_danh_duy_nhat": {
+      "co_so_kinh_doanh": "ma_co_so",
+      "quan_ly_ho_so": "ma_ho_so",
+      "kiem_tra_co_so": "ma_kiem_tra",
+      "xu_ly_vi_pham": "ma_vi_pham",
+      "bao_cao_thong_ke": "ma_bao_cao"
+    },
+    "quy_tac_nghiep_vu": [
+      "Hồ sơ được tiếp nhận ở cấp xã/phường nhưng vẫn dùng chung một mã hồ sơ khi chuyển cấp tỉnh xử lý.",
+      "Biên bản kiểm tra và vi phạm phải liên kết ngược về mã cơ sở và mã kiểm tra.",
+      "Báo cáo định kỳ của cơ sở được cấp xã/phường tiếp nhận trước, cấp tỉnh theo dõi toàn cục.",
+      "Không tạo bản ghi trùng nếu đã tồn tại cùng mã định danh.",
+      "Phạm vi hiển thị dữ liệu được xác định theo phân công địa bàn và vai trò tài khoản."
+    ]
+  }
+}

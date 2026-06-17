@@ -16,9 +16,11 @@
 
 <body class="font-sans antialiased">
   <div class="desktop-shell min-h-screen">
-    <header
-      class="app-header fixed left-0 right-0 top-0 z-30 flex h-[80px] items-center justify-between px-6 text-white">
-      <div class="flex h-full items-center">
+    <!-- Component: Header -->
+    <header id="app-header-component"
+      class="app-header header-component fixed left-0 right-0 top-0 z-30 flex h-[80px] items-center justify-between px-6 text-white">
+      <!-- Sub-component: Brand Logo & Title -->
+      <div class="brand-component flex h-full items-center">
         <img class="crest" src="../public/logocongan.png" alt="Logo Bộ Công an" />
         <div class="brand-copy ml-4">
           <div class="text-[22px] font-semibold leading-tight tracking-[0]">CÔNG AN TỈNH NINH BÌNH</div>
@@ -28,7 +30,8 @@
       </div>
 
       <div class="topbar-actions flex h-full items-center gap-6">
-        <div class="topbar-menu-wrap">
+        <!-- Sub-component: Notification Menu -->
+        <div class="notification-component topbar-menu-wrap">
           <button id="notificationToggle" class="topbar-icon-btn relative" type="button" aria-label="Thông báo"
             aria-expanded="false">
             <i data-lucide="bell" class="h-[26px] w-[26px]"></i>
@@ -45,7 +48,8 @@
           </div>
         </div>
 
-        <div class="topbar-menu-wrap">
+        <!-- Sub-component: User Menu -->
+        <div class="user-profile-component topbar-menu-wrap">
           <button id="userMenuToggle" class="user-menu-btn" type="button" aria-label="Mở menu tài khoản"
             aria-expanded="false">
             <div class="grid h-[46px] w-[46px] place-items-center rounded-full bg-white text-[#cf0000] shadow-sm">
@@ -84,9 +88,11 @@
         </div>
       </div>
     </header>
+    <!-- End Component: Header -->
 
-    <aside class="sidebar fixed bottom-0 left-0 top-[80px] z-20 px-2 text-white">
-      <div class="sidebar-scroll">
+    <!-- Component: Sidebar Navigation -->
+    <aside id="sidebar-component" class="sidebar sidebar-component fixed bottom-0 left-0 top-[80px] z-20 px-2 text-white">
+      <div class="sidebar-scroll navigation-menu">
         <div class="nav-section mt-0">Tổng quan</div>
         <a href="#" class="nav-item mt-2">
           <i data-lucide="house"></i>
@@ -104,35 +110,31 @@
           <i data-lucide="file-text"></i>
           <span class="nav-copy">Quản lý hồ sơ</span>
         </a>
-        <a href="#" class="nav-item">
+        <a href="CoSoDuLieuCSKD.html" class="nav-item">
           <i data-lucide="database"></i>
           <span class="nav-copy">Cơ sở dữ liệu CSKD-ANTT</span>
         </a>
-        <a href="#" class="nav-item">
+        <a href="KiemTraCoSo.html" class="nav-item">
           <i data-lucide="clipboard-check"></i>
           <span class="nav-copy">Kiểm tra cơ sở</span>
         </a>
-        <a href="#" class="nav-item">
+        <a href="XuLyViPham.html" class="nav-item">
           <i data-lucide="octagon-alert"></i>
           <span class="nav-copy">Vi phạm / Xử lý vi phạm</span>
         </a>
-        <a href="#" class="nav-item">
+        <a href="QuanLyPhanAnh.html" class="nav-item">
           <i data-lucide="message-square-warning"></i>
           <span class="nav-copy">Phản ánh kiến nghị</span>
         </a>
 
         <div class="nav-section">Báo cáo</div>
-        <a href="#" class="nav-item mt-2">
-          <i data-lucide="chart-column-big"></i>
-          <span class="nav-copy">Báo cáo - thống kê</span>
-        </a>
+        <a href="BaoCao-ThongKe.html" class="nav-item mt-2"><i data-lucide="chart-column-big"></i>
+          <span class="nav-copy">Báo cáo - thống kê</span></a>
 
         <div class="nav-section">Cấu hình</div>
-        <a href="#" class="nav-item mt-2">
-          <i data-lucide="folder"></i>
+        <a href="DanhMuc.html" class="nav-item mt-2"><i data-lucide="folder"></i>
           <span class="nav-copy">Danh mục dùng chung</span>
-          <i data-lucide="chevron-down" class="ml-auto h-4 w-4 nav-copy"></i>
-        </a>
+          <i data-lucide="chevron-down" class="ml-auto h-4 w-4 nav-copy"></i></a>
         <a href="#" class="nav-item">
           <i data-lucide="settings"></i>
           <span class="nav-copy">Quản trị hệ thống</span>
@@ -140,26 +142,31 @@
         </a>
       </div>
 
-      <div class="sidebar-action">
+      <div class="sidebar-action sidebar-toggle-container">
         <button id="sidebarToggle" class="sidebar-toggle" type="button" aria-label="Thu gọn menu" aria-expanded="true">
           <i data-lucide="chevron-left" class="toggle-icon"></i>
           <span class="collapse-label">Thu gọn</span>
         </button>
       </div>
     </aside>
+    <!-- End Component: Sidebar Navigation -->
 
     <main class="content min-h-screen pt-[80px]">
       <div class="px-6 pb-8 pt-6 lg:px-7">
-        <section class="mb-5">
-          <div class="mt-3 flex items-center gap-2 text-[13px] font-medium text-[#6b7280]">
+        <!-- Component: Breadcrumbs & Header Actions -->
+        <section class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-5">
+          <div class="flex items-center gap-2 text-[13px] font-medium text-[#6b7280]">
             <i data-lucide="house" class="h-4 w-4 text-[#9098a5]"></i>
             <span>Trang chủ</span>
             <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
             <span>Quản lý hồ sơ</span>
           </div>
+          <div class="flex flex-wrap gap-3"></div>
         </section>
+        <!-- End Component: Breadcrumbs -->
 
-        <section class="rounded-[7px] border border-[#e0e5ed] bg-white p-5 shadow-panel">
+        <!-- Component: Search & Filter Panel -->
+        <section id="filter-panel-component" class="filter-panel-component rounded-[7px] border border-[#e0e5ed] bg-white p-5 shadow-panel">
           <div class="grid grid-cols-12 gap-x-7 gap-y-4">
             <label class="col-span-12 xl:col-span-4">
               <span class="form-label">Tìm kiếm</span>
@@ -252,8 +259,10 @@
             </button>
           </div>
         </section>
+        <!-- End Component: Search & Filter Panel -->
 
-        <section class="mt-4">
+        <!-- Component: Status Tabs Bar -->
+        <section id="status-tabs-component" class="status-tabs-component mt-4">
           <div id="statusTabs" class="flex flex-wrap gap-3">
             <button class="tab active">Tất cả (248)</button>
             <button class="tab">Chờ tiếp nhận (18)</button>
@@ -265,12 +274,15 @@
             <button class="tab danger">Quá hạn (12)</button>
           </div>
         </section>
+        <!-- End Component: Status Tabs Bar -->
 
-        <section class="mt-4 overflow-hidden rounded-[7px] border border-[#e4e9f0] bg-white shadow-soft">
+        <!-- Component: Records Data Table -->
+        <section id="data-table-component" class="data-table-component mt-4 overflow-hidden rounded-[7px] border border-[#e4e9f0] bg-white shadow-soft">
           <div class="overflow-x-auto">
             <table class="data-table w-full">
               <thead>
                 <tr>
+                  <th class="w-[48px]"><input type="checkbox" aria-label="Chọn tất cả" /></th>
                   <th class="w-[52px]">STT</th>
                   <th class="w-[136px]">Mã hồ sơ</th>
                   <th class="w-[188px]">Tên thủ tục</th>
@@ -286,6 +298,7 @@
               </thead>
               <tbody id="recordsBody">
                 <tr>
+                  <td class="text-center"><input type="checkbox" aria-label="Chọn dòng 1" /></td>
                   <td class="text-center">1</td>
                   <td class="text-center font-medium text-[#ff0000]">HS-2026-00125</td>
                   <td>Cấp mới giấy chứng nhận đủ ĐK ANTT</td>
@@ -301,6 +314,7 @@
                         data-lucide="ellipsis-vertical" class="h-5 w-5"></i></button></td>
                 </tr>
                 <tr>
+                  <td class="text-center"><input type="checkbox" aria-label="Chọn dòng 2" /></td>
                   <td class="text-center">2</td>
                   <td class="text-center font-medium text-[#ff0000]">HS-2026-00124</td>
                   <td>Cấp giấy chứng nhận đủ ĐK ANTT</td>
@@ -316,6 +330,7 @@
                         data-lucide="ellipsis-vertical" class="h-5 w-5"></i></button></td>
                 </tr>
                 <tr>
+                  <td class="text-center"><input type="checkbox" aria-label="Chọn dòng 3" /></td>
                   <td class="text-center">3</td>
                   <td class="text-center font-medium text-[#ff0000]">HS-2026-00123</td>
                   <td>Cấp đổi giấy chứng nhận đủ ĐK ANTT</td>
@@ -331,6 +346,7 @@
                         data-lucide="ellipsis-vertical" class="h-5 w-5"></i></button></td>
                 </tr>
                 <tr>
+                  <td class="text-center"><input type="checkbox" aria-label="Chọn dòng 4" /></td>
                   <td class="text-center">4</td>
                   <td class="text-center font-medium text-[#ff0000]">HS-2026-00122</td>
                   <td>Cấp lại giấy chứng nhận đủ ĐK ANTT</td>
@@ -346,6 +362,7 @@
                         data-lucide="ellipsis-vertical" class="h-5 w-5"></i></button></td>
                 </tr>
                 <tr>
+                  <td class="text-center"><input type="checkbox" aria-label="Chọn dòng 5" /></td>
                   <td class="text-center">5</td>
                   <td class="text-center font-medium text-[#ff0000]">HS-2026-00121</td>
                   <td>Khai báo thay đổi thông tin cơ sở</td>
@@ -361,6 +378,7 @@
                         data-lucide="ellipsis-vertical" class="h-5 w-5"></i></button></td>
                 </tr>
                 <tr>
+                  <td class="text-center"><input type="checkbox" aria-label="Chọn dòng 6" /></td>
                   <td class="text-center">6</td>
                   <td class="text-center font-medium text-[#ff0000]">HS-2026-00120</td>
                   <td>Tạm dừng hoạt động</td>
@@ -376,6 +394,7 @@
                         data-lucide="ellipsis-vertical" class="h-5 w-5"></i></button></td>
                 </tr>
                 <tr>
+                  <td class="text-center"><input type="checkbox" aria-label="Chọn dòng 7" /></td>
                   <td class="text-center">7</td>
                   <td class="text-center font-medium text-[#ff0000]">HS-2026-00119</td>
                   <td>Cấp mới giấy chứng nhận đủ ĐK ANTT</td>
@@ -391,6 +410,7 @@
                         data-lucide="ellipsis-vertical" class="h-5 w-5"></i></button></td>
                 </tr>
                 <tr>
+                  <td class="text-center"><input type="checkbox" aria-label="Chọn dòng 8" /></td>
                   <td class="text-center">8</td>
                   <td class="text-center font-medium text-[#ff0000]">HS-2026-00118</td>
                   <td>Ngừng hoạt động</td>
@@ -409,23 +429,38 @@
             </table>
           </div>
         </section>
+        <!-- End Component: Records Data Table -->
 
-        <section
-          class="mt-5 flex flex-col gap-4 text-[14px] text-[#5f6877] md:flex-row md:items-center md:justify-between">
-          <div id="resultSummary">Hiển thị 1 - 20 trong tổng số 248 hồ sơ</div>
-          <div class="flex flex-wrap items-center gap-2">
-            <select id="pageSizeSelect" class="field h-10 w-[120px] appearance-none pr-8 text-left font-medium">
+        <!-- Component: Pagination & Action Buttons -->
+        <section id="table-footer-component"
+          class="table-footer-component mt-5 flex flex-col gap-4 text-[14px] text-[#5f6877] md:flex-row md:items-center md:justify-between">
+          <div class="flex flex-wrap items-center gap-3">
+            <div id="resultSummary">Hiển thị 1 - 20 trong tổng số 248 hồ sơ</div>
+            <select id="pageSizeSelect" class="field h-10 w-[120px] appearance-none pr-8 text-left font-medium" style="width: 120px !important;">
               <option value="10" selected>10 / trang</option>
               <option value="20">20 / trang</option>
               <option value="50">50 / trang</option>
             </select>
-            <div id="pagination" class="flex flex-wrap items-center gap-2"></div>
+          </div>
+          <div id="pagination" class="flex flex-wrap items-center gap-2"></div>
+          <div class="flex items-center gap-2">
+            <button class="inline-flex h-10 items-center gap-2 rounded-md border border-[#d9dfe8] bg-white px-4 text-[14px] font-bold text-[#202833] shadow-sm transition hover:border-[#c50000] hover:text-[#c50000] hover:bg-[#fffafa]" type="button">
+              <i data-lucide="file-up" class="h-4 w-4"></i>Nhập dữ liệu
+            </button>
+            <button class="inline-flex h-10 items-center gap-2 rounded-md border border-[#d9dfe8] bg-white px-4 text-[14px] font-bold text-[#202833] shadow-sm transition hover:border-[#c50000] hover:text-[#c50000] hover:bg-[#fffafa]" type="button">
+              <i data-lucide="file-spreadsheet" class="h-4 w-4"></i>Xuất dữ liệu
+            </button>
           </div>
         </section>
+        <!-- End Component: Pagination & Action Buttons -->
       </div>
     </main>
   </div>
-  <script src="../scripts/quan-ly-ho-so.js"></script>
+  <script src="../scripts/auth.js"></script>
+  <script src="../scripts/app-data.js"></script>
+  <script src="../scripts/layout-sync.js"></script>
+  <script src="../scripts/quan-ly-ho-so.js?v=2"></script>
 </body>
 
 </html>
+

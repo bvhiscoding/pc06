@@ -1,0 +1,1297 @@
+﻿<!doctype html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chi tiết lịch kiểm tra - CSKD-ANTT Ninh Bình</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/quan-ly-ho-so.css">
+  <link rel="stylesheet" href="../styles/admin-danh-sach.css">
+  <style>
+    /* Premium details page layouts */
+    .details-card {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    }
+    .details-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #1e293b;
+      border-b: 1px solid #f1f5f9;
+      padding-bottom: 0.75rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.025em;
+    }
+    .info-row {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      padding: 0.75rem 0;
+      border-bottom: 1px dashed #f1f5f9;
+      font-size: 13.5px;
+    }
+    .info-row:last-child {
+      border-bottom: none;
+    }
+    .info-label {
+      color: #64748b;
+      font-weight: 600;
+    }
+    .info-value {
+      color: #0f172a;
+      font-weight: 700;
+    }
+    .file-attachment-box {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      max-width: 450px;
+      transition: all 0.2s ease;
+    }
+    .file-attachment-box:hover {
+      border-color: #cbd5e1;
+      background: #f1f5f9;
+    }
+    [hidden] {
+      display: none !important;
+    }
+    /* Modal overlay custom styles */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+    }
+    .modal-overlay[hidden] {
+      display: none !important;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
+</head>
+
+<body class="font-sans antialiased">
+  <div class="desktop-shell min-h-screen">
+    <!-- Header -->
+    <header class="app-header fixed left-0 right-0 top-0 z-30 flex h-[80px] items-center justify-between px-6 text-white">
+      <div class="flex h-full items-center">
+        <img class="crest" src="../public/logocongan.png" alt="Logo Bộ Công an" />
+        <div class="brand-copy ml-4">
+          <div class="text-[22px] font-semibold leading-tight tracking-[0]">CÔNG AN TỈNH NINH BÌNH</div>
+          <div class="mt-1 text-[15px] font-medium tracking-[0] text-white/95">HỆ THỐNG QUẢN LÝ CƠ SỞ KINH DOANH CÓ ĐIỀU KIỆN VỀ ANTT</div>
+        </div>
+      </div>
+
+      <div class="topbar-actions flex h-full items-center gap-6">
+        <div class="topbar-menu-wrap">
+          <button id="notificationToggle" class="topbar-icon-btn relative" type="button" aria-label="Thông báo" aria-expanded="false">
+            <i data-lucide="bell" class="h-[26px] w-[26px]"></i>
+            <span id="notificationBadge" class="absolute right-0 top-1 grid h-5 min-w-5 place-items-center rounded-full bg-[#ff1e1e] px-1 text-[11px] font-semibold leading-none shadow">5</span>
+          </button>
+          <div id="notificationMenu" class="topbar-dropdown notification-dropdown" hidden>
+            <div class="dropdown-head">
+              <span>Thông báo</span>
+              <button id="markAllReadBtn" type="button">Đánh dấu đã đọc</button>
+            </div>
+            <div id="notificationList" class="notification-list"></div>
+          </div>
+        </div>
+
+        <div class="topbar-menu-wrap">
+          <button id="userMenuToggle" class="user-menu-btn" type="button" aria-label="Mở menu tài khoản" aria-expanded="false">
+            <div class="grid h-[46px] w-[46px] place-items-center rounded-full bg-white text-[#cf0000] shadow-sm">
+              <i data-lucide="user-round" class="h-7 w-7 fill-[#cf0000]/15"></i>
+            </div>
+            <div class="hidden text-left sm:block">
+              <div class="text-[15px] font-semibold leading-5">Nguyễn Văn A</div>
+              <div class="text-[13px] font-medium text-white/92">Phòng CS QLHC về TTXH</div>
+            </div>
+            <i data-lucide="chevron-down" class="user-chevron h-5 w-5 text-white"></i>
+          </button>
+          <div id="userMenu" class="topbar-dropdown user-dropdown" hidden>
+            <div class="user-card">
+              <div class="grid h-11 w-11 place-items-center rounded-full bg-[#fff2f2] text-[#cf0000]">
+                <i data-lucide="user-round" class="h-6 w-6"></i>
+              </div>
+              <div>
+                <div class="user-name">Nguyễn Văn A</div>
+                <div class="user-role">Phòng CS QLHC về TTXH</div>
+              </div>
+            </div>
+            <button class="dropdown-action" type="button" data-user-action="profile">
+              <i data-lucide="id-card" class="h-4 w-4"></i> Thông tin tài khoản
+            </button>
+            <button class="dropdown-action" type="button" data-user-action="settings">
+              <i data-lucide="settings" class="h-4 w-4"></i> Cài đặt hiển thị
+            </button>
+            <a class="dropdown-action danger" href="DangNhap.html">
+              <i data-lucide="log-out" class="h-4 w-4"></i> Đăng xuất
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar fixed bottom-0 left-0 top-[80px] z-20 px-2 text-white flex flex-col justify-between">
+      <div class="sidebar-scroll flex-1">
+        <div class="nav-section mt-0">TỔNG QUAN</div>
+        <a href="#" class="nav-item mt-2">
+          <i data-lucide="house"></i>
+          <span class="nav-copy">Dashboard</span>
+        </a>
+
+        <div class="nav-section">NGHIỆP VỤ</div>
+        <a href="QuanLyHoSo.html" class="nav-item mt-2">
+          <i data-lucide="file-text"></i>
+          <span class="nav-copy">Quản lý hồ sơ</span>
+        </a>
+        <a href="CoSoDuLieuCSKD.html" class="nav-item">
+          <i data-lucide="database"></i>
+          <span class="nav-copy">Cơ sở dữ liệu CSKD-ANTT</span>
+        </a>
+        <a href="KiemTraCoSo.html" class="nav-item active">
+          <i data-lucide="clipboard-check"></i>
+          <span class="nav-copy">Kiểm tra cơ sở</span>
+        </a>
+        <a href="XuLyViPham.html" class="nav-item">
+          <i data-lucide="octagon-alert"></i>
+          <span class="nav-copy">Xử lý vi phạm</span>
+        </a>
+        <a href="QuanLyPhanAnh.html" class="nav-item">
+          <i data-lucide="message-square-warning"></i>
+          <span class="nav-copy">Quản lý phản ánh</span>
+        </a>
+
+        <div class="nav-section">BÁO CÁO</div>
+        <a href="BaoCao-ThongKe.html" class="nav-item mt-2"><i data-lucide="chart-column-big"></i>
+          <span class="nav-copy">Báo cáo - thống kê</span></a>
+
+        <div class="nav-section">CẤU HÌNH</div>
+        <a href="DanhMuc.html" class="nav-item mt-2"><i data-lucide="folder"></i>
+          <span class="nav-copy">Danh mục dùng chung</span></a>
+        <a href="#" class="nav-item">
+          <i data-lucide="settings"></i>
+          <span class="nav-copy">Quản trị hệ thống</span>
+        </a>
+      </div>
+
+      <!-- Bottom action in sidebar -->
+      <div class="border-t border-white/10 p-2 shrink-0">
+        <button class="nav-item w-full justify-start text-left text-white/70 hover:text-white" type="button">
+          <i data-lucide="help-circle"></i>
+          <span class="nav-copy">Hướng dẫn sử dụng</span>
+        </button>
+        <button id="sidebarToggle" class="sidebar-toggle mt-2" type="button" aria-label="Thu gọn menu" aria-expanded="true">
+          <i data-lucide="chevron-left" class="toggle-icon"></i>
+          <span class="collapse-label">Thu gọn</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="content min-h-screen pt-[80px]">
+      <div class="module-page px-6 pb-7 pt-6 lg:px-7">
+        <!-- Component: Breadcrumbs & Header Actions -->
+        <section class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-5">
+          <div class="flex items-center gap-2 text-[13px] font-medium text-[#6b7280]">
+            <i data-lucide="house" class="h-4 w-4 text-[#9098a5]"></i>
+            <a href="../index.html" class="hover:text-red-600 transition-colors">Trang chủ</a>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
+            <a href="KiemTraCoSo.html" class="hover:text-red-600 transition-colors">Kiểm tra cơ sở</a>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
+            <a href="KiemTraCoSo.html" class="hover:text-red-600 transition-colors">Danh sách cuộc kiểm tra</a>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
+            <span class="text-gray-900 font-semibold">Chi tiết cuộc kiểm tra KT-2024-0001</span>
+          </div>
+          <div class="flex flex-wrap gap-3">
+            <div id="viewModeActions" class="flex gap-2">
+              <a class="px-4 py-2 text-xs font-semibold text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition shadow-sm flex items-center gap-1.5 transition-colors" href="KiemTraCoSo.html">
+                <i data-lucide="arrow-left" class="h-4 w-4"></i> Quay lại
+              </a>
+              <button type="button" class="px-4 py-2 text-xs font-semibold text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition shadow-sm flex items-center gap-1.5 transition-colors" onclick="window.print()">
+                <i data-lucide="printer" class="h-4 w-4"></i> In
+              </button>
+              <button type="button" id="btnToggleEdit" class="px-4 py-2 text-xs font-semibold text-white bg-[#cf0000] border border-[#cf0000] rounded-lg hover:bg-[#b00000] transition shadow-sm flex items-center gap-1.5 transition-colors">
+                <i data-lucide="edit" class="h-4 w-4"></i> Chỉnh sửa
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Component: Description only (since H1 is removed) -->
+        <div class="mb-6">
+          <p class="text-[13px] text-gray-500">Mã kiểm tra: <strong class="text-blue-600">KT-2024-0001</strong></p>
+        </div>
+
+        <!-- VIEW MODE CONTAINER -->
+        <div id="viewModeContainer">
+          
+          <!-- Section 1: Thông tin cơ bản của cuộc kiểm tra -->
+          <div class="details-card mb-6">
+            <h3 class="details-title">
+              <i data-lucide="clipboard" class="h-5 w-5 text-[#cf0000]"></i> 1. Thông tin cơ bản của cuộc kiểm tra
+            </h3>
+            <div class="flex flex-col xl:flex-row gap-6 justify-between">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-1 flex-1">
+                
+                <!-- Left Column: Kế hoạch -->
+                <div class="space-y-0.5">
+                  <div class="info-row">
+                    <span class="info-label">Mã kiểm tra:</span>
+                    <span class="info-value text-blue-600" id="viewPlanCode">KT-2024-0001</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="info-label">Ngày kiểm tra:</span>
+                    <span class="info-value" id="viewPlanDate">15/05/2024 15:30</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="info-label">Đơn vị thực hiện:</span>
+                    <span class="info-value font-medium text-gray-800" id="viewPlanAgency">Phòng CS QLHC về TTXH</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="info-label">Cán bộ / Đội kiểm tra:</span>
+                    <span class="info-value font-medium text-gray-800" id="viewLeaderAndMembers">Nguyễn Văn A (Trưởng đoàn) (Nam), Trần Thị B, Phạm Văn C</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="info-label">Mục đích / lý do kiểm tra:</span>
+                    <span class="info-value font-medium text-gray-800" id="viewPlanPurpose">Kiểm tra định kỳ theo kế hoạch Quý I/2024 đối với cơ sở kinh doanh dịch vụ lưu trú.</span>
+                  </div>
+                </div>
+
+                <!-- Right Column: Cơ sở -->
+                <div class="space-y-0.5 border-t md:border-t-0 md:border-l md:pl-8 pt-4 md:pt-0">
+                  <div class="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-2">Cơ sở bị kiểm tra</div>
+                  <div class="info-row">
+                    <span class="info-label">Tên cơ sở:</span>
+                    <span class="info-value text-blue-600 font-bold" id="viewFacilityName">Khách sạn Ninh Bình Hotel</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="info-label">Loại hình kinh doanh:</span>
+                    <span class="info-value" id="viewFacilityType">Dịch vụ lưu trú</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="info-label">Địa chỉ:</span>
+                    <span class="info-value text-xs font-semibold text-gray-800 leading-normal" id="viewFacilityAddress">Số 12, đường Trần Hưng Đạo, P. Đông Thành, TP. Ninh Bình, Ninh Bình</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="info-label">Người đại diện / quản lý:</span>
+                    <span class="info-value" id="viewFacilityOwner">Trần Văn B</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="info-label">Số điện thoại liên hệ:</span>
+                    <span class="info-value" id="viewFacilityPhone">0229 3 888 999</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="info-label">Trạng thái giấy phép:</span>
+                    <span class="info-value" id="viewFacilityLicenseStatus">Giấy phép đủ điều kiện</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="info-label">Số giấy phép:</span>
+                    <span class="info-value text-gray-900" id="viewFacilityLicenseNum">12A3456789</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Far Right: Facility visual preview image -->
+              <div class="shrink-0 flex items-center justify-center border border-gray-100 p-1 bg-gray-50 rounded-lg">
+                <img id="viewFacilityImg" class="w-48 h-32 rounded object-cover shadow-sm" src="../public/Hotel/Ht1.jpg" alt="Khách sạn Ninh Bình Hotel" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 2: Chi tiết trạng thái và kết quả -->
+          <div class="details-card mb-6">
+            <h3 class="details-title">
+              <i data-lucide="check-square" class="h-5 w-5 text-[#cf0000]"></i> 2. Chi tiết trạng thái và kết quả
+            </h3>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+              
+              <!-- Left Side: Badges -->
+              <div class="space-y-4">
+                <div class="flex items-center gap-6 py-2 border-b border-gray-50">
+                  <span class="text-xs font-bold text-gray-500 w-36 uppercase tracking-wider">Trạng thái cuộc kiểm tra:</span>
+                  <span id="viewStatusBadge" class="bg-green-50 text-green-700 border border-green-200 px-3 py-1 rounded-full text-xs font-bold inline-flex items-center gap-1 shadow-sm">
+                    <i data-lucide="check-circle" class="h-3.5 w-3.5"></i> Hoàn thành
+                  </span>
+                </div>
+                <div class="flex items-center gap-6 py-2 border-b border-gray-50">
+                  <span class="text-xs font-bold text-gray-500 w-36 uppercase tracking-wider">Kết quả tổng quan:</span>
+                  <span id="viewResultBadge" class="bg-red-50 text-red-700 border border-red-200 px-3 py-1 rounded-full text-xs font-bold inline-flex items-center gap-1 shadow-sm">
+                    <i data-lucide="x-circle" class="h-3.5 w-3.5"></i> Không đạt
+                  </span>
+                </div>
+              </div>
+
+              <!-- Right Side: Statistics Grid -->
+              <div class="bg-gray-50 p-4 border border-gray-100 rounded-lg shadow-inner">
+                <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2.5">Tổng quan kết quả tiêu chí</div>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                  <div class="bg-white border border-gray-200 p-2.5 rounded text-center">
+                    <div class="text-[10px] font-bold text-gray-400">TIÊU CHÍ</div>
+                    <div class="text-base font-black text-gray-800 mt-0.5" id="viewScoreTotal">24</div>
+                  </div>
+                  <div class="bg-green-50 border border-green-200 p-2.5 rounded text-center">
+                    <div class="text-[10px] font-bold text-green-600">ĐẠT</div>
+                    <div class="text-base font-black text-green-700 mt-0.5" id="viewScorePass">16 <span class="text-[9px] font-bold" id="viewScorePassPct">(66.7%)</span></div>
+                  </div>
+                  <div class="bg-red-50 border border-red-200 p-2.5 rounded text-center">
+                    <div class="text-[10px] font-bold text-red-600">KHÔNG ĐẠT</div>
+                    <div class="text-base font-black text-red-700 mt-0.5" id="viewScoreFail">6 <span class="text-[9px] font-bold" id="viewScoreFailPct">(25.0%)</span></div>
+                  </div>
+                  <div class="bg-gray-100 border border-gray-200 p-2.5 rounded text-center">
+                    <div class="text-[10px] font-bold text-gray-500 font-medium">K.ÁP DỤNG</div>
+                    <div class="text-base font-black text-gray-700 mt-0.5" id="viewScoreNA">2 <span class="text-[9px] font-bold" id="viewScoreNAPct">(8.3%)</span></div>
+                  </div>
+                </div>
+                <div class="mt-3 text-xs font-bold text-red-600 flex items-center gap-1" id="viewViolationCountSummary">
+                  <i data-lucide="alert-triangle" class="h-3.5 w-3.5"></i> Có vi phạm: 3 hạng mục phát hiện lỗi kỹ thuật.
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Bottom: Nhận xét chung -->
+            <div class="mt-6 p-4 border-l-4 border-[#cf0000] bg-red-50/30 rounded-r-lg">
+              <h4 class="text-xs font-bold text-gray-700 uppercase mb-1">Nhận xét chung của đoàn kiểm tra</h4>
+              <p class="text-xs text-gray-700 font-medium leading-relaxed" id="viewPlanOpinion">
+                Cơ sở còn tồn tại một số vi phạm về PCCC và quản lý ngành nghề kinh doanh. Đề nghị cơ sở khắc phục trong thời hạn quy định.
+              </p>
+            </div>
+          </div>
+
+          <!-- Section 3: Các vi phạm chi tiết (nếu có) -->
+          <div class="details-card mb-6">
+            <h3 class="details-title">
+              <i data-lucide="alert-circle" class="h-5 w-5 text-[#cf0000]"></i> 3. Các vi phạm chi tiết (nếu có)
+            </h3>
+            <div class="overflow-x-auto border border-gray-200 rounded-lg">
+              <table class="w-full text-left border-collapse text-xs">
+                <thead>
+                  <tr class="bg-gray-50 border-b border-gray-200 font-bold text-gray-700">
+                    <th class="p-3 w-12 text-center">STT</th>
+                    <th class="p-3 w-[35%]">Nội dung vi phạm</th>
+                    <th class="p-3">Loại vi phạm</th>
+                    <th class="p-3 w-28 text-center">Mức độ</th>
+                    <th class="p-3 w-28 text-center">Bằng chứng</th>
+                    <th class="p-3 w-[25%]">Ghi chú của cán bộ</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200" id="viewViolationsTableBody">
+                  <tr>
+                    <td class="p-3 text-center font-bold text-gray-500">1</td>
+                    <td class="p-3 font-semibold text-gray-900">Không ghi chép đầy đủ sổ quản lý kinh doanh ngành nghề có điều kiện</td>
+                    <td class="p-3">Quản lý ngành nghề</td>
+                    <td class="p-3 text-center">
+                      <span class="bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.5 rounded text-[10px] font-bold">Nhẹ</span>
+                    </td>
+                    <td class="p-3 text-center">
+                      <a href="#" class="text-blue-600 hover:text-blue-800 inline-flex items-center gap-1 font-semibold"><i data-lucide="image" class="h-4 w-4"></i> Ảnh 1</a>
+                    </td>
+                    <td class="p-3 font-medium text-gray-600">Đã lập biên bản nhắc nhở khắc phục ngay.</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 text-center font-bold text-gray-500">2</td>
+                    <td class="p-3 font-semibold text-gray-900">02 bình chữa cháy bột tại hành lang tầng 2 đã quá hạn kiểm định</td>
+                    <td class="p-3">Phòng cháy chữa cháy</td>
+                    <td class="p-3 text-center">
+                      <span class="bg-red-50 text-red-700 border border-red-200 px-2 py-0.5 rounded text-[10px] font-bold">Nghiêm trọng</span>
+                    </td>
+                    <td class="p-3 text-center">
+                      <a href="#" class="text-blue-600 hover:text-blue-800 inline-flex items-center gap-1 font-semibold"><i data-lucide="image" class="h-4 w-4"></i> Ảnh 2</a>
+                    </td>
+                    <td class="p-3 font-medium text-gray-600">Yêu cầu mang đi kiểm định hoặc thay mới trước ngày 20/05/2024.</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 text-center font-bold text-gray-500">3</td>
+                    <td class="p-3 font-semibold text-gray-900">Chưa khai báo lưu trú đúng thời hạn quy định cho 01 khách nước ngoài</td>
+                    <td class="p-3">Quản lý cư trú</td>
+                    <td class="p-3 text-center">
+                      <span class="bg-orange-50 text-orange-700 border border-orange-200 px-2 py-0.5 rounded text-[10px] font-bold">Trung bình</span>
+                    </td>
+                    <td class="p-3 text-center">
+                      <a href="#" class="text-blue-600 hover:text-blue-800 inline-flex items-center gap-1 font-semibold"><i data-lucide="image" class="h-4 w-4"></i> Ảnh 3</a>
+                    </td>
+                    <td class="p-3 font-medium text-gray-600">Đã phạt cảnh cáo hành chính đối với nhân viên lễ tân trực ban.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Section 4: Tài liệu đính kèm -->
+          <div class="details-card mb-6">
+            <h3 class="details-title">
+              <i data-lucide="paperclip" class="h-5 w-5 text-[#cf0000]"></i> 4. Tài liệu đính kèm
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="viewAttachmentsGrid">
+              
+              <a href="#" class="flex items-center gap-3 p-3 bg-gray-50 border border-gray-200 rounded-lg hover:border-gray-300 transition-all hover:shadow-sm">
+                <div class="w-10 h-10 bg-red-100 text-red-600 rounded flex items-center justify-center font-bold text-xs shrink-0">PDF</div>
+                <div class="flex-1 min-w-0">
+                  <p class="text-xs font-bold text-gray-900 truncate">BB_KT-2024-0001.pdf</p>
+                  <p class="text-[10px] text-gray-500 font-medium">1.25 MB</p>
+                </div>
+                <i data-lucide="download" class="h-4 w-4 text-gray-400 hover:text-gray-900 shrink-0"></i>
+              </a>
+
+              <a href="#" class="flex items-center gap-3 p-3 bg-gray-50 border border-gray-200 rounded-lg hover:border-gray-300 transition-all hover:shadow-sm">
+                <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded flex items-center justify-center font-bold text-xs shrink-0">DOCX</div>
+                <div class="flex-1 min-w-0">
+                  <p class="text-xs font-bold text-gray-900 truncate">PKT_KT-2024-0001.docx</p>
+                  <p class="text-[10px] text-gray-500 font-medium">256 KB</p>
+                </div>
+                <i data-lucide="download" class="h-4 w-4 text-gray-400 hover:text-gray-900 shrink-0"></i>
+              </a>
+
+              <a href="#" class="flex items-center gap-3 p-3 bg-gray-50 border border-gray-200 rounded-lg hover:border-gray-300 transition-all hover:shadow-sm">
+                <div class="w-10 h-10 bg-green-100 text-green-600 rounded flex items-center justify-center font-bold text-xs shrink-0">XLSX</div>
+                <div class="flex-1 min-w-0">
+                  <p class="text-xs font-bold text-gray-900 truncate">Checklist_KT-0001.xlsx</p>
+                  <p class="text-[10px] text-gray-500 font-medium">98 KB</p>
+                </div>
+                <i data-lucide="download" class="h-4 w-4 text-gray-400 hover:text-gray-900 shrink-0"></i>
+              </a>
+
+              <a href="#" class="flex items-center gap-3 p-3 bg-gray-50 border border-gray-200 rounded-lg hover:border-gray-300 transition-all hover:shadow-sm">
+                <div class="w-10 h-10 bg-purple-100 text-purple-600 rounded flex items-center justify-center font-bold text-xs shrink-0">ZIP</div>
+                <div class="flex-1 min-w-0">
+                  <p class="text-xs font-bold text-gray-900 truncate">Anh_chung_minh.zip</p>
+                  <p class="text-[10px] text-gray-500 font-medium">12.5 MB</p>
+                </div>
+                <i data-lucide="download" class="h-4 w-4 text-gray-400 hover:text-gray-900 shrink-0"></i>
+              </a>
+
+            </div>
+          </div>
+
+          <!-- Footer Metadata -->
+          <div class="text-[11px] text-gray-400 font-semibold flex justify-end gap-6 mb-6">
+            <span>Ngày tạo: 15/05/2024 16:00 bởi Nguyễn Văn A</span>
+            <span>Cập nhật cuối: <span id="viewLastUpdated">15/05/2024 17:15 bởi Nguyễn Văn A</span></span>
+          </div>
+
+        </div>
+
+        <!-- EDIT MODE CONTAINER (Form styled like KiemTraCoSo-TaoKeHoach.html) -->
+        <div id="editModeContainer" hidden>
+          <form id="editForm" onsubmit="event.preventDefault();">
+
+            <!-- Section 1: Thông tin cơ sở -->
+            <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm mb-6">
+              <h3 class="text-sm font-bold text-[#cf0000] flex items-center gap-2 mb-5 pb-2 border-b border-gray-100">
+                <i data-lucide="building" class="h-4 w-4"></i> 1. Thông tin cơ sở
+              </h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <label class="block">
+                  <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase tracking-wide">Tên cơ sở <b class="text-red-500">*</b></span>
+                  <select id="editFacilitySelect" class="field w-full" required>
+                    <option value="CSDD01248" selected>Khách sạn Ninh Bình Hotel</option>
+                    <option value="CSDD01238">Khách sạn Hoa Lư</option>
+                    <option value="CSDD01247">Karaoke New Star</option>
+                    <option value="CSDD01241">Cầm đồ Hoàng Long</option>
+                  </select>
+                </label>
+
+                <label class="block">
+                  <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase tracking-wide">Loại hình kinh doanh <b class="text-red-500">*</b></span>
+                  <select id="editFacilityType" class="field w-full bg-gray-50 cursor-not-allowed" disabled required>
+                    <option value="Dịch vụ lưu trú" selected>Dịch vụ lưu trú</option>
+                    <option value="Karaoke">Karaoke</option>
+                    <option value="Cầm đồ">Cầm đồ</option>
+                  </select>
+                </label>
+
+                <label class="col-span-2 block">
+                  <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase tracking-wide">Địa chỉ <b class="text-red-500">*</b></span>
+                  <input id="editFacilityAddress" class="field w-full bg-gray-50 cursor-not-allowed" type="text" value="Số 12, đường Trần Hưng Đạo, P. Đông Thành, TP. Ninh Bình, Ninh Bình" readonly required />
+                </label>
+
+                <label class="block">
+                  <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase tracking-wide">Người đại diện / quản lý <b class="text-red-500">*</b></span>
+                  <input id="editFacilityOwner" class="field w-full bg-gray-50 cursor-not-allowed" type="text" value="Trần Văn B" readonly required />
+                </label>
+
+                <label class="block">
+                  <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase tracking-wide">Số điện thoại liên hệ <b class="text-red-500">*</b></span>
+                  <input id="editFacilityPhone" class="field w-full bg-gray-50 cursor-not-allowed" type="text" value="0229 3 888 999" readonly required />
+                </label>
+
+                <label class="block">
+                  <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase tracking-wide">Giấy phép / trạng thái giấy phép (nếu có)</span>
+                  <select id="editFacilityLicenseStatus" class="field w-full bg-gray-50 cursor-not-allowed" disabled>
+                    <option value="Giấy phép đủ điều kiện" selected>Giấy phép đủ điều kiện</option>
+                    <option value="Chưa cấp">Chưa cấp</option>
+                  </select>
+                </label>
+
+                <label class="block">
+                  <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase tracking-wide">Số giấy phép</span>
+                  <input id="editFacilityLicenseNum" class="field w-full bg-gray-50 cursor-not-allowed" type="text" value="12A3456789" readonly />
+                </label>
+              </div>
+            </div>
+
+            <!-- Section 2: Thông tin kế hoạch kiểm tra -->
+            <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm mb-6">
+              <h3 class="text-sm font-bold text-[#cf0000] flex items-center gap-2 mb-5 pb-2 border-b border-gray-100">
+                <i data-lucide="clipboard-list" class="h-4 w-4"></i> 2. Thông tin kế hoạch kiểm tra
+              </h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <label class="block">
+                  <span class="block mb-1 text-xs font-bold text-gray-700 uppercase tracking-wide">Mã kiểm tra <b class="text-red-500">*</b></span>
+                  <input class="field w-full bg-gray-50 text-gray-500 cursor-not-allowed" type="text" id="editPlanCodeField" value="KT-2024-0001" readonly />
+                </label>
+
+                <label class="block">
+                  <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase tracking-wide">Đơn vị thực hiện <b class="text-red-500">*</b></span>
+                  <select class="field w-full" id="editPlanAgency" required>
+                    <option value="Phòng CS QLHC về TTXH" selected>Phòng CS QLHC về TTXH</option>
+                    <option value="Đội QLHC về TTXH - CA TP. Ninh Bình">Đội QLHC về TTXH - CA TP. Ninh Bình</option>
+                  </select>
+                </label>
+
+                <label class="block">
+                  <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase tracking-wide">Ngày kiểm tra <b class="text-red-500">*</b></span>
+                  <div class="relative">
+                    <input class="field w-full pr-10" type="date" id="editPlanDate" value="2024-05-15" required />
+                    <i data-lucide="calendar" class="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none"></i>
+                  </div>
+                </label>
+
+                <label class="block">
+                  <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase tracking-wide">Giờ kiểm tra <b class="text-red-500">*</b></span>
+                  <div class="relative">
+                    <input class="field w-full pr-10" type="time" id="editPlanTime" value="15:30" required />
+                    <i data-lucide="clock" class="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none"></i>
+                  </div>
+                </label>
+
+                <label class="block">
+                  <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase tracking-wide">Trưởng đoàn kiểm tra <b class="text-red-500">*</b></span>
+                  <div class="relative">
+                    <input class="field w-full pr-10" type="text" id="editLeaderInput" value="Nguyễn Văn A" required />
+                    <i data-lucide="user" class="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400"></i>
+                  </div>
+                </label>
+
+                <div class="block">
+                  <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase tracking-wide">Thành viên khác <b class="text-red-500">*</b></span>
+                  <div class="flex gap-2 items-center">
+                    <div class="relative flex-1">
+                      <div id="editMembersTagsContainer" class="field w-full min-h-[42px] py-1 px-2 flex flex-wrap gap-1.5 items-center bg-white border border-gray-300 rounded focus-within:ring-2 focus-within:ring-blue-500">
+                        <span class="inline-flex items-center gap-1 bg-gray-100 border border-gray-200 text-xs font-semibold px-2 py-0.5 rounded text-gray-700">
+                          Trần Thị B <button type="button" class="text-gray-400 hover:text-gray-600 font-bold ml-0.5 btn-remove-member-tag">&times;</button>
+                        </span>
+                        <span class="inline-flex items-center gap-1 bg-gray-100 border border-gray-200 text-xs font-semibold px-2 py-0.5 rounded text-gray-700">
+                          Phạm Văn C <button type="button" class="text-gray-400 hover:text-gray-600 font-bold ml-0.5 btn-remove-member-tag">&times;</button>
+                        </span>
+                        <input type="text" id="addMemberInput" class="flex-1 min-w-[60px] bg-transparent border-none outline-none text-xs text-gray-700" placeholder="Thêm..." />
+                      </div>
+                    </div>
+                    <button type="button" id="btnAddMemberTag" class="border border-red-200 text-[#cf0000] px-4 py-2.5 rounded text-xs font-bold hover:bg-red-50 transition shrink-0 flex items-center gap-1">
+                      + Thêm
+                    </button>
+                  </div>
+                </div>
+
+                <label class="col-span-2 block">
+                  <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase tracking-wide">Mục đích / lý do kiểm tra <b class="text-red-500">*</b></span>
+                  <textarea class="field w-full h-16 py-2" id="editPlanPurpose" required>Kiểm tra định kỳ theo kế hoạch Quý I/2024 đối với cơ sở kinh doanh dịch vụ lưu trú.</textarea>
+                </label>
+              </div>
+            </div>
+
+            <!-- Section 3: Chi tiết trạng thái và kết quả -->
+            <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm mb-6">
+              <h3 class="text-sm font-bold text-[#cf0000] flex items-center gap-2 mb-5 pb-2 border-b border-gray-100">
+                <i data-lucide="check-square" class="h-4 w-4"></i> 3. Chi tiết trạng thái và kết quả
+              </h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+                <label class="block">
+                  <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase tracking-wide">Trạng thái cuộc kiểm tra <b class="text-red-500">*</b></span>
+                  <select id="editStatusSelect" class="field w-full" required>
+                    <option value="Hoàn thành" selected>Hoàn thành</option>
+                    <option value="Đang thực hiện">Đang thực hiện</option>
+                    <option value="Chờ kiểm tra lại">Chờ kiểm tra lại</option>
+                  </select>
+                </label>
+                <label class="block">
+                  <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase tracking-wide">Kết quả tổng quan <b class="text-red-500">*</b></span>
+                  <select id="editResultSelect" class="field w-full" required>
+                    <option value="Đạt">Đạt</option>
+                    <option value="Không đạt" selected>Không đạt</option>
+                  </select>
+                </label>
+                
+                <!-- Score fields for criteria counts -->
+                <div class="col-span-2 grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 bg-gray-50 border border-gray-200 rounded-lg">
+                  <label class="block">
+                    <span class="block mb-1 text-[10px] font-bold text-gray-500 uppercase">Tiêu chí kiểm tra</span>
+                    <input type="number" id="editScoreTotal" class="field w-full text-xs" value="24" required />
+                  </label>
+                  <label class="block">
+                    <span class="block mb-1 text-[10px] font-bold text-green-600 uppercase">Đạt</span>
+                    <input type="number" id="editScorePass" class="field w-full text-xs" value="16" required />
+                  </label>
+                  <label class="block">
+                    <span class="block mb-1 text-[10px] font-bold text-red-600 uppercase">Không đạt</span>
+                    <input type="number" id="editScoreFail" class="field w-full text-xs" value="6" required />
+                  </label>
+                  <label class="block">
+                    <span class="block mb-1 text-[10px] font-bold text-gray-500 uppercase font-medium">Không áp dụng</span>
+                    <input type="number" id="editScoreNA" class="field w-full text-xs" value="2" required />
+                  </label>
+                </div>
+
+                <label class="col-span-2 block">
+                  <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase tracking-wide">Nhận xét chung của đoàn kiểm tra</span>
+                  <textarea class="field w-full h-16 py-2" id="editPlanOpinion">Cơ sở còn tồn tại một số vi phạm về PCCC và quản lý ngành nghề kinh doanh. Đề nghị cơ sở khắc phục trong thời hạn quy định.</textarea>
+                </label>
+              </div>
+            </div>
+
+            <!-- Section 4: Các vi phạm chi tiết (nếu có) -->
+            <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm mb-6">
+              <h3 class="text-sm font-bold text-[#cf0000] flex items-center gap-2 mb-2 pb-2">
+                <i data-lucide="alert-circle" class="h-4 w-4"></i> 4. Các vi phạm chi tiết (nếu có)
+              </h3>
+              <p class="text-xs text-gray-500 mb-4 font-medium">Danh sách các vi phạm ghi nhận trong biên bản</p>
+              
+              <div class="overflow-x-auto border border-gray-200 rounded-lg">
+                <table class="w-full text-left border-collapse text-xs">
+                  <thead>
+                    <tr class="bg-gray-50 border-b border-gray-200 font-bold text-gray-700">
+                      <th class="p-3 w-12 text-center">STT</th>
+                      <th class="p-3 w-[35%]">Nội dung vi phạm</th>
+                      <th class="p-3 w-[20%]">Loại vi phạm</th>
+                      <th class="p-3 w-28 text-center">Mức độ</th>
+                      <th class="p-3 w-24 text-center">Bằng chứng</th>
+                      <th class="p-3">Ghi chú của cán bộ</th>
+                      <th class="p-3 w-16 text-center">Thao tác</th>
+                    </tr>
+                  </thead>
+                  <tbody id="editViolationsTableBody">
+                    <tr class="border-b border-gray-100 hover:bg-gray-50">
+                      <td class="p-3 text-center font-medium text-gray-500 row-violation-stt">1</td>
+                      <td class="p-3">
+                        <input type="text" class="field w-full bg-white border border-gray-200 p-1 px-2 text-xs font-semibold" value="Không ghi chép đầy đủ sổ quản lý kinh doanh ngành nghề có điều kiện" />
+                      </td>
+                      <td class="p-3">
+                        <input type="text" class="field w-full bg-white border border-gray-200 p-1 px-2 text-xs" value="Quản lý ngành nghề" />
+                      </td>
+                      <td class="p-3 text-center">
+                        <select class="field w-full p-1 text-[10px] font-semibold text-center select-violation-level">
+                          <option value="Nhẹ" selected>Nhẹ</option>
+                          <option value="Trung bình">Trung bình</option>
+                          <option value="Nghiêm trọng">Nghiêm trọng</option>
+                        </select>
+                      </td>
+                      <td class="p-3 text-center">
+                        <input type="text" class="field w-full bg-white border border-gray-200 p-1 px-2 text-xs text-center text-blue-600" value="Ảnh 1" />
+                      </td>
+                      <td class="p-3">
+                        <input type="text" class="field w-full bg-white border border-gray-200 p-1 px-2 text-xs" value="Đã lập biên bản nhắc nhở khắc phục ngay." />
+                      </td>
+                      <td class="p-3 text-center">
+                        <button type="button" class="text-gray-400 hover:text-red-500 transition-colors btn-delete-violation-row">
+                          <i data-lucide="trash-2" class="h-4 w-4 mx-auto"></i>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr class="border-b border-gray-100 hover:bg-gray-50">
+                      <td class="p-3 text-center font-medium text-gray-500 row-violation-stt">2</td>
+                      <td class="p-3">
+                        <input type="text" class="field w-full bg-white border border-gray-200 p-1 px-2 text-xs font-semibold" value="02 bình chữa cháy bột tại hành lang tầng 2 đã quá hạn kiểm định" />
+                      </td>
+                      <td class="p-3">
+                        <input type="text" class="field w-full bg-white border border-gray-200 p-1 px-2 text-xs" value="Phòng cháy chữa cháy" />
+                      </td>
+                      <td class="p-3 text-center">
+                        <select class="field w-full p-1 text-[10px] font-semibold text-center select-violation-level">
+                          <option value="Nhẹ">Nhẹ</option>
+                          <option value="Trung bình">Trung bình</option>
+                          <option value="Nghiêm trọng" selected>Nghiêm trọng</option>
+                        </select>
+                      </td>
+                      <td class="p-3 text-center">
+                        <input type="text" class="field w-full bg-white border border-gray-200 p-1 px-2 text-xs text-center text-blue-600" value="Ảnh 2" />
+                      </td>
+                      <td class="p-3">
+                        <input type="text" class="field w-full bg-white border border-gray-200 p-1 px-2 text-xs" value="Yêu cầu mang đi kiểm định hoặc thay mới trước ngày 20/05/2024." />
+                      </td>
+                      <td class="p-3 text-center">
+                        <button type="button" class="text-gray-400 hover:text-red-500 transition-colors btn-delete-violation-row">
+                          <i data-lucide="trash-2" class="h-4 w-4 mx-auto"></i>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr class="border-b border-gray-100 hover:bg-gray-50">
+                      <td class="p-3 text-center font-medium text-gray-500 row-violation-stt">3</td>
+                      <td class="p-3">
+                        <input type="text" class="field w-full bg-white border border-gray-200 p-1 px-2 text-xs font-semibold" value="Chưa khai báo lưu trú đúng thời hạn quy định cho 01 khách nước ngoài" />
+                      </td>
+                      <td class="p-3">
+                        <input type="text" class="field w-full bg-white border border-gray-200 p-1 px-2 text-xs" value="Quản lý cư trú" />
+                      </td>
+                      <td class="p-3 text-center">
+                        <select class="field w-full p-1 text-[10px] font-semibold text-center select-violation-level">
+                          <option value="Nhẹ">Nhẹ</option>
+                          <option value="Trung bình" selected>Trung bình</option>
+                          <option value="Nghiêm trọng">Nghiêm trọng</option>
+                        </select>
+                      </td>
+                      <td class="p-3 text-center">
+                        <input type="text" class="field w-full bg-white border border-gray-200 p-1 px-2 text-xs text-center text-blue-600" value="Ảnh 3" />
+                      </td>
+                      <td class="p-3">
+                        <input type="text" class="field w-full bg-white border border-gray-200 p-1 px-2 text-xs" value="Đã phạt cảnh cáo hành chính đối với nhân viên lễ tân trực ban." />
+                      </td>
+                      <td class="p-3 text-center">
+                        <button type="button" class="text-gray-400 hover:text-red-500 transition-colors btn-delete-violation-row">
+                          <i data-lucide="trash-2" class="h-4 w-4 mx-auto"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              
+              <button type="button" id="btnAddNewViolation" class="mt-3 border border-red-200 text-[#cf0000] px-4 py-2 rounded text-xs font-bold hover:bg-red-50 transition flex items-center gap-1.5">
+                <i data-lucide="plus" class="h-3.5 w-3.5"></i> Thêm vi phạm
+              </button>
+            </div>
+
+            <!-- Section 5: Tài liệu đính kèm & special notes -->
+            <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm mb-6">
+              <h3 class="text-sm font-bold text-[#cf0000] flex items-center gap-2 mb-5 pb-2 border-b border-gray-100">
+                <i data-lucide="paperclip" class="h-4 w-4"></i> 5. Tài liệu đính kèm
+              </h3>
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Attachments -->
+                <div>
+                  <h4 class="text-xs font-bold text-gray-700 uppercase tracking-wide mb-3">Tài liệu đính kèm biên bản</h4>
+                  <div class="space-y-2.5" id="editAttachmentsContainer">
+                    <div class="flex items-center gap-3 p-3 bg-gray-50 border border-gray-200 rounded-lg relative group">
+                      <div class="w-10 h-10 bg-red-100 text-red-600 rounded flex items-center justify-center font-bold text-xs shrink-0">PDF</div>
+                      <div class="flex-1 min-w-0">
+                        <p class="text-xs font-bold text-gray-900 truncate">BB_KT-2024-0001.pdf</p>
+                        <p class="text-[10px] text-gray-500 font-medium">1.25 MB</p>
+                      </div>
+                      <button type="button" class="text-gray-400 hover:text-gray-900"><i data-lucide="download" class="h-4 w-4"></i></button>
+                    </div>
+                    
+                    <div class="flex items-center gap-3 p-3 bg-gray-50 border border-gray-200 rounded-lg relative group">
+                      <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded flex items-center justify-center font-bold text-xs shrink-0">DOCX</div>
+                      <div class="flex-1 min-w-0">
+                        <p class="text-xs font-bold text-gray-900 truncate">PKT_KT-2024-0001.docx</p>
+                        <p class="text-[10px] text-gray-500 font-medium">256 KB</p>
+                      </div>
+                      <button type="button" class="text-gray-400 hover:text-gray-900"><i data-lucide="download" class="h-4 w-4"></i></button>
+                    </div>
+
+                    <div class="flex items-center gap-3 p-3 bg-gray-50 border border-gray-200 rounded-lg relative group">
+                      <div class="w-10 h-10 bg-green-100 text-green-600 rounded flex items-center justify-center font-bold text-xs shrink-0">XLSX</div>
+                      <div class="flex-1 min-w-0">
+                        <p class="text-xs font-bold text-gray-900 truncate">Checklist_KT-0001.xlsx</p>
+                        <p class="text-[10px] text-gray-500 font-medium">98 KB</p>
+                      </div>
+                      <button type="button" class="text-gray-400 hover:text-gray-900"><i data-lucide="download" class="h-4 w-4"></i></button>
+                    </div>
+
+                    <div class="flex items-center gap-3 p-3 bg-gray-50 border border-gray-200 rounded-lg relative group">
+                      <div class="w-10 h-10 bg-purple-100 text-purple-600 rounded flex items-center justify-center font-bold text-xs shrink-0">ZIP</div>
+                      <div class="flex-1 min-w-0">
+                        <p class="text-xs font-bold text-gray-900 truncate">Anh_chung_minh.zip</p>
+                        <p class="text-[10px] text-gray-500 font-medium">12.5 MB</p>
+                      </div>
+                      <button type="button" class="text-gray-400 hover:text-gray-900"><i data-lucide="download" class="h-4 w-4"></i></button>
+                    </div>
+                  </div>
+                  <button type="button" id="btnEditUploadDoc" class="mt-3 border border-red-200 text-[#cf0000] px-4 py-2 rounded text-xs font-bold hover:bg-red-50 transition flex items-center gap-1.5">
+                    <i data-lucide="plus" class="h-3.5 w-3.5"></i> Thêm tài liệu
+                  </button>
+                  <input type="file" id="editFileUploadInput" class="hidden" />
+                </div>
+                <!-- special notes -->
+                <div>
+                  <h4 class="text-xs font-bold text-gray-700 uppercase tracking-wide mb-3">Lưu ý / yêu cầu đặc biệt khác</h4>
+                  <textarea class="field w-full h-[120px] py-2" id="editSpecialNotes">Cơ sở cần nhanh chóng khắc phục các vi phạm về PCCC trước ngày 20/05/2024 để đảm bảo hoạt động an toàn.</textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Footer Action Buttons -->
+            <div class="flex justify-between items-center mt-6 pt-5 border-t border-gray-100">
+              <button type="button" id="btnCancelEditBottom" class="px-5 py-2.5 text-xs font-bold text-gray-600 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition flex items-center gap-1.5 shadow-sm">
+                Hủy bỏ
+              </button>
+              <button type="submit" class="px-6 py-2.5 text-xs font-bold text-white bg-[#cf0000] border border-[#cf0000] rounded-lg hover:bg-[#b00000] transition flex items-center gap-1.5 shadow-sm">
+                <i data-lucide="save" class="h-4 w-4"></i> Lưu kết quả
+              </button>
+            </div>
+
+          </form>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- SUCCESS POPUP MODAL -->
+  <div id="successModal" class="modal-overlay animate-[fadeIn_0.2s_ease-out]" hidden>
+    <section class="case-modal max-w-sm text-center p-6 bg-white rounded-xl shadow-2xl border border-gray-100" role="dialog" aria-modal="true">
+      <div class="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-4 text-green-600 shadow-inner">
+        <i data-lucide="check-check" class="h-8 w-8"></i>
+      </div>
+      <h2 class="text-base font-bold text-gray-900 mb-2">Cập nhật thành công</h2>
+      <p class="text-xs text-gray-500 mb-6 leading-relaxed">Kết quả cuộc kiểm tra đã được cập nhật thành công vào hệ thống.</p>
+      <button class="w-full py-2.5 bg-[#cf0000] text-white rounded-lg font-bold text-xs hover:bg-[#b00000] transition shadow-md" id="btnCloseModal" type="button">
+        Quay lại trang chi tiết
+      </button>
+    </section>
+  </div>
+
+  <script>
+    // Mock databases of facilities
+    const mockFacilities = {
+      "CSDD01248": {
+        name: "Khách sạn Ninh Bình Hotel",
+        type: "Dịch vụ lưu trú",
+        address: "Số 12, đường Trần Hưng Đạo, P. Đông Thành, TP. Ninh Bình, Ninh Bình",
+        owner: "Trần Văn B",
+        phone: "0229 3 888 999",
+        licenseStatus: "Giấy phép đủ điều kiện",
+        licenseNum: "12A3456789",
+        img: "../public/Hotel/Ht1.jpg"
+      },
+      "CSDD01238": {
+        name: "Khách sạn Hoa Lư",
+        type: "Dịch vụ lưu trú",
+        address: "Số 27, đường Trương Hán Siêu, TP. Ninh Bình, Ninh Bình",
+        owner: "Đinh Thị Hạnh",
+        phone: "0912 100 238",
+        licenseStatus: "Giấy phép đủ điều kiện",
+        licenseNum: "GP-2700810038",
+        img: "../public/Hotel/Ht3.jpg"
+      },
+      "CSDD01247": {
+        name: "Karaoke New Star",
+        type: "Karaoke",
+        address: "Số 45, đường Lê Thái Tổ, TP. Ninh Bình, Ninh Bình",
+        owner: "Trần Văn Nam",
+        phone: "0912 100 247",
+        licenseStatus: "Giấy phép đủ điều kiện",
+        licenseNum: "GP-2700810047",
+        img: "../public/Hotel/Ht2.jpg"
+      },
+      "CSDD01241": {
+        name: "Cầm đồ Hoàng Long",
+        type: "Cầm đồ",
+        address: "Số 15, đường Hoàng Diệu, TP. Ninh Bình, Ninh Bình",
+        owner: "Vũ Quốc Long",
+        phone: "0912 100 241",
+        licenseStatus: "Giấy phép đủ điều kiện",
+        licenseNum: "GP-2700810041",
+        img: "../public/Hotel/Ht1.jpg"
+      }
+    };
+
+    // Auto-populate logic on select change
+    const facilitySelect = document.getElementById('editFacilitySelect');
+    facilitySelect?.addEventListener('change', (e) => {
+      const id = e.target.value;
+      const data = mockFacilities[id];
+      if (!data) return;
+      document.getElementById('editFacilityType').value = data.type;
+      document.getElementById('editFacilityAddress').value = data.address;
+      document.getElementById('editFacilityOwner').value = data.owner;
+      document.getElementById('editFacilityPhone').value = data.phone;
+      document.getElementById('editFacilityLicenseStatus').value = data.licenseStatus;
+      document.getElementById('editFacilityLicenseNum').value = data.licenseNum;
+    });
+
+    // Collapsible Sidebar logic
+    document.querySelector('#sidebarToggle')?.addEventListener('click', () => {
+      document.querySelector('.desktop-shell')?.classList.toggle('is-collapsed');
+    });
+
+    // Topbar Dropdown toggling
+    const initMenuToggle = (btnId, menuId) => {
+      const btn = document.getElementById(btnId);
+      const menu = document.getElementById(menuId);
+      if (!btn || !menu) return;
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const opened = btn.classList.toggle('is-open');
+        menu.hidden = !opened;
+      });
+    };
+    initMenuToggle('notificationToggle', 'notificationMenu');
+    initMenuToggle('userMenuToggle', 'userMenu');
+    document.addEventListener('click', () => {
+      document.getElementById('notificationMenu').hidden = true;
+      document.getElementById('userMenu').hidden = true;
+      document.getElementById('notificationToggle')?.classList.remove('is-open');
+      document.getElementById('userMenuToggle')?.classList.remove('is-open');
+    });
+
+    // EDIT/VIEW TOGGLE STATE
+    const viewModeContainer = document.getElementById('viewModeContainer');
+    const editModeContainer = document.getElementById('editModeContainer');
+    const viewModeActions = document.getElementById('viewModeActions');
+
+    const toggleMode = (isEdit) => {
+      viewModeContainer.hidden = isEdit;
+      editModeContainer.hidden = !isEdit;
+      viewModeActions.hidden = isEdit;
+
+      // Sync query parameter state in URL
+      const url = new URL(window.location.href);
+      if (isEdit) {
+        url.searchParams.set('edit', 'true');
+      } else {
+        url.searchParams.delete('edit');
+      }
+      window.history.replaceState({}, '', url.toString());
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    document.getElementById('btnToggleEdit')?.addEventListener('click', () => toggleMode(true));
+    document.getElementById('btnCancelEditBottom')?.addEventListener('click', () => toggleMode(false));
+
+    // Check query params on load
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('edit') === 'true') {
+      toggleMode(true);
+    }
+
+    // Members Tags Edit list
+    const editMembersTagsContainer = document.getElementById('editMembersTagsContainer');
+    const addMemberInput = document.getElementById('addMemberInput');
+    const btnAddMemberTag = document.getElementById('btnAddMemberTag');
+
+    const addMemberTag = (name) => {
+      if (!name) return;
+      const tag = document.createElement('span');
+      tag.className = 'inline-flex items-center gap-1 bg-gray-100 border border-gray-200 text-xs font-semibold px-2 py-0.5 rounded text-gray-700 member-tag-badge';
+      tag.innerHTML = `${name} <button type="button" class="text-gray-400 hover:text-gray-600 font-bold ml-0.5 btn-remove-member-tag">&times;</button>`;
+      editMembersTagsContainer.insertBefore(tag, addMemberInput);
+    };
+
+    editMembersTagsContainer?.addEventListener('click', (e) => {
+      if (e.target.classList.contains('btn-remove-member-tag')) {
+        e.target.closest('.member-tag-badge').remove();
+      }
+    });
+
+    btnAddMemberTag?.addEventListener('click', () => {
+      const val = addMemberInput.value.trim();
+      if (val) {
+        addMemberTag(val);
+        addMemberInput.value = '';
+      }
+    });
+
+    addMemberInput?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        const val = addMemberInput.value.trim();
+        if (val) {
+          addMemberTag(val);
+          addMemberInput.value = '';
+        }
+      }
+    });
+
+    // Dynamic violations table logic
+    const editViolationsBody = document.getElementById('editViolationsTableBody');
+    const btnAddNewViolation = document.getElementById('btnAddNewViolation');
+
+    const updateViolationSTT = () => {
+      const rows = editViolationsBody.querySelectorAll('tr');
+      rows.forEach((row, idx) => {
+        row.querySelector('.row-violation-stt').textContent = idx + 1;
+      });
+    };
+
+    editViolationsBody?.addEventListener('click', (e) => {
+      const deleteBtn = e.target.closest('.btn-delete-violation-row');
+      if (deleteBtn) {
+        deleteBtn.closest('tr').remove();
+        updateViolationSTT();
+      }
+    });
+
+    btnAddNewViolation?.addEventListener('click', () => {
+      const tr = document.createElement('tr');
+      tr.className = 'border-b border-gray-100 hover:bg-gray-50';
+      tr.innerHTML = `
+        <td class="p-3 text-center font-medium text-gray-500 row-violation-stt"></td>
+        <td class="p-3">
+          <input type="text" class="field w-full bg-white border border-gray-200 p-1 px-2 text-xs font-semibold" placeholder="Nội dung vi phạm..." />
+        </td>
+        <td class="p-3">
+          <input type="text" class="field w-full bg-white border border-gray-200 p-1 px-2 text-xs" placeholder="Loại vi phạm..." />
+        </td>
+        <td class="p-3 text-center">
+          <select class="field w-full p-1 text-[10px] font-semibold text-center select-violation-level">
+            <option value="Nhẹ">Nhẹ</option>
+            <option value="Trung bình" selected>Trung bình</option>
+            <option value="Nghiêm trọng">Nghiêm trọng</option>
+          </select>
+        </td>
+        <td class="p-3 text-center">
+          <input type="text" class="field w-full bg-white border border-gray-200 p-1 px-2 text-xs text-center text-blue-600" value="Ảnh" />
+        </td>
+        <td class="p-3">
+          <input type="text" class="field w-full bg-white border border-gray-200 p-1 px-2 text-xs" placeholder="Ghi chú của cán bộ..." />
+        </td>
+        <td class="p-3 text-center">
+          <button type="button" class="text-gray-400 hover:text-red-500 transition-colors btn-delete-violation-row">
+            <i data-lucide="trash-2" class="h-4 w-4 mx-auto"></i>
+          </button>
+        </td>
+      `;
+      editViolationsBody.appendChild(tr);
+      updateViolationSTT();
+      if (window.lucide) window.lucide.createIcons();
+    });
+
+    // Reference files upload simulation
+    const editFileUploadInput = document.getElementById('editFileUploadInput');
+    const btnEditUploadDoc = document.getElementById('btnEditUploadDoc');
+    const editAttachmentsContainer = document.getElementById('editAttachmentsContainer');
+    const viewAttachmentsGrid = document.getElementById('viewAttachmentsGrid');
+
+    btnEditUploadDoc?.addEventListener('click', () => editFileUploadInput?.click());
+    editFileUploadInput?.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const sizeStr = file.size > 1024 * 1024 
+        ? `${(file.size / (1024 * 1024)).toFixed(2)} MB` 
+        : `${(file.size / 1024).toFixed(0)} KB`;
+      const ext = file.name.split('.').pop().toUpperCase();
+      
+      let badgeColor = 'bg-gray-100 text-gray-600';
+      let editBadgeColor = 'bg-gray-100 text-gray-600';
+      if (ext === 'PDF') {
+        badgeColor = 'bg-red-100 text-red-600';
+        editBadgeColor = 'bg-red-100 text-red-600';
+      } else if (ext === 'DOC' || ext === 'DOCX') {
+        badgeColor = 'bg-blue-100 text-blue-600';
+        editBadgeColor = 'bg-blue-100 text-blue-600';
+      } else if (ext === 'XLS' || ext === 'XLSX') {
+        badgeColor = 'bg-green-100 text-green-600';
+        editBadgeColor = 'bg-green-100 text-green-600';
+      }
+
+      // Add to Edit Mode list
+      const fileItem = document.createElement('div');
+      fileItem.className = 'flex items-center gap-3 p-3 bg-gray-50 border border-gray-200 rounded-lg relative group';
+      fileItem.innerHTML = `
+        <div class="w-10 h-10 ${editBadgeColor} rounded flex items-center justify-center font-bold text-xs shrink-0">${ext}</div>
+        <div class="flex-1 min-w-0">
+          <p class="text-xs font-bold text-gray-900 truncate">${file.name}</p>
+          <p class="text-[10px] text-gray-500 font-medium">${sizeStr}</p>
+        </div>
+        <button type="button" class="text-gray-400 hover:text-gray-900"><i data-lucide="download" class="h-4 w-4"></i></button>
+      `;
+      editAttachmentsContainer?.appendChild(fileItem);
+
+      // Add to View Mode grid
+      const viewItem = document.createElement('a');
+      viewItem.href = '#';
+      viewItem.className = 'flex items-center gap-3 p-3 bg-gray-50 border border-gray-200 rounded-lg hover:border-gray-300 transition-all hover:shadow-sm';
+      viewItem.innerHTML = `
+        <div class="w-10 h-10 ${badgeColor} rounded flex items-center justify-center font-bold text-xs shrink-0">${ext}</div>
+        <div class="flex-1 min-w-0">
+          <p class="text-xs font-bold text-gray-900 truncate">${file.name}</p>
+          <p class="text-[10px] text-gray-500 font-medium">${sizeStr}</p>
+        </div>
+        <i data-lucide="download" class="h-4 w-4 text-gray-400 hover:text-gray-900 shrink-0"></i>
+      `;
+      viewAttachmentsGrid?.appendChild(viewItem);
+
+      if (window.lucide) window.lucide.createIcons();
+    });
+
+    // Form submission and saving changes
+    const editForm = document.getElementById('editForm');
+    const successModal = document.getElementById('successModal');
+    
+
+    editForm?.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      // 1. Read values from form
+      const facilityId = document.getElementById('editFacilitySelect').value;
+      const facilityData = mockFacilities[facilityId];
+      const planAgency = document.getElementById('editPlanAgency').value;
+      const planDateVal = document.getElementById('editPlanDate').value;
+      const planTimeVal = document.getElementById('editPlanTime').value;
+      const leaderName = document.getElementById('editLeaderInput').value;
+      const planPurpose = document.getElementById('editPlanPurpose').value;
+      const statusSelectVal = document.getElementById('editStatusSelect').value;
+      const resultSelectVal = document.getElementById('editResultSelect').value;
+
+      const scoreTotal = parseInt(document.getElementById('editScoreTotal').value) || 0;
+      const scorePass = parseInt(document.getElementById('editScorePass').value) || 0;
+      const scoreFail = parseInt(document.getElementById('editScoreFail').value) || 0;
+      const scoreNA = parseInt(document.getElementById('editScoreNA').value) || 0;
+      const planOpinion = document.getElementById('editPlanOpinion').value;
+
+      // Extract member tags
+      const tagNodes = editMembersTagsContainer.querySelectorAll('.member-tag-badge');
+      const memberNames = [];
+      tagNodes.forEach(node => {
+        // textContent includes the cross icon text, so split
+        const text = node.textContent.trim().replace(/\s*×$/, '');
+        memberNames.push(text);
+      });
+
+      // 2. Synchronize View Mode DOM
+      // Basic info
+      document.getElementById('viewPlanAgency').textContent = planAgency;
+      
+      // Formatting Date: YYYY-MM-DD to DD/MM/YYYY
+      const parts = planDateVal.split('-');
+      const formattedDate = parts.length === 3 ? `${parts[2]}/${parts[1]}/${parts[0]}` : planDateVal;
+      document.getElementById('viewPlanDate').textContent = `${formattedDate} ${planTimeVal}`;
+      
+      document.getElementById('viewLeaderAndMembers').textContent = `${leaderName} (Trưởng đoàn) (Nam)` + (memberNames.length > 0 ? `, ${memberNames.join(', ')}` : '');
+      document.getElementById('viewPlanPurpose').textContent = planPurpose;
+
+      // Facility
+      document.getElementById('viewFacilityName').textContent = facilityData.name;
+      document.getElementById('viewFacilityType').textContent = facilityData.type;
+      document.getElementById('viewFacilityAddress').textContent = facilityData.address;
+      document.getElementById('viewFacilityOwner').textContent = facilityData.owner;
+      document.getElementById('viewFacilityPhone').textContent = facilityData.phone;
+      document.getElementById('viewFacilityLicenseStatus').textContent = facilityData.licenseStatus;
+      document.getElementById('viewFacilityLicenseNum').textContent = facilityData.licenseNum;
+      document.getElementById('viewFacilityImg').src = facilityData.img;
+      document.getElementById('viewFacilityImg').alt = facilityData.name;
+
+      // Status Badge
+      const statusBadge = document.getElementById('viewStatusBadge');
+      if (statusSelectVal === 'Hoàn thành') {
+        statusBadge.className = 'bg-green-50 text-green-700 border border-green-200 px-3 py-1 rounded-full text-xs font-bold inline-flex items-center gap-1 shadow-sm';
+        statusBadge.innerHTML = `<i data-lucide="check-circle" class="h-3.5 w-3.5"></i> Hoàn thành`;
+      } else if (statusSelectVal === 'Đang thực hiện') {
+        statusBadge.className = 'bg-blue-50 text-blue-700 border border-blue-200 px-3 py-1 rounded-full text-xs font-bold inline-flex items-center gap-1 shadow-sm';
+        statusBadge.innerHTML = `<i data-lucide="activity" class="h-3.5 w-3.5"></i> Đang thực hiện`;
+      } else {
+        statusBadge.className = 'bg-orange-50 text-orange-700 border border-orange-200 px-3 py-1 rounded-full text-xs font-bold inline-flex items-center gap-1 shadow-sm';
+        statusBadge.innerHTML = `<i data-lucide="help-circle" class="h-3.5 w-3.5"></i> Chờ kiểm tra lại`;
+      }
+
+      // Result Badge
+      const resultBadge = document.getElementById('viewResultBadge');
+      if (resultSelectVal === 'Đạt') {
+        resultBadge.className = 'bg-green-50 text-green-700 border border-green-200 px-3 py-1 rounded-full text-xs font-bold inline-flex items-center gap-1 shadow-sm';
+        resultBadge.innerHTML = `<i data-lucide="check-circle" class="h-3.5 w-3.5"></i> Đạt`;
+      } else {
+        resultBadge.className = 'bg-red-50 text-red-700 border border-red-200 px-3 py-1 rounded-full text-xs font-bold inline-flex items-center gap-1 shadow-sm';
+        resultBadge.innerHTML = `<i data-lucide="x-circle" class="h-3.5 w-3.5"></i> Không đạt`;
+      }
+
+      // Statistics Grid
+      document.getElementById('viewScoreTotal').textContent = scoreTotal;
+      
+      const pctPass = scoreTotal > 0 ? ((scorePass / scoreTotal) * 100).toFixed(1) : '0.0';
+      const pctFail = scoreTotal > 0 ? ((scoreFail / scoreTotal) * 100).toFixed(1) : '0.0';
+      const pctNA = scoreTotal > 0 ? ((scoreNA / scoreTotal) * 100).toFixed(1) : '0.0';
+
+      document.getElementById('viewScorePass').innerHTML = `${scorePass} <span class="text-[9px] font-bold">(${pctPass}%)</span>`;
+      document.getElementById('viewScoreFail').innerHTML = `${scoreFail} <span class="text-[9px] font-bold">(${pctFail}%)</span>`;
+      document.getElementById('viewScoreNA').innerHTML = `${scoreNA} <span class="text-[9px] font-bold">(${pctNA}%)</span>`;
+      
+      document.getElementById('viewPlanOpinion').textContent = planOpinion;
+
+      // Synchronize violations table
+      const viewViolationsTableBody = document.getElementById('viewViolationsTableBody');
+      viewViolationsTableBody.innerHTML = ''; // empty it first
+      
+      const editViolationRows = editViolationsBody.querySelectorAll('tr');
+      editViolationRows.forEach((row, index) => {
+        const textInputs = row.querySelectorAll('input');
+        const levelSelect = row.querySelector('.select-violation-level');
+        
+        const contentVal = textInputs[0].value;
+        const typeVal = textInputs[1].value;
+        const levelVal = levelSelect ? levelSelect.value : 'Trung bình';
+        const evidenceVal = textInputs[2].value; // Ảnh 1/2/3
+        const noteVal = textInputs[3].value;
+
+        let levelClass = 'bg-orange-50 text-orange-700 border border-orange-200';
+        if (levelVal === 'Nhẹ') levelClass = 'bg-blue-50 text-blue-700 border border-blue-200';
+        else if (levelVal === 'Nghiêm trọng') levelClass = 'bg-red-50 text-red-700 border border-red-200';
+
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-gray-50';
+        tr.innerHTML = `
+          <td class="p-3 text-center font-bold text-gray-500">${index + 1}</td>
+          <td class="p-3 font-semibold text-gray-900">${contentVal}</td>
+          <td class="p-3">${typeVal}</td>
+          <td class="p-3 text-center">
+            <span class="${levelClass} px-2 py-0.5 rounded text-[10px] font-bold">${levelVal}</span>
+          </td>
+          <td class="p-3 text-center">
+            <a href="#" class="text-blue-600 hover:text-blue-800 inline-flex items-center gap-1 font-semibold"><i data-lucide="image" class="h-4 w-4"></i> ${evidenceVal}</a>
+          </td>
+          <td class="p-3 font-medium text-gray-600">${noteVal}</td>
+        `;
+        viewViolationsTableBody.appendChild(tr);
+      });
+
+      // Update violation count summary text
+      const violationCount = editViolationRows.length;
+      document.getElementById('viewViolationCountSummary').innerHTML = `<i data-lucide="alert-triangle" class="h-3.5 w-3.5"></i> Có vi phạm: ${violationCount} hạng mục phát hiện lỗi kỹ thuật.`;
+
+      // Update footer metadata last updated text
+      const now = new Date();
+      const formatTime = (num) => String(num).padStart(2, '0');
+      const nowStr = `${formatTime(now.getDate())}/${formatTime(now.getMonth()+1)}/${now.getFullYear()} ${formatTime(now.getHours())}:${formatTime(now.getMinutes())}`;
+      document.getElementById('viewLastUpdated').textContent = `${nowStr} bởi Nguyễn Văn A`;
+
+      // Show success modal
+      successModal.hidden = false;
+    });
+
+    document.getElementById('btnCloseModal')?.addEventListener('click', () => {
+      successModal.hidden = true;
+      toggleMode(false);
+      if (window.lucide) window.lucide.createIcons();
+    });
+
+    window.addEventListener('load', () => {
+      if (window.lucide) window.lucide.createIcons();
+    });
+  </script>
+  <script src="../scripts/auth.js"></script>
+  <script src='../scripts/layout-sync.js'></script>
+</body>
+</html>

@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Danh mục dùng chung - CSKD-ANTT Ninh Bình</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- jQuery and jsTree CDNs -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/themes/default/style.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/jstree.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/quan-ly-ho-so.css">
+  <link rel="stylesheet" href="../styles/module-pages.css">
+  <link rel="stylesheet" href="../styles/admin-danh-sach.css">
+  <style>
+    /* Premium category styles */
+    .category-card {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    }
+    
+    .category-group-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .category-group-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      color: #475569;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    .category-group-item:hover {
+      background-color: #f8fafc;
+      color: #0f172a;
+    }
+
+    .category-group-item.active {
+      background-color: #eff6ff;
+      border-color: #bfdbfe;
+      color: #2563eb;
+    }
+
+    /* Modal overlay styles */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+    }
+    .modal-overlay[hidden] {
+      display: none !important;
+    }
+
+    /* jsTree Custom styling to fit in our premium theme */
+    .jstree-default .jstree-node {
+      margin-left: 18px !important;
+      padding-top: 4px !important;
+      padding-bottom: 4px !important;
+    }
+    .jstree-default .jstree-clicked {
+      background: #fef2f2 !important; /* Light red background */
+      border-radius: 6px;
+      color: #cf0000 !important; /* Brand red text */
+      font-weight: 600;
+      box-shadow: none !important;
+      border: 1px solid #fca5a5 !important; /* Light red border */
+    }
+    .jstree-default .jstree-hovered {
+      background: #f8fafc !important;
+      border-radius: 6px;
+      box-shadow: none !important;
+      border: 1px solid transparent !important;
+    }
+    .jstree-default .jstree-anchor {
+      font-family: 'Roboto', sans-serif;
+      font-size: 13px;
+      color: #334155;
+      height: 28px !important;
+      line-height: 28px !important;
+      padding-left: 6px !important;
+      padding-right: 6px !important;
+    }
+    .jstree-default .jstree-search {
+      color: #ef4444 !important;
+      font-style: italic;
+      font-weight: bold;
+    }
+    /* Hide lines */
+    .jstree-default .jstree-container-ul {
+      padding-left: 0 !important;
+    }
+    .jstree-default .jstree-node {
+      background-image: none !important;
+    }
+    .jstree-default .jstree-ocl {
+      background-image: none !important;
+      display: inline-flex !important;
+      align-items: center;
+      justify-content: center;
+      width: 24px !important;
+      height: 28px !important;
+    }
+    /* Open node arrow (Chevron down) */
+    .jstree-default .jstree-open > .jstree-ocl::before {
+      content: "";
+      display: block;
+      width: 12px;
+      height: 12px;
+      background-color: #64748b;
+      -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E") no-repeat center;
+      mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E") no-repeat center;
+    }
+    /* Closed node arrow (Chevron right) */
+    .jstree-default .jstree-closed > .jstree-ocl::before {
+      content: "";
+      display: block;
+      width: 12px;
+      height: 12px;
+      background-color: #64748b;
+      -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5l7 7-7 7'/%3E%3C/svg%3E") no-repeat center;
+      mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5l7 7-7 7'/%3E%3C/svg%3E") no-repeat center;
+    }
+    /* Leaf node arrow (hidden) */
+    .jstree-default .jstree-leaf > .jstree-ocl::before {
+      display: none !important;
+    }
+    /* Custom icons */
+    .jstree-default .jstree-icon.jstree-themeicon {
+      background-image: none !important;
+      display: inline-flex !important;
+      align-items: center;
+      justify-content: center;
+      width: 18px !important;
+      height: 28px !important;
+    }
+    /* Open Folder Icon */
+    .jstree-default .jstree-open > .jstree-anchor > .jstree-themeicon::before {
+      content: "";
+      display: block;
+      width: 16px;
+      height: 16px;
+      background-color: #475569; /* Dark slate folder */
+      -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9l-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z'/%3E%3C/svg%3E") no-repeat center;
+      mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9l-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z'/%3E%3C/svg%3E") no-repeat center;
+    }
+    /* Closed Folder Icon */
+    .jstree-default .jstree-closed > .jstree-anchor > .jstree-themeicon::before {
+      content: "";
+      display: block;
+      width: 16px;
+      height: 16px;
+      background-color: #64748b; /* Slate folder */
+      -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z'/%3E%3C/svg%3E") no-repeat center;
+      mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z'/%3E%3C/svg%3E") no-repeat center;
+    }
+    /* File/Leaf Icon */
+    .jstree-default .jstree-leaf > .jstree-anchor > .jstree-themeicon::before {
+      content: "";
+      display: block;
+      width: 14px;
+      height: 14px;
+      background-color: #94a3b8; /* Slate file */
+      -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'/%3E%3C/svg%3E") no-repeat center;
+      mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'/%3E%3C/svg%3E") no-repeat center;
+    }
+
+    /* Red theme override for Business Type Folder (Matches mockup) */
+    .jstree-default li[id="loai_hinh"] > .jstree-anchor > .jstree-themeicon::before {
+      background-color: #ef4444 !important;
+    }
+  </style>
+</head>
+
+<body class="font-sans antialiased">
+  <div class="desktop-shell min-h-screen">
+    <!-- Header -->
+    <header class="app-header fixed left-0 right-0 top-0 z-30 flex h-[80px] items-center justify-between px-6 text-white">
+      <div class="flex h-full items-center">
+        <img class="crest" src="../public/logocongan.png" alt="Logo Bộ Công an" />
+        <div class="brand-copy ml-4">
+          <div class="text-[22px] font-semibold leading-tight tracking-[0]">CÔNG AN TỈNH NINH BÌNH</div>
+          <div class="mt-1 text-[15px] font-medium tracking-[0] text-white/95">HỆ THỐNG QUẢN LÝ CƠ SỞ KINH DOANH CÓ ĐIỀU KIỆN VỀ ANTT</div>
+        </div>
+      </div>
+
+      <div class="topbar-actions flex h-full items-center gap-6">
+        <div class="topbar-menu-wrap">
+          <button id="notificationToggle" class="topbar-icon-btn relative" type="button" aria-label="Thông báo" aria-expanded="false">
+            <i data-lucide="bell" class="h-[26px] w-[26px]"></i>
+            <span id="notificationBadge" class="absolute right-0 top-1 grid h-5 min-w-5 place-items-center rounded-full bg-[#ff1e1e] px-1 text-[11px] font-semibold leading-none shadow">5</span>
+          </button>
+          <div id="notificationMenu" class="topbar-dropdown notification-dropdown" hidden>
+            <div class="dropdown-head">
+              <span>Thông báo</span>
+              <button id="markAllReadBtn" type="button">Đánh dấu đã đọc</button>
+            </div>
+            <div id="notificationList" class="notification-list"></div>
+          </div>
+        </div>
+
+        <div class="topbar-menu-wrap">
+          <button id="userMenuToggle" class="user-menu-btn" type="button" aria-label="Mở menu tài khoản" aria-expanded="false">
+            <div class="grid h-[46px] w-[46px] place-items-center rounded-full bg-white text-[#cf0000] shadow-sm">
+              <i data-lucide="user-round" class="h-7 w-7 fill-[#cf0000]/15"></i>
+            </div>
+            <div class="hidden text-left sm:block">
+              <div class="text-[15px] font-semibold leading-5">Nguyễn Văn A</div>
+              <div class="text-[13px] font-medium text-white/92">Phòng CS QLHC về TTXH</div>
+            </div>
+            <i data-lucide="chevron-down" class="user-chevron h-5 w-5 text-white"></i>
+          </button>
+          <div id="userMenu" class="topbar-dropdown user-dropdown" hidden>
+            <div class="user-card">
+              <div class="grid h-11 w-11 place-items-center rounded-full bg-[#fff2f2] text-[#cf0000]">
+                <i data-lucide="user-round" class="h-6 w-6"></i>
+              </div>
+              <div>
+                <div class="user-name">Nguyễn Văn A</div>
+                <div class="user-role">Phòng CS QLHC về TTXH</div>
+              </div>
+            </div>
+            <button class="dropdown-action" type="button" data-user-action="profile">
+              <i data-lucide="id-card" class="h-4 w-4"></i> Thông tin tài khoản
+            </button>
+            <button class="dropdown-action" type="button" data-user-action="settings">
+              <i data-lucide="settings" class="h-4 w-4"></i> Cài đặt hiển thị
+            </button>
+            <a class="dropdown-action danger" href="DangNhap.html">
+              <i data-lucide="log-out" class="h-4 w-4"></i> Đăng xuất
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar fixed bottom-0 left-0 top-[80px] z-20 px-2 text-white">
+      <div class="sidebar-scroll">
+        <div class="nav-section mt-0">Tổng quan</div>
+        <a href="#" class="nav-item mt-2">
+          <i data-lucide="house"></i>
+          <span class="nav-copy">Dashboard</span>
+        </a>
+
+        <div class="nav-section">Giám sát địa bàn</div>
+        <a href="BanDoSoGis.html" class="nav-item mt-2">
+          <i data-lucide="map-pin"></i>
+          <span class="nav-copy">Bản đồ số GIS</span>
+        </a>
+
+        <div class="nav-section">Nghiệp vụ</div>
+        <a href="QuanLyHoSo.html" class="nav-item mt-2">
+          <i data-lucide="file-text"></i>
+          <span class="nav-copy">Quản lý hồ sơ</span>
+        </a>
+        <a href="CoSoDuLieuCSKD.html" class="nav-item">
+          <i data-lucide="database"></i>
+          <span class="nav-copy">Cơ sở dữ liệu CSKD-ANTT</span>
+        </a>
+        <a href="KiemTraCoSo.html" class="nav-item">
+          <i data-lucide="clipboard-check"></i>
+          <span class="nav-copy">Kiểm tra cơ sở</span>
+        </a>
+        <a href="XuLyViPham.html" class="nav-item">
+          <i data-lucide="octagon-alert"></i>
+          <span class="nav-copy">Vi phạm / Xử lý vi phạm</span>
+        </a>
+        <a href="QuanLyPhanAnh.html" class="nav-item">
+          <i data-lucide="message-square-warning"></i>
+          <span class="nav-copy">Phản ánh kiến nghị</span>
+        </a>
+
+        <div class="nav-section">Báo cáo</div>
+        <a href="BaoCao-ThongKe.html" class="nav-item mt-2">
+          <i data-lucide="chart-column-big"></i>
+          <span class="nav-copy">Báo cáo - thống kê</span>
+        </a>
+
+        <div class="nav-section">Cấu hình</div>
+        <a href="DanhMuc.html" class="nav-item active mt-2">
+          <i data-lucide="folder"></i>
+          <span class="nav-copy">Danh mục dùng chung</span>
+          <i data-lucide="chevron-down" class="ml-auto h-4 w-4 nav-copy"></i>
+        </a>
+        <a href="#" class="nav-item">
+          <i data-lucide="settings"></i>
+          <span class="nav-copy">Quản trị hệ thống</span>
+          <i data-lucide="chevron-down" class="ml-auto h-4 w-4 nav-copy"></i>
+        </a>
+      </div>
+
+      <div class="sidebar-action">
+        <button id="sidebarToggle" class="sidebar-toggle" type="button" aria-label="Thu gọn menu" aria-expanded="true">
+          <i data-lucide="chevron-left" class="toggle-icon"></i>
+          <span class="collapse-label">Thu gọn</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="content min-h-screen pt-[80px]">
+      <div class="module-page px-6 pb-7 pt-6 lg:px-7">
+        <nav class="module-breadcrumb">
+          <span>Trang chủ</span>
+          <i data-lucide="chevron-right" class="h-4 w-4"></i>
+          <span>Danh mục dùng chung</span>
+        </nav>
+
+        <!-- Split Grid Layout (25% - 75%) -->
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          
+          <!-- Column 1: Category Groups (25%) -->
+          <div class="category-card min-h-[calc(100vh-160px)] flex flex-col">
+            <span class="block mb-3 text-[11px] font-bold text-gray-500 uppercase tracking-wide">Nhóm danh mục</span>
+            <!-- Search input for tree nodes -->
+            <div class="mb-3 relative">
+              <i data-lucide="search" class="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-gray-400"></i>
+              <input type="text" id="treeSearch" class="field text-xs pl-8 py-1.5 w-full" placeholder="Tìm kiếm nhóm danh mục..." />
+            </div>
+            <!-- jsTree Container -->
+            <div id="jstree_container" class="text-sm mt-3 overflow-y-auto flex-1 max-h-[70vh]"></div>
+          </div>
+
+          <!-- Column 2 & 3: Category Items Table (75%) -->
+          <div class="category-card lg:col-span-3 min-h-[calc(100vh-160px)] flex flex-col justify-between">
+            <div>
+            <div class="flex flex-col sm:flex-row justify-between sm:items-center border-b pb-3 mb-4 gap-3">
+              <h3 class="text-sm font-bold text-gray-900 uppercase tracking-wide flex items-center gap-1.5" id="tableCardHeader">
+                <i data-lucide="list" class="h-4.5 w-4.5 text-blue-600"></i> Danh mục: Loại hình cơ sở
+              </h3>
+              <div class="flex gap-2">
+                <div class="relative">
+                  <i data-lucide="search" class="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-gray-400"></i>
+                  <input type="text" id="searchKeyword" class="field text-xs pl-8 py-1.5 w-[180px] sm:w-[220px]" placeholder="Tìm nhanh danh mục..." />
+                </div>
+                <button id="btnAddNew" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded font-bold text-xs flex items-center gap-1 transition shadow-sm">
+                  <i data-lucide="plus" class="h-3.5 w-3.5"></i>Thêm mới
+                </button>
+              </div>
+            </div>
+
+            <!-- Items Table -->
+            <div class="overflow-x-auto border border-gray-200 rounded-lg">
+              <table class="w-full text-left border-collapse text-xs">
+                <thead>
+                  <tr class="bg-gray-50 border-b border-gray-200 font-bold text-gray-700">
+                    <th class="p-3 w-12 text-center">STT</th>
+                    <th class="p-3 w-[150px]">Mã danh mục</th>
+                    <th class="p-3 w-[200px]">Tên danh mục</th>
+                    <th class="p-3">Mô tả chi tiết</th>
+                    <th class="p-3 w-[140px] text-center">Trạng thái</th>
+                    <th class="p-3 w-20 text-center">Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200" id="tableBody">
+                  <!-- Javascript will populate rows dynamically -->
+                </tbody>
+              </table>
+            </div>
+
+            </div>
+
+            <!-- Table Footer / Pagination -->
+            <div class="flex justify-between items-center mt-6 pt-4 border-t border-gray-100 text-xs font-semibold text-gray-500">
+              <span id="paginationSummary">Hiển thị 1-6 trên 12 kết quả</span>
+              <div class="flex gap-1" id="paginationControls">
+                <button class="pager-btn" disabled><i data-lucide="chevron-left" class="h-4 w-4"></i></button>
+                <button class="pager-btn active">1</button>
+                <button class="pager-btn">2</button>
+                <button class="pager-btn"><i data-lucide="chevron-right" class="h-4 w-4"></i></button>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ADD / EDIT DIALOG MODAL -->
+  <div id="itemModal" class="modal-overlay" hidden>
+    <section class="case-modal max-w-md p-6 bg-white rounded-xl shadow-xl border border-gray-100" role="dialog" aria-modal="true">
+      <h2 class="text-base font-bold text-gray-900 border-b pb-2 mb-4 uppercase tracking-wide flex items-center gap-1.5" id="modalTitle">
+        <i data-lucide="plus-circle" class="h-5 w-5 text-blue-600"></i> Thêm mới danh mục
+      </h2>
+      <form id="modalForm" onsubmit="event.preventDefault();">
+        <div class="space-y-4">
+          <label class="block">
+            <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase">Mã danh mục <b class="text-red-500">*</b></span>
+            <input type="text" id="itemCode" class="field w-full" placeholder="Ví dụ: HV_QG..." required />
+          </label>
+
+          <label class="block">
+            <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase">Tên danh mục <b class="text-red-500">*</b></span>
+            <input type="text" id="itemName" class="field w-full" placeholder="Tên gọi danh mục..." required />
+          </label>
+
+          <label class="block">
+            <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase">Mô tả</span>
+            <textarea id="itemDesc" class="field w-full h-20 py-2" placeholder="Nhập mô tả chi tiết..."></textarea>
+          </label>
+
+          <label class="block">
+            <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase">Trạng thái</span>
+            <select id="itemStatus" class="field w-full">
+              <option value="Đang hoạt động">Đang hoạt động</option>
+              <option value="Tạm ngưng">Tạm ngưng</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="flex justify-end gap-3 border-t pt-4 mt-6">
+          <button type="button" class="filter-btn filter-reset py-1.5" id="btnCancelModal">Hủy bỏ</button>
+          <button type="submit" class="filter-btn filter-submit bg-blue-600 border-blue-600 text-white py-1.5 shadow-sm">Lưu lại</button>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <script src="../scripts/auth.js"></script>
+  <script src="../scripts/layout-sync.js"></script>
+  <script src="../scripts/danh-muc.js"></script>
+</body>
+
+</html>
+

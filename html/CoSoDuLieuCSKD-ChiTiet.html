@@ -1,0 +1,1269 @@
+﻿<!doctype html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chi tiết cơ sở kinh doanh</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/quan-ly-ho-so.css">
+  <link rel="stylesheet" href="../styles/chi-tiet-ho-so.css">
+  <link rel="stylesheet" href="../styles/admin-danh-sach.css">
+  <style>
+    /* Styling adjustments for tabs integration in CoSoDuLieuCSKD-ChiTiet */
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.35s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .badge-status {
+      display: inline-flex;
+      min-height: 24px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      padding: 4px 11px;
+      font-size: 11px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    .badge-active { background: #e9f9ee; color: #14964a; }
+    .badge-paused { background: #fff4df; color: #f08a00; }
+    .badge-stopped { background: #fff0f0; color: #e00000; }
+
+    /* Custom visual styling to prevent feeling templated */
+    .summary-strip {
+      grid-template-columns: 1fr 1.8fr 1.8fr 1.2fr 1.2fr 1.2fr;
+    }
+
+    /* Edit mode toggle styles */
+    .edit-mode-el {
+      display: none !important;
+    }
+    .is-editing .edit-mode-el {
+      display: inline-block !important;
+    }
+    .is-editing .edit-mode-el.field {
+      display: block !important;
+    }
+    .is-editing .view-mode-el {
+      display: none !important;
+    }
+
+    /* Toast styles */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .toast-message {
+      background: #1e293b;
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .toast-message.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    .toast-success {
+      border-left: 4px solid #10b981;
+    }
+    .toast-error {
+      border-left: 4px solid #ef4444;
+    }
+  </style>
+</head>
+
+<body class="font-sans antialiased">
+  <div class="desktop-shell min-h-screen">
+    <!-- Header -->
+    <header class="app-header fixed left-0 right-0 top-0 z-30 flex h-[80px] items-center justify-between px-6 text-white">
+      <div class="flex h-full items-center">
+        <img class="crest" src="../public/logocongan.png" alt="Logo Bộ Công an" />
+        <div class="brand-copy ml-4">
+          <div class="text-[22px] font-semibold leading-tight tracking-[0]">CÔNG AN TỈNH NINH BÌNH</div>
+          <div class="mt-1 text-[15px] font-medium tracking-[0] text-white/95">HỆ THỐNG QUẢN LÝ CƠ SỞ KINH DOANH CÓ ĐIỀU KIỆN VỀ ANTT</div>
+        </div>
+      </div>
+
+      <div class="topbar-actions flex h-full items-center gap-6">
+        <div class="topbar-menu-wrap">
+          <button id="notificationToggle" class="topbar-icon-btn relative" type="button" aria-label="Thông báo" aria-expanded="false">
+            <i data-lucide="bell" class="h-[26px] w-[26px]"></i>
+            <span id="notificationBadge" class="absolute right-0 top-1 grid h-5 min-w-5 place-items-center rounded-full bg-[#ff1e1e] px-1 text-[11px] font-semibold leading-none shadow">5</span>
+          </button>
+          <div id="notificationMenu" class="topbar-dropdown notification-dropdown" hidden>
+            <div class="dropdown-head">
+              <span>Thông báo</span>
+              <button id="markAllReadBtn" type="button">Đánh dấu đã đọc</button>
+            </div>
+            <div id="notificationList" class="notification-list"></div>
+          </div>
+        </div>
+
+        <div class="topbar-menu-wrap">
+          <button id="userMenuToggle" class="user-menu-btn" type="button" aria-label="Mở menu tài khoản" aria-expanded="false">
+            <div class="grid h-[46px] w-[46px] place-items-center rounded-full bg-white text-[#cf0000] shadow-sm">
+              <i data-lucide="user-round" class="h-7 w-7 fill-[#cf0000]/15"></i>
+            </div>
+            <div class="hidden text-left sm:block">
+              <div class="text-[15px] font-semibold leading-5">Nguyễn Văn A</div>
+              <div class="text-[13px] font-medium text-white/92">Phòng CS QLHC về TTXH</div>
+            </div>
+            <i data-lucide="chevron-down" class="user-chevron h-5 w-5 text-white"></i>
+          </button>
+          <div id="userMenu" class="topbar-dropdown user-dropdown" hidden>
+            <div class="user-card">
+              <div class="grid h-11 w-11 place-items-center rounded-full bg-[#fff2f2] text-[#cf0000]">
+                <i data-lucide="user-round" class="h-6 w-6"></i>
+              </div>
+              <div>
+                <div class="user-name">Nguyễn Văn A</div>
+                <div class="user-role">Phòng CS QLHC về TTXH</div>
+              </div>
+            </div>
+            <button class="dropdown-action" type="button" data-user-action="profile">
+              <i data-lucide="id-card" class="h-4 w-4"></i> Thông tin tài khoản
+            </button>
+            <button class="dropdown-action" type="button" data-user-action="settings">
+              <i data-lucide="settings" class="h-4 w-4"></i> Cài đặt hiển thị
+            </button>
+            <a class="dropdown-action danger" href="DangNhap.html">
+              <i data-lucide="log-out" class="h-4 w-4"></i> Đăng xuất
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar fixed bottom-0 left-0 top-[80px] z-20 px-2 text-white">
+      <div class="sidebar-scroll">
+        <div class="nav-section mt-0">Tổng quan</div>
+        <a href="#" class="nav-item mt-2">
+          <i data-lucide="house"></i>
+          <span class="nav-copy">Dashboard</span>
+        </a>
+
+        <div class="nav-section">Giám sát địa bàn</div>
+        <a href="BanDoSoGis.html" class="nav-item mt-2">
+          <i data-lucide="map-pin"></i>
+          <span class="nav-copy">Bản đồ số GIS</span>
+        </a>
+
+        <div class="nav-section">Nghiệp vụ</div>
+        <a href="QuanLyHoSo.html" class="nav-item mt-2">
+          <i data-lucide="file-text"></i>
+          <span class="nav-copy">Quản lý hồ sơ</span>
+        </a>
+        <a href="CoSoDuLieuCSKD.html" class="nav-item active">
+          <i data-lucide="database"></i>
+          <span class="nav-copy">Cơ sở dữ liệu CSKD-ANTT</span>
+        </a>
+        <a href="KiemTraCoSo.html" class="nav-item">
+          <i data-lucide="clipboard-check"></i>
+          <span class="nav-copy">Kiểm tra cơ sở</span>
+        </a>
+        <a href="XuLyViPham.html" class="nav-item">
+          <i data-lucide="octagon-alert"></i>
+          <span class="nav-copy">Vi phạm / Xử lý vi phạm</span>
+        </a>
+        <a href="QuanLyPhanAnh.html" class="nav-item">
+          <i data-lucide="message-square-warning"></i>
+          <span class="nav-copy">Phản ánh kiến nghị</span>
+        </a>
+
+        <div class="nav-section">Báo cáo</div>
+        <a href="BaoCao-ThongKe.html" class="nav-item mt-2"><i data-lucide="chart-column-big"></i>
+          <span class="nav-copy">Báo cáo - thống kê</span></a>
+
+        <div class="nav-section">Cấu hình</div>
+        <a href="DanhMuc.html" class="nav-item mt-2"><i data-lucide="folder"></i>
+          <span class="nav-copy">Danh mục dùng chung</span>
+          <i data-lucide="chevron-down" class="ml-auto h-4 w-4 nav-copy"></i></a>
+        <a href="#" class="nav-item">
+          <i data-lucide="settings"></i>
+          <span class="nav-copy">Quản trị hệ thống</span>
+          <i data-lucide="chevron-down" class="ml-auto h-4 w-4 nav-copy"></i>
+        </a>
+      </div>
+
+      <div class="sidebar-action">
+        <button id="sidebarToggle" class="sidebar-toggle" type="button" aria-label="Thu gọn menu" aria-expanded="true">
+          <i data-lucide="chevron-left" class="toggle-icon"></i>
+          <span class="collapse-label">Thu gọn</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="content min-h-screen pt-[80px]">
+      <div class="detail-page px-6 pb-8 pt-6 lg:px-7">
+        
+        <!-- Component: Breadcrumbs & Header Actions -->
+        <section class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-5">
+          <div class="flex items-center gap-2 text-[13px] font-medium text-[#6b7280]">
+            <i data-lucide="house" class="h-4 w-4 text-[#9098a5]"></i>
+            <a href="../index.html" class="hover:text-red-600 transition-colors">Trang chủ</a>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
+            <a href="CoSoDuLieuCSKD.html" class="hover:text-red-600 transition-colors">Cơ sở dữ liệu CSKD-ANTT</a>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
+            <a href="CoSoDuLieuCSKD.html" class="hover:text-red-600 transition-colors">Danh sách cơ sở</a>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
+            <span id="headerBusinessName" class="text-gray-900 font-semibold">Khách sạn Ninh Bình Hotel</span>
+          </div>
+          <div class="flex flex-wrap gap-3">
+            <a class="px-4 py-2 border rounded font-bold text-xs bg-white text-gray-700 hover:bg-gray-50 flex items-center gap-1.5 shadow-sm transition-colors" href="CoSoDuLieuCSKD.html">
+              <i data-lucide="arrow-left" class="h-4 w-4"></i> Quay lại
+            </a>
+            <button class="view-mode-el px-4 py-2 border rounded font-bold text-xs bg-white text-gray-700 hover:bg-gray-50 flex items-center gap-1.5 shadow-sm transition-colors" onclick="window.print()">
+              <i data-lucide="printer" class="h-4 w-4"></i> In hồ sơ
+            </button>
+            <button class="view-mode-el px-4 py-2 border rounded font-bold text-xs bg-[#c60000] text-white border-[#b90000] hover:bg-[#ad0000] flex items-center gap-1.5 shadow-sm transition-colors" id="btnEditBusiness">
+              <i data-lucide="square-pen" class="h-4 w-4"></i> Chỉnh sửa
+            </button>
+            <button class="edit-mode-el hidden px-4 py-2 border rounded font-bold text-xs bg-[#16a34a] text-white border-[#15803d] hover:bg-[#15803d] flex items-center gap-1.5 shadow-sm transition-colors" id="btnSaveBusiness">
+              <i data-lucide="check" class="h-4 w-4"></i> Lưu
+            </button>
+            <button class="edit-mode-el hidden px-4 py-2 border rounded font-bold text-xs bg-white text-gray-700 hover:bg-gray-50 flex items-center gap-1.5 shadow-sm transition-colors" id="btnCancelEdit">
+              <i data-lucide="x" class="h-4 w-4"></i> Hủy
+            </button>
+          </div>
+        </section>
+
+        <!-- Summary Strip -->
+        <section class="summary-strip">
+          <div>
+            <span>Mã cơ sở</span>
+            <strong class="red-code" id="stripCode">CSDD01248</strong>
+          </div>
+          <div>
+            <span>Địa chỉ hoạt động</span>
+            <strong id="stripAddress">Số 12, đường Trần Hưng Đạo, TP. Ninh Bình</strong>
+          </div>
+          <div>
+            <span>Loại hình kinh doanh</span>
+            <strong id="stripType">Khách sạn</strong>
+          </div>
+          <div>
+            <span>Trạng thái hoạt động</span>
+            <span class="badge-status badge-active" id="stripStatus">Đang hoạt động</span>
+          </div>
+          <div>
+            <span>Mức độ rủi ro</span>
+            <span class="status st-orange" id="stripRisk">Trung bình</span>
+          </div>
+          <div>
+            <span>Cán bộ phụ trách</span>
+            <strong id="stripOfficer">Đ/c Nguyễn Văn C</strong>
+          </div>
+        </section>
+
+        <!-- Tabs Menu -->
+        <div class="detail-tabs">
+          <button class="detail-tab active" data-tab-target="overview">Tổng quan</button>
+          <button class="detail-tab" data-tab-target="documents">Giấy phép - hồ sơ</button>
+          <button class="detail-tab" data-tab-target="personnel">Chủ cơ sở & nhân sự</button>
+          <button class="detail-tab" data-tab-target="facilities">Cơ sở vật chất</button>
+          <button class="detail-tab" data-tab-target="inspections">Kiểm tra</button>
+          <button class="detail-tab" data-tab-target="violations">Vi phạm</button>
+          <button class="detail-tab" data-tab-target="declarations">Khai báo - báo cáo</button>
+          <button class="detail-tab" data-tab-target="history">Lịch sử thay đổi</button>
+        </div>
+
+        <!-- Dynamic Tabs Content -->
+        <div class="detail-grid-container">
+
+          <!-- TAB 1: TỔNG QUAN -->
+          <div class="tab-content active" id="tab-overview">
+            <div class="detail-grid">
+              <div class="detail-main">
+                <section class="info-grid">
+                  <!-- Thông tin nhận diện -->
+                  <article class="detail-card">
+                    <h2><i data-lucide="store" class="h-5 w-5"></i>1. Thông tin nhận diện</h2>
+                    <div class="info-box">
+                      <dl class="detail-list">
+                        <div><dt>Mã cơ sở</dt><dd id="dtCode">CSDD01248</dd></div>
+                        <div><dt>Tên cơ sở</dt><dd>
+                          <span class="view-mode-el" id="dtName">Khách sạn Ninh Bình Hotel</span>
+                          <input type="text" class="edit-mode-el field hidden" id="inputName" required />
+                        </dd></div>
+                        <div><dt>Tên viết tắt</dt><dd>
+                          <span class="view-mode-el" id="dtShortName">Ninh Binh Hotel</span>
+                          <input type="text" class="edit-mode-el field hidden" id="inputShortName" />
+                        </dd></div>
+                        <div><dt>Loại hình kinh doanh</dt><dd>
+                          <span class="view-mode-el" id="dtType">Khách sạn</span>
+                          <select class="edit-mode-el field hidden" id="inputType">
+                            <option value="Khách sạn">Khách sạn</option>
+                            <option value="Karaoke">Karaoke</option>
+                            <option value="Quán bar">Quán bar</option>
+                            <option value="Massage">Massage</option>
+                            <option value="Cầm đồ">Cầm đồ</option>
+                            <option value="Nhà nghỉ">Nhà nghỉ</option>
+                            <option value="Kinh doanh vàng">Kinh doanh vàng</option>
+                            <option value="Dịch vụ trò chơi điện tử">Dịch vụ trò chơi điện tử</option>
+                            <option value="Dịch vụ chụp ảnh">Dịch vụ chụp ảnh</option>
+                          </select>
+                        </dd></div>
+                        <div><dt>Mã số thuế</dt><dd>
+                          <span class="view-mode-el" id="dtTaxCode">2700812345</span>
+                          <input type="text" class="edit-mode-el field hidden" id="inputTaxCode" required />
+                        </dd></div>
+                        <div><dt>Số đăng ký KD</dt><dd>
+                          <span class="view-mode-el" id="dtRegNo">2700812345-001</span>
+                          <input type="text" class="edit-mode-el field hidden" id="inputRegNo" required />
+                        </dd></div>
+                        <div><dt>Ngày thành lập</dt><dd>
+                          <span class="view-mode-el" id="dtEstDate">12/03/2018</span>
+                          <input type="date" class="edit-mode-el field hidden" id="inputEstDate" required />
+                        </dd></div>
+                      </dl>
+                    </div>
+                  </article>
+
+                  <!-- Thông tin liên hệ & người đại diện -->
+                  <article class="detail-card">
+                    <h2><i data-lucide="user-check" class="h-5 w-5"></i>2. Người đại diện & Liên hệ</h2>
+                    <div class="info-box">
+                      <dl class="detail-list">
+                        <div><dt>Chủ cơ sở/Đại diện</dt><dd>
+                          <span class="view-mode-el" id="dtOwner">Nguyễn Văn Hùng</span>
+                          <input type="text" class="edit-mode-el field hidden" id="inputOwner" required />
+                        </dd></div>
+                        <div><dt>Số CCCD/CMND</dt><dd>
+                          <span class="view-mode-el" id="dtOwnerId">037082001556</span>
+                          <input type="text" class="edit-mode-el field hidden" id="inputOwnerId" required />
+                        </dd></div>
+                        <div><dt>Số điện thoại</dt><dd>
+                          <span class="view-mode-el" id="dtPhone">0912 111 222</span>
+                          <input type="text" class="edit-mode-el field hidden" id="inputPhone" required />
+                        </dd></div>
+                        <div><dt>Địa chỉ Email</dt><dd>
+                          <span class="view-mode-el" id="dtEmail">hung.ninhbinhhotel@gmail.com</span>
+                          <input type="email" class="edit-mode-el field hidden" id="inputEmail" />
+                        </dd></div>
+                        <div><dt>Website/Trang tin</dt><dd>
+                          <span class="view-mode-el" id="dtWebsite">www.ninhbinhhotel.com.vn</span>
+                          <input type="text" class="edit-mode-el field hidden" id="inputWebsite" />
+                        </dd></div>
+                        <div><dt>Địa chỉ thường trú</dt><dd>
+                          <span class="view-mode-el" id="dtOwnerAddress">Số 12, đường Trần Hưng Đạo, P. Đông Thành, TP. Ninh Bình</span>
+                          <input type="text" class="edit-mode-el field hidden" id="inputOwnerAddress" required />
+                        </dd></div>
+                      </dl>
+                    </div>
+                  </article>
+                </section>
+
+                <!-- Quy mô hoạt động -->
+                <article class="detail-card compact">
+                  <h2><i data-lucide="scale" class="h-5 w-5"></i>3. Quy mô hoạt động</h2>
+                  <dl class="detail-list two-col">
+                    <div><dt>Quy mô cơ sở</dt><dd>
+                      <span class="view-mode-el" id="dtScale">Lớn (Tiêu chuẩn 3 sao)</span>
+                      <input type="text" class="edit-mode-el field hidden" id="inputScale" />
+                    </dd></div>
+                    <div><dt>Tổng số nhân viên</dt><dd>
+                      <span class="view-mode-el" id="dtEmployees">35 nhân viên</span>
+                      <input type="number" class="edit-mode-el field hidden" id="inputEmployees" />
+                    </dd></div>
+                    <div><dt>Tổng số phòng</dt><dd>
+                      <span class="view-mode-el" id="dtRooms">45 phòng nghỉ</span>
+                      <input type="number" class="edit-mode-el field hidden" id="inputRooms" />
+                    </dd></div>
+                    <div><dt>Sức chứa tối đa</dt><dd>
+                      <span class="view-mode-el" id="dtCapacity">150 khách</span>
+                      <input type="number" class="edit-mode-el field hidden" id="inputCapacity" />
+                    </dd></div>
+                    <div><dt>Giờ hoạt động</dt><dd>
+                      <span class="view-mode-el" id="dtHours">Hoạt động 24/7</span>
+                      <input type="text" class="edit-mode-el field hidden" id="inputHours" />
+                    </dd></div>
+                    <div class="edit-mode-el hidden"><dt>Trạng thái</dt><dd>
+                      <select class="field" id="inputStatus">
+                        <option value="Đang hoạt động">Đang hoạt động</option>
+                        <option value="Tạm dừng">Tạm dừng</option>
+                        <option value="Ngừng hoạt động">Ngừng hoạt động</option>
+                      </select>
+                    </dd></div>
+                    <div class="edit-mode-el hidden"><dt>Mức độ rủi ro</dt><dd>
+                      <select class="field" id="inputRisk">
+                        <option value="Thấp">Thấp</option>
+                        <option value="Trung bình">Trung bình</option>
+                        <option value="Cao">Cao</option>
+                      </select>
+                    </dd></div>
+                  </dl>
+                </article>
+              </div>
+
+              <!-- Cột phụ bên phải -->
+              <aside class="detail-side">
+                <!-- Vị trí GIS -->
+                <article class="side-card">
+                  <h2><i data-lucide="map" class="h-5 w-5"></i>Vị trí bản đồ GIS</h2>
+                  <div class="mt-3">
+                    <span class="map-thumb w-full h-[120px] mb-2 relative block">
+                      <span class="map-road r1"></span>
+                      <span class="map-road r2"></span>
+                      <span class="map-road r3"></span>
+                      <i data-lucide="map-pin" class="map-pin" style="left: 45%;"></i>
+                    </span>
+                     <div class="text-[11px] text-gray-500 font-medium">
+                       <div class="flex items-center gap-1.5 mb-1">
+                         <span>Vĩ độ:</span>
+                         <strong class="text-gray-800 view-mode-el" id="dtLat">20.2546</strong>
+                         <input type="text" class="edit-mode-el field hidden !h-7 !py-0.5 !px-1.5 text-xs w-[100px]" id="inputLat" />
+                       </div>
+                       <div class="flex items-center gap-1.5">
+                         <span>Kinh độ:</span>
+                         <strong class="text-gray-800 view-mode-el" id="dtLng">105.9734</strong>
+                         <input type="text" class="edit-mode-el field hidden !h-7 !py-0.5 !px-1.5 text-xs w-[100px]" id="inputLng" />
+                       </div>
+                     </div>
+                    <a href="BanDoSoGis.html" class="map-link mt-2 inline-block font-bold">Mở bản đồ lớn GIS</a>
+                  </div>
+                </article>
+
+                <!-- Hình ảnh cơ sở -->
+                <article class="side-card">
+                  <h2><i data-lucide="image" class="h-5 w-5"></i>Hình ảnh cơ sở</h2>
+                  <div class="mt-3">
+                    <div class="border rounded bg-gray-100 aspect-video flex items-center justify-center text-gray-400 overflow-hidden relative">
+                      <i data-lucide="store" class="h-10 w-10 opacity-40"></i>
+                      <div class="absolute bottom-0 inset-x-0 bg-black/60 text-white text-[10px] p-1 truncate">Mặt tiền cơ sở kinh doanh</div>
+                    </div>
+                    <span class="text-[11px] text-gray-400 block mt-1">Ảnh chụp cập nhật lúc: 15/05/2026</span>
+                  </div>
+                </article>
+
+                <!-- Cảnh báo nghiệp vụ -->
+                <article class="side-card bg-red-50/40 border-red-100">
+                  <h2 class="text-red-700"><i data-lucide="triangle-alert" class="h-5 w-5 text-red-600"></i>Cảnh báo nghiệp vụ</h2>
+                  <div class="mt-3 text-xs text-red-700 leading-relaxed font-medium">
+                    <ul class="list-disc pl-4 space-y-1">
+                      <li>Yêu cầu bổ sung biên bản kiểm định PCCC định kỳ năm 2026.</li>
+                      <li>Giấy phép đăng ký ANTT còn hạn hiệu lực.</li>
+                    </ul>
+                  </div>
+                </article>
+              </aside>
+            </div>
+          </div>
+
+          <!-- TAB 2: GIẤY PHÉP - HỒ SƠ -->
+          <div class="tab-content" id="tab-documents">
+            <article class="detail-card document-card">
+              <h2><i data-lucide="clipboard-list" class="h-5 w-5"></i>Thành phần hồ sơ & Giấy phép pháp lý</h2>
+              <div class="doc-table-wrap mt-3">
+                <table class="doc-table">
+                  <thead>
+                    <tr>
+                      <th class="w-12 text-center">STT</th>
+                      <th>Tên loại giấy tờ</th>
+                      <th>Số văn bản/Giấy chứng nhận</th>
+                      <th>Ngày cấp</th>
+                      <th>Ngày hết hạn</th>
+                      <th>Đơn vị cấp</th>
+                      <th>Trạng thái</th>
+                      <th>Thao tác</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="text-center">1</td>
+                      <td class="font-bold">Giấy chứng nhận đăng ký kinh doanh</td>
+                      <td>2700812345-001</td>
+                      <td>12/03/2018</td>
+                      <td>Không thời hạn</td>
+                      <td>Sở Kế hoạch và Đầu tư Ninh Bình</td>
+                      <td><span class="file-status valid">Hợp lệ</span></td>
+                      <td><button title="Xem"><i data-lucide="eye" class="h-3.5 w-3.5"></i></button><button title="Tải"><i data-lucide="download" class="h-3.5 w-3.5"></i></button></td>
+                    </tr>
+                    <tr>
+                      <td class="text-center">2</td>
+                      <td class="font-bold">Giấy phép đủ điều kiện về An ninh trật tự (ANTT)</td>
+                      <td>GP-2018-0428/ANTT</td>
+                      <td>25/04/2018</td>
+                      <td>Không thời hạn</td>
+                      <td>Phòng CS QLHC về TTXH Công an tỉnh</td>
+                      <td><span class="file-status valid">Hợp lệ</span></td>
+                      <td><button title="Xem"><i data-lucide="eye" class="h-3.5 w-3.5"></i></button><button title="Tải"><i data-lucide="download" class="h-3.5 w-3.5"></i></button></td>
+                    </tr>
+                    <tr>
+                      <td class="text-center">3</td>
+                      <td class="font-bold">Văn bản nghiệm thu về Phòng cháy chữa cháy (PCCC)</td>
+                      <td>BB-2018-1249/PCCC</td>
+                      <td>15/04/2018</td>
+                      <td>-</td>
+                      <td>Cảnh sát PCCC & CNCH Tỉnh Ninh Bình</td>
+                      <td><span class="file-status valid">Hợp lệ</span></td>
+                      <td><button title="Xem"><i data-lucide="eye" class="h-3.5 w-3.5"></i></button><button title="Tải"><i data-lucide="download" class="h-3.5 w-3.5"></i></button></td>
+                    </tr>
+                    <tr>
+                      <td class="text-center">4</td>
+                      <td class="font-bold">Giấy chứng nhận cơ sở đạt chuẩn an toàn vệ sinh</td>
+                      <td>ATTP-27008123</td>
+                      <td>20/05/2023</td>
+                      <td>20/05/2026</td>
+                      <td>Sở Y tế Tỉnh Ninh Bình</td>
+                      <td><span class="file-status invalid" style="color:#d97706; background:#fef3c7; border-color:#fde68a;">Sắp hết hạn</span></td>
+                      <td><button title="Xem"><i data-lucide="eye" class="h-3.5 w-3.5"></i></button><button title="Tải"><i data-lucide="download" class="h-3.5 w-3.5"></i></button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </article>
+          </div>
+
+          <!-- TAB 3: CHỦ CƠ SỞ & NHÂN SỰ -->
+          <div class="tab-content" id="tab-personnel">
+            <div class="space-y-6">
+              <article class="detail-card">
+                <h2><i data-lucide="user-check" class="h-5 w-5"></i>Thông tin người đại diện & quản lý</h2>
+                <div class="grid grid-cols-2 gap-6 mt-3">
+                  <div class="border rounded p-4 bg-gray-50 text-xs space-y-2">
+                    <h3 class="font-bold text-gray-800 border-b pb-1.5 flex items-center gap-1.5"><i data-lucide="award" class="h-4 w-4"></i>Người đại diện pháp luật</h3>
+                    <div class="grid grid-cols-3 gap-1"><span class="text-gray-500">Họ và tên:</span><strong class="col-span-2 text-gray-900" id="personOwnerName">Nguyễn Văn Hùng</strong></div>
+                    <div class="grid grid-cols-3 gap-1"><span class="text-gray-500">Số CCCD:</span><span class="col-span-2 font-bold text-gray-800" id="personOwnerId">037082001556</span></div>
+                    <div class="grid grid-cols-3 gap-1"><span class="text-gray-500">Số điện thoại:</span><span class="col-span-2 font-bold text-gray-800" id="personOwnerPhone">0912 111 222</span></div>
+                  </div>
+                  <div class="border rounded p-4 bg-gray-50 text-xs space-y-2">
+                    <h3 class="font-bold text-gray-800 border-b pb-1.5 flex items-center gap-1.5"><i data-lucide="user-cog" class="h-4 w-4"></i>Người quản lý trực tiếp</h3>
+                    <div class="grid grid-cols-3 gap-1"><span class="text-gray-500">Họ và tên:</span><strong class="col-span-2 text-gray-900">Trần Huy Hoàng</strong></div>
+                    <div class="grid grid-cols-3 gap-1"><span class="text-gray-500">Chức vụ:</span><span class="col-span-2 font-bold text-gray-800">Giám đốc điều hành</span></div>
+                    <div class="grid grid-cols-3 gap-1"><span class="text-gray-500">Số điện thoại:</span><span class="col-span-2 font-bold text-gray-800">0983 444 555</span></div>
+                  </div>
+                </div>
+              </article>
+
+              <article class="detail-card">
+                <div class="flex justify-between items-center mb-3">
+                  <h2 class="m-0"><i data-lucide="users" class="h-5 w-5"></i>Danh sách nhân sự đăng ký (35 nhân viên)</h2>
+                  <button type="button" class="px-3 py-1.5 border border-gray-300 rounded font-bold text-xs bg-white text-gray-700 hover:bg-gray-50 flex items-center gap-1">
+                    <i data-lucide="plus" class="h-3.5 w-3.5"></i> Thêm nhân sự mới
+                  </button>
+                </div>
+                <div class="doc-table-wrap">
+                  <table class="doc-table">
+                    <thead>
+                      <tr>
+                        <th class="w-12 text-center">STT</th>
+                        <th>Họ và tên</th>
+                        <th>Số CCCD/CMND</th>
+                        <th>Năm sinh</th>
+                        <th>Chức vụ/Bộ phận</th>
+                        <th>Ngày bắt đầu làm việc</th>
+                        <th>Trạng thái</th>
+                        <th>Thao tác</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="text-center">1</td>
+                        <td class="font-bold">Lê Thị Mai</td>
+                        <td>037192004562</td>
+                        <td>1992</td>
+                        <td>Trưởng bộ phận Lễ tân</td>
+                        <td>15/04/2018</td>
+                        <td><span class="file-status valid">Đang làm việc</span></td>
+                        <td><button><i data-lucide="square-pen" class="h-3.5 w-3.5"></i></button></td>
+                      </tr>
+                      <tr>
+                        <td class="text-center">2</td>
+                        <td class="font-bold">Nguyễn Văn Nam</td>
+                        <td>037195007452</td>
+                        <td>1995</td>
+                        <td>Nhân viên bảo vệ</td>
+                        <td>01/06/2019</td>
+                        <td><span class="file-status valid">Đang làm việc</span></td>
+                        <td><button><i data-lucide="square-pen" class="h-3.5 w-3.5"></i></button></td>
+                      </tr>
+                      <tr>
+                        <td class="text-center">3</td>
+                        <td class="font-bold">Phạm Quỳnh Chi</td>
+                        <td>037201001248</td>
+                        <td>2001</td>
+                        <td>Nhân viên buồng phòng</td>
+                        <td>10/12/2021</td>
+                        <td><span class="file-status valid">Đang làm việc</span></td>
+                        <td><button><i data-lucide="square-pen" class="h-3.5 w-3.5"></i></button></td>
+                      </tr>
+                      <tr>
+                        <td class="text-center">4</td>
+                        <td class="font-bold">Hoàng Minh Đức</td>
+                        <td>037190001479</td>
+                        <td>1990</td>
+                        <td>Nhân viên Kỹ thuật</td>
+                        <td>20/08/2018</td>
+                        <td><span class="file-status invalid" style="background:#f3f4f6; color:#6b7280; border-color:#e5e7eb;">Đã nghỉ việc</span></td>
+                        <td><button><i data-lucide="square-pen" class="h-3.5 w-3.5"></i></button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </article>
+            </div>
+          </div>
+
+          <!-- TAB 4: CƠ SỞ VẬT CHẤT -->
+          <div class="tab-content" id="tab-facilities">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <article class="detail-card">
+                <h2><i data-lucide="layout" class="h-5 w-5"></i>Thông số quy mô & Mặt bằng</h2>
+                <div class="info-box">
+                  <dl class="detail-list">
+                    <div><dt>Tổng diện tích</dt><dd>450 m² mặt sàn</dd></div>
+                    <div><dt>Số tầng xây dựng</dt><dd>5 tầng nổi, 1 tầng hầm</dd></div>
+                    <div><dt>Số phòng hoạt động</dt><dd id="facilityRooms">45 phòng nghỉ</dd></div>
+                    <div><dt>Sức chứa lưu trú</dt><dd id="facilityCapacity">150 khách</dd></div>
+                    <div><dt>Hệ thống thang máy</dt><dd>02 thang máy chở khách đạt chuẩn kiểm định</dd></div>
+                    <div><dt>Mô tả chung</dt><dd>Cơ sở hoạt động lưu trú du lịch thương mại, trang bị thiết bị nội thất cao cấp đầy đủ tiện ích cơ bản.</dd></div>
+                  </dl>
+                </div>
+              </article>
+
+              <article class="detail-card">
+                <h2><i data-lucide="video" class="h-5 w-5"></i>An ninh & Phòng cháy chữa cháy</h2>
+                <div class="info-box">
+                  <dl class="detail-list">
+                    <div><dt>Hệ thống Camera</dt><dd>Đã lắp đặt 24 camera tại hành lang, bãi xe và cửa ra vào</dd></div>
+                    <div><dt>Đầu ghi / Lưu trữ</dt><dd>Ổ cứng 4TB lưu trữ dữ liệu an ninh tối thiểu 30 ngày</dd></div>
+                    <div><dt>Trạng thái PCCC</dt><dd><span class="file-status valid">Đạt tiêu chuẩn</span></dd></div>
+                    <div><dt>Thiết bị chữa cháy tại chỗ</dt><dd>18 bình bọt chữa cháy xách tay bố trí dọc các hành lang phòng</dd></div>
+                    <div><dt>Lối thoát hiểm</dt><dd>02 cầu thang thoát hiểm ngoài trời kết cấu thép</dd></div>
+                  </dl>
+                </div>
+              </article>
+            </div>
+          </div>
+
+          <!-- TAB 5: KIỂM TRA -->
+          <div class="tab-content" id="tab-inspections">
+            <article class="detail-card document-card">
+              <div class="flex justify-between items-center mb-3 p-3 pb-0">
+                <h2 class="m-0"><i data-lucide="clipboard-check" class="h-5 w-5"></i>Lịch sử các đợt kiểm tra nghiệp vụ</h2>
+                <button type="button" class="px-3 py-1.5 border border-gray-300 rounded font-bold text-xs bg-white text-gray-700 hover:bg-gray-50 flex items-center gap-1">
+                  <i data-lucide="plus" class="h-3.5 w-3.5"></i> Lên kế hoạch kiểm tra
+                </button>
+              </div>
+              <div class="doc-table-wrap">
+                <table class="doc-table">
+                  <thead>
+                    <tr>
+                      <th class="w-12 text-center">STT</th>
+                      <th>Mã đợt kiểm tra</th>
+                      <th>Ngày kiểm tra</th>
+                      <th>Đoàn kiểm tra</th>
+                      <th>Nội dung kiểm tra</th>
+                      <th>Kết quả phân loại</th>
+                      <th>Hình thức xử lý</th>
+                      <th>Biên bản đính kèm</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="text-center">1</td>
+                      <td class="font-bold text-[#c60000]">KT-2026-00045</td>
+                      <td>15/05/2026</td>
+                      <td>Công an Thành phố Ninh Bình</td>
+                      <td>Kiểm tra điều kiện ANTT & cư trú định kỳ</td>
+                      <td><span class="file-status valid">Đạt yêu cầu</span></td>
+                      <td>Không có vi phạm</td>
+                      <td><a href="#"><i data-lucide="file" class="h-4 w-4"></i> Biên_ban_KT_1505.pdf</a></td>
+                    </tr>
+                    <tr>
+                      <td class="text-center">2</td>
+                      <td class="font-bold text-[#c60000]">KT-2025-00189</td>
+                      <td>20/11/2025</td>
+                      <td>Liên ngành Công an & Cảnh sát PCCC</td>
+                      <td>Kiểm tra an toàn PCCC & Hệ thống camera</td>
+                      <td><span class="file-status invalid" style="background:#fef3c7; color:#d97706; border-color:#fde68a;">Phát hiện lỗi nhẹ</span></td>
+                      <td>Nhắc nhở khắc phục lỗi camera khu hành lang tầng 3</td>
+                      <td><a href="#"><i data-lucide="file" class="h-4 w-4"></i> Biên_ban_LN_2011.pdf</a></td>
+                    </tr>
+                    <tr>
+                      <td class="text-center">3</td>
+                      <td class="font-bold text-[#c60000]">KT-2025-00034</td>
+                      <td>12/04/2025</td>
+                      <td>Đội QLHC trật tự Công an TP. Ninh Bình</td>
+                      <td>Kiểm tra đột xuất khai báo tạm trú</td>
+                      <td><span class="file-status valid">Đạt yêu cầu</span></td>
+                      <td>Không có vi phạm</td>
+                      <td><a href="#"><i data-lucide="file" class="h-4 w-4"></i> Biên_ban_DS_1204.pdf</a></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </article>
+          </div>
+
+          <!-- TAB 6: VI PHẠM -->
+          <div class="tab-content" id="tab-violations">
+            <article class="detail-card document-card">
+              <h2><i data-lucide="octagon-alert" class="h-5 w-5"></i>Hồ sơ hành vi vi phạm & Xử lý vi phạm</h2>
+              <div class="doc-table-wrap mt-3">
+                <table class="doc-table">
+                  <thead>
+                    <tr>
+                      <th class="w-12 text-center">STT</th>
+                      <th>Mã sự việc</th>
+                      <th>Ngày phát hiện</th>
+                      <th>Hành vi vi phạm</th>
+                      <th>Mức độ nghiêm trọng</th>
+                      <th>Mức xử phạt</th>
+                      <th>Trạng thái khắc phục</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="text-center">1</td>
+                      <td class="font-bold text-red-600">VP-2025-0012</td>
+                      <td>20/11/2025</td>
+                      <td>Không cập nhật thông tin sổ quản lý tạm trú kịp thời</td>
+                      <td><span class="bg-yellow-50 text-yellow-800 px-2 py-0.5 rounded border border-yellow-200">Nhẹ</span></td>
+                      <td>Phạt cảnh cáo & nhắc nhở bằng văn bản</td>
+                      <td><span class="file-status valid">Đã khắc phục</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </article>
+          </div>
+
+          <!-- TAB 7: KHAI BÁO - BÁO CÁO -->
+          <div class="tab-content" id="tab-declarations">
+            <div class="space-y-6">
+              <article class="detail-card">
+                <h2><i data-lucide="user-check" class="h-5 w-5"></i>Hoạt động khai báo lưu trú gần đây (24h qua)</h2>
+                <div class="doc-table-wrap mt-3">
+                  <table class="doc-table">
+                    <thead>
+                      <tr>
+                        <th class="w-12 text-center">STT</th>
+                        <th>Họ và tên khách</th>
+                        <th>Số CCCD/Hộ chiếu</th>
+                        <th>Năm sinh</th>
+                        <th>Thời gian đến</th>
+                        <th>Thời gian dự kiến đi</th>
+                        <th>Số phòng</th>
+                        <th>Hình thức khai báo</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="text-center">1</td>
+                        <td class="font-bold">Trần Văn Cường</td>
+                        <td>037189004563</td>
+                        <td>1989</td>
+                        <td>15/06/2026 10:15</td>
+                        <td>17/06/2026 12:00</td>
+                        <td>Phòng 302</td>
+                        <td>Ứng dụng khai báo lưu trú ASM</td>
+                      </tr>
+                      <tr>
+                        <td class="text-center">2</td>
+                        <td class="font-bold">Nguyễn Thu Hà</td>
+                        <td>001201007895</td>
+                        <td>2001</td>
+                        <td>15/06/2026 09:30</td>
+                        <td>16/06/2026 12:00</td>
+                        <td>Phòng 204</td>
+                        <td>Ứng dụng khai báo lưu trú ASM</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </article>
+
+              <article class="detail-card">
+                <h2><i data-lucide="file-bar-chart" class="h-5 w-5"></i>Báo cáo định kỳ tình hình ANTT</h2>
+                <div class="doc-table-wrap mt-3">
+                  <table class="doc-table">
+                    <thead>
+                      <tr>
+                        <th class="w-12 text-center">STT</th>
+                        <th>Kỳ báo cáo</th>
+                        <th>Hạn nộp báo cáo</th>
+                        <th>Thời điểm nộp</th>
+                        <th>Trạng thái nộp</th>
+                        <th>Cán bộ tiếp nhận</th>
+                        <th>Thao tác</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="text-center">1</td>
+                        <td class="font-bold">Báo cáo Tháng 05/2026</td>
+                        <td>05/06/2026</td>
+                        <td>03/06/2026 15:30</td>
+                        <td><span class="file-status valid">Đã nộp</span></td>
+                        <td>Đ/c Nguyễn Văn C</td>
+                        <td><button><i data-lucide="eye" class="h-3.5 w-3.5"></i></button></td>
+                      </tr>
+                      <tr>
+                        <td class="text-center">2</td>
+                        <td class="font-bold">Báo cáo Quý 1/2026</td>
+                        <td>10/04/2026</td>
+                        <td>08/04/2026 09:12</td>
+                        <td><span class="file-status valid">Đã nộp</span></td>
+                        <td>Đ/c Nguyễn Văn C</td>
+                        <td><button><i data-lucide="eye" class="h-3.5 w-3.5"></i></button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </article>
+            </div>
+          </div>
+
+          <!-- TAB 8: LỊCH SỬ THAY ĐỔI -->
+          <div class="tab-content" id="tab-history">
+            <article class="detail-card document-card">
+              <h2><i data-lucide="history" class="h-5 w-5"></i>Nhật ký cập nhật & Nhật ký thay đổi thông tin cơ sở</h2>
+              <div class="doc-table-wrap mt-3">
+                <table class="doc-table">
+                  <thead>
+                    <tr>
+                      <th class="w-12 text-center">STT</th>
+                      <th>Thời gian</th>
+                      <th>Cán bộ thực hiện</th>
+                      <th>Hành động</th>
+                      <th>Nội dung thay đổi</th>
+                      <th>Giá trị cũ</th>
+                      <th>Giá trị mới</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="text-center">1</td>
+                      <td>15/05/2026 16:45</td>
+                      <td class="font-bold">Nguyễn Văn A</td>
+                      <td>Cập nhật nhân viên</td>
+                      <td>Thêm mới nhân viên Lê Thị Mai vào danh sách</td>
+                      <td>-</td>
+                      <td>Đăng ký nhân sự mới</td>
+                    </tr>
+                    <tr>
+                      <td class="text-center">2</td>
+                      <td>20/11/2025 10:30</td>
+                      <td class="font-bold">Hệ thống tự động</td>
+                      <td>Ghi nhận vi phạm</td>
+                      <td>Cập nhật trạng thái vi phạm</td>
+                      <td>Không có vi phạm</td>
+                      <td>Phát hiện lỗi tạm trú nhẹ</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </article>
+          </div>
+
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Collapsible Sidebar logic
+    document.querySelector('#sidebarToggle')?.addEventListener('click', () => {
+      document.querySelector('.desktop-shell')?.classList.toggle('is-collapsed');
+    });
+
+    // Notifications and User Dropdown
+    const initMenuToggle = (btnId, menuId) => {
+      const btn = document.getElementById(btnId);
+      const menu = document.getElementById(menuId);
+      if (!btn || !menu) return;
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const opened = btn.classList.toggle('is-open');
+        menu.hidden = !opened;
+      });
+    };
+    initMenuToggle('notificationToggle', 'notificationMenu');
+    initMenuToggle('userMenuToggle', 'userMenu');
+    document.addEventListener('click', () => {
+      document.getElementById('notificationMenu').hidden = true;
+      document.getElementById('userMenu').hidden = true;
+      document.getElementById('notificationToggle')?.classList.remove('is-open');
+      document.getElementById('userMenuToggle')?.classList.remove('is-open');
+    });
+
+    // Mock Database list to fetch according to query URL code
+    let mockBusinesses = JSON.parse(sessionStorage.getItem('mockBusinesses'));
+    if (!mockBusinesses) {
+      const rawList = [
+        { code: 'CSDD01248', name: 'Khách sạn Ninh Bình Hotel', type: 'Khách sạn', address: 'Số 12, đường Trần Hưng Đạo, TP. Ninh Bình, Ninh Bình', owner: 'Nguyễn Văn Hùng', status: 'Đang hoạt động', license: 'Đã cấp' },
+        { code: 'CSDD01247', name: 'Karaoke New Star', type: 'Karaoke', address: 'Số 45, đường Lê Thái Tổ, TP. Ninh Bình, Ninh Bình', owner: 'Trần Văn Nam', status: 'Đang hoạt động', license: 'Đã cấp' },
+        { code: 'CSDD01246', name: 'Quán bar Paradise', type: 'Quán bar', address: 'Số 8, đường Nguyễn Huệ, TP. Ninh Bình, Ninh Bình', owner: 'Lê Minh Tuấn', status: 'Đang hoạt động', license: 'Đã cấp' },
+        { code: 'CSDD01245', name: 'Nhà hàng Tràng An', type: 'Nhà hàng', address: 'Thôn Tràng An, xã Trường Yên, H. Hoa Lư, Ninh Bình', owner: 'Phạm Thị Lan', status: 'Đang hoạt động', license: 'Đã cấp' },
+        { code: 'CSDD01244', name: 'Cửa hàng vàng Kim Phát', type: 'Kinh doanh vàng', address: 'Số 69, đường Đinh Tiên Hoàng, TP. Ninh Bình, Ninh Bình', owner: 'Đỗ Văn Phát', status: 'Đang hoạt động', license: 'Chưa cấp' },
+        { code: 'CSDD01243', name: 'Massage An Nhiên', type: 'Massage', address: 'Số 22, đường Lý Thái Tổ, TP. Ninh Bình, Ninh Bình', owner: 'Nguyễn Thị Hoa', status: 'Tạm dừng', license: 'Đã cấp' },
+        { code: 'CSDD01242', name: 'Game Center 68', type: 'Dịch vụ trò chơi điện tử', address: 'Số 68, đường Trần Hưng Đạo, TP. Ninh Bình, Ninh Bình', owner: 'Hoàng Văn Dũng', status: 'Đang hoạt động', license: 'Đã cấp' },
+        { code: 'CSDD01241', name: 'Cầm đồ Hoàng Long', type: 'Cầm đồ', address: 'Số 15, đường Hoàng Diệu, TP. Ninh Bình, Ninh Bình', owner: 'Vũ Quốc Long', status: 'Đang hoạt động', license: 'Đã cấp' },
+        { code: 'CSDD01240', name: 'Studio Mộc Miên', type: 'Dịch vụ chụp ảnh', address: 'Số 33, đường Lê Duẩn, TP. Ninh Bình, Ninh Bình', owner: 'Trương Thị Mai', status: 'Đang hoạt động', license: 'Không thuộc diện' },
+        { code: 'CSDD01239', name: 'Nhà nghỉ Bình An', type: 'Nhà nghỉ', address: 'Thôn 5, xã Ninh Nhất, TP. Ninh Bình, Ninh Bình', owner: 'Bùi Văn An', status: 'Ngừng hoạt động', license: 'Đã cấp' },
+        { code: 'CSDD01238', name: 'Khách sạn Hoa Lư', type: 'Khách sạn', address: 'Số 27, đường Trương Hán Siêu, TP. Ninh Bình, Ninh Bình', owner: 'Đinh Thị Hạnh', status: 'Đang hoạt động', license: 'Đã cấp' },
+        { code: 'CSDD01237', name: 'Karaoke Sao Mai', type: 'Karaoke', address: 'Số 9, đường Vân Giang, TP. Ninh Bình, Ninh Bình', owner: 'Ngô Văn Sơn', status: 'Tạm dừng', license: 'Đã cấp' },
+        { code: 'CSDD01236', name: 'Cầm đồ Tín Phát', type: 'Cầm đồ', address: 'P. Ninh Khánh, TP. Ninh Bình, Ninh Bình', owner: 'Dương Văn Tín', status: 'Đang hoạt động', license: 'Chưa cấp' },
+        { code: 'CSDD01235', name: 'Nhà hàng Bến Đò', type: 'Nhà hàng', address: 'P. Thanh Bình, TP. Ninh Bình, Ninh Bình', owner: 'Lương Thị Oanh', status: 'Đang hoạt động', license: 'Đã cấp' },
+        { code: 'CSDD01234', name: 'Bar Riverside', type: 'Quán bar', address: 'P. Nam Thành, TP. Ninh Bình, Ninh Bình', owner: 'Cao Văn Rạng', status: 'Ngừng hoạt động', license: 'Đã cấp' }
+      ];
+      
+      mockBusinesses = rawList.map((b, i) => ({
+        ...b,
+        ownerId: b.ownerId || `03708${800000 + i}`,
+        phone: b.phone || `0912 ${100 + i} ${200 + i}`,
+        email: b.email || `${b.code.toLowerCase()}@gmail.com`,
+        website: b.website || `www.${b.code.toLowerCase()}.com.vn`,
+        taxCode: b.taxCode || `27008${10000 + i}`,
+        regNo: b.regNo || `27008${10000 + i}-001`,
+        estDate: b.estDate || '12/03/2018',
+        risk: b.risk || (i % 3 === 0 ? 'Thấp' : i % 3 === 1 ? 'Trung bình' : 'Cao'),
+        officer: b.officer || 'Đ/c Nguyễn Văn C',
+        rooms: b.rooms || (b.type === 'Khách sạn' ? '45' : '12'),
+        capacity: b.capacity || '150',
+        lat: b.lat || (20.25 + (i * 0.002)).toFixed(4),
+        lng: b.lng || (105.97 - (i * 0.002)).toFixed(4)
+      }));
+      sessionStorage.setItem('mockBusinesses', JSON.stringify(mockBusinesses));
+    }
+
+    // Read business code and mode from URL
+    const getUrlParameter = (name) => {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(name) || '';
+    };
+
+    const businessCode = getUrlParameter('code') || 'CSDD01248';
+    const initialMode = getUrlParameter('mode') || '';
+    
+    // Find business
+    const business = mockBusinesses.find(b => b.code === businessCode) || mockBusinesses[0];
+
+    // Toast Alert Helper
+    function showToast(message, type = 'success') {
+      let container = document.querySelector('.toast-container');
+      if (!container) {
+        container = document.createElement('div');
+        container.className = 'toast-container';
+        document.body.appendChild(container);
+      }
+      
+      const toast = document.createElement('div');
+      toast.className = `toast-message toast-${type}`;
+      
+      const iconName = type === 'success' ? 'check-circle' : 'alert-circle';
+      toast.innerHTML = `<i data-lucide="${iconName}" class="h-4 w-4 ${type === 'success' ? 'text-[#10b981]' : 'text-[#ef4444]'}"></i> <span>${message}</span>`;
+      container.appendChild(toast);
+      
+      if (window.lucide) window.lucide.createIcons();
+      
+      // Trigger reflow to animate
+      toast.offsetHeight;
+      toast.classList.add('show');
+      
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    // Toggle Edit Mode UI
+    function toggleEditMode(isEditing) {
+      const pageEl = document.querySelector('.detail-page');
+      if (isEditing) {
+        pageEl.classList.add('is-editing');
+        
+        // Populate inputs with current business values
+        document.getElementById('inputName').value = business.name || '';
+        document.getElementById('inputShortName').value = business.shortName || (business.name || '').replace('Khách sạn ', '').replace('Karaoke ', '').replace('Quán bar ', '').replace('Cầm đồ ', '');
+        document.getElementById('inputType').value = business.type || 'Khách sạn';
+        document.getElementById('inputTaxCode').value = business.taxCode || '';
+        document.getElementById('inputRegNo').value = business.regNo || '';
+        
+        // Format date from DD/MM/YYYY to YYYY-MM-DD
+        if (business.estDate) {
+          const parts = business.estDate.split('/');
+          if (parts.length === 3) {
+            document.getElementById('inputEstDate').value = `${parts[2]}-${parts[1]}-${parts[0]}`;
+          } else {
+            document.getElementById('inputEstDate').value = business.estDate;
+          }
+        } else {
+          document.getElementById('inputEstDate').value = '';
+        }
+        
+        document.getElementById('inputOwner').value = business.owner || '';
+        document.getElementById('inputOwnerId').value = business.ownerId || '';
+        document.getElementById('inputPhone').value = business.phone || '';
+        document.getElementById('inputEmail').value = business.email || '';
+        document.getElementById('inputWebsite').value = business.website || '';
+        document.getElementById('inputOwnerAddress').value = business.address || '';
+        
+        document.getElementById('inputScale').value = business.scale || (business.type === 'Khách sạn' ? 'Lớn (Tiêu chuẩn 3 sao)' : 'Quy mô vừa');
+        document.getElementById('inputEmployees').value = parseInt(business.employees) || 35;
+        document.getElementById('inputRooms').value = parseInt(business.rooms) || 0;
+        document.getElementById('inputCapacity').value = parseInt(business.capacity) || 0;
+        document.getElementById('inputHours').value = business.hours || 'Hoạt động 24/7';
+        
+        document.getElementById('inputLat').value = business.lat || '20.2546';
+        document.getElementById('inputLng').value = business.lng || '105.9734';
+        
+        document.getElementById('inputStatus').value = business.status || 'Đang hoạt động';
+        document.getElementById('inputRisk').value = business.risk || 'Trung bình';
+      } else {
+        pageEl.classList.remove('is-editing');
+      }
+    }
+
+    // Populate data to page
+    if (business) {
+      document.title = `${business.name} - Chi tiết cơ sở kinh doanh`;
+      document.getElementById('headerBusinessName').textContent = business.name;
+      document.getElementById('stripCode').textContent = business.code;
+      document.getElementById('stripAddress').textContent = business.address;
+      document.getElementById('stripType').textContent = business.type;
+      
+      const statusBadge = document.getElementById('stripStatus');
+      statusBadge.textContent = business.status;
+      statusBadge.className = 'badge-status';
+      if (business.status === 'Đang hoạt động') statusBadge.classList.add('badge-active');
+      else if (business.status === 'Tạm dừng') statusBadge.classList.add('badge-paused');
+      else statusBadge.classList.add('badge-stopped');
+
+      const riskBadge = document.getElementById('stripRisk');
+      riskBadge.textContent = business.risk;
+      riskBadge.className = 'status';
+      if (business.risk === 'Thấp') riskBadge.classList.add('st-green');
+      else if (business.risk === 'Trung bình') riskBadge.classList.add('st-orange');
+      else riskBadge.classList.add('st-warn');
+
+      document.getElementById('stripOfficer').textContent = business.officer || 'Đ/c Nguyễn Văn C';
+
+      // Tab overview bindings
+      document.getElementById('dtCode').textContent = business.code;
+      document.getElementById('dtName').textContent = business.name;
+      document.getElementById('dtShortName').textContent = business.shortName || business.name.replace('Khách sạn ', '').replace('Karaoke ', '').replace('Quán bar ', '').replace('Cầm đồ ', '');
+      document.getElementById('dtType').textContent = business.type;
+      document.getElementById('dtTaxCode').textContent = business.taxCode;
+      document.getElementById('dtRegNo').textContent = business.regNo;
+      document.getElementById('dtEstDate').textContent = business.estDate;
+
+      document.getElementById('dtOwner').textContent = business.owner;
+      document.getElementById('dtOwnerId').textContent = business.ownerId;
+      document.getElementById('dtPhone').textContent = business.phone;
+      document.getElementById('dtEmail').textContent = business.email;
+      document.getElementById('dtWebsite').textContent = business.website;
+      document.getElementById('dtOwnerAddress').textContent = business.address;
+
+      document.getElementById('dtScale').textContent = business.scale || (business.type === 'Khách sạn' ? 'Lớn (Tiêu chuẩn 3 sao)' : 'Quy mô vừa');
+      document.getElementById('dtEmployees').textContent = (business.employees || '35') + ' nhân viên';
+      document.getElementById('dtRooms').textContent = (parseInt(business.rooms) || 0) + ' phòng nghỉ';
+      document.getElementById('dtCapacity').textContent = (parseInt(business.capacity) || 0) + ' khách';
+      document.getElementById('dtHours').textContent = business.hours || 'Hoạt động 24/7';
+
+      document.getElementById('dtLat').textContent = business.lat;
+      document.getElementById('dtLng').textContent = business.lng;
+
+      // Tab personnel bindings
+      document.getElementById('personOwnerName').textContent = business.owner;
+      document.getElementById('personOwnerId').textContent = business.ownerId;
+      document.getElementById('personOwnerPhone').textContent = business.phone;
+
+      // Tab facilities bindings
+      document.getElementById('facilityRooms').textContent = (parseInt(business.rooms) || 0) + ' phòng nghỉ';
+      document.getElementById('facilityCapacity').textContent = (parseInt(business.capacity) || 0) + ' khách';
+      
+      // Initial state load
+      if (initialMode === 'edit') {
+        toggleEditMode(true);
+      }
+
+      // Event: Edit Mode Toggles
+      document.getElementById('btnEditBusiness').addEventListener('click', () => {
+        toggleEditMode(true);
+        const newUrl = `${window.location.pathname}?code=${business.code}&mode=edit`;
+        window.history.pushState({ path: newUrl }, '', newUrl);
+      });
+
+      document.getElementById('btnCancelEdit').addEventListener('click', () => {
+        toggleEditMode(false);
+        const newUrl = `${window.location.pathname}?code=${business.code}`;
+        window.history.pushState({ path: newUrl }, '', newUrl);
+      });
+
+      // Event: Save business info
+      document.getElementById('btnSaveBusiness').addEventListener('click', () => {
+        const name = document.getElementById('inputName').value.trim();
+        const owner = document.getElementById('inputOwner').value.trim();
+        const phone = document.getElementById('inputPhone').value.trim();
+        
+        if (!name || !owner || !phone) {
+          showToast('Vui lòng điền các thông tin bắt buộc!', 'error');
+          return;
+        }
+
+        // Apply changes to the business object
+        business.name = name;
+        business.shortName = document.getElementById('inputShortName').value.trim();
+        business.type = document.getElementById('inputType').value;
+        business.taxCode = document.getElementById('inputTaxCode').value.trim();
+        business.regNo = document.getElementById('inputRegNo').value.trim();
+        
+        const dateVal = document.getElementById('inputEstDate').value;
+        if (dateVal) {
+          const dateParts = dateVal.split('-');
+          if (dateParts.length === 3) {
+            business.estDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+          } else {
+            business.estDate = dateVal;
+          }
+        }
+        
+        business.owner = owner;
+        business.ownerId = document.getElementById('inputOwnerId').value.trim();
+        business.phone = phone;
+        business.email = document.getElementById('inputEmail').value.trim();
+        business.website = document.getElementById('inputWebsite').value.trim();
+        business.address = document.getElementById('inputOwnerAddress').value.trim();
+        
+        business.scale = document.getElementById('inputScale').value.trim();
+        business.employees = document.getElementById('inputEmployees').value.trim();
+        business.rooms = document.getElementById('inputRooms').value.trim();
+        business.capacity = document.getElementById('inputCapacity').value.trim();
+        business.hours = document.getElementById('inputHours').value.trim();
+        
+        business.lat = document.getElementById('inputLat').value.trim();
+        business.lng = document.getElementById('inputLng').value.trim();
+        
+        business.status = document.getElementById('inputStatus').value;
+        business.risk = document.getElementById('inputRisk').value;
+
+        // Sync into sessionStorage list
+        const idx = mockBusinesses.findIndex(b => b.code === business.code);
+        if (idx !== -1) {
+          mockBusinesses[idx] = business;
+        }
+        sessionStorage.setItem('mockBusinesses', JSON.stringify(mockBusinesses));
+
+        // Update UI elements in View Mode
+        document.title = `${business.name} - Chi tiết cơ sở kinh doanh`;
+        document.getElementById('headerBusinessName').textContent = business.name;
+        document.getElementById('stripAddress').textContent = business.address;
+        document.getElementById('stripType').textContent = business.type;
+        
+        const stripStatus = document.getElementById('stripStatus');
+        stripStatus.textContent = business.status;
+        stripStatus.className = 'badge-status';
+        if (business.status === 'Đang hoạt động') stripStatus.classList.add('badge-active');
+        else if (business.status === 'Tạm dừng') stripStatus.classList.add('badge-paused');
+        else stripStatus.classList.add('badge-stopped');
+
+        const stripRisk = document.getElementById('stripRisk');
+        stripRisk.textContent = business.risk;
+        stripRisk.className = 'status';
+        if (business.risk === 'Thấp') stripRisk.classList.add('st-green');
+        else if (business.risk === 'Trung bình') stripRisk.classList.add('st-orange');
+        else stripRisk.classList.add('st-warn');
+
+        document.getElementById('dtName').textContent = business.name;
+        document.getElementById('dtShortName').textContent = business.shortName || business.name.replace('Khách sạn ', '').replace('Karaoke ', '').replace('Quán bar ', '').replace('Cầm đồ ', '');
+        document.getElementById('dtType').textContent = business.type;
+        document.getElementById('dtTaxCode').textContent = business.taxCode;
+        document.getElementById('dtRegNo').textContent = business.regNo;
+        document.getElementById('dtEstDate').textContent = business.estDate;
+
+        document.getElementById('dtOwner').textContent = business.owner;
+        document.getElementById('dtOwnerId').textContent = business.ownerId;
+        document.getElementById('dtPhone').textContent = business.phone;
+        document.getElementById('dtEmail').textContent = business.email;
+        document.getElementById('dtWebsite').textContent = business.website;
+        document.getElementById('dtOwnerAddress').textContent = business.address;
+
+        document.getElementById('dtScale').textContent = business.scale;
+        document.getElementById('dtEmployees').textContent = business.employees + ' nhân viên';
+        document.getElementById('dtRooms').textContent = business.rooms + ' phòng nghỉ';
+        document.getElementById('dtCapacity').textContent = business.capacity + ' khách';
+        document.getElementById('dtHours').textContent = business.hours;
+
+        document.getElementById('dtLat').textContent = business.lat;
+        document.getElementById('dtLng').textContent = business.lng;
+
+        document.getElementById('personOwnerName').textContent = business.owner;
+        document.getElementById('personOwnerId').textContent = business.ownerId;
+        document.getElementById('personOwnerPhone').textContent = business.phone;
+
+        document.getElementById('facilityRooms').textContent = business.rooms + ' phòng nghỉ';
+        document.getElementById('facilityCapacity').textContent = business.capacity + ' khách';
+
+        showToast('Cập nhật thông tin cơ sở thành công!', 'success');
+
+        // Turn off Edit Mode
+        toggleEditMode(false);
+        const newUrl = `${window.location.pathname}?code=${business.code}`;
+        window.history.pushState({ path: newUrl }, '', newUrl);
+      });
+    }
+
+    // Tab switcher logic
+    const tabs = document.querySelectorAll('.detail-tab');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const target = tab.dataset.tabTarget;
+        
+        // Remove active class from all tabs
+        tabs.forEach(t => t.classList.remove('active'));
+        // Add active class to clicked tab
+        tab.classList.add('active');
+
+        // Hide all tab contents
+        tabContents.forEach(content => {
+          content.classList.remove('active');
+          if (content.id === `tab-${target}`) {
+            content.classList.add('active');
+          }
+        });
+      });
+    });
+
+    window.addEventListener('load', () => {
+      if (window.lucide) window.lucide.createIcons();
+    });
+  </script>
+  <script src="../scripts/auth.js"></script>
+  <script src='../scripts/layout-sync.js'></script>
+</body>
+
+</html>
+

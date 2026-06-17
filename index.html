@@ -7,6 +7,7 @@
   <title>Hệ thống Quản lý Cơ sở Kinh doanh ANTT Ninh Bình</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="scripts/auth.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -44,8 +45,8 @@
             <i data-lucide="file-text"></i> Thủ tục <i data-lucide="chevron-down" class="ml-0.5"></i>
           </a>
           <div class="custom-nav-dropdown">
-            <a href="html/DangKy.html">Đăng ký cơ sở mới</a>
-            <a href="html/QuanLyHoSo.html">Khai báo thay đổi</a>
+            <a href="html/DangKyCoSo.html">Đăng ký cơ sở mới</a>
+            <a href="html/ThayDoiThongTin.html">Khai báo thay đổi</a>
             <a href="#" data-tab="procedures" class="dropdown-procedure-link">Danh mục thủ tục</a>
           </div>
         <li class="custom-nav-item" id="nav-search">
@@ -58,20 +59,39 @@
             <i data-lucide="headset"></i> Hỗ trợ <i data-lucide="chevron-down" class="ml-0.5"></i>
           </a>
           <div class="custom-nav-dropdown">
-            <a href="#">Hướng dẫn quy trình</a>
-            <a href="#">Biểu mẫu tải về</a>
-            <a href="#">Câu hỏi thường gặp</a>
+            <a href="html/HuongDanSuDung.html">Hướng dẫn sử dụng</a>
+            <a href="html/TinTucThongBao.html">Tin tức & Thông báo</a>
+            <a href="html/CauHoiThuongGap.html">Câu hỏi thường gặp</a>
+            <a href="html/LienHeHoTro.html">Liên hệ hỗ trợ</a>
             <a href="#" data-tab="feedback" class="dropdown-feedback-link">Tiếp nhận phản ánh</a>
           </div>
         </li>
       </ul>
     </nav>
 
-    <a class="custom-login-btn" href="html/DangNhap.html">
-      <i data-lucide="user"></i>
-      Đăng nhập
-    </a>
+    <!-- Auth widget: populated by JS below -->
+    <div id="headerAuthArea">
+      <a class="custom-login-btn" href="html/DangNhap.html">
+        <i data-lucide="user"></i>
+        Đăng nhập
+      </a>
+    </div>
   </header>
+
+  <!-- ── Auth-gate modal ──────────────────────────────── -->
+  <div id="authGateModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.55);backdrop-filter:blur(3px);align-items:center;justify-content:center;">
+    <div style="background:#fff;border-radius:20px;padding:36px 40px 32px;max-width:420px;width:90%;box-shadow:0 24px 56px rgba(0,0,0,0.22);text-align:center;">
+      <div style="width:56px;height:56px;border-radius:50%;background:#fff2f2;display:grid;place-items:center;margin:0 auto 16px;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#bd0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+      <h3 style="font-size:18px;font-weight:700;color:#1b2430;margin:0 0 8px;">Yêu cầu đăng nhập</h3>
+      <p style="font-size:14px;color:#6b7280;margin:0 0 24px;line-height:1.55;">Chức năng này yêu cầu bạn đăng nhập vào hệ thống. Vui lòng đăng nhập để tiếp tục.</p>
+      <div style="display:flex;gap:12px;justify-content:center;">
+        <button id="authGateCancel" style="flex:1;height:44px;border-radius:8px;border:1.5px solid #d1d5db;background:#fff;font-size:14px;font-weight:600;color:#374151;cursor:pointer;">Hủy</button>
+        <a href="html/DangNhap.html" style="flex:1;height:44px;border-radius:8px;background:linear-gradient(180deg,#ed000b,#d80008);font-size:14px;font-weight:700;color:#fff;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;">Đăng nhập ngay</a>
+      </div>
+    </div>
+  </div>
 
   <!-- VIEW 1: HOMEPAGE (Mockup Layout) -->
   <main id="homepage-view" class="view-container hidden">
@@ -97,7 +117,7 @@
 
     <!-- Overlapping Primary Actions Cards -->
     <section class="custom-hero-cards">
-      <a href="html/DangKy.html" class="hero-card">
+      <a href="html/DangKyCoSo.html" class="hero-card">
         <div class="hero-card-left">
           <div class="hero-card-icon">
             <i data-lucide="store"></i>
@@ -109,7 +129,7 @@
         </div>
       </a>
 
-      <a href="html/QuanLyHoSo.html" class="hero-card">
+      <a href="html/TheoDoiHoSo.html" class="hero-card">
         <div class="hero-card-left">
           <div class="hero-card-icon">
             <i data-lucide="file-up"></i>
@@ -148,7 +168,7 @@
           </div>
 
           <div class="sub-cards-grid">
-            <a href="html/DangKy.html" class="sub-card">
+            <a href="html/DangKyCoSo.html" class="sub-card">
               <div class="sub-card-left">
                 <div class="sub-card-icon">
                   <i data-lucide="plus-circle"></i>
@@ -163,7 +183,7 @@
               </div>
             </a>
 
-            <a href="html/QuanLyHoSo.html" class="sub-card">
+            <a href="html/ThayDoiThongTin.html" class="sub-card">
               <div class="sub-card-left">
                 <div class="sub-card-icon">
                   <i data-lucide="file-edit"></i>
@@ -178,7 +198,7 @@
               </div>
             </a>
 
-            <a href="#" class="sub-card sub-card-search" data-tab="search">
+            <a href="html/TheoDoiHoSo.html" class="sub-card">
               <div class="sub-card-left">
                 <div class="sub-card-icon">
                   <i data-lucide="folder-search"></i>
@@ -193,7 +213,7 @@
               </div>
             </a>
 
-            <a href="html/QuanLyHoSo.html" class="sub-card">
+            <a href="html/CoSoCuaToi.html" class="sub-card">
               <div class="sub-card-left">
                 <div class="sub-card-icon">
                   <i data-lucide="home"></i>
@@ -220,14 +240,14 @@
           </div>
 
           <div class="sub-cards-grid">
-            <a href="#" class="sub-card">
+            <a href="html/HuongDanSuDung.html" class="sub-card">
               <div class="sub-card-left">
                 <div class="sub-card-icon">
-                  <i data-lucide="help-circle"></i>
+                  <i data-lucide="book-open"></i>
                 </div>
                 <div class="sub-card-text">
-                  <h3>Hướng dẫn thủ tục</h3>
-                  <p>Tìm hiểu quy trình, thành phần hồ sơ và cách thực hiện.</p>
+                  <h3>Hướng dẫn sử dụng</h3>
+                  <p>Xem tài liệu hướng dẫn và video mô phỏng thao tác.</p>
                 </div>
               </div>
               <div class="sub-card-arrow">
@@ -235,14 +255,14 @@
               </div>
             </a>
 
-            <a href="#" class="sub-card">
+            <a href="html/TinTucThongBao.html" class="sub-card">
               <div class="sub-card-left">
                 <div class="sub-card-icon">
-                  <i data-lucide="download"></i>
+                  <i data-lucide="bell"></i>
                 </div>
                 <div class="sub-card-text">
-                  <h3>Biểu mẫu tải về</h3>
-                  <p>Tải các mẫu đơn, tờ khai và giấy tờ liên quan.</p>
+                  <h3>Tin tức & Thông báo</h3>
+                  <p>Cập nhật các thông báo mới và quy định quản lý ANTT.</p>
                 </div>
               </div>
               <div class="sub-card-arrow">
@@ -250,7 +270,7 @@
               </div>
             </a>
 
-            <a href="#" class="sub-card">
+            <a href="html/CauHoiThuongGap.html" class="sub-card">
               <div class="sub-card-left">
                 <div class="sub-card-icon">
                   <i data-lucide="message-square"></i>
@@ -265,7 +285,7 @@
               </div>
             </a>
 
-            <a href="#" class="sub-card sub-card-feedback" data-tab="feedback">
+            <a href="html/LienHeHoTro.html" class="sub-card">
               <div class="sub-card-left">
                 <div class="sub-card-icon">
                   <i data-lucide="phone"></i>
@@ -655,10 +675,6 @@
 
   <!-- VIEW 2: MAP VIEW (Original Digital Map) -->
   <main id="map-view" class="view-container public-map-page">
-    <section class="public-title">
-      <h1>Bản đồ số GIS</h1>
-      <p>Tra cứu thông tin cơ sở kinh doanh có điều kiện về an ninh trật tự trên địa bàn tỉnh Ninh Bình</p>
-    </section>
 
     <section class="gis-filter public-filter">
       <label>
@@ -679,11 +695,26 @@
         <select id="filterType">
           <option value="">Tất cả loại hình</option>
           <option value="Karaoke">Karaoke</option>
-          <option value="Nhà nghỉ">Nhà nghỉ</option>
           <option value="Khách sạn">Khách sạn</option>
-          <option value="Bar">Bar</option>
+          <option value="Nhà nghỉ">Nhà nghỉ</option>
           <option value="Massage">Massage</option>
+          <option value="Bar">Bar</option>
           <option value="Cầm đồ">Cầm đồ</option>
+          <option value="Khắc dấu">Khắc dấu</option>
+          <option value="Dịch vụ bảo vệ">Dịch vụ bảo vệ</option>
+          <option value="In ấn">In ấn</option>
+          <option value="Trò chơi điện tử">Trò chơi điện tử</option>
+          <option value="Casino">Casino</option>
+          <option value="Phẫu thuật thẩm mỹ">Phẫu thuật thẩm mỹ</option>
+          <option value="Chăm sóc da">Chăm sóc da</option>
+          <option value="Kinh doanh pháo hoa">Kinh doanh pháo hoa</option>
+          <option value="Súng bắn sơn">Súng bắn sơn</option>
+          <option value="Công cụ hỗ trợ">Công cụ hỗ trợ</option>
+          <option value="Vật liệu nổ công nghiệp">Vật liệu nổ công nghiệp</option>
+          <option value="Tiền chất thuốc nổ">Tiền chất thuốc nổ</option>
+          <option value="Thiết bị gây nhiễu, phá sóng">Thiết bị gây nhiễu, phá sóng</option>
+          <option value="Thiết bị định vị, phát tín hiệu">Thiết bị định vị, phát tín hiệu</option>
+          <option value="Cho thuê tài chính">Cho thuê tài chính</option>
           <option value="Trụ sở Công an">Trụ sở Công an</option>
         </select>
       </label>
@@ -748,22 +779,15 @@
             <label><input type="checkbox" data-map-layer="facilityLabels"> Hiển thị nhãn cơ sở</label>
             <label><input type="checkbox" data-map-layer="administrative" checked> Hiển thị ranh giới hành chính</label>
             <label><input type="checkbox" data-map-layer="roads" checked> Hiển thị giao thông</label>
-            <label><input type="checkbox" data-map-layer="water"> Hiển thị sông, hồ</label>
+            <label><input type="checkbox" data-map-layer="water" checked> Hiển thị sông, hồ</label>
             <label style="margin-top: 4px; border-top: 1px solid #e5e7eb; padding-top: 6px;"><input type="checkbox" id="riskHeatmapToggle"> Bản đồ nhiệt rủi ro</label>
           </section>
         </div>
         <div class="map-legend">
-          <h2>Chú thích trạng thái</h2>
-          <div><span class="marker-dot green"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Đang hoạt động</div>
-          <div><span class="marker-dot yellow"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Tạm dừng hoạt động
-          </div>
-          <div><span class="marker-dot gray"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Ngừng hoạt động</div>
-          <div><span class="marker-dot orange"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Giấy phép sắp hết
-            hạn</div>
-          <div><span class="marker-dot red"><i data-lucide="store" class="h-3.5 w-3.5"></i></span>Giấy phép hết hạn / Bị
-            thu hồi</div>
-          <div><span class="marker-dot purple"><i data-lucide="triangle-alert" class="h-3.5 w-3.5"></i></span>Có vi phạm
-            / Rủi ro cao</div>
+          <h2>Thống kê loại hình</h2>
+          <section id="mapLegendList" class="map-legend-list" style="max-height: 200px; overflow-y: auto; display: grid; gap: 8px; padding-top: 4px; padding-right: 12px; box-sizing: border-box;">
+            <!-- Dynamically populated -->
+          </section>
         </div>
 
         <article id="facilityPopup" class="facility-popup anchor-right" hidden>
@@ -832,7 +856,7 @@
           <label><input type="checkbox" data-map-layer="facilityLabels"> Hiển thị nhãn cơ sở</label>
           <label><input type="checkbox" data-map-layer="administrative" checked> Hiển thị ranh giới hành chính</label>
           <label><input type="checkbox" data-map-layer="roads" checked> Hiển thị giao thông</label>
-          <label><input type="checkbox" data-map-layer="water"> Hiển thị sông, hồ</label>
+          <label><input type="checkbox" data-map-layer="water" checked> Hiển thị sông, hồ</label>
         </section>
       </aside>
     </section>
@@ -1021,6 +1045,13 @@
       const searchView = document.getElementById('search-view');
       const feedbackView = document.getElementById('feedback-view');
 
+      // Initialize body class if map tab is active on load
+      const initialActiveItem = document.querySelector('.custom-nav-item.active .custom-nav-link');
+      const initialActiveTab = initialActiveItem ? initialActiveItem.getAttribute('data-tab') : null;
+      if (initialActiveTab === 'map' && window.innerWidth > 1380) {
+        document.body.classList.add('map-mode-active');
+      }
+
       // Helper function to hide all views
       function hideAllViews() {
         homepageView.classList.add('hidden');
@@ -1034,6 +1065,12 @@
       function switchTab(tab) {
         hideAllViews();
         navItems.forEach(nav => nav.classList.remove('active'));
+
+        if (tab === 'map' && window.innerWidth > 1380) {
+          document.body.classList.add('map-mode-active');
+        } else {
+          document.body.classList.remove('map-mode-active');
+        }
 
         if (tab === 'home') {
           document.getElementById('nav-home')?.classList.add('active');
@@ -1146,9 +1183,147 @@
         e.preventDefault();
         switchTab('home');
       });
+
+      // ── AUTHENTICATION & ACCESS CONTROL ────────────────────────
+      const session = typeof Auth !== 'undefined' ? Auth.getSession() : null;
+      const authArea = document.getElementById('headerAuthArea');
+      const authModal = document.getElementById('authGateModal');
+      const authCancel = document.getElementById('authGateCancel');
+
+      // 1. Cập nhật header widget
+      if (session && authArea) {
+        authArea.innerHTML = `
+          <div class="topbar-menu-wrap" style="position:relative; z-index:1000; font-family:'Roboto',sans-serif;">
+            <button id="publicUserMenuToggle" class="user-menu-btn" type="button" aria-label="Mở menu tài khoản" aria-expanded="false" style="display:flex; align-items:center; gap:12px; background:transparent; border:none; cursor:pointer; padding:4px 10px; border-radius:8px; transition:background 160ms ease; text-align:left; outline:none; height:46px;">
+              <div style="width:38px; height:38px; border-radius:50%; color:white; font-weight:900; font-size:14px; display:grid; place-items:center; background:${session.avatarColor || '#bd0000'}; flex-shrink:0;">
+                ${session.avatar}
+              </div>
+              <div class="hidden text-left sm:block" style="display:block;"><div style="font-size:15px; font-weight:600; color:#ffffff; line-height:1.2;">${session.name}</div><div style="font-size:12px; font-weight:500; color:rgba(255,255,255,0.85); margin-top:2px;">${session.unit}</div></div>
+              <i data-lucide="chevron-down" class="user-chevron" style="color:#ffffff; width:16px; height:16px; transition:transform 160ms ease;"></i>
+            </button>
+            <div id="publicUserMenu" class="topbar-dropdown user-dropdown" style="display:none; position:absolute; right:0; top:calc(100% + 12px); z-index:999; overflow:hidden; border:1px solid #e3e8f0; border-radius:12px; background:#fff; color:#1f2937; box-shadow:0 18px 42px rgba(15,23,42,0.18); width:260px;">
+              <!-- Arrow Caret -->
+              <div style="position:absolute; right:20px; top:-6px; width:12px; height:12px; border-left:1px solid #e3e8f0; border-top:1px solid #e3e8f0; background:#fff; transform:rotate(45deg); z-index:1;"></div>
+              <div class="user-card" style="display:flex; align-items:center; gap:12px; border-bottom:1px solid #edf1f6; padding:15px; position:relative; z-index:2; background:#fff;">
+                <div style="width:38px; height:38px; border-radius:50%; color:white; font-weight:900; font-size:14px; display:grid; place-items:center; background:${session.avatarColor || '#bd0000'}">
+                  ${session.avatar}
+                </div>
+                <div>
+                  <div class="user-name" style="color:#111827; font-size:14px; font-weight:700;">${session.name}</div>
+                  <div class="user-role" style="margin-top:3px; color:#6b7280; font-size:11px; font-weight:600; line-height:1.35;">${session.unit}</div>
+                </div>
+              </div>
+              <!-- Actions -->
+              <div style="position:relative; z-index:2; background:#fff;">
+                ${session.role === 'admin' 
+                  ? `<a class="dropdown-action" href="html/Dashboard.html" style="display:flex; width:100%; align-items:center; gap:10px; padding:12px 15px; color:#273140; font-size:13px; font-weight:600; text-decoration:none; box-sizing:border-box;"><i data-lucide="layout-dashboard" style="width:16px; height:16px;"></i>Trang quản trị (Admin)</a>`
+                  : `<a class="dropdown-action" href="html/CongCSKD-HoSoCuaToi.html" style="display:flex; width:100%; align-items:center; gap:10px; padding:12px 15px; color:#273140; font-size:13px; font-weight:600; text-decoration:none; box-sizing:border-box;"><i data-lucide="store" style="width:16px; height:16px;"></i>Hồ sơ cơ sở của tôi</a>`
+                }
+                <a class="dropdown-action" href="html/HoSoCaNhan.html" style="display:flex; width:100%; align-items:center; gap:10px; padding:12px 15px; color:#273140; font-size:13px; font-weight:600; text-decoration:none; box-sizing:border-box;"><i data-lucide="id-card" style="width:16px; height:16px;"></i>Hồ sơ cá nhân</a>
+                <button class="dropdown-action danger" type="button" id="publicLogoutBtn">
+                  <i data-lucide="log-out" style="width:16px; height:16px;"></i>Đăng xuất
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+        
+        // Logic toggle dropdown giống admin
+        const toggle = document.getElementById('publicUserMenuToggle');
+        const menu = document.getElementById('publicUserMenu');
+        
+        toggle?.addEventListener('click', (event) => {
+          event.stopPropagation();
+          const isOpen = toggle.classList.contains('is-open');
+          
+          if (isOpen) {
+            toggle.classList.remove('is-open');
+            toggle.setAttribute('aria-expanded', 'false');
+            if (menu) menu.style.display = 'none';
+          } else {
+            toggle.classList.add('is-open');
+            toggle.setAttribute('aria-expanded', 'true');
+            if (menu) menu.style.display = 'block';
+          }
+        });
+        
+        // Đóng dropdown khi click ra ngoài
+        document.addEventListener('click', (event) => {
+          if (!event.target.closest('.topbar-menu-wrap')) {
+            toggle?.classList.remove('is-open');
+            toggle?.setAttribute('aria-expanded', 'false');
+            if (menu) menu.style.display = 'none';
+          }
+        });
+
+        // Gắn nút đăng xuất
+        document.getElementById('publicLogoutBtn')?.addEventListener('click', () => {
+          Auth.logout('html/DangNhap.html');
+        });
+      }
+
+      // 2. Kiểm soát truy cập các nút cần đăng nhập
+      const protectedSelectors = [
+        'a[href="html/DangKyCoSo.html"]',
+        'a[href="html/ThayDoiThongTin.html"]',
+        'a[href="html/TheoDoiHoSo.html"]',
+        'a[href="html/CoSoCuaToi.html"]',
+        '.dropdown-feedback-link',
+        '.sub-card-feedback'
+      ];
+
+      protectedSelectors.forEach(selector => {
+        document.querySelectorAll(selector).forEach(link => {
+          link.addEventListener('click', (e) => {
+            if (!session) {
+              e.preventDefault();
+              e.stopPropagation();
+              if (authModal) authModal.style.display = 'flex';
+            } else {
+              // Nếu đã đăng nhập user thường, chặn truy cập vào Dashboard/Quản lý nếu họ bấm link trỏ tới trang Quản lý
+              if (session.role !== 'admin') {
+                const targetHref = link.getAttribute('href') || '';
+                // Cho phép truy cập vào các trang dành riêng cho cơ sở nếu có
+                if (targetHref.includes('QuanLyHoSo.html') || targetHref.includes('CoSoDuLieuCSKD.html')) {
+                  // Đổi hướng đến trang dành riêng cho cơ sở nếu cần, ở đây tạm thời chuyển tới CongCSKD-HoSoCuaToi.html
+                  e.preventDefault();
+                  window.location.href = 'html/CongCSKD-HoSoCuaToi.html';
+                }
+              }
+            }
+          });
+        });
+      });
+
+      // 3. Đóng modal yêu cầu đăng nhập
+      authCancel?.addEventListener('click', () => {
+        if (authModal) authModal.style.display = 'none';
+      });
+
+      // Close modal on escape key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && authModal) {
+          authModal.style.display = 'none';
+        }
+      });
+
+      window.addEventListener('resize', () => {
+        const activeItem = document.querySelector('.custom-nav-item.active .custom-nav-link');
+        const activeTab = activeItem ? activeItem.getAttribute('data-tab') : null;
+        if (activeTab === 'map' && window.innerWidth > 1380) {
+          document.body.classList.add('map-mode-active');
+        } else {
+          document.body.classList.remove('map-mode-active');
+        }
+      });
+
+      if (window.lucide) {
+        window.lucide.createIcons();
+      }
     });
   </script>
 
+  <script src="scripts/auth.js"></script>
   <script src="https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js"></script>
   <script src="https://unpkg.com/deck.gl@latest/dist.min.js"></script>
   <script src="scripts/ban-do-so.js"></script>

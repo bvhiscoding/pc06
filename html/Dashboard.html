@@ -1,0 +1,629 @@
+﻿<!doctype html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard – Hệ thống Quản lý CSKD ANTT Ninh Bình</title>
+  <meta name="description" content="Tổng quan dashboard quản lý cơ sở kinh doanh có điều kiện về ANTT tỉnh Ninh Bình." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <!-- Shared styles -->
+  <link rel="stylesheet" href="../styles/design-system.css">
+  <link rel="stylesheet" href="../styles/module-pages.css">
+  <!-- Dashboard-specific -->
+  <link rel="stylesheet" href="../styles/dashboard.css">
+</head>
+
+<body class="font-sans antialiased">
+  <div class="desktop-shell min-h-screen">
+
+  <!-- ══════════════════════════════════════════
+       HEADER
+  ═══════════════════════════════════════════ -->
+  <header class="app-header fixed left-0 right-0 top-0 z-30 flex h-[80px] items-center justify-between px-6 text-white">
+    <div class="flex h-full items-center">
+      <img class="crest" src="../public/logocongan.png" alt="Logo Bộ Công an" />
+      <div class="brand-copy ml-4">
+        <div class="text-[22px] font-semibold leading-tight tracking-[0]">CÔNG AN TỈNH NINH BÌNH</div>
+        <div class="mt-1 text-[15px] font-medium tracking-[0] text-white/95">HỆ THỐNG QUẢN LÝ CƠ SỞ KINH DOANH CÓ ĐIỀU KIỆN VỀ ANTT</div>
+      </div>
+    </div>
+
+    <!-- Global search -->
+    <label class="topbar-search" aria-label="Tìm kiếm toàn hệ thống">
+      <i data-lucide="search" class="h-4 w-4"></i>
+      <input id="globalSearchInput" type="search" placeholder="Tìm hồ sơ, cơ sở, khai báo..." />
+    </label>
+
+    <!-- Actions -->
+    <div class="topbar-actions flex h-full items-center gap-4">
+      <!-- Notification bell -->
+      <div class="topbar-menu-wrap">
+        <button id="notificationToggle" class="topbar-icon-btn relative" type="button" aria-label="Thông báo" aria-expanded="false">
+          <i data-lucide="bell" class="h-[26px] w-[26px]"></i>
+          <span class="absolute right-0 top-1 grid h-5 min-w-5 place-items-center rounded-full bg-[#ff1e1e] px-1 text-[11px] font-semibold leading-none shadow">5</span>
+        </button>
+        <div id="notificationMenu" class="topbar-dropdown notification-dropdown" hidden>
+          <div class="dropdown-head"><span>Thông báo</span><button id="markAllReadBtn" type="button">Đánh dấu đã đọc</button></div>
+          <div id="notificationList" class="notification-list">
+            <a class="notification-item unread" href="#">
+              <div class="notif-icon-wrap purple"><i data-lucide="calendar-clock" class="h-4 w-4"></i></div>
+              <div class="notif-body"><div class="notif-title">96 giấy phép sắp hết hạn</div><div class="notif-time">Trong 30 ngày tới</div></div>
+            </a>
+            <a class="notification-item unread" href="#">
+              <div class="notif-icon-wrap red"><i data-lucide="triangle-alert" class="h-4 w-4"></i></div>
+              <div class="notif-body"><div class="notif-title">14 vi phạm quá hạn xử lý</div><div class="notif-time">Cần xử lý ngay</div></div>
+            </a>
+            <a class="notification-item" href="#">
+              <div class="notif-icon-wrap blue"><i data-lucide="message-square" class="h-4 w-4"></i></div>
+              <div class="notif-body"><div class="notif-title">12 phản ánh mới chờ tiếp nhận</div><div class="notif-time">Hôm nay</div></div>
+            </a>
+          </div>
+          <div class="dropdown-foot border-t border-[#edf1f6] p-2 text-center">
+            <a href="TrungTamThongBao.html" class="w-full block py-1.5 text-xs font-bold text-[#c90000] hover:bg-slate-50 transition rounded">Xem toàn bộ</a>
+          </div>
+        </div>
+      </div>
+      <!-- User menu -->
+      <div class="topbar-menu-wrap">
+        <button id="userMenuToggle" class="user-menu-btn" type="button" aria-label="Mở menu tài khoản" aria-expanded="false">
+          <div class="grid h-[46px] w-[46px] place-items-center rounded-full bg-white text-[#cf0000] shadow-sm"><i data-lucide="user-round" class="h-7 w-7 fill-[#cf0000]/15"></i></div>
+          <div class="hidden text-left sm:block"><div class="text-[15px] font-semibold leading-5">Nguyễn Văn A</div><div class="text-[13px] font-medium text-white/92">Phòng CS QLHC về TTXH</div></div>
+          <i data-lucide="chevron-down" class="user-chevron h-5 w-5 text-white"></i>
+        </button>
+        <div id="userMenu" class="topbar-dropdown user-dropdown" hidden>
+          <div class="user-card">
+            <div class="grid h-11 w-11 place-items-center rounded-full bg-[#fff2f2] text-[#cf0000]"><i data-lucide="user-round" class="h-6 w-6"></i></div>
+            <div><div class="user-name">Nguyễn Văn A</div><div class="user-role">Phòng CS QLHC về TTXH</div></div>
+          </div>
+          <a class="dropdown-action" href="HoSoCaNhan.html"><i data-lucide="id-card" class="h-4 w-4"></i>Hồ sơ cá nhân</a>
+          <a class="dropdown-action danger" href="DangNhap.html"><i data-lucide="log-out" class="h-4 w-4"></i>Đăng xuất</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ══════════════════════════════════════════
+       SIDEBAR
+  ═══════════════════════════════════════════ -->
+  <aside class="sidebar fixed bottom-0 left-0 top-[80px] z-20 px-2 text-white">
+    <div class="sidebar-scroll">
+      <div class="nav-section mt-0">Tổng quan</div>
+      <a href="Dashboard.html" class="nav-item active"><i data-lucide="layout-dashboard"></i><span class="nav-copy">Dashboard</span></a>
+      <div class="nav-section">Giám sát địa bàn</div>
+      <a href="BanDoSoGis.html" class="nav-item"><i data-lucide="map-pin"></i><span class="nav-copy">Bản đồ số GIS</span></a>
+      <div class="nav-section">Nghiệp vụ</div>
+      <a href="QuanLyHoSo.html" class="nav-item"><i data-lucide="file-text"></i><span class="nav-copy">Quản lý hồ sơ</span></a>
+      <a href="CoSoDuLieuCSKD.html" class="nav-item"><i data-lucide="database"></i><span class="nav-copy">Cơ sở dữ liệu CSKD-ANTT</span></a>
+      <a href="QuanLyKhaiBao.html" class="nav-item"><i data-lucide="inbox"></i><span class="nav-copy">Khai báo từ cơ sở</span></a>
+      <a href="KiemTraCoSo.html" class="nav-item"><i data-lucide="clipboard-check"></i><span class="nav-copy">Kiểm tra cơ sở</span></a>
+      <a href="XuLyViPham.html" class="nav-item"><i data-lucide="octagon-alert"></i><span class="nav-copy">Vi phạm / Xử lý vi phạm</span></a>
+      <a href="QuanLyPhanAnh.html" class="nav-item"><i data-lucide="message-square-warning"></i><span class="nav-copy">Phản ánh kiến nghị</span></a>
+      <div class="nav-section">Báo cáo</div>
+      <a href="BaoCao-ThongKe.html" class="nav-item"><i data-lucide="chart-column-big"></i><span class="nav-copy">Báo cáo - thống kê</span></a>
+      <div class="nav-section">Cấu hình</div>
+      <a href="DanhMuc.html" class="nav-item"><i data-lucide="folder"></i><span class="nav-copy">Danh mục dùng chung</span></a>
+      <a href="QuanLyTaiKhoan.html" class="nav-item"><i data-lucide="users"></i><span class="nav-copy">Người dùng &amp; phân quyền</span></a>
+      <a href="QuanLyCanBo.html" class="nav-item"><i data-lucide="users-round"></i><span class="nav-copy">Quản lý cán bộ</span></a>
+      <a href="NhatKyHeThong.html" class="nav-item"><i data-lucide="history"></i><span class="nav-copy">Nhật ký hệ thống</span></a>
+      <a href="CauHinhHeThong.html" class="nav-item"><i data-lucide="settings"></i><span class="nav-copy">Cấu hình hệ thống</span></a>
+    </div>
+    <div class="sidebar-action">
+      <button id="sidebarToggle" class="sidebar-toggle" type="button" aria-label="Thu gọn menu" aria-expanded="true">
+        <i data-lucide="chevron-left" class="toggle-icon"></i>
+        <span class="collapse-label">Thu gọn</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ══════════════════════════════════════════
+       MAIN CONTENT
+  ═══════════════════════════════════════════ -->
+  <main class="content db-main" id="dashboardMain">
+    <div class="db-content">
+
+      <!-- Page heading -->
+      <div class="db-page-title">Dashboard</div>
+      <nav class="db-breadcrumb" aria-label="Breadcrumb">
+        <a href="../index.html">Trang chủ</a>
+        <span class="sep"><i data-lucide="chevron-right" style="width:12px;height:12px;"></i></span>
+        <span class="current">Dashboard</span>
+      </nav>
+
+      <!-- ── STAT CARDS ─────────────────────── -->
+      <div class="db-stats-grid" id="statCards">
+
+        <!-- 1. Tổng cơ sở -->
+        <div class="db-stat-card">
+          <div class="db-stat-top">
+            <div class="db-stat-icon red">
+              <i data-lucide="store"></i>
+            </div>
+            <div class="db-stat-info">
+              <div class="db-stat-value">1.248</div>
+              <div class="db-stat-label">Tổng cơ sở</div>
+            </div>
+          </div>
+          <div style="height:36px;position:relative;"><canvas id="spark1" aria-label="Sparkline tổng cơ sở" width="200" height="36"></canvas></div>
+        </div>
+
+        <!-- 2. Hồ sơ chờ tiếp nhận -->
+        <div class="db-stat-card">
+          <div class="db-stat-top">
+            <div class="db-stat-icon orange">
+              <i data-lucide="folder-open"></i>
+            </div>
+            <div class="db-stat-info">
+              <div class="db-stat-value">18</div>
+              <div class="db-stat-label">Hồ sơ chờ tiếp nhận</div>
+            </div>
+          </div>
+          <div style="height:36px;position:relative;"><canvas id="spark2" aria-label="Sparkline hồ sơ chờ" width="200" height="36"></canvas></div>
+        </div>
+
+        <!-- 3. Đang xử lý -->
+        <div class="db-stat-card">
+          <div class="db-stat-top">
+            <div class="db-stat-icon amber">
+              <i data-lucide="refresh-cw"></i>
+            </div>
+            <div class="db-stat-info">
+              <div class="db-stat-value">42</div>
+              <div class="db-stat-label">Đang xử lý</div>
+            </div>
+          </div>
+          <div style="height:36px;position:relative;"><canvas id="spark3" aria-label="Sparkline đang xử lý" width="200" height="36"></canvas></div>
+        </div>
+
+        <!-- 4. Giấy phép sắp hết hạn -->
+        <div class="db-stat-card">
+          <div class="db-stat-top">
+            <div class="db-stat-icon purple">
+              <i data-lucide="calendar-clock"></i>
+            </div>
+            <div class="db-stat-info">
+              <div class="db-stat-value">96</div>
+              <div class="db-stat-label">Giấy phép sắp hết hạn</div>
+            </div>
+          </div>
+          <div style="height:36px;position:relative;"><canvas id="spark4" aria-label="Sparkline giấy phép" width="200" height="36"></canvas></div>
+        </div>
+
+        <!-- 5. Phản ánh mới -->
+        <div class="db-stat-card">
+          <div class="db-stat-top">
+            <div class="db-stat-icon blue">
+              <i data-lucide="message-square"></i>
+            </div>
+            <div class="db-stat-info">
+              <div class="db-stat-value">12</div>
+              <div class="db-stat-label">Phản ánh mới</div>
+            </div>
+          </div>
+          <div style="height:36px;position:relative;"><canvas id="spark5" aria-label="Sparkline phản ánh mới" width="200" height="36"></canvas></div>
+        </div>
+
+        <!-- 6. Vi phạm chưa xử lý -->
+        <div class="db-stat-card">
+          <div class="db-stat-top">
+            <div class="db-stat-icon rose">
+              <i data-lucide="triangle-alert"></i>
+            </div>
+            <div class="db-stat-info">
+              <div class="db-stat-value">37</div>
+              <div class="db-stat-label">Vi phạm chưa xử lý</div>
+            </div>
+          </div>
+          <div style="height:36px;position:relative;"><canvas id="spark6" aria-label="Sparkline vi phạm" width="200" height="36"></canvas></div>
+        </div>
+
+      </div><!-- /stat cards -->
+
+      <!-- ── CHARTS + ALERTS ROW ────────────── -->
+      <div class="db-mid-row">
+
+        <!-- Line chart: biến động hồ sơ -->
+        <div class="db-card">
+          <div class="db-card-title">Biến động hồ sơ tiếp nhận theo tháng</div>
+          <div class="db-chart-wrap" style="height:240px;">
+            <canvas id="lineChart" aria-label="Biểu đồ biến động hồ sơ"></canvas>
+          </div>
+        </div>
+
+        <!-- Pie chart: cơ cấu loại hình -->
+        <div class="db-card">
+          <div class="db-card-title">Cơ cấu loại hình kinh doanh</div>
+          <div style="display:flex;gap:16px;align-items:center;height:240px;">
+            <div class="db-chart-wrap" style="flex:1;height:100%;">
+              <canvas id="pieChart" aria-label="Biểu đồ cơ cấu loại hình kinh doanh"></canvas>
+            </div>
+            <div class="pie-legend" id="pieLegend" style="flex:0 0 130px;"></div>
+          </div>
+        </div>
+
+        <!-- Alert panel -->
+        <div class="db-alert-panel">
+          <div class="db-alert-title">Cảnh báo quan trọng</div>
+
+          <a href="QuanLyHoSo.html" class="db-alert-item">
+            <div class="db-alert-icon-wrap alert-icon-purple">
+              <i data-lucide="calendar-clock"></i>
+            </div>
+            <div class="db-alert-body">
+              <div class="db-alert-name">Giấy phép sắp hết hạn</div>
+              <div class="db-alert-sub">Trong 30 ngày tới</div>
+            </div>
+            <div class="db-alert-count">96</div>
+            <div class="db-alert-chevron"><i data-lucide="chevron-right"></i></div>
+          </a>
+
+          <a href="XuLyViPham.html" class="db-alert-item">
+            <div class="db-alert-icon-wrap alert-icon-red">
+              <i data-lucide="triangle-alert"></i>
+            </div>
+            <div class="db-alert-body">
+              <div class="db-alert-name">Vi phạm quá hạn xử lý</div>
+              <div class="db-alert-sub">Quá hạn từ 1–30 ngày</div>
+            </div>
+            <div class="db-alert-count">14</div>
+            <div class="db-alert-chevron"><i data-lucide="chevron-right"></i></div>
+          </a>
+
+          <a href="QuanLyPhanAnh.html" class="db-alert-item">
+            <div class="db-alert-icon-wrap alert-icon-blue">
+              <i data-lucide="message-square"></i>
+            </div>
+            <div class="db-alert-body">
+              <div class="db-alert-name">Phản ánh mới</div>
+              <div class="db-alert-sub">Chờ tiếp nhận</div>
+            </div>
+            <div class="db-alert-count">12</div>
+            <div class="db-alert-chevron"><i data-lucide="chevron-right"></i></div>
+          </a>
+
+          <a href="QuanLyHoSo.html" class="db-alert-item">
+            <div class="db-alert-icon-wrap alert-icon-orange">
+              <i data-lucide="folder-open"></i>
+            </div>
+            <div class="db-alert-body">
+              <div class="db-alert-name">Hồ sơ quá hạn xử lý</div>
+              <div class="db-alert-sub">Quá hạn từ 1–30 ngày</div>
+            </div>
+            <div class="db-alert-count">09</div>
+            <div class="db-alert-chevron"><i data-lucide="chevron-right"></i></div>
+          </a>
+
+        </div>
+      </div><!-- /mid-row -->
+
+      <!-- ── RECENT RECORDS TABLE ────────────── -->
+      <div class="db-table-card">
+        <div class="db-table-header">
+          <div class="db-section-title" style="margin-bottom:0;">Hồ sơ mới nhất</div>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="db-table" id="recentTable">
+            <thead>
+              <tr>
+                <th>Mã hồ sơ</th>
+                <th>Tên hồ sơ</th>
+                <th>Cơ sở</th>
+                <th>Ngày nộp</th>
+                <th>Trạng thái</th>
+                <th style="width:80px;">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody id="recentTableBody">
+              <tr>
+                <td class="td-code">HS0001258</td>
+                <td>Cấp mới giấy chứng nhận đủ điều kiện ANTT</td>
+                <td>
+                  <div class="td-facility-name">Karaoke New Star</div>
+                  <div class="td-facility-sub">123 Lê Hồng Phong, TP. Ninh Bình</div>
+                </td>
+                <td class="td-date">23/05/2025 09:15</td>
+                <td><span class="db-badge db-badge-pending">Chờ tiếp nhận</span></td>
+                <td>
+                  <div class="td-actions">
+                    <a href="ChiTietHoSo.html" class="db-action-btn" title="Xem chi tiết"><i data-lucide="eye"></i></a>
+                    <button class="db-action-btn" title="Thêm tùy chọn" type="button"><i data-lucide="more-vertical"></i></button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="td-code">HS0001257</td>
+                <td>Cấp lại giấy chứng nhận đủ điều kiện ANTT</td>
+                <td>
+                  <div class="td-facility-name">Nhà nghỉ Hoàng Gia</div>
+                  <div class="td-facility-sub">88 Trần Hưng Đạo, TP. Ninh Bình</div>
+                </td>
+                <td class="td-date">23/05/2025 08:47</td>
+                <td><span class="db-badge db-badge-process">Đang xử lý</span></td>
+                <td>
+                  <div class="td-actions">
+                    <a href="ChiTietHoSo.html" class="db-action-btn" title="Xem chi tiết"><i data-lucide="eye"></i></a>
+                    <button class="db-action-btn" title="Thêm tùy chọn" type="button"><i data-lucide="more-vertical"></i></button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="td-code">HS0001256</td>
+                <td>Thay đổi thông tin cơ sở kinh doanh</td>
+                <td>
+                  <div class="td-facility-name">Khách sạn Anh Dũng</div>
+                  <div class="td-facility-sub">56 Nguyễn Huệ, Tam Điệp</div>
+                </td>
+                <td class="td-date">22/05/2025 16:30</td>
+                <td><span class="db-badge db-badge-needmore">Cần bổ sung</span></td>
+                <td>
+                  <div class="td-actions">
+                    <a href="ChiTietHoSo.html" class="db-action-btn" title="Xem chi tiết"><i data-lucide="eye"></i></a>
+                    <button class="db-action-btn" title="Thêm tùy chọn" type="button"><i data-lucide="more-vertical"></i></button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="td-code">HS0001255</td>
+                <td>Cấp mới giấy chứng nhận đủ điều kiện ANTT</td>
+                <td>
+                  <div class="td-facility-name">Cơ sở massage Hoa Sen</div>
+                  <div class="td-facility-sub">Ngõ 12, đường Đinh Tiên Hoàng, TP. Ninh Bình</div>
+                </td>
+                <td class="td-date">22/05/2025 14:05</td>
+                <td><span class="db-badge db-badge-process">Đang xử lý</span></td>
+                <td>
+                  <div class="td-actions">
+                    <a href="ChiTietHoSo.html" class="db-action-btn" title="Xem chi tiết"><i data-lucide="eye"></i></a>
+                    <button class="db-action-btn" title="Thêm tùy chọn" type="button"><i data-lucide="more-vertical"></i></button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="td-code">HS0001254</td>
+                <td>Cấp mới giấy chứng nhận đủ điều kiện ANTT</td>
+                <td>
+                  <div class="td-facility-name">Dịch vụ bảo vệ Bình An</div>
+                  <div class="td-facility-sub">KCN Khánh Phú, Yên Khánh</div>
+                </td>
+                <td class="td-date">22/05/2025 10:22</td>
+                <td><span class="db-badge db-badge-pending">Chờ tiếp nhận</span></td>
+                <td>
+                  <div class="td-actions">
+                    <a href="ChiTietHoSo.html" class="db-action-btn" title="Xem chi tiết"><i data-lucide="eye"></i></a>
+                    <button class="db-action-btn" title="Thêm tùy chọn" type="button"><i data-lucide="more-vertical"></i></button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div><!-- /table card -->
+
+      <!-- ── BAR CHART: Top districts ────────── -->
+      <div class="db-card db-bottom-row">
+        <div class="db-card-title">Khu vực có nhiều cơ sở kinh doanh</div>
+        <div class="db-chart-wrap" style="height:340px;">
+          <canvas id="barChart" aria-label="Biểu đồ khu vực nhiều cơ sở"></canvas>
+        </div>
+      </div>
+
+    </div><!-- /db-content -->
+  </main>
+
+  <!-- ══════════════════════════════════════════
+       JAVASCRIPT
+  ═══════════════════════════════════════════ -->
+  <script>
+
+    // ── Chart.js default options ─────────────────
+    Chart.defaults.font.family = "'Roboto', Arial, sans-serif";
+
+    // ── Sparkline helper ─────────────────────────
+    function makeSparkline(id, color, data) {
+      const ctx = document.getElementById(id);
+      if (!ctx) return;
+      // Use parent width for sparkline canvas sizing
+      const parentW = ctx.parentElement ? ctx.parentElement.offsetWidth : 200;
+      ctx.width  = parentW || 200;
+      ctx.height = 36;
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: data.map((_, i) => i),
+          datasets: [{
+            data,
+            borderColor: color,
+            borderWidth: 2,
+            pointRadius: 0,
+            tension: 0.45,
+            fill: true,
+            backgroundColor: color.replace('rgb', 'rgba').replace(')', ', 0.1)')
+          }]
+        },
+        options: {
+          responsive: false,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false }, tooltip: { enabled: false } },
+          scales: {
+            x: { display: false },
+            y: { display: false }
+          },
+          animation: { duration: 600 }
+        }
+      });
+    }
+
+    // Sparklines
+    makeSparkline('spark1', 'rgb(189,0,0)',   [62,78,95,85,110,120,105,130,115,98,76,74]);
+    makeSparkline('spark2', 'rgb(234,88,12)',  [22,18,25,20,18,22,15,28,20,16,19,18]);
+    makeSparkline('spark3', 'rgb(217,119,6)',  [38,42,35,45,50,40,48,42,44,39,41,42]);
+    makeSparkline('spark4', 'rgb(124,58,237)', [80,85,90,88,92,94,96,95,98,96,97,96]);
+    makeSparkline('spark5', 'rgb(37,99,235)',  [8,10,7,12,9,11,10,14,11,12,10,12]);
+    makeSparkline('spark6', 'rgb(225,29,72)',  [25,30,28,35,32,38,34,36,38,34,36,37]);
+
+    // ── Line chart ───────────────────────────────
+    (function buildLineChart() {
+      const ctx = document.getElementById('lineChart');
+      if (!ctx) return;
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['T1','T2','T3','T4','T5','T6','T7','T8','T9','T10','T11','T12'],
+          datasets: [{
+            label: 'Số hồ sơ',
+            data: [62, 78, 95, 85, 110, 120, 105, 130, 115, 98, 76, 74],
+            borderColor: '#bd0000',
+            backgroundColor: 'rgba(189,0,0,0.07)',
+            borderWidth: 2.5,
+            pointRadius: 4,
+            pointBackgroundColor: '#bd0000',
+            pointBorderColor: '#fff',
+            pointBorderWidth: 2,
+            tension: 0.35,
+            fill: true
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#1b2430',
+              titleFont: { size: 12, weight: '600' },
+              bodyFont: { size: 12 },
+              padding: 10,
+              cornerRadius: 6
+            }
+          },
+          scales: {
+            x: {
+              grid: { color: '#f3f4f6' },
+              ticks: { color: '#6b7280', font: { size: 11 } }
+            },
+            y: {
+              grid: { color: '#f3f4f6' },
+              ticks: { color: '#6b7280', font: { size: 11 } },
+              beginAtZero: false,
+              min: 30
+            }
+          }
+        }
+      });
+    })();
+
+    // ── Pie chart ────────────────────────────────
+    (function buildPieChart() {
+      const ctx = document.getElementById('pieChart');
+      if (!ctx) return;
+
+      const labels = ['Karaoke', 'Lưu trú', 'Cầm đồ', 'Massage', 'Dịch vụ bảo vệ', 'Khác'];
+      const values = [32, 22, 15, 12, 10, 9];
+      const colors = ['#e11d48', '#f97316', '#eab308', '#22c55e', '#3b82f6', '#a3a3a3'];
+
+      new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels,
+          datasets: [{
+            data: values,
+            backgroundColor: colors,
+            borderWidth: 2,
+            borderColor: '#fff',
+            hoverOffset: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#1b2430',
+              callbacks: {
+                label: ctx => ` ${ctx.label}: ${ctx.parsed}%`
+              }
+            }
+          }
+        }
+      });
+
+      // Build legend manually
+      const legendEl = document.getElementById('pieLegend');
+      if (legendEl) {
+        legendEl.innerHTML = labels.map((lbl, i) => `
+          <div class="pie-legend-item">
+            <span class="pie-legend-dot" style="background:${colors[i]};"></span>
+            <span>${lbl}</span>
+          </div>
+        `).join('');
+      }
+    })();
+
+    // ── Bar chart ────────────────────────────────
+    (function buildBarChart() {
+      const ctx = document.getElementById('barChart');
+      if (!ctx) return;
+
+      const labels  = ['TP. Ninh Bình', 'TP. Tam Điệp', 'H. Hoa Lư', 'H. Gia Viễn', 'H. Yên Khánh', 'H. Kim Sơn', 'H. Yên Mô', 'H. Nho Quan'];
+      const values  = [356, 248, 198, 172, 162, 112, 98, 85];
+
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [{
+            label: 'Số lượng cơ sở',
+            data: values,
+            backgroundColor: '#bd0000',
+            barThickness: 45,
+            borderRadius: 5,
+            borderSkipped: false,
+            hoverBackgroundColor: '#990000'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#1b2430',
+              callbacks: {
+                label: ctx => ` ${ctx.parsed.y} cơ sở`
+              }
+            },
+            datalabels: { display: false }
+          },
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: { color: '#6b7280', font: { size: 12 } }
+            },
+            y: {
+              grid: { color: '#f3f4f6' },
+              ticks: { color: '#6b7280', font: { size: 11 } },
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: '(Số lượng cơ sở)',
+                color: '#9ca3af',
+                font: { size: 11 }
+              }
+            }
+          }
+        }
+      });
+    })();
+  </script>
+  </div><!-- /desktop-shell -->
+
+  <script src="../scripts/auth.js"></script>
+  <script src="../scripts/layout-sync.js"></script>
+</body>
+</html>

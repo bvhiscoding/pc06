@@ -1,0 +1,888 @@
+/* ============================================================
+   DESIGN SYSTEM — PC06 / CÔNG AN TỈNH NINH BÌNH
+   Nguồn gốc: trích xuất từ QuanLyHoSo.html
+   Áp dụng cho tất cả các trang trong hệ thống.
+   ============================================================ */
+
+/* ──────────────────────────────────────────
+   1. DESIGN TOKENS (CSS Custom Properties)
+────────────────────────────────────────── */
+:root {
+  /* Brand colors */
+  --brand:        #bd0000;   /* màu chủ đạo */
+  --brand-dark:   #990000;   /* hover / pressed */
+  --brand-hot:    #e60000;   /* accent rực */
+  --brand-light:  #fff0f0;   /* nền nhạt đỏ */
+
+  /* Text */
+  --text:         #1b2430;   /* body text chính */
+  --text-muted:   #6b7280;   /* phụ / sub-label */
+  --text-strong:  #111827;   /* heading / bold */
+  --text-link:    #c90000;   /* link / action */
+
+  /* Border & Line */
+  --line:         #e8edf3;
+  --border:       #d8dee8;
+
+  /* Surface */
+  --surface:      #ffffff;
+  --surface-alt:  #f6f8fb;
+
+  /* Sidebar */
+  --sidebar-width:     292px;
+  --sidebar-collapsed: 88px;
+
+  /* Shadows */
+  --shadow-panel: 0 8px 24px rgba(15, 23, 42, 0.07);
+  --shadow-soft:  0 2px  9px rgba(15, 23, 42, 0.08);
+  --shadow-card:  0 2px  8px rgba(15, 23, 42, 0.06);
+
+  /* Radius */
+  --radius-sm:  6px;
+  --radius-md:  7px;
+  --radius-lg: 10px;
+
+  /* Font */
+  --font-base: 'Roboto', Arial, sans-serif;
+}
+
+/* ──────────────────────────────────────────
+   2. RESET & BASE
+────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body, .font-sans, button, input, select, textarea {
+  font-family: var(--font-base) !important;
+}
+
+body {
+  color: var(--text);
+  background:
+    radial-gradient(circle at 72% 10%, rgba(224, 0, 0, 0.055), transparent 26rem),
+    linear-gradient(180deg, #ffffff 0%, #f6f8fb 100%);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ──────────────────────────────────────────
+   3. TYPOGRAPHY
+────────────────────────────────────────── */
+/* Font-size scale */
+.text-xs   { font-size: 11px; }
+.text-sm   { font-size: 12px; }
+.text-base { font-size: 13px; }
+.text-md   { font-size: 14px; }
+.text-lg   { font-size: 15px; }
+.text-xl   { font-size: 22px; }
+
+/* Weight */
+.fw-medium   { font-weight: 500; }
+.fw-semibold { font-weight: 600; }
+.fw-bold     { font-weight: 700; }
+
+/* Color helpers */
+.text-brand   { color: var(--brand); }
+.text-muted   { color: var(--text-muted); }
+.text-strong  { color: var(--text-strong); }
+
+/* ──────────────────────────────────────────
+   4. LAYOUT SHELL
+────────────────────────────────────────── */
+.desktop-shell {
+  min-height: 100vh;
+}
+
+/* Content area shifts right of sidebar */
+.content {
+  margin-left: var(--sidebar-width);
+  min-height: 100vh;
+  padding-top: 80px;             /* clearance for fixed header */
+  transition: margin-left 220ms ease;
+}
+
+.desktop-shell.is-collapsed .content {
+  margin-left: var(--sidebar-collapsed);
+}
+
+/* ──────────────────────────────────────────
+   5. APP HEADER
+────────────────────────────────────────── */
+.app-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 30;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  color: #fff;
+  background:
+    radial-gradient(circle at 34% -15%, rgba(255, 221, 0, 0.15), transparent 18rem),
+    linear-gradient(180deg, #c60000 0%, #a80000 44%, #8e0000 100%);
+}
+
+/* Brand logo */
+.crest {
+  width: 78px;
+  height: 66px;
+  flex: 0 0 auto;
+  object-fit: contain;
+  object-position: center;
+  filter: drop-shadow(0 2px 4px rgba(80, 0, 0, 0.35));
+}
+
+/* Brand text */
+.brand-title {
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+.brand-subtitle {
+  margin-top: 4px;
+  font-size: 15px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.95);
+}
+
+/* Topbar actions wrapper */
+.topbar-menu-wrap {
+  position: relative;
+}
+
+/* Icon button (bell, etc.) */
+.topbar-icon-btn {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border-radius: 999px;
+  color: #fff;
+  transition: background 160ms ease, box-shadow 160ms ease;
+}
+
+.topbar-icon-btn:hover,
+.topbar-icon-btn.is-open {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* User menu button */
+.user-menu-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-radius: 8px;
+  padding: 4px 8px;
+  color: #fff;
+  transition: background 160ms ease;
+}
+
+.user-menu-btn:hover,
+.user-menu-btn.is-open {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.user-chevron {
+  transition: transform 160ms ease;
+}
+
+.user-menu-btn.is-open .user-chevron {
+  transform: rotate(180deg);
+}
+
+/* ──────────────────────────────────────────
+   6. TOPBAR DROPDOWN (dùng chung)
+────────────────────────────────────────── */
+.topbar-dropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 12px);
+  z-index: 60;
+  overflow: hidden;
+  border: 1px solid #e3e8f0;
+  border-radius: var(--radius-lg);
+  background: #fff;
+  color: #1f2937;
+  box-shadow: 0 18px 42px rgba(15, 23, 42, 0.18);
+}
+
+/* Arrow caret */
+.topbar-dropdown::before {
+  content: "";
+  position: absolute;
+  right: 22px;
+  top: -6px;
+  width: 12px;
+  height: 12px;
+  border-left: 1px solid #e3e8f0;
+  border-top:  1px solid #e3e8f0;
+  background: #fff;
+  transform: rotate(45deg);
+}
+
+.notification-dropdown { width: 360px; }
+.user-dropdown          { width: 270px; }
+
+/* Dropdown header */
+.dropdown-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid #edf1f6;
+  padding: 14px 16px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.dropdown-head button {
+  color: var(--brand);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Notification list */
+.notification-list {
+  max-height: 316px;
+  overflow-y: auto;
+}
+
+.notification-item {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 10px;
+  width: 100%;
+  border-bottom: 1px solid #f0f3f7;
+  padding: 13px 16px;
+  text-align: left;
+  transition: background 160ms ease;
+}
+
+.notification-item:hover        { background: #fff6f6; }
+.notification-item:last-child   { border-bottom: 0; }
+
+.notification-dot {
+  display: grid;
+  width: 34px; height: 34px;
+  place-items: center;
+  border-radius: 999px;
+  background: #fff0f0;
+  color: #d20000;
+}
+
+.notification-title {
+  color: #1f2937;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.notification-text,
+.notification-time {
+  margin-top: 4px;
+  color: #6b7280;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* User card inside dropdown */
+.user-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid #edf1f6;
+  padding: 15px;
+}
+
+.user-name { color: #111827; font-size: 14px; font-weight: 600; }
+.user-role { margin-top: 3px; color: #6b7280; font-size: 12px; font-weight: 600; line-height: 1.35; }
+
+/* Dropdown action items */
+.dropdown-action {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 15px;
+  color: #273140;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: left;
+  transition: background 160ms ease, color 160ms ease;
+}
+
+.dropdown-action:hover          { background: #fff6f6; color: var(--brand); }
+.dropdown-action.danger         { border-top: 1px solid #edf1f6; color: #d00000; }
+.dropdown-action.danger:hover   { background: #fff0f0; }
+
+/* ──────────────────────────────────────────
+   7. SIDEBAR NAVIGATION
+────────────────────────────────────────── */
+.sidebar {
+  position: fixed;
+  top: 80px; bottom: 0; left: 0;
+  z-index: 20;
+  width: var(--sidebar-width);
+  display: flex;
+  flex-direction: column;
+  padding: 0 8px;
+  color: #fff;
+  background:
+    radial-gradient(circle at 34% -15%, rgba(255, 221, 0, 0.15), transparent 18rem),
+    linear-gradient(180deg, #c60000 0%, #a80000 44%, #8e0000 100%);
+  box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.18);
+  overflow: hidden;
+  transition: width 220ms ease;
+}
+
+.desktop-shell.is-collapsed .sidebar {
+  width: var(--sidebar-collapsed);
+}
+
+.sidebar-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 28px 0 14px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.sidebar-scroll::-webkit-scrollbar { width: 0; height: 0; }
+
+/* Section label */
+.nav-section {
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+  text-transform: uppercase;
+  padding: 0 14px 13px;
+  margin-top: 21px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+/* Nav item link */
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 47px;
+  padding: 0 13px;
+  margin: 0 10px;
+  border-radius: var(--radius-md);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: background 160ms ease;
+}
+
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.10);
+}
+
+.nav-item.active {
+  background: linear-gradient(90deg, #f01818 0%, #e00000 100%);
+  box-shadow: 0 8px 18px rgba(66, 0, 0, 0.26);
+}
+
+.nav-item svg {
+  width: 21px; height: 21px;
+  stroke-width: 2.2;
+  flex: 0 0 auto;
+}
+
+.nav-copy {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Collapsed state — hide labels */
+.desktop-shell.is-collapsed .nav-copy,
+.desktop-shell.is-collapsed .nav-section {
+  display: none;
+}
+
+.desktop-shell.is-collapsed .nav-item {
+  justify-content: center;
+  margin: 0 13px;
+  padding: 0;
+}
+
+/* Sidebar bottom toggle button */
+.sidebar-action {
+  flex: 0 0 auto;
+  padding: 12px 3px 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(180deg,
+    rgba(142,0,0,0) 0%,
+    rgba(142,0,0,0.72) 34%,
+    rgba(142,0,0,0.96) 100%
+  );
+}
+
+.sidebar-toggle {
+  display: flex;
+  height: 48px;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #f72a2a 0%, #d70000 100%);
+  box-shadow: 0 8px 18px rgba(92, 0, 0, 0.28);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  transition: filter 180ms ease, transform 180ms ease;
+}
+
+.sidebar-toggle:hover           { filter: brightness(1.08); }
+
+.sidebar-toggle svg {
+  width: 18px; height: 18px;
+  stroke-width: 2.5;
+  transition: transform 220ms ease;
+}
+
+.desktop-shell.is-collapsed .sidebar-toggle {
+  width: 54px;
+  padding: 0;
+  margin: 0 auto;
+}
+
+.desktop-shell.is-collapsed .collapse-label { display: none; }
+
+.desktop-shell.is-collapsed .toggle-icon   { transform: rotate(180deg); }
+
+/* ──────────────────────────────────────────
+   8. BREADCRUMBS
+────────────────────────────────────────── */
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #6b7280;
+  margin-bottom: 20px;
+  margin-top: 12px;
+}
+
+.breadcrumbs a:hover { color: var(--brand); }
+
+/* ──────────────────────────────────────────
+   9. PANEL / CARD
+────────────────────────────────────────── */
+/* Dùng cho filter, search, detail panels */
+.panel {
+  border: 1px solid #e0e5ed;
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  padding: 20px;
+  box-shadow: var(--shadow-panel);
+}
+
+.panel-soft {
+  border: 1px solid #e4e9f0;
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  box-shadow: var(--shadow-soft);
+  overflow: hidden;
+}
+
+/* Shadow helpers */
+.shadow-panel { box-shadow: var(--shadow-panel); }
+.shadow-soft  { box-shadow: var(--shadow-soft);  }
+.shadow-card  { box-shadow: var(--shadow-card);  }
+
+/* ──────────────────────────────────────────
+   10. FORM FIELDS
+────────────────────────────────────────── */
+.form-label {
+  display: block;
+  margin-bottom: 10px;
+  color: #202833;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* Input / Select / Textarea */
+.field {
+  height: 42px;
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  padding: 0 15px;
+  color: #1f2937;
+  font-size: 14px;
+  font-family: var(--font-base);
+  outline: none;
+  box-shadow: inset 0 1px 0 rgba(15, 23, 42, 0.02);
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.field:focus {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px rgba(189, 0, 0, 0.10);
+}
+
+.field::placeholder { color: #687487; }
+
+/* Wrapper with trailing icon */
+.field-wrap           { position: relative; }
+.field-wrap .field    { padding-right: 42px; }
+
+.field-icon {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  width: 18px; height: 18px;
+  transform: translateY(-50%);
+  color: #151b24;
+  pointer-events: none;
+}
+
+/* ──────────────────────────────────────────
+   11. BUTTONS
+────────────────────────────────────────── */
+
+/* ─ Primary (đỏ thương hiệu) */
+.btn-primary {
+  display: inline-flex;
+  height: 42px;
+  align-items: center;
+  gap: 8px;
+  border-radius: var(--radius-sm);
+  background: var(--brand);
+  padding: 0 28px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: var(--font-base);
+  box-shadow: 0 6px 13px rgba(192, 0, 0, 0.24);
+  transition: background 160ms ease, box-shadow 160ms ease, transform 120ms ease;
+}
+
+.btn-primary:hover  { background: var(--brand-dark); }
+.btn-primary:active { transform: scale(0.97); }
+
+/* ─ Secondary / Outline */
+.btn-secondary {
+  display: inline-flex;
+  height: 42px;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #d9dfe8;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  padding: 0 24px;
+  color: #202833;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: var(--font-base);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+
+.btn-secondary:hover {
+  background: #f8fafc;
+  border-color: #bfc8d6;
+}
+
+/* ─ Ghost (outline đỏ — Import / Export) */
+.btn-ghost {
+  display: inline-flex;
+  height: 40px;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #d9dfe8;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  padding: 0 16px;
+  color: #202833;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: var(--font-base);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  transition: border-color 160ms ease, color 160ms ease, background 160ms ease;
+}
+
+.btn-ghost:hover {
+  border-color: var(--brand);
+  color: var(--brand);
+  background: #fffafa;
+}
+
+/* ─ Icon-only button (thao tác trong bảng) */
+.btn-icon {
+  display: grid;
+  width: 36px; height: 36px;
+  place-items: center;
+  border: 1px solid #dfe5ed;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: #4b5563;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  transition: border-color 160ms ease, color 160ms ease, background 160ms ease;
+}
+
+.btn-icon:hover {
+  border-color: var(--brand);
+  color: var(--brand);
+  background: #fff6f6;
+}
+
+/* ─ Sizes */
+.btn-sm { height: 34px; padding: 0 14px; font-size: 13px; }
+.btn-lg { height: 48px; padding: 0 32px; font-size: 15px; }
+
+/* ──────────────────────────────────────────
+   12. STATUS BADGES
+────────────────────────────────────────── */
+.status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 96px;
+  min-height: 26px;
+  border-radius: var(--radius-sm);
+  border: 1px solid;
+  padding: 3px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Chờ tiếp nhận */
+.st-orange  { color: #ff8500; background: #fff3e5; border-color: #ffd29d; }
+/* Đang xử lý / Đã tiếp nhận */
+.st-blue    { color: #1667e8; background: #eaf3ff; border-color: #bfd9ff; }
+/* Cần bổ sung */
+.st-warn    { color: #ff5b21; background: #fff1e9; border-color: #ffcdbb; }
+/* Đã hoàn thành */
+.st-green   { color: #249447; background: #eaf9ee; border-color: #b8e7c4; }
+/* Từ chối */
+.st-red     { color: #f10000; background: #fff0f0; border-color: #ffc9c9; }
+/* Quá hạn */
+.st-purple  { color: #8a20ff; background: #f5ebff; border-color: #dfc2ff; }
+/* Mặc định / xám */
+.st-gray    { color: #6b7280; background: #f3f4f6; border-color: #d1d5db; }
+
+/* ──────────────────────────────────────────
+   13. STATUS FILTER TABS
+────────────────────────────────────────── */
+.tabs-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.tab {
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #dde3ec;
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  padding: 0 20px;
+  color: #111827;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: var(--font-base);
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+  transition: background 160ms ease, border-color 160ms ease, color 160ms ease, box-shadow 160ms ease;
+}
+
+.tab:hover {
+  border-color: #bfc8d6;
+  background: #f8fafc;
+}
+
+.tab.active {
+  border-color: #bf0000;
+  background: linear-gradient(180deg, #d90000 0%, #bb0000 100%);
+  color: #fff;
+  box-shadow: 0 7px 14px rgba(193, 0, 0, 0.21);
+}
+
+.tab.danger       { color: #f00000; }
+.tab.danger:hover { color: #c50000; background: #fff5f5; }
+
+/* ──────────────────────────────────────────
+   14. DATA TABLE
+────────────────────────────────────────── */
+.data-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.data-table th,
+.data-table td {
+  border-right:  1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 13px 15px;
+  vertical-align: middle;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+/* Last column — no right border */
+.data-table th:last-child,
+.data-table td:last-child {
+  border-right: 0;
+}
+
+.data-table th {
+  height: 56px;
+  background: #fff2f2;
+  color: #273140;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.data-table td {
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.data-table tr:hover td {
+  background: #fffafa;
+}
+
+/* Row action menu (context menu) */
+.action-cell { position: relative; }
+
+.row-action-menu {
+  position: absolute;
+  right: 14px;
+  top: 48px;
+  z-index: 10;
+  min-width: 170px;
+  overflow: hidden;
+  border: 1px solid #e3e8f0;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.16);
+}
+
+.row-action-menu button {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 9px;
+  padding: 11px 13px;
+  color: #273140;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: left;
+  transition: background 160ms ease, color 160ms ease;
+}
+
+.row-action-menu button:hover {
+  background: #fff4f4;
+  color: var(--brand);
+}
+
+/* Empty state */
+.empty-state {
+  padding: 32px 16px;
+  text-align: center;
+  color: #7b8493;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* ──────────────────────────────────────────
+   15. PAGINATION
+────────────────────────────────────────── */
+#pageSizeSelect {
+  width: 120px !important;
+}
+
+.pager-btn {
+  display: grid;
+  height: 40px;
+  min-width: 40px;
+  place-items: center;
+  border: 1px solid #dde3ec;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  padding: 0 12px;
+  color: #1f2937;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: var(--font-base);
+  transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+
+.pager-btn:hover:not(:disabled) {
+  border-color: var(--brand);
+  color: var(--brand);
+}
+
+.pager-btn.active {
+  border-color: var(--brand);
+  background: var(--brand);
+  color: #fff;
+  box-shadow: 0 2px 7px rgba(201, 0, 0, 0.18);
+}
+
+.pager-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+/* ──────────────────────────────────────────
+   16. UTILITY HELPERS
+────────────────────────────────────────── */
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Dividers */
+.divider {
+  border: 0;
+  border-top: 1px solid var(--line);
+  margin: 16px 0;
+}
+
+/* ──────────────────────────────────────────
+   17. RESPONSIVE — Sidebar thu gọn ≤ 1080px
+────────────────────────────────────────── */
+@media (max-width: 1080px) {
+  :root { --sidebar-width: 88px; }
+
+  .brand-copy,
+  .topbar-search { display: none; }
+
+  .desktop-shell .nav-copy,
+  .desktop-shell .nav-section,
+  .desktop-shell .collapse-label { display: none; }
+
+  .desktop-shell .nav-item {
+    justify-content: center;
+    margin: 0 13px;
+    padding: 0;
+  }
+}

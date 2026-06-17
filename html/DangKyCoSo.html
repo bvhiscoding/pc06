@@ -1,0 +1,1084 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Đăng ký cơ sở kinh doanh mới – Công an tỉnh Ninh Bình</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/public-pages.css">
+  <script src="../scripts/auth.js"></script>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="custom-header">
+  <a href="../index.html" class="custom-brand">
+    <img src="../public/logocongan.png" alt="Logo Bộ Công an">
+    <div class="custom-brand-text">
+      <h1>CÔNG AN TỈNH NINH BÌNH</h1>
+      <p>HỆ THỐNG QUẢN LÝ CƠ SỞ KINH DOANH CÓ ĐIỀU KIỆN VỀ ANTT</p>
+    </div>
+  </a>
+
+  <nav>
+    <ul class="custom-nav">
+      <li class="custom-nav-item" id="nav-home">
+        <a class="custom-nav-link" href="../index.html">
+          <i data-lucide="home"></i> Trang chủ
+        </a>
+      </li>
+      <li class="custom-nav-item" id="nav-map">
+        <a class="custom-nav-link" href="../index.html?tab=map">
+          <i data-lucide="map"></i> Bản đồ số
+        </a>
+      </li>
+      <li class="custom-nav-item active" id="nav-procedures">
+        <a class="custom-nav-link" href="../index.html?tab=procedures">
+          <i data-lucide="file-text"></i> Thủ tục <i data-lucide="chevron-down" class="ml-0.5"></i>
+        </a>
+        <div class="custom-nav-dropdown">
+          <a href="DangKyCoSo.html">Đăng ký cơ sở mới</a>
+          <a href="ThayDoiThongTin.html">Khai báo thay đổi</a>
+          <a href="../index.html?tab=procedures">Danh mục thủ tục</a>
+        </div>
+      </li>
+      <li class="custom-nav-item" id="nav-search">
+        <a class="custom-nav-link" href="../index.html?tab=search">
+          <i data-lucide="search"></i> Tra cứu hồ sơ
+        </a>
+      </li>
+      <li class="custom-nav-item" id="nav-support">
+        <a class="custom-nav-link" href="../index.html?tab=feedback">
+          <i data-lucide="headset"></i> Hỗ trợ <i data-lucide="chevron-down" class="ml-0.5"></i>
+        </a>
+        <div class="custom-nav-dropdown">
+          <a href="HuongDanSuDung.html">Hướng dẫn sử dụng</a>
+          <a href="TinTucThongBao.html">Tin tức & Thông báo</a>
+          <a href="CauHoiThuongGap.html">Câu hỏi thường gặp</a>
+          <a href="LienHeHoTro.html">Liên hệ hỗ trợ</a>
+          <a href="../index.html?tab=feedback">Tiếp nhận phản ánh</a>
+        </div>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Auth widget: populated by JS below -->
+  <div id="headerAuthArea">
+    <a class="custom-login-btn" href="DangNhap.html">
+      <i data-lucide="user"></i>
+      Đăng nhập
+    </a>
+  </div>
+</header>
+
+<!-- ── Auth-gate modal ──────────────────────────────── -->
+<div id="authGateModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.55);backdrop-filter:blur(3px);align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:20px;padding:36px 40px 32px;max-width:420px;width:90%;box-shadow:0 24px 56px rgba(0,0,0,0.22);text-align:center;">
+    <div style="width:56px;height:56px;border-radius:50%;background:#fff2f2;display:grid;place-items:center;margin:0 auto 16px;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#bd0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    </div>
+    <h3 style="font-size:18px;font-weight:700;color:#1b2430;margin:0 0 8px;">Yêu cầu đăng nhập</h3>
+    <p style="font-size:14px;color:#6b7280;margin:0 0 24px;line-height:1.55;">Chức năng này yêu cầu bạn đăng nhập vào hệ thống. Vui lòng đăng nhập để tiếp tục.</p>
+    <div style="display:flex;gap:12px;justify-content:center;">
+      <button id="authGateCancel" style="flex:1;height:44px;border-radius:8px;border:1.5px solid #d1d5db;background:#fff;font-size:14px;font-weight:600;color:#374151;cursor:pointer;">Hủy</button>
+      <a href="DangNhap.html" style="flex:1;height:44px;border-radius:8px;background:linear-gradient(180deg,#ed000b,#d80008);font-size:14px;font-weight:700;color:#fff;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;">Đăng nhập ngay</a>
+    </div>
+  </div>
+</div>
+
+<!-- BREADCRUMB -->
+<div class="pub-breadcrumb">
+  <a href="../index.html">Trang chủ</a>
+  <i data-lucide="chevron-right" style="width:14px;height:14px;color:#d1d5db"></i>
+  <span>Thủ tục hành chính</span>
+  <i data-lucide="chevron-right" style="width:14px;height:14px;color:#d1d5db"></i>
+  <span>Đăng ký cơ sở kinh doanh</span>
+  <i data-lucide="chevron-right" style="width:14px;height:14px;color:#d1d5db"></i>
+  <span style="color:#374151;font-weight:600">Đăng ký cơ sở kinh doanh mới</span>
+</div>
+
+<!-- STEP BAR -->
+<div class="pub-main" style="padding-top:20px">
+  <div class="step-bar">
+    <div class="step-item active" id="step-item-1">
+      <div class="step-circle"><span class="step-num">1</span></div>
+      <div class="step-label">Thông tin cơ sở</div>
+    </div>
+    <div class="step-item" id="step-item-2">
+      <div class="step-circle"><span class="step-num"><i data-lucide="lock" style="width:15px;height:15px"></i></span></div>
+      <div class="step-label">PCCC & Cơ sở vật chất</div>
+    </div>
+    <div class="step-item" id="step-item-3">
+      <div class="step-circle"><span class="step-num"><i data-lucide="lock" style="width:15px;height:15px"></i></span></div>
+      <div class="step-label">Thông tin chuyên ngành</div>
+    </div>
+    <div class="step-item" id="step-item-4">
+      <div class="step-circle"><span class="step-num"><i data-lucide="lock" style="width:15px;height:15px"></i></span></div>
+      <div class="step-label">Tài liệu & Cam kết</div>
+    </div>
+  </div>
+  <div class="step-bar-info" style="margin:0 0 20px">
+    <i data-lucide="info"></i>
+    <span id="stepInfoText">Hoàn thành đầy đủ thông tin ở bước hiện tại để chuyển sang bước kế tiếp.</span>
+  </div>
+
+  <!-- ======= STEP 1 ======= -->
+  <div id="form-step-1">
+
+    <!-- Thông tin hồ sơ -->
+    <div class="form-card">
+      <div class="form-card-title">
+        <i data-lucide="file-text"></i>
+        1. THÔNG TIN HỒ SƠ
+      </div>
+      <div class="form-grid form-grid-4">
+        <div class="form-field">
+          <label>Loại khai báo <span class="req">*</span></label>
+          <select><option value="">Chọn loại khai báo</option><option>Đăng ký lần đầu</option><option>Đăng ký bổ sung</option></select>
+        </div>
+        <div class="form-field">
+          <label>Hình thức nộp <span class="req">*</span></label>
+          <select><option value="">Chọn hình thức nộp</option><option>Trực tuyến</option><option>Trực tiếp</option><option>Qua bưu chính</option></select>
+        </div>
+        <div class="form-field">
+          <label>Cơ quan Công an tiếp nhận <span class="req">*</span></label>
+          <select><option value="">Chọn cơ quan Công an</option><option>CA tỉnh Ninh Bình</option><option>CA TP. Ninh Bình</option><option>CA TP. Tam Điệp</option></select>
+        </div>
+        <div class="form-field">
+          <label>Ngày khai báo <span class="req">*</span></label>
+          <input type="date" value="2025-05-24">
+        </div>
+        <div class="form-field">
+          <label>Người thực hiện khai báo <span class="req">*</span></label>
+          <input type="text" placeholder="Nhập họ và tên">
+        </div>
+        <div class="form-field">
+          <label>Số điện thoại <span class="req">*</span></label>
+          <input type="tel" placeholder="Nhập số điện thoại">
+        </div>
+        <div class="form-field">
+          <label>Email</label>
+          <input type="email" placeholder="Nhập email">
+        </div>
+      </div>
+    </div>
+
+    <!-- Thông tin cơ sở kinh doanh -->
+    <div class="form-card">
+      <div class="form-card-title">
+        <i data-lucide="store"></i>
+        2. THÔNG TIN CƠ SỞ KINH DOANH
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:24px">
+        <!-- 2.1. Thông tin nhận diện -->
+        <div>
+          <div class="form-section-title">
+            <i data-lucide="id-card"></i> 2.1. Thông tin nhận diện
+          </div>
+          <div class="form-grid form-grid-4">
+            <div class="form-field">
+              <label>Tên cơ sở kinh doanh <span class="req">*</span></label>
+              <input type="text" placeholder="Nhập tên cơ sở kinh doanh">
+            </div>
+            <div class="form-field">
+              <label>Loại hình tổ chức <span class="req">*</span></label>
+              <select><option value="">Chọn loại hình tổ chức</option><option>Hộ kinh doanh</option><option>Công ty TNHH</option><option>Công ty CP</option><option>Doanh nghiệp tư nhân</option></select>
+            </div>
+            <div class="form-field">
+              <label>Tên doanh nghiệp/Hộ kinh doanh chủ quản</label>
+              <input type="text" placeholder="Nhập tên doanh nghiệp/Hộ kinh doanh">
+            </div>
+            <div class="form-field">
+              <label>Trạng thái hoạt động <span class="req">*</span></label>
+              <select><option value="">Chọn trạng thái hoạt động</option><option>Đang hoạt động</option><option>Tạm ngừng</option><option>Chờ cấp phép</option></select>
+            </div>
+            <div class="form-field">
+              <label>Tên giao dịch/Tên viết tắt</label>
+              <input type="text" placeholder="Nhập tên giao dịch hoặc tên viết tắt">
+            </div>
+            <div class="form-field">
+              <label>Ngày bắt đầu hoạt động (dự kiến) <span class="req">*</span></label>
+              <input type="date">
+            </div>
+            <div class="form-field">
+              <label>Số định danh cơ sở (nếu có)</label>
+              <input type="text" placeholder="Nhập số định danh cơ sở">
+            </div>
+          </div>
+        </div>
+
+        <!-- 2.2. Thông tin liên hệ -->
+        <div>
+          <div class="form-section-title">
+            <i data-lucide="phone"></i> 2.2. Thông tin liên hệ
+          </div>
+          <div class="form-grid form-grid-4">
+            <div class="form-field">
+              <label>Số điện thoại <span class="req">*</span></label>
+              <input type="tel" placeholder="Nhập số điện thoại">
+            </div>
+            <div class="form-field">
+              <label>Email</label>
+              <input type="email" placeholder="Nhập email">
+            </div>
+            <div class="form-field">
+              <label>Website</label>
+              <input type="url" placeholder="Nhập website (nếu có)">
+            </div>
+            <div class="form-field">
+              <label>Kênh liên hệ ưu tiên <span class="req">*</span></label>
+              <select><option value="">Chọn kênh liên hệ</option><option>Điện thoại</option><option>Email</option><option>Zalo</option></select>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3.1 Địa chỉ trụ sở chính -->
+        <div>
+          <div class="form-section-title" style="color:#b45309">
+            <i data-lucide="map-pin"></i> 3.1. Địa chỉ trụ sở chính
+          </div>
+          <div class="form-grid form-grid-4">
+            <div class="form-field">
+              <label>Tỉnh/Thành phố <span class="req">*</span></label>
+              <select><option value="">Chọn tỉnh/thành phố</option><option selected>Ninh Bình</option></select>
+            </div>
+            <div class="form-field">
+              <label>Xã/Phường <span class="req">*</span></label>
+              <select><option value="">Chọn xã/phường</option></select>
+            </div>
+            <div class="form-field">
+              <label>Mã địa bàn hành chính <span class="req">*</span></label>
+              <input type="text" placeholder="Nhập mã địa bàn hành chính">
+            </div>
+            <div class="form-field">
+              <label>Số nhà, đường, thôn, tổ dân phố <span class="req">*</span></label>
+              <input type="text" placeholder="Nhập số nhà, đường, thôn, tổ dân phố">
+            </div>
+            <div class="form-field full">
+              <label>Địa chỉ đầy đủ <span class="req">*</span></label>
+              <input type="text" placeholder="Nhập địa chỉ đầy đủ">
+            </div>
+          </div>
+        </div>
+
+        <!-- 3.2 Địa điểm kinh doanh -->
+        <div>
+          <div class="form-section-title" style="color:#b45309;display:flex;align-items:center;justify-content:space-between">
+            <span style="display:flex;align-items:center;gap:7px"><i data-lucide="map-pin"></i> 3.2. Địa điểm kinh doanh (nếu khác trụ sở chính)</span>
+            <label class="toggle-row" style="font-size:12px">
+              <label class="toggle-switch"><input type="checkbox" id="sameAddrToggle"><span class="toggle-slider"></span></label>
+              <span>Giống trụ sở chính</span>
+            </label>
+          </div>
+          <div class="form-grid form-grid-4">
+            <div class="form-field">
+              <label>Tỉnh/Thành phố</label>
+              <select><option value="">Chọn tỉnh/thành phố</option><option>Ninh Bình</option></select>
+            </div>
+            <div class="form-field">
+              <label>Xã/Phường</label>
+              <select><option value="">Chọn xã/phường</option></select>
+            </div>
+            <div class="form-field">
+              <label>Tọa độ bản đồ Lat</label>
+              <input type="text" placeholder="Nhập vĩ độ">
+            </div>
+            <div class="form-field">
+              <label>Lng</label>
+              <input type="text" placeholder="Nhập kinh độ">
+            </div>
+            <div class="form-field" style="grid-column: span 2">
+              <label>Số nhà, đường, thôn, tổ dân phố</label>
+              <input type="text" placeholder="Nhập số nhà, đường, thôn, tổ dân phố">
+            </div>
+            <div class="form-field" style="grid-column: span 2">
+              <label>Địa chỉ đầy đủ</label>
+              <input type="text" placeholder="Nhập địa chỉ đầy đủ">
+            </div>
+            <div class="form-field" style="grid-column: span 2; display: flex; flex-direction: column; justify-content: flex-end;">
+              <button class="btn btn-outline btn-sm" style="width:100%;justify-content:center;height:40px">
+                <i data-lucide="map-pin"></i> Chọn vị trí trên bản đồ
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hình ảnh mặt tiền cơ sở -->
+        <div>
+          <div class="form-section-title">
+            <i data-lucide="image"></i> Hình ảnh mặt tiền cơ sở
+          </div>
+          <div class="file-upload-zone" style="min-height:160px;display:flex;flex-direction:column;align-items:center;justify-content:center">
+            <i data-lucide="upload-cloud" style="width:36px;height:36px;color:#d1d5db;margin-bottom:10px"></i>
+            <p style="margin-bottom:6px">Kéo thả ảnh hoặc</p>
+            <button class="choose-btn" type="button">Chọn file</button>
+            <span class="file-hint">Định dạng: JPG, PNG (tối đa 5MB)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Validation notice -->
+    <div class="notice notice-danger" style="margin-bottom:0">
+      <i data-lucide="alert-circle"></i>
+      <span>Vui lòng hoàn thành các trường bắt buộc để tiếp tục.</span>
+    </div>
+  </div>
+
+  <!-- ======= STEP 2 ======= -->
+  <div id="form-step-2" style="display:none">
+    <div class="notice notice-info">
+      <i data-lucide="info"></i>
+      <span>Vui lòng cung cấp đầy đủ thông tin bắt buộc (dấu *) trước khi chuyển sang bước tiếp theo.</span>
+    </div>
+
+    <!-- PCCC -->
+    <div class="form-card">
+      <div class="form-card-title">
+        <i data-lucide="flame"></i> 1. THÔNG TIN PCCC
+      </div>
+      <div class="form-grid form-grid-2" style="margin-bottom:16px">
+        <div class="form-field" style="grid-column:1/-1">
+          <label>Cơ sở thuộc diện quản lý PCCC <span class="req">*</span></label>
+          <div class="radio-group">
+            <label class="radio-option"><input type="radio" name="pccc_manage" value="yes"> Có</label>
+            <label class="radio-option"><input type="radio" name="pccc_manage" value="no"> Không</label>
+          </div>
+        </div>
+        <div class="form-field">
+          <label>Loại hồ sơ PCCC <span class="req">*</span></label>
+          <select><option value="">Chọn loại hồ sơ PCCC</option><option>Giấy chứng nhận</option><option>Văn bản thẩm duyệt</option></select>
+        </div>
+        <div class="form-field">
+          <label>Số văn bản / hồ sơ PCCC <span class="req">*</span></label>
+          <input type="text" placeholder="Nhập số văn bản / hồ sơ">
+        </div>
+        <div class="form-field">
+          <label>Ngày ban hành <span class="req">*</span></label>
+          <input type="date">
+        </div>
+        <div class="form-field">
+          <label>Cơ quan ban hành <span class="req">*</span></label>
+          <input type="text" placeholder="Nhập cơ quan ban hành">
+        </div>
+        <div class="form-field">
+          <label>Ngày kiểm tra gần nhất <span class="req">*</span></label>
+          <input type="date">
+        </div>
+        <div class="form-field">
+          <label>Kết quả kiểm tra <span class="req">*</span></label>
+          <select><option value="">Chọn kết quả kiểm tra</option><option>Đạt yêu cầu</option><option>Không đạt</option><option>Cần khắc phục</option></select>
+        </div>
+        <div class="form-field">
+          <label>Tình trạng khắc phục <span class="req">*</span></label>
+          <select><option value="">Chọn tình trạng khắc phục</option><option>Đã khắc phục hoàn toàn</option><option>Đang khắc phục</option><option>Chưa khắc phục</option></select>
+        </div>
+        <div class="form-field">
+          <label>Có kho nguyên liệu / hàng hóa <span class="req">*</span></label>
+          <div class="radio-group">
+            <label class="radio-option"><input type="radio" name="kho" value="yes"> Có</label>
+            <label class="radio-option"><input type="radio" name="kho" value="no"> Không</label>
+          </div>
+        </div>
+        <div class="form-field">
+          <label>Địa chỉ kho hàng</label>
+          <input type="text" placeholder="Nhập địa chỉ kho hàng (nếu có)">
+        </div>
+      </div>
+
+      <div class="form-card-title" style="margin-top:16px">
+        <i data-lucide="folder-open"></i> 2. HỒ SƠ VÀ MINH CHỨNG PCCC
+      </div>
+      <div class="file-upload-grid">
+        <div>
+          <label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:8px">Văn bản nghiệm thu / thẩm duyệt PCCC <span class="req">*</span></label>
+          <div class="file-upload-zone">
+            <i data-lucide="upload-cloud"></i>
+            <p>Kéo thả tệp hoặc</p>
+            <button class="choose-btn" type="button">Chọn tệp</button>
+            <span class="file-hint">PDF, DOC, JPG, PNG (Tối đa 10MB)</span>
+          </div>
+        </div>
+        <div>
+          <label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:8px">Biên bản kiểm tra an toàn PCCC <span class="req">*</span></label>
+          <div class="file-upload-zone">
+            <i data-lucide="upload-cloud"></i>
+            <p>Kéo thả tệp hoặc</p>
+            <button class="choose-btn" type="button">Chọn tệp</button>
+            <span class="file-hint">PDF, DOC, JPG, PNG (Tối đa 10MB)</span>
+          </div>
+        </div>
+        <div>
+          <label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:8px">Sơ đồ thoát hiểm <span class="req">*</span></label>
+          <div class="file-upload-zone">
+            <i data-lucide="upload-cloud"></i>
+            <p>Kéo thả tệp hoặc</p>
+            <button class="choose-btn" type="button">Chọn tệp</button>
+            <span class="file-hint">PDF, DOC, JPG, PNG (Tối đa 10MB)</span>
+          </div>
+        </div>
+        <div>
+          <label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:8px">Phương án chữa cháy <span class="req">*</span></label>
+          <div class="file-upload-zone">
+            <i data-lucide="upload-cloud"></i>
+            <p>Kéo thả tệp hoặc</p>
+            <button class="choose-btn" type="button">Chọn tệp</button>
+            <span class="file-hint">PDF, DOC, JPG, PNG (Tối đa 10MB)</span>
+          </div>
+        </div>
+      </div>
+      <p style="font-size:12px;color:#6b7280;margin-top:10px"><i data-lucide="info" style="width:13px;height:13px;display:inline;vertical-align:middle"></i> Tệp hỗ trợ: PDF, DOC, DOCX, JPG, JPEG, PNG. Dung lượng tối đa mỗi tệp: 10MB.</p>
+    </div>
+
+    <!-- Cơ sở vật chất -->
+    <div class="form-card">
+      <div class="form-card-title">
+        <i data-lucide="building-2"></i> 3. CƠ SỞ VẬT CHẤT
+      </div>
+      <div class="form-grid form-grid-3" style="margin-bottom:16px">
+        <div class="form-field">
+          <label>Tổng diện tích sử dụng (m²) <span class="req">*</span></label>
+          <div class="input-with-suffix"><input type="number" placeholder="Nhập diện tích"><span class="input-suffix">m²</span></div>
+        </div>
+        <div class="form-field">
+          <label>Số tầng <span class="req">*</span></label>
+          <input type="number" placeholder="Nhập số tầng">
+        </div>
+        <div class="form-field">
+          <label>Số phòng / khu vực kinh doanh <span class="req">*</span></label>
+          <input type="number" placeholder="Nhập số phòng / khu vực">
+        </div>
+        <div class="form-field">
+          <label>Sức chứa tối đa (người) <span class="req">*</span></label>
+          <input type="number" placeholder="Nhập số lượng người">
+        </div>
+        <div class="form-field">
+          <label>Số lối ra vào <span class="req">*</span></label>
+          <input type="number" placeholder="Nhập số lối">
+        </div>
+        <div class="form-field">
+          <label>Số lối thoát hiểm <span class="req">*</span></label>
+          <input type="number" placeholder="Nhập số lối">
+        </div>
+        <div class="form-field">
+          <label>Hệ thống camera <span class="req">*</span></label>
+          <div class="radio-group">
+            <label class="radio-option"><input type="radio" name="camera" value="yes"> Có</label>
+            <label class="radio-option"><input type="radio" name="camera" value="no"> Không</label>
+          </div>
+        </div>
+        <div class="form-field">
+          <label>Số lượng camera</label>
+          <input type="number" placeholder="Nhập số lượng">
+        </div>
+        <div class="form-field">
+          <label>Thời gian lưu trữ dữ liệu camera <span class="req">*</span></label>
+          <select><option value="">Chọn thời gian lưu trữ</option><option>7 ngày</option><option>15 ngày</option><option>30 ngày</option><option>90 ngày</option></select>
+        </div>
+        <div class="form-field">
+          <label>Hệ thống báo động <span class="req">*</span></label>
+          <div class="radio-group">
+            <label class="radio-option"><input type="radio" name="alarm" value="yes"> Có</label>
+            <label class="radio-option"><input type="radio" name="alarm" value="no"> Không</label>
+          </div>
+        </div>
+        <div class="form-field">
+          <label>Khu vực bảo quản hàng hóa <span class="req">*</span></label>
+          <input type="text" placeholder="Nhập thông tin khu vực bảo quản">
+        </div>
+        <div class="form-field">
+          <label>Khu vực hạn chế <span class="req">*</span></label>
+          <input type="text" placeholder="Nhập thông tin khu vực hạn chế">
+        </div>
+        <div class="form-field full">
+          <label>Danh sách thiết bị phục vụ hoạt động <span class="req">*</span></label>
+          <textarea placeholder="Nhập danh sách thiết bị (mỗi thiết bị ghi một dòng)" rows="3"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hình ảnh & Sơ đồ -->
+    <div class="form-card">
+      <div class="form-card-title">
+        <i data-lucide="image"></i> 4. HÌNH ẢNH & SƠ ĐỒ CƠ SỞ
+      </div>
+      <div class="file-upload-grid">
+        <div>
+          <label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:8px">Hình ảnh tổng thể cơ sở <span class="req">*</span></label>
+          <div class="file-upload-zone">
+            <i data-lucide="upload-cloud"></i>
+            <p>Kéo thả tệp hoặc</p>
+            <button class="choose-btn" type="button">Chọn tệp</button>
+            <span class="file-hint">JPG, JPEG, PNG (Tối đa 10MB)</span>
+          </div>
+        </div>
+        <div>
+          <label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:8px">Ảnh khu vực kinh doanh <span class="req">*</span></label>
+          <div class="file-upload-zone">
+            <i data-lucide="upload-cloud"></i>
+            <p>Kéo thả tệp hoặc</p>
+            <button class="choose-btn" type="button">Chọn tệp</button>
+            <span class="file-hint">JPG, JPEG, PNG (Tối đa 10MB)</span>
+          </div>
+        </div>
+        <div>
+          <label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:8px">Sơ đồ mặt bằng <span class="req">*</span></label>
+          <div class="file-upload-zone">
+            <i data-lucide="upload-cloud"></i>
+            <p>Kéo thả tệp hoặc</p>
+            <button class="choose-btn" type="button">Chọn tệp</button>
+            <span class="file-hint">JPG, JPEG, PNG (Tối đa 10MB)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======= STEP 3 ======= -->
+  <div id="form-step-3" style="display:none">
+    <div class="notice notice-info">
+      <i data-lucide="info"></i>
+      <span>Vui lòng cung cấp đầy đủ thông tin bắt buộc (dấu *) trước khi chuyển sang bước tiếp theo.</span>
+    </div>
+    <!-- Stacked Sections occupying full width -->
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <!-- 1. THÔNG TIN NGÀNH NGHỀ -->
+      <div class="form-card">
+        <div class="form-card-title">
+          <i data-lucide="briefcase"></i> 1. THÔNG TIN NGÀNH NGHỀ
+        </div>
+        <div class="form-grid form-grid-3">
+          <div class="form-field">
+            <label>Nhóm ngành nghề <span class="req">*</span></label>
+            <select><option value="">Chọn nhóm ngành nghề</option><option>Lưu trú</option><option>Karaoke</option><option>Massage</option><option>Bar/Vũ trường</option><option>Cầm đồ</option><option>Bảo vệ</option></select>
+          </div>
+          <div class="form-field">
+            <label>Ngành nghề kinh doanh có điều kiện về ANTT <span class="req">*</span></label>
+            <select><option value="">Chọn ngành nghề</option><option>Kinh doanh dịch vụ karaoke</option><option>Kinh doanh lưu trú</option><option>Kinh doanh massage</option></select>
+          </div>
+          <div class="form-field">
+            <label>Ngành nghề phụ</label>
+            <select><option value="">Chọn một hoặc nhiều ngành nghề</option></select>
+          </div>
+          <div class="form-field full">
+            <label>Sản phẩm / dịch vụ cụ thể <span class="req">*</span></label>
+            <input type="text" placeholder="Nhập sản phẩm / dịch vụ cụ thể">
+          </div>
+          <div class="form-field">
+            <label>Ngày dự kiến bắt đầu kinh doanh <span class="req">*</span></label>
+            <input type="date">
+          </div>
+          <div class="form-field">
+            <label>Thời gian hoạt động trong ngày <span class="req">*</span></label>
+            <div style="display:flex;gap:8px;align-items:center">
+              <input type="time" value="08:00" style="flex:1">
+              <span style="font-weight:600;color:#6b7280">–</span>
+              <input type="time" value="24:00" style="flex:1">
+              <label style="display:flex;align-items:center;gap:5px;font-size:12px;white-space:nowrap;margin-left:6px">
+                <span style="color:#6b7280">Hoạt động 24/24</span>
+                <div class="radio-group" style="height:auto">
+                  <label class="radio-option" style="gap:4px"><input type="radio" name="h24" value="yes"> Có</label>
+                  <label class="radio-option" style="gap:4px"><input type="radio" name="h24" value="no" checked> Không</label>
+                </div>
+              </label>
+            </div>
+          </div>
+          <div class="form-field">
+            <label>Quy mô kinh doanh <span class="req">*</span></label>
+            <select><option value="">Chọn quy mô</option><option>Nhỏ (dưới 10 lao động)</option><option>Vừa (10–50 lao động)</option><option>Lớn (trên 50 lao động)</option></select>
+          </div>
+          <div class="form-field">
+            <label>Số lượng lao động <span class="req">*</span></label>
+            <input type="number" placeholder="Nhập số lượng" min="1">
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. GIẤY PHÉP CHUYÊN NGÀNH -->
+      <div class="form-card">
+        <div class="form-card-title">
+          <i data-lucide="shield-check"></i> 2. GIẤY PHÉP CHUYÊN NGÀNH
+        </div>
+        <div class="form-grid form-grid-3" style="margin-bottom:20px">
+          <div class="form-field">
+            <label>Loại giấy phép chuyên ngành <span class="req">*</span></label>
+            <select><option value="">Chọn loại giấy phép</option><option>Giấy phép kinh doanh karaoke</option><option>Giấy phép kinh doanh lưu trú</option></select>
+          </div>
+          <div class="form-field">
+            <label>Số giấy phép <span class="req">*</span></label>
+            <input type="text" placeholder="Nhập số giấy phép">
+          </div>
+          <div class="form-field">
+            <label>Cơ quan cấp <span class="req">*</span></label>
+            <input type="text" placeholder="Nhập cơ quan cấp">
+          </div>
+          <div class="form-field">
+            <label>Ngày cấp <span class="req">*</span></label>
+            <input type="date">
+          </div>
+          <div class="form-field">
+            <label>Thời hạn giấy phép</label>
+            <input type="date">
+          </div>
+        </div>
+        <div>
+          <label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:8px">Tệp giấy phép chuyên ngành <span class="req">*</span></label>
+          <div class="file-upload-zone" style="min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center">
+            <i data-lucide="upload-cloud" style="width:36px;height:36px;color:#d1d5db;margin-bottom:10px"></i>
+            <p style="margin-bottom:6px">Kéo thả tệp hoặc</p>
+            <button class="choose-btn" type="button">Chọn tệp</button>
+            <span class="file-hint">PDF, JPG, PNG (Tối đa 10MB)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. THÔNG TIN CHUYÊN NGÀNH ĐỘNG -->
+      <div class="form-card">
+        <div class="form-card-title">
+          <i data-lucide="settings-2"></i>
+          3. THÔNG TIN CHUYÊN NGÀNH ĐỘNG
+          <span class="badge">Ngành nghề đã chọn: Kinh doanh dịch vụ karaoke</span>
+          <span style="margin-left:auto;font-size:12px;font-weight:400;color:#6b7280"><i data-lucide="info" style="width:13px;height:13px;display:inline;vertical-align:middle"></i> Các trường thông tin động thay đổi theo ngành nghề được chọn.</span>
+        </div>
+        <div class="form-grid form-grid-3">
+          <div class="form-field">
+            <label>Số phòng hoạt động <span class="req">*</span></label>
+            <input type="number" placeholder="Nhập số phòng">
+          </div>
+          <div class="form-field">
+            <label>Diện tích từng phòng <span class="req">*</span></label>
+            <div class="input-with-suffix"><input type="text" placeholder="Nhập diện tích (m²)"><span class="input-suffix">m²</span></div>
+          </div>
+          <div class="form-field">
+            <label>Giờ hoạt động <span class="req">*</span></label>
+            <div style="display:flex;gap:6px;align-items:center">
+              <input type="time" value="08:00" style="flex:1">
+              <span>–</span>
+              <input type="time" value="24:00" style="flex:1">
+            </div>
+          </div>
+          <div class="form-field">
+            <label>Công suất âm thanh</label>
+            <div class="input-with-suffix"><input type="number" placeholder="Nhập công suất"><span class="input-suffix">W</span></div>
+          </div>
+          <div class="form-field">
+            <label>Số lối thoát hiểm <span class="req">*</span></label>
+            <input type="number" placeholder="Nhập số lối thoát hiểm">
+          </div>
+          <div class="form-field">
+            <label>Hệ thống cách âm <span class="req">*</span></label>
+            <div class="radio-group">
+              <label class="radio-option"><input type="radio" name="sound_insulation" value="yes"> Có</label>
+              <label class="radio-option"><input type="radio" name="sound_insulation" value="no"> Không</label>
+            </div>
+          </div>
+        </div>
+        <div class="form-grid form-grid-2" style="margin-top:14px">
+          <div>
+            <label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:8px">Giấy phép đủ điều kiện kinh doanh karaoke <span class="req">*</span></label>
+            <div class="file-upload-zone">
+              <i data-lucide="upload-cloud"></i>
+              <p>Kéo thả tệp hoặc</p>
+              <button class="choose-btn" type="button">Chọn tệp</button>
+              <span class="file-hint">PDF, JPG, PNG (Tối đa 10MB)</span>
+            </div>
+          </div>
+          <div class="form-field">
+            <label>Ghi chú chuyên ngành</label>
+            <textarea placeholder="Nhập ghi chú chuyên ngành (nếu có)" rows="5" style="height:auto"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. TÀI LIỆU LIÊN QUAN BỔ SUNG -->
+      <div class="form-card">
+        <div class="form-card-title">
+          <i data-lucide="folder-open"></i> 4. TÀI LIỆU LIÊN QUAN BỔ SUNG
+        </div>
+        <div class="file-upload-grid">
+          <div>
+            <label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:8px">Hình ảnh cơ sở chuyên ngành</label>
+            <div class="file-upload-zone">
+              <i data-lucide="upload-cloud"></i>
+              <p>Kéo thả tệp hoặc</p>
+              <button class="choose-btn" type="button">Chọn tệp</button>
+              <span class="file-hint">JPG, PNG (Tối đa 10MB)</span>
+            </div>
+          </div>
+          <div>
+            <label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:8px">Sơ đồ bố trí khu vực hoạt động</label>
+            <div class="file-upload-zone">
+              <i data-lucide="upload-cloud"></i>
+              <p>Kéo thả tệp hoặc</p>
+              <button class="choose-btn" type="button">Chọn tệp</button>
+              <span class="file-hint">PDF, JPG, PNG (Tối đa 10MB)</span>
+            </div>
+          </div>
+          <div>
+            <label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:8px">Tài liệu khác</label>
+            <div class="file-upload-zone">
+              <i data-lucide="upload-cloud"></i>
+              <p>Kéo thả tệp hoặc</p>
+              <button class="choose-btn" type="button">Chọn tệp</button>
+              <span class="file-hint">PDF, DOC, DOCX, JPG, PNG (Tối đa 10MB)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======= STEP 4 ======= -->
+  <div id="form-step-4" style="display:none">
+    <div class="notice notice-warning">
+      <i data-lucide="info"></i>
+      <span><strong>Bước cuối:</strong> tải đây đủ tài liệu và xác nhận cam kết trước khi gửi đăng ký.</span>
+    </div>
+    <!-- Stacked Sections occupying full width -->
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <!-- 1. TÀI LIỆU BẮT BUỘC -->
+      <div class="form-card">
+        <div class="form-card-title">
+          <i data-lucide="file-check"></i> 1. TÀI LIỆU BẮT BUỘC
+        </div>
+        <div class="file-upload-grid">
+          <div>
+            <label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:8px">Văn bản đề nghị cấp GCN ANTT <span class="req">*</span></label>
+            <div class="file-upload-zone">
+              <i data-lucide="upload"></i>
+              <p style="margin:4px 0">Chọn tệp</p>
+              <button class="choose-btn" type="button" style="margin-top:4px">Chọn tệp</button>
+              <span class="file-hint">PDF, DOC, DOCX, JPG, PNG (Tối đa 10MB)</span>
+            </div>
+          </div>
+          <div>
+            <label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:8px">Giấy đăng ký kinh doanh / thành lập <span class="req">*</span></label>
+            <div class="file-upload-zone">
+              <i data-lucide="upload"></i>
+              <p style="margin:4px 0">Chọn tệp</p>
+              <button class="choose-btn" type="button" style="margin-top:4px">Chọn tệp</button>
+              <span class="file-hint">PDF, DOC, DOCX, JPG, PNG (Tối đa 10MB)</span>
+            </div>
+          </div>
+          <div>
+            <label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:8px">Giấy tờ người chịu trách nhiệm ANTT <span class="req">*</span></label>
+            <div class="file-upload-zone">
+              <i data-lucide="upload"></i>
+              <p style="margin:4px 0">Chọn tệp</p>
+              <button class="choose-btn" type="button" style="margin-top:4px">Chọn tệp</button>
+              <span class="file-hint">PDF, DOC, DOCX, JPG, PNG (Tối đa 10MB)</span>
+            </div>
+          </div>
+          <div>
+            <label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:8px">Giấy phép chuyên ngành <span class="req">*</span></label>
+            <div class="file-upload-zone">
+              <i data-lucide="upload"></i>
+              <p style="margin:4px 0">Chọn tệp</p>
+              <button class="choose-btn" type="button" style="margin-top:4px">Chọn tệp</button>
+              <span class="file-hint">PDF, DOC, DOCX, JPG, PNG (Tối đa 10MB)</span>
+            </div>
+          </div>
+          <div>
+            <label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:8px">Tài liệu PCCC <span class="req">*</span></label>
+            <div class="file-upload-zone">
+              <i data-lucide="upload"></i>
+              <p style="margin:4px 0">Chọn tệp</p>
+              <button class="choose-btn" type="button" style="margin-top:4px">Chọn tệp</button>
+              <span class="file-hint">PDF, DOC, DOCX, JPG, PNG (Tối đa 10MB)</span>
+            </div>
+          </div>
+          <div>
+            <label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:8px">Ảnh mặt tiền cơ sở <span class="req">*</span></label>
+            <div class="file-upload-zone">
+              <i data-lucide="upload"></i>
+              <p style="margin:4px 0">Chọn tệp</p>
+              <button class="choose-btn" type="button" style="margin-top:4px">Chọn tệp</button>
+              <span class="file-hint">PDF, DOC, DOCX, JPG, PNG (Tối đa 10MB)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. TÀI LIỆU BỔ SUNG -->
+      <div class="form-card">
+        <div class="form-card-title">
+          <i data-lucide="folder"></i> 2. TÀI LIỆU BỔ SUNG
+        </div>
+        <div class="file-upload-grid">
+          <div>
+            <label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:8px">Sơ đồ mặt bằng</label>
+            <div class="file-upload-zone">
+              <i data-lucide="upload"></i>
+              <p style="margin:4px 0">Chọn tệp</p>
+              <button class="choose-btn" type="button" style="margin-top:4px">Chọn tệp</button>
+              <span class="file-hint">PDF, DOC, DOCX, JPG, PNG (Tối đa 10MB)</span>
+            </div>
+          </div>
+          <div>
+            <label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:8px">Hợp đồng thuê địa điểm / kho</label>
+            <div class="file-upload-zone">
+              <i data-lucide="upload"></i>
+              <p style="margin:4px 0">Chọn tệp</p>
+              <button class="choose-btn" type="button" style="margin-top:4px">Chọn tệp</button>
+              <span class="file-hint">PDF, DOC, DOCX, JPG, PNG (Tối đa 10MB)</span>
+            </div>
+          </div>
+          <div>
+            <label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:8px">Tài liệu khác</label>
+            <div class="file-upload-zone">
+              <i data-lucide="upload"></i>
+              <p style="margin:4px 0">Chọn tệp</p>
+              <button class="choose-btn" type="button" style="margin-top:4px">Chọn tệp</button>
+              <span class="file-hint">PDF, DOC, DOCX, JPG, PNG (Tối đa 10MB)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. CAM KẾT -->
+      <div class="form-card">
+        <div class="form-card-title">
+          <i data-lucide="shield-check"></i> 3. CAM KẾT
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:20px">
+          <label style="display:flex;gap:10px;align-items:flex-start;font-size:13px;cursor:pointer;line-height:1.5">
+            <input type="checkbox" style="margin-top:2px;accent-color:#bd0000;flex-shrink:0">
+            <span>Tôi cam kết thông tin kê khai là đúng sự thật và chịu trách nhiệm trước pháp luật. <span class="req">*</span></span>
+          </label>
+          <label style="display:flex;gap:10px;align-items:flex-start;font-size:13px;cursor:pointer;line-height:1.5">
+            <input type="checkbox" style="margin-top:2px;accent-color:#bd0000;flex-shrink:0">
+            <span>Tôi cam kết cơ sở đáp ứng các điều kiện về an ninh, trật tự theo quy định. <span class="req">*</span></span>
+          </label>
+          <label style="display:flex;gap:10px;align-items:flex-start;font-size:13px;cursor:pointer;line-height:1.5">
+            <input type="checkbox" style="margin-top:2px;accent-color:#bd0000;flex-shrink:0">
+            <span>Tôi cam kết thực hiện đúng các quy định về phòng cháy, chữa cháy và ngành nghề kinh doanh đã đăng ký. <span class="req">*</span></span>
+          </label>
+          <label style="display:flex;gap:10px;align-items:flex-start;font-size:13px;cursor:pointer;line-height:1.5">
+            <input type="checkbox" style="margin-top:2px;accent-color:#bd0000;flex-shrink:0">
+            <span>Tôi đồng ý cho cơ quan Công an xác minh các thông tin và tài liệu đã cung cấp. <span class="req">*</span></span>
+          </label>
+        </div>
+        <div class="form-grid form-grid-4">
+          <div class="form-field">
+            <label>Người cam kết <span class="req">*</span></label>
+            <input type="text" placeholder="Nhập họ và tên">
+          </div>
+          <div class="form-field">
+            <label>Chức vụ <span class="req">*</span></label>
+            <input type="text" placeholder="Nhập chức vụ">
+          </div>
+          <div class="form-field">
+            <label>Ngày cam kết <span class="req">*</span></label>
+            <input type="date">
+          </div>
+          <div class="form-field">
+            <label>Hình thức xác nhận</label>
+            <select><option>Xác nhận điện tử</option><option>Ký tay</option></select>
+          </div>
+          <div class="form-field full" style="margin-top:14px">
+            <label>Ghi chú bổ sung</label>
+            <textarea placeholder="Nhập ghi chú bổ sung (nếu có)" rows="3"></textarea>
+            <div style="text-align:right;font-size:12px;color:#9ca3af;margin-top:3px">0/500</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER ACTIONS -->
+<div class="form-footer">
+  <div class="form-footer-left">
+    <button class="btn btn-ghost" onclick="cancelForm()">
+      <i data-lucide="x"></i> Hủy
+    </button>
+    <button class="btn btn-outline" onclick="saveDraft()">
+      <i data-lucide="save"></i> Lưu nháp
+    </button>
+  </div>
+  <div class="form-footer-right">
+    <button class="btn btn-ghost" id="btnPrev" onclick="prevStep()" style="display:none">
+      <i data-lucide="arrow-left"></i> Quay lại
+    </button>
+    <button class="btn btn-primary" id="btnNext" onclick="nextStep()">
+      Tiếp theo <i data-lucide="arrow-right"></i>
+    </button>
+    <button class="btn btn-primary" id="btnSubmit" onclick="submitForm()" style="display:none">
+      <i data-lucide="send"></i> Gửi đăng ký
+    </button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="custom-footer-copyright">
+  © 2026 Công an tỉnh Ninh Bình. Tất cả quyền được bảo lưu.
+</footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // ── AUTHENTICATION & ACCESS CONTROL ────────────────────────
+    const session = typeof Auth !== 'undefined' ? Auth.getSession() : null;
+    const authArea = document.getElementById('headerAuthArea');
+    const authModal = document.getElementById('authGateModal');
+    const authCancel = document.getElementById('authGateCancel');
+
+    // 1. Cập nhật header widget
+    if (session && authArea) {
+      authArea.innerHTML = `
+        <div class="topbar-menu-wrap" style="position:relative; z-index:1000; font-family:'Roboto',sans-serif;">
+          <button id="publicUserMenuToggle" class="user-menu-btn" type="button" aria-label="Mở menu tài khoản" aria-expanded="false" style="display:flex; align-items:center; gap:12px; background:transparent; border:none; cursor:pointer; padding:4px 10px; border-radius:8px; transition:background 160ms ease; text-align:left; outline:none; height:46px;">
+            <div style="width:38px; height:38px; border-radius:50%; color:white; font-weight:900; font-size:14px; display:grid; place-items:center; background:${session.avatarColor || '#bd0000'}; flex-shrink:0;">
+              ${session.avatar}
+            </div>
+            <div class="hidden text-left sm:block" style="display:block;"><div style="font-size:15px; font-weight:600; color:#ffffff; line-height:1.2;">${session.name}</div><div style="font-size:12px; font-weight:500; color:rgba(255,255,255,0.85); margin-top:2px;">${session.unit}</div></div>
+            <i data-lucide="chevron-down" class="user-chevron" style="color:#ffffff; width:16px; height:16px; transition:transform 160ms ease;"></i>
+          </button>
+          <div id="publicUserMenu" class="topbar-dropdown user-dropdown" style="display:none; position:absolute; right:0; top:calc(100% + 12px); z-index:999; overflow:hidden; border:1px solid #e3e8f0; border-radius:12px; background:#fff; color:#1f2937; box-shadow:0 18px 42px rgba(15,23,42,0.18); width:260px;">
+            <!-- Arrow Caret -->
+            <div style="position:absolute; right:20px; top:-6px; width:12px; height:12px; border-left:1px solid #e3e8f0; border-top:1px solid #e3e8f0; background:#fff; transform:rotate(45deg); z-index:1;"></div>
+            <div class="user-card" style="display:flex; align-items:center; gap:12px; border-bottom:1px solid #edf1f6; padding:15px; position:relative; z-index:2; background:#fff;">
+              <div style="width:38px; height:38px; border-radius:50%; color:white; font-weight:900; font-size:14px; display:grid; place-items:center; background:${session.avatarColor || '#bd0000'}">
+                ${session.avatar}
+              </div>
+              <div>
+                <div class="user-name" style="color:#111827; font-size:14px; font-weight:700;">${session.name}</div>
+                <div class="user-role" style="margin-top:3px; color:#6b7280; font-size:11px; font-weight:600; line-height:1.35;">${session.unit}</div>
+              </div>
+            </div>
+            <!-- Actions -->
+            <div style="position:relative; z-index:2; background:#fff;">
+              ${session.role === 'admin' 
+                ? `<a class="dropdown-action" href="Dashboard.html" style="display:flex; width:100%; align-items:center; gap:10px; padding:12px 15px; color:#273140; font-size:13px; font-weight:600; text-decoration:none; box-sizing:border-box;"><i data-lucide="layout-dashboard" style="width:16px; height:16px;"></i>Trang quản trị (Admin)</a>`
+                : `<a class="dropdown-action" href="CongCSKD-HoSoCuaToi.html" style="display:flex; width:100%; align-items:center; gap:10px; padding:12px 15px; color:#273140; font-size:13px; font-weight:600; text-decoration:none; box-sizing:border-box;"><i data-lucide="store" style="width:16px; height:16px;"></i>Hồ sơ cơ sở của tôi</a>`
+              }
+              <a class="dropdown-action" href="HoSoCaNhan.html" style="display:flex; width:100%; align-items:center; gap:10px; padding:12px 15px; color:#273140; font-size:13px; font-weight:600; text-decoration:none; box-sizing:border-box;"><i data-lucide="id-card" style="width:16px; height:16px;"></i>Hồ sơ cá nhân</a>
+              <button class="dropdown-action danger" type="button" id="publicLogoutBtn">
+                <i data-lucide="log-out" style="width:16px; height:16px;"></i>Đăng xuất
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+      if (window.lucide) {
+        window.lucide.createIcons();
+      }
+      
+      const toggle = document.getElementById('publicUserMenuToggle');
+      const menu = document.getElementById('publicUserMenu');
+      
+      toggle?.addEventListener('click', (event) => {
+        event.stopPropagation();
+        const isOpen = toggle.classList.contains('is-open');
+        
+        if (isOpen) {
+          toggle.classList.remove('is-open');
+          toggle.setAttribute('aria-expanded', 'false');
+          if (menu) menu.style.display = 'none';
+        } else {
+          toggle.classList.add('is-open');
+          toggle.setAttribute('aria-expanded', 'true');
+          if (menu) menu.style.display = 'block';
+        }
+      });
+      
+      document.addEventListener('click', (event) => {
+        if (!event.target.closest('.topbar-menu-wrap')) {
+          toggle?.classList.remove('is-open');
+          toggle?.setAttribute('aria-expanded', 'false');
+          if (menu) menu.style.display = 'none';
+        }
+      });
+
+      document.getElementById('publicLogoutBtn')?.addEventListener('click', () => {
+        Auth.logout('DangNhap.html');
+      });
+    }
+
+    const protectedLinks = [
+      document.querySelector('.dropdown-feedback-link'),
+      document.querySelector('.sub-card-feedback')
+    ];
+
+    protectedLinks.forEach(link => {
+      if (!link) return;
+      
+      link.addEventListener('click', (e) => {
+        if (!session) {
+          e.preventDefault();
+          e.stopPropagation();
+          if (authModal) authModal.style.display = 'flex';
+        }
+      });
+    });
+
+    authCancel?.addEventListener('click', () => {
+      if (authModal) authModal.style.display = 'none';
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && authModal) {
+        authModal.style.display = 'none';
+      }
+    });
+
+    if (window.lucide) {
+      window.lucide.createIcons();
+    }
+  });
+
+  lucide.createIcons();
+
+  let currentStep = 1;
+  const totalSteps = 4;
+
+  function updateStepUI() {
+    for (let i = 1; i <= totalSteps; i++) {
+      const stepEl = document.getElementById('form-step-' + i);
+      if (stepEl) stepEl.style.display = (i === currentStep) ? '' : 'none';
+
+      const itemEl = document.getElementById('step-item-' + i);
+      if (itemEl) {
+        itemEl.classList.remove('active', 'done');
+        if (i < currentStep) itemEl.classList.add('done');
+        else if (i === currentStep) itemEl.classList.add('active');
+      }
+    }
+    document.getElementById('btnPrev').style.display = currentStep > 1 ? '' : 'none';
+    document.getElementById('btnNext').style.display = currentStep < totalSteps ? '' : 'none';
+    document.getElementById('btnSubmit').style.display = currentStep === totalSteps ? '' : 'none';
+
+    const infoTexts = [
+      'Hoàn thành đầy đủ thông tin ở bước hiện tại để chuyển sang bước kế tiếp.',
+      'Vui lòng cung cấp đầy đủ thông tin bắt buộc (dấu *) trước khi chuyển sang bước tiếp theo.',
+      'Vui lòng cung cấp đầy đủ thông tin bắt buộc (dấu *) trước khi chuyển sang bước tiếp theo.',
+      'Bước cuối: tải đầy đủ tài liệu và xác nhận cam kết trước khi gửi đăng ký.'
+    ];
+    document.getElementById('stepInfoText').textContent = infoTexts[currentStep - 1];
+    lucide.createIcons();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function nextStep() {
+    if (currentStep < totalSteps) { currentStep++; updateStepUI(); }
+  }
+  function prevStep() {
+    if (currentStep > 1) { currentStep--; updateStepUI(); }
+  }
+  function cancelForm() {
+    if (confirm('Bạn có chắc muốn hủy? Dữ liệu chưa lưu sẽ bị mất.')) window.location.href = '../index.html';
+  }
+  function saveDraft() {
+    alert('Hồ sơ đã được lưu nháp thành công!');
+  }
+  function submitForm() {
+    alert('Hồ sơ đã được gửi thành công! Mã hồ sơ: HS' + Math.floor(Math.random()*100000).toString().padStart(6,'0'));
+    window.location.href = 'TheoDoiHoSo.html';
+  }
+</script>
+</body>
+</html>

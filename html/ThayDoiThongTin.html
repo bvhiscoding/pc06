@@ -1,0 +1,905 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Khai báo thay đổi thông tin – Công an tỉnh Ninh Bình</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/public-pages.css">
+  <script src="../scripts/auth.js"></script>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="custom-header">
+  <a href="../index.html" class="custom-brand">
+    <img src="../public/logocongan.png" alt="Logo Bộ Công an">
+    <div class="custom-brand-text">
+      <h1>CÔNG AN TỈNH NINH BÌNH</h1>
+      <p>HỆ THỐNG QUẢN LÝ CƠ SỞ KINH DOANH CÓ ĐIỀU KIỆN VỀ ANTT</p>
+    </div>
+  </a>
+
+  <nav>
+    <ul class="custom-nav">
+      <li class="custom-nav-item" id="nav-home">
+        <a class="custom-nav-link" href="../index.html">
+          <i data-lucide="home"></i> Trang chủ
+        </a>
+      </li>
+      <li class="custom-nav-item" id="nav-map">
+        <a class="custom-nav-link" href="../index.html?tab=map">
+          <i data-lucide="map"></i> Bản đồ số
+        </a>
+      </li>
+      <li class="custom-nav-item active" id="nav-procedures">
+        <a class="custom-nav-link" href="../index.html?tab=procedures">
+          <i data-lucide="file-text"></i> Thủ tục <i data-lucide="chevron-down" class="ml-0.5"></i>
+        </a>
+        <div class="custom-nav-dropdown">
+          <a href="DangKyCoSo.html">Đăng ký cơ sở mới</a>
+          <a href="ThayDoiThongTin.html">Khai báo thay đổi</a>
+          <a href="../index.html?tab=procedures">Danh mục thủ tục</a>
+        </div>
+      </li>
+      <li class="custom-nav-item" id="nav-search">
+        <a class="custom-nav-link" href="../index.html?tab=search">
+          <i data-lucide="search"></i> Tra cứu hồ sơ
+        </a>
+      </li>
+      <li class="custom-nav-item" id="nav-support">
+        <a class="custom-nav-link" href="../index.html?tab=feedback">
+          <i data-lucide="headset"></i> Hỗ trợ <i data-lucide="chevron-down" class="ml-0.5"></i>
+        </a>
+        <div class="custom-nav-dropdown">
+          <a href="HuongDanSuDung.html">Hướng dẫn sử dụng</a>
+          <a href="TinTucThongBao.html">Tin tức & Thông báo</a>
+          <a href="CauHoiThuongGap.html">Câu hỏi thường gặp</a>
+          <a href="LienHeHoTro.html">Liên hệ hỗ trợ</a>
+          <a href="../index.html?tab=feedback">Tiếp nhận phản ánh</a>
+        </div>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Auth widget: populated by JS below -->
+  <div id="headerAuthArea">
+    <a class="custom-login-btn" href="DangNhap.html">
+      <i data-lucide="user"></i>
+      Đăng nhập
+    </a>
+  </div>
+</header>
+
+<!-- ── Auth-gate modal ──────────────────────────────── -->
+<div id="authGateModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.55);backdrop-filter:blur(3px);align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:20px;padding:36px 40px 32px;max-width:420px;width:90%;box-shadow:0 24px 56px rgba(0,0,0,0.22);text-align:center;">
+    <div style="width:56px;height:56px;border-radius:50%;background:#fff2f2;display:grid;place-items:center;margin:0 auto 16px;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#bd0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    </div>
+    <h3 style="font-size:18px;font-weight:700;color:#1b2430;margin:0 0 8px;">Yêu cầu đăng nhập</h3>
+    <p style="font-size:14px;color:#6b7280;margin:0 0 24px;line-height:1.55;">Chức năng này yêu cầu bạn đăng nhập vào hệ thống. Vui lòng đăng nhập để tiếp tục.</p>
+    <div style="display:flex;gap:12px;justify-content:center;">
+      <button id="authGateCancel" style="flex:1;height:44px;border-radius:8px;border:1.5px solid #d1d5db;background:#fff;font-size:14px;font-weight:600;color:#374151;cursor:pointer;">Hủy</button>
+      <a href="DangNhap.html" style="flex:1;height:44px;border-radius:8px;background:linear-gradient(180deg,#ed000b,#d80008);font-size:14px;font-weight:700;color:#fff;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;">Đăng nhập ngay</a>
+    </div>
+  </div>
+</div>
+
+<!-- BREADCRUMB -->
+<div class="pub-breadcrumb">
+  <a href="../index.html">Trang chủ</a>
+  <i data-lucide="chevron-right" style="width:14px;height:14px;color:#d1d5db"></i>
+  <span style="color:#374151;font-weight:600">Khai báo thay đổi thông tin</span>
+</div>
+
+<div class="pub-main" style="padding-top:20px">
+  <!-- STEP BAR (3 steps) -->
+  <div class="step-bar" style="margin:20px 0 12px">
+    <div class="step-item active" id="step-item-1">
+      <div class="step-circle"><span class="step-num">1</span></div>
+      <div class="step-label">Thông tin cơ sở</div>
+    </div>
+    <div class="step-item" id="step-item-2">
+      <div class="step-circle"><span class="step-num">2</span></div>
+      <div class="step-label">Hồ sơ tài liệu</div>
+    </div>
+    <div class="step-item" id="step-item-3">
+      <div class="step-circle"><span class="step-num">3</span></div>
+      <div class="step-label">Xác nhận khai báo</div>
+    </div>
+  </div>
+
+  <!-- ======= STEP 1 ======= -->
+  <div id="form-step-1">
+    <div class="pub-form-layout">
+      <!-- LEFT MAIN -->
+      <div class="pub-form-main">
+        <!-- Thông tin cơ sở kinh doanh -->
+        <div class="form-card">
+          <div class="form-card-title">
+            <i data-lucide="store"></i> 1. THÔNG TIN CƠ SỞ KINH DOANH
+          </div>
+          <div class="form-field" style="margin-bottom:16px">
+            <label>Chọn cơ sở kinh doanh <span class="req">*</span></label>
+            <select id="businessSelect" onchange="loadBusinessInfo(this.value)">
+              <option value="">-- Chọn cơ sở --</option>
+              <option value="ks_hg">Khách sạn Hoàng Gia – MST: 2700812345 – Số GCN: 123/GCN-ANTT</option>
+              <option value="kk_hg">Karaoke Hoàng Gia – MST: 2700812346 – Số GCN: 124/GCN-ANTT</option>
+              <option value="nt_la">Nhà trọ Lan Anh – MST: 2700812347 – Số GCN: 125/GCN-ANTT</option>
+            </select>
+          </div>
+          <div class="notice notice-warning" style="margin-bottom:16px">
+            <i data-lucide="alert-triangle"></i>
+            <span>Lưu ý: Chỉ được khai báo thay đổi thông tin đối với các nội dung đã được cấp trong Giấy chứng nhận đủ điều kiện về ANTT.</span>
+          </div>
+          <!-- Business info summary -->
+          <div id="bizInfoBlock" style="display:none">
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px">
+              <div class="form-field">
+                <label>Tên cơ sở kinh doanh</label>
+                <input type="text" id="bizName" readonly style="background:#f9fafb;color:#374151">
+              </div>
+              <div class="form-field">
+                <label>Loại hình</label>
+                <input type="text" id="bizType" readonly style="background:#f9fafb;color:#374151">
+              </div>
+              <div class="form-field">
+                <label>Trạng thái hoạt động</label>
+                <div id="bizStatus" style="height:40px;display:flex;align-items:center">
+                  <span class="badge-status badge-active">Đang hoạt động</span>
+                </div>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 200px;gap:14px;margin-bottom:14px">
+              <div class="form-field">
+                <label>Địa chỉ trụ sở chính</label>
+                <input type="text" id="bizAddr" readonly style="background:#f9fafb">
+              </div>
+              <div class="form-field">
+                <label>Điện thoại</label>
+                <input type="text" id="bizPhone" readonly style="background:#f9fafb">
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:14px">
+              <div class="form-field">
+                <label>Giấy chứng nhận đủ điều kiện về ANTT</label>
+                <input type="text" id="bizGcn" readonly style="background:#f9fafb">
+              </div>
+              <div class="form-field">
+                <label>Ngày cấp</label>
+                <input type="text" id="bizGcnDate" readonly style="background:#f9fafb">
+              </div>
+              <div class="form-field">
+                <label>Cơ quan cấp</label>
+                <input type="text" id="bizGcnOrg" readonly style="background:#f9fafb">
+              </div>
+              <div class="form-field">
+                <label>Ngày hết hạn</label>
+                <input type="text" id="bizGcnExpiry" readonly style="background:#f9fafb">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Nội dung thay đổi -->
+        <div class="form-card">
+          <div class="form-card-title">
+            <i data-lucide="edit-3"></i> 2. NỘI DUNG THAY ĐỔI
+          </div>
+          <div class="form-field" style="margin-bottom:16px">
+            <label>Chọn nội dung thay đổi <span class="req">*</span></label>
+          </div>
+          <div class="change-type-grid">
+            <div class="change-type-card selected" onclick="toggleChange(this)">
+              <div class="change-type-icon"><i data-lucide="store"></i></div>
+              <p class="change-type-name">Thông tin cơ sở</p>
+              <p class="change-type-desc">Tên cơ sở, địa chỉ, thông tin liên hệ...</p>
+            </div>
+            <div class="change-type-card" onclick="toggleChange(this)">
+              <div class="change-type-icon"><i data-lucide="briefcase"></i></div>
+              <p class="change-type-name">Ngành nghề kinh doanh</p>
+              <p class="change-type-desc">Thêm, bổ hoặc thay đổi ngành nghề</p>
+            </div>
+            <div class="change-type-card" onclick="toggleChange(this)">
+              <div class="change-type-icon"><i data-lucide="user"></i></div>
+              <p class="change-type-name">Người đại diện / Người chịu trách nhiệm ANTT</p>
+              <p class="change-type-desc">Thay đổi thông tin nhân sự</p>
+            </div>
+            <div class="change-type-card" onclick="toggleChange(this)">
+              <div class="change-type-icon"><i data-lucide="map-pin"></i></div>
+              <p class="change-type-name">Địa điểm kinh doanh</p>
+              <p class="change-type-desc">Thêm, bổ hoặc thay đổi địa điểm</p>
+            </div>
+            <div class="change-type-card" onclick="toggleChange(this)">
+              <div class="change-type-icon"><i data-lucide="shield"></i></div>
+              <p class="change-type-name">PCCC & Cơ sở vật chất</p>
+              <p class="change-type-desc">Thay đổi thông tin PCCC, cơ sở vật chất</p>
+            </div>
+            <div class="change-type-card" onclick="toggleChange(this)">
+              <div class="change-type-icon"><i data-lucide="file-text"></i></div>
+              <p class="change-type-name">Giấy phép chuyên ngành</p>
+              <p class="change-type-desc">Thay đổi, bổ sung giấy phép</p>
+            </div>
+            <div class="change-type-card" onclick="toggleChange(this)">
+              <div class="change-type-icon"><i data-lucide="message-square"></i></div>
+              <p class="change-type-name">Thông tin khác</p>
+              <p class="change-type-desc">Các thay đổi khác</p>
+            </div>
+          </div>
+          <div class="form-field" style="margin-top:18px">
+            <label>Mô tả chi tiết nội dung thay đổi <span class="req">*</span></label>
+            <textarea placeholder="Nhập mô tả chi tiết nội dung thay đổi..." rows="4"></textarea>
+            <div style="text-align:right;font-size:12px;color:#9ca3af;margin-top:3px">0/1000</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT SIDEBAR -->
+      <div class="pub-form-sidebar">
+        <!-- Thông tin tóm tắt hồ sơ -->
+        <div class="side-card">
+          <div class="side-card-title">
+            <i data-lucide="file-text"></i> THÔNG TIN TÓM TẮT HỒ SƠ
+          </div>
+          <div class="side-info-row">
+            <span class="side-info-label">Mã hồ sơ</span>
+            <span class="side-info-value red">HS25050001</span>
+          </div>
+          <div class="side-info-row">
+            <span class="side-info-label">Loại khai báo</span>
+            <span class="side-info-value">Khai báo thay đổi thông tin</span>
+          </div>
+          <div class="side-info-row">
+            <span class="side-info-label">Ngày khai báo</span>
+            <span class="side-info-value">24/05/2025 09:15</span>
+          </div>
+          <div class="side-info-row">
+            <span class="side-info-label">Người khai báo</span>
+            <span class="side-info-value">Nguyễn Văn A</span>
+          </div>
+          <div class="side-info-row">
+            <span class="side-info-label">Số điện thoại</span>
+            <span class="side-info-value">0912 345 678</span>
+          </div>
+          <div class="side-info-row">
+            <span class="side-info-label">Email</span>
+            <span class="side-info-value" style="word-break:break-all">nguyenvana@gmail.com</span>
+          </div>
+        </div>
+
+        <!-- Lịch sử thay đổi gần nhất -->
+        <div class="side-card">
+          <div class="side-card-title">
+            <i data-lucide="history"></i> LỊCH SỬ THAY ĐỔI GẦN NHẤT
+          </div>
+          <div style="overflow-x:auto">
+            <table style="width:100%;font-size:12.5px;border-collapse:collapse">
+              <thead>
+                <tr>
+                  <th style="text-align:left;padding:5px 6px;color:#9ca3af;font-weight:600">Ngày</th>
+                  <th style="text-align:left;padding:5px 6px;color:#9ca3af;font-weight:600">Nội dung</th>
+                  <th style="text-align:left;padding:5px 6px;color:#9ca3af;font-weight:600">Trạng thái</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-top:1px solid #f3f4f6">
+                  <td style="padding:7px 6px;color:#374151">10/01/2025</td>
+                  <td style="padding:7px 6px;color:#374151">Thay đổi địa chỉ trụ sở chính</td>
+                  <td style="padding:7px 6px"><span class="badge-status badge-done" style="font-size:11px">Đã duyệt</span></td>
+                </tr>
+                <tr style="border-top:1px solid #f3f4f6">
+                  <td style="padding:7px 6px;color:#374151">05/06/2024</td>
+                  <td style="padding:7px 6px;color:#374151">Bổ sung ngành nghề kinh doanh</td>
+                  <td style="padding:7px 6px"><span class="badge-status badge-done" style="font-size:11px">Đã duyệt</span></td>
+                </tr>
+                <tr style="border-top:1px solid #f3f4f6">
+                  <td style="padding:7px 6px;color:#374151">15/03/2024</td>
+                  <td style="padding:7px 6px;color:#374151">Cấp giấy chứng nhận lần đầu</td>
+                  <td style="padding:7px 6px"><span class="badge-status badge-done" style="font-size:11px">Đã duyệt</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <button class="btn btn-ghost btn-sm" style="width:100%;justify-content:center;margin-top:12px">
+            <i data-lucide="refresh-cw"></i> Xem tất cả lịch sử
+          </button>
+        </div>
+
+        <!-- Hướng dẫn -->
+        <div class="side-card">
+          <div class="side-card-title" style="color:#92400e">
+            <i data-lucide="book-open"></i> HƯỚNG DẪN
+          </div>
+          <ol style="margin:0;padding-left:18px;font-size:13px;color:#374151;line-height:1.8">
+            <li>Chọn cơ sở kinh doanh cần khai báo thay đổi.</li>
+            <li>Chọn nội dung thay đổi phù hợp.</li>
+            <li>Mô tả chi tiết nội dung thay đổi.</li>
+            <li>Đính kèm hồ sơ, tài liệu liên quan ở bước tiếp theo.</li>
+            <li>Xác nhận và gửi khai báo.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======= STEP 2 ======= -->
+  <div id="form-step-2" style="display:none">
+    <div class="pub-form-layout">
+      <div class="pub-form-main">
+        <!-- Tài liệu bắt buộc -->
+        <div class="form-card">
+          <div class="form-card-title">
+            <i data-lucide="file-check"></i> 1. TÀI LIỆU BẮT BUỘC
+          </div>
+          <div class="file-upload-grid">
+            <div>
+              <label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:8px">Văn bản đề nghị thay đổi thông tin <span class="req">*</span></label>
+              <div class="file-upload-zone">
+                <i data-lucide="upload-cloud"></i>
+                <p>Kéo thả tệp vào đây hoặc</p>
+                <button class="choose-btn" type="button">Chọn tệp</button>
+                <span class="file-hint">Định dạng: PDF, DOC, DOCX, JPG, PNG (Tối đa 10MB)</span>
+              </div>
+            </div>
+            <div>
+              <label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:8px">Giấy chứng nhận đủ điều kiện về ANTT <span class="req">*</span></label>
+              <div class="file-upload-zone">
+                <i data-lucide="upload-cloud"></i>
+                <p>Kéo thả tệp vào đây hoặc</p>
+                <button class="choose-btn" type="button">Chọn tệp</button>
+                <span class="file-hint">Định dạng: PDF, JPG, PNG (Tối đa 10MB)</span>
+              </div>
+            </div>
+            <div>
+              <label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:8px">Giấy tờ chứng minh nội dung thay đổi <span class="req">*</span></label>
+              <div class="file-upload-zone">
+                <i data-lucide="upload-cloud"></i>
+                <p>Kéo thả tệp vào đây hoặc</p>
+                <button class="choose-btn" type="button">Chọn tệp</button>
+                <span class="file-hint">Định dạng: PDF, JPG, PNG (Tối đa 10MB)</span>
+              </div>
+            </div>
+            <div>
+              <label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:8px">Giấy tờ người đại diện / người chịu trách nhiệm ANTT <span class="req">*</span></label>
+              <div class="file-upload-zone">
+                <i data-lucide="upload-cloud"></i>
+                <p>Kéo thả tệp vào đây hoặc</p>
+                <button class="choose-btn" type="button">Chọn tệp</button>
+                <span class="file-hint">Định dạng: PDF, JPG, PNG (Tối đa 10MB)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tài liệu bổ sung -->
+        <div class="form-card">
+          <div class="form-card-title">
+            <i data-lucide="folder"></i> 2. TÀI LIỆU BỔ SUNG
+          </div>
+          <div class="file-upload-grid">
+            <div>
+              <label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:8px">Tài liệu PCCC</label>
+              <div class="file-upload-zone">
+                <i data-lucide="upload-cloud"></i>
+                <p>Kéo thả tệp vào đây hoặc</p>
+                <button class="choose-btn" type="button">Chọn tệp</button>
+                <span class="file-hint">PDF, JPG, PNG (Tối đa 10MB)</span>
+              </div>
+            </div>
+            <div>
+              <label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:8px">Giấy phép chuyên ngành</label>
+              <div class="file-upload-zone">
+                <i data-lucide="upload-cloud"></i>
+                <p>Kéo thả tệp vào đây hoặc</p>
+                <button class="choose-btn" type="button">Chọn tệp</button>
+                <span class="file-hint">PDF, JPG, PNG (Tối đa 10MB)</span>
+              </div>
+            </div>
+            <div>
+              <label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:8px">Hợp đồng thuê địa điểm / kho</label>
+              <div class="file-upload-zone">
+                <i data-lucide="upload-cloud"></i>
+                <p>Kéo thả tệp vào đây hoặc</p>
+                <button class="choose-btn" type="button">Chọn tệp</button>
+                <span class="file-hint">PDF, JPG, PNG (Tối đa 10MB)</span>
+              </div>
+            </div>
+            <div>
+              <label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:8px">Tài liệu khác</label>
+              <div class="file-upload-zone">
+                <i data-lucide="upload-cloud"></i>
+                <p>Kéo thả tệp vào đây hoặc</p>
+                <button class="choose-btn" type="button">Chọn tệp</button>
+                <span class="file-hint">PDF, JPG, PNG (Tối đa 10MB)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ghi chú hồ sơ -->
+        <div class="form-card">
+          <div class="form-card-title">
+            <i data-lucide="message-square"></i> 3. GHI CHÚ HỒ SƠ
+          </div>
+          <div class="form-field">
+            <label>Mô tả tài liệu bổ sung / ghi chú</label>
+            <textarea placeholder="Nhập mô tả tài liệu bổ sung hoặc ghi chú (nếu có)..." rows="4"></textarea>
+            <div style="text-align:right;font-size:12px;color:#9ca3af;margin-top:3px">0/1000</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SIDEBAR STEP 2 -->
+      <div class="pub-form-sidebar">
+        <div class="side-card">
+          <div class="side-card-title">
+            <i data-lucide="file-text"></i> THÔNG TIN TÓM TẮT HỒ SƠ
+          </div>
+          <div class="side-info-row">
+            <span class="side-info-label">Mã hồ sơ:</span>
+            <span class="side-info-value red">HS25050001</span>
+          </div>
+          <div class="side-info-row">
+            <span class="side-info-label">Loại khai báo:</span>
+            <span class="side-info-value">Khai báo thay đổi thông tin</span>
+          </div>
+          <div class="side-info-row">
+            <span class="side-info-label">Ngày khai báo:</span>
+            <span class="side-info-value">24/05/2025 09:15</span>
+          </div>
+          <div class="side-info-row">
+            <span class="side-info-label">Người khai báo:</span>
+            <span class="side-info-value">Nguyễn Văn A</span>
+          </div>
+          <div class="side-info-row">
+            <span class="side-info-label">Số điện thoại:</span>
+            <span class="side-info-value">0912 345 678</span>
+          </div>
+          <div class="side-info-row">
+            <span class="side-info-label">Email:</span>
+            <span class="side-info-value" style="word-break:break-all">nguyenvana@gmail.com</span>
+          </div>
+        </div>
+
+        <div class="side-card">
+          <div class="side-card-title">
+            <i data-lucide="check-square"></i> NỘI DUNG THAY ĐỔI ĐÃ CHỌN
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;padding:8px 10px;background:#f9fafb;border-radius:6px">
+              <span style="display:flex;align-items:center;gap:7px"><i data-lucide="store" style="width:14px;height:14px;color:#bd0000"></i> Thông tin cơ sở</span>
+              <i data-lucide="check-circle" style="width:16px;height:16px;color:#16a34a"></i>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;padding:8px 10px;background:#f9fafb;border-radius:6px">
+              <span style="display:flex;align-items:center;gap:7px"><i data-lucide="briefcase" style="width:14px;height:14px;color:#bd0000"></i> Ngành nghề kinh doanh</span>
+              <i data-lucide="check-circle" style="width:16px;height:16px;color:#16a34a"></i>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;padding:8px 10px;background:#f9fafb;border-radius:6px">
+              <span style="display:flex;align-items:center;gap:7px"><i data-lucide="shield" style="width:14px;height:14px;color:#bd0000"></i> PCCC & Cơ sở vật chất</span>
+              <i data-lucide="check-circle" style="width:16px;height:16px;color:#16a34a"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="side-card" style="border-color:#fcd34d;background:#fefce8">
+          <div class="side-card-title" style="color:#92400e;border-bottom-color:#fcd34d">
+            <i data-lucide="bell"></i> LƯU Ý
+          </div>
+          <ol style="margin:0;padding-left:18px;font-size:13px;color:#78350f;line-height:1.8">
+            <li>Tải lên đầy đủ hồ sơ tương ứng với nội dung thay đổi.</li>
+            <li>Các trường có dấu * là bắt buộc.</li>
+            <li>Kiểm tra đúng định dạng và dung lượng tệp trước khi tiếp tục.</li>
+            <li>Ở bước tiếp theo người dùng sẽ xác nhận và gửi khai báo.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======= STEP 3 ======= -->
+  <div id="form-step-3" style="display:none">
+    <div class="pub-form-layout">
+      <div class="pub-form-main">
+        <!-- Thông tin xác nhận -->
+        <div class="form-card">
+          <div class="form-card-title">
+            <i data-lucide="shield-check"></i> 1. THÔNG TIN XÁC NHẬN
+          </div>
+          <div class="notice notice-warning" style="margin-bottom:20px">
+            <i data-lucide="alert-triangle"></i>
+            <span>Vui lòng rà soát ký toàn bộ nội dung trước khi gửi khai báo. Sau khi gửi, hồ sơ sẽ được chuyển đến cơ quan Công an tiếp nhận xử lý.</span>
+          </div>
+          <div class="form-grid form-grid-2" style="margin-bottom:16px">
+            <div class="form-field">
+              <label>Người xác nhận <span class="req">*</span></label>
+              <input type="text" value="Nguyễn Văn A">
+            </div>
+            <div class="form-field">
+              <label>Chức vụ <span class="req">*</span></label>
+              <input type="text" value="Giám đốc">
+            </div>
+            <div class="form-field">
+              <label>Số điện thoại <span class="req">*</span></label>
+              <input type="tel" value="0912 345 678">
+            </div>
+            <div class="form-field">
+              <label>Email</label>
+              <input type="email" value="nguyenvana@gmail.com">
+            </div>
+            <div class="form-field">
+              <label>Hình thức xác nhận <span class="req">*</span></label>
+              <select><option>Xác nhận điện tử</option><option>Ký tay</option></select>
+            </div>
+            <div class="form-field">
+              <label>Ngày xác nhận <span class="req">*</span></label>
+              <input type="date" value="2025-05-24">
+            </div>
+            <div class="form-field full">
+              <label>Ghi chú bổ sung</label>
+              <textarea placeholder="Nhập ghi chú bổ sung (nếu có)..." rows="3"></textarea>
+              <div style="text-align:right;font-size:12px;color:#9ca3af;margin-top:2px">0/500</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tóm tắt nội dung thay đổi -->
+        <div class="form-card">
+          <div class="form-card-title">
+            <i data-lucide="list-checks"></i> 2. TÓM TẮT NỘI DUNG THAY ĐỔI
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 14px;background:#f9fafb;border-radius:8px;border:1px solid #e5e7eb">
+              <div style="width:34px;height:34px;background:#fff2f2;border-radius:8px;display:grid;place-items:center;flex-shrink:0">
+                <i data-lucide="store" style="width:16px;height:16px;color:#bd0000"></i>
+              </div>
+              <div style="flex:1">
+                <div style="font-weight:700;font-size:13.5px;margin-bottom:3px">Thông tin cơ sở</div>
+                <div style="font-size:12.5px;color:#6b7280">Cập nhật địa chỉ trụ sở chính, số điện thoại liên hệ</div>
+              </div>
+              <i data-lucide="check-circle" style="width:18px;height:18px;color:#16a34a;flex-shrink:0"></i>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 14px;background:#f9fafb;border-radius:8px;border:1px solid #e5e7eb">
+              <div style="width:34px;height:34px;background:#fff2f2;border-radius:8px;display:grid;place-items:center;flex-shrink:0">
+                <i data-lucide="briefcase" style="width:16px;height:16px;color:#bd0000"></i>
+              </div>
+              <div style="flex:1">
+                <div style="font-weight:700;font-size:13.5px;margin-bottom:3px">Ngành nghề kinh doanh</div>
+                <div style="font-size:12.5px;color:#6b7280">Bổ sung ngành nghề kinh doanh karaoke</div>
+              </div>
+              <i data-lucide="check-circle" style="width:18px;height:18px;color:#16a34a;flex-shrink:0"></i>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 14px;background:#f9fafb;border-radius:8px;border:1px solid #e5e7eb">
+              <div style="width:34px;height:34px;background:#fff2f2;border-radius:8px;display:grid;place-items:center;flex-shrink:0">
+                <i data-lucide="shield" style="width:16px;height:16px;color:#bd0000"></i>
+              </div>
+              <div style="flex:1">
+                <div style="font-weight:700;font-size:13.5px;margin-bottom:3px">PCCC & Cơ sở vật chất</div>
+                <div style="font-size:12.5px;color:#6b7280">Cập nhật thông tin hồ sơ PCCC và sơ đồ mặt bằng</div>
+              </div>
+              <i data-lucide="check-circle" style="width:18px;height:18px;color:#16a34a;flex-shrink:0"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hồ sơ đã đính kèm -->
+        <div class="form-card">
+          <div class="form-card-title">
+            <i data-lucide="paperclip"></i> 3. HỒ SƠ ĐÃ ĐÍNH KÈM
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;border:1px solid #e5e7eb;border-radius:7px;font-size:13px">
+              <i data-lucide="file-text" style="width:16px;height:16px;color:#bd0000;flex-shrink:0"></i>
+              <span style="flex:1">Văn bản đề nghị thay đổi thông tin.pdf</span>
+              <span class="badge-status badge-done" style="font-size:11px">Đã tải lên</span>
+              <i data-lucide="check-circle" style="width:16px;height:16px;color:#16a34a"></i>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;border:1px solid #e5e7eb;border-radius:7px;font-size:13px">
+              <i data-lucide="file-text" style="width:16px;height:16px;color:#bd0000;flex-shrink:0"></i>
+              <span style="flex:1">Giấy chứng nhận đủ điều kiện về ANTT.pdf</span>
+              <span class="badge-status badge-done" style="font-size:11px">Đã tải lên</span>
+              <i data-lucide="check-circle" style="width:16px;height:16px;color:#16a34a"></i>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;border:1px solid #e5e7eb;border-radius:7px;font-size:13px">
+              <i data-lucide="file-text" style="width:16px;height:16px;color:#bd0000;flex-shrink:0"></i>
+              <span style="flex:1">Giấy tờ chứng minh nội dung thay đổi.pdf</span>
+              <span class="badge-status badge-done" style="font-size:11px">Đã tải lên</span>
+              <i data-lucide="check-circle" style="width:16px;height:16px;color:#16a34a"></i>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;border:1px solid #e5e7eb;border-radius:7px;font-size:13px">
+              <i data-lucide="file-text" style="width:16px;height:16px;color:#bd0000;flex-shrink:0"></i>
+              <span style="flex:1">Tài liệu PCCC.pdf</span>
+              <span class="badge-status badge-done" style="font-size:11px">Đã tải lên</span>
+              <i data-lucide="check-circle" style="width:16px;height:16px;color:#16a34a"></i>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;border:1px solid #e5e7eb;border-radius:7px;font-size:13px">
+              <i data-lucide="file-text" style="width:16px;height:16px;color:#bd0000;flex-shrink:0"></i>
+              <span style="flex:1">Giấy phép chuyên ngành.pdf</span>
+              <span class="badge-status badge-done" style="font-size:11px">Đã tải lên</span>
+              <i data-lucide="check-circle" style="width:16px;height:16px;color:#16a34a"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cam kết -->
+        <div class="form-card">
+          <div class="form-card-title">
+            <i data-lucide="check-square"></i> 4. CAM KẾT
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <label style="display:flex;gap:10px;align-items:flex-start;font-size:13px;cursor:pointer;line-height:1.5">
+              <input type="checkbox" style="margin-top:2px;accent-color:#bd0000;flex-shrink:0">
+              <span>Tôi cam kết các thông tin kê khai là đúng sự thật và chịu trách nhiệm trước pháp luật. <span class="req">*</span></span>
+            </label>
+            <label style="display:flex;gap:10px;align-items:flex-start;font-size:13px;cursor:pointer;line-height:1.5">
+              <input type="checkbox" style="margin-top:2px;accent-color:#bd0000;flex-shrink:0">
+              <span>Tôi cam kết các tài liệu đính kèm là bản sao hợp lệ hoặc tài liệu điện tử hợp pháp. <span class="req">*</span></span>
+            </label>
+            <label style="display:flex;gap:10px;align-items:flex-start;font-size:13px;cursor:pointer;line-height:1.5">
+              <input type="checkbox" style="margin-top:2px;accent-color:#bd0000;flex-shrink:0">
+              <span>Tôi đồng ý để cơ quan Công an xác minh, đối chiếu các thông tin và tài liệu đã cung cấp. <span class="req">*</span></span>
+            </label>
+            <label style="display:flex;gap:10px;align-items:flex-start;font-size:13px;cursor:pointer;line-height:1.5">
+              <input type="checkbox" style="margin-top:2px;accent-color:#bd0000;flex-shrink:0">
+              <span>Tôi đã đọc và hiểu quy trình tiếp nhận, xử lý hồ sơ khai báo thay đổi thông tin. <span class="req">*</span></span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- SIDEBAR STEP 3 -->
+      <div class="pub-form-sidebar">
+        <div class="side-card">
+          <div class="side-card-title">
+            <i data-lucide="file-text"></i> THÔNG TIN TÓM TẮT HỒ SƠ
+          </div>
+          <div class="side-info-row"><span class="side-info-label">Mã hồ sơ:</span><span class="side-info-value red">HS25050001</span></div>
+          <div class="side-info-row"><span class="side-info-label">Loại khai báo:</span><span class="side-info-value">Khai báo thay đổi thông tin</span></div>
+          <div class="side-info-row"><span class="side-info-label">Ngày khai báo:</span><span class="side-info-value">24/05/2025 09:15</span></div>
+          <div class="side-info-row"><span class="side-info-label">Người khai báo:</span><span class="side-info-value">Nguyễn Văn A</span></div>
+          <div class="side-info-row"><span class="side-info-label">Số điện thoại:</span><span class="side-info-value">0912 345 678</span></div>
+          <div class="side-info-row"><span class="side-info-label">Email:</span><span class="side-info-value" style="word-break:break-all">nguyenvana@gmail.com</span></div>
+          <div class="side-info-row"><span class="side-info-label">Trạng thái:</span><span class="side-info-value" style="color:#d97706">Chờ gửi khai báo</span></div>
+        </div>
+
+        <!-- Tiến độ hoàn thành -->
+        <div class="side-card">
+          <div class="side-card-title">
+            <i data-lucide="flag"></i> TIẾN ĐỘ HOÀN THÀNH
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px">
+              <span style="display:flex;align-items:center;gap:6px"><i data-lucide="check-circle" style="width:14px;height:14px;color:#16a34a"></i> Thông tin cơ sở</span>
+              <span class="badge-status badge-done" style="font-size:11px">Hoàn thành</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px">
+              <span style="display:flex;align-items:center;gap:6px"><i data-lucide="check-circle" style="width:14px;height:14px;color:#16a34a"></i> Hồ sơ tài liệu</span>
+              <span class="badge-status badge-done" style="font-size:11px">Hoàn thành</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px">
+              <span style="display:flex;align-items:center;gap:6px"><i data-lucide="clock" style="width:14px;height:14px;color:#d97706"></i> Xác nhận khai báo</span>
+              <span class="badge-status badge-pending" style="font-size:11px">Chờ xác nhận</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="side-card" style="border-color:#fcd34d;background:#fefce8">
+          <div class="side-card-title" style="color:#92400e;border-bottom-color:#fcd34d">
+            <i data-lucide="bell"></i> LƯU Ý
+          </div>
+          <ol style="margin:0;padding-left:18px;font-size:13px;color:#78350f;line-height:1.8">
+            <li>Kiểm tra kỹ thông tin trước khi gửi.</li>
+            <li>Các trường đánh dấu * là bắt buộc.</li>
+            <li>Sau khi gửi, hồ sơ sẽ không thể chỉnh sửa trực tiếp.</li>
+            <li>Cơ quan tiếp nhận sẽ phản hồi qua email hoặc số điện thoại đã đăng ký.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER ACTIONS -->
+<div class="form-footer">
+  <div class="form-footer-left">
+    <button class="btn btn-outline" style="color:#991b1b;border-color:#991b1b" onclick="cancelForm()">
+      <i data-lucide="x"></i> Hủy khai báo
+    </button>
+    <button class="btn btn-ghost" onclick="saveDraft()">
+      <i data-lucide="save"></i> Lưu nháp
+    </button>
+  </div>
+  <div class="form-footer-right">
+    <button class="btn btn-ghost" id="btnPrev" onclick="prevStep()" style="display:none">
+      <i data-lucide="arrow-left"></i> Quay lại
+    </button>
+    <button class="btn btn-primary" id="btnNext" onclick="nextStep()">
+      Tiếp tục <i data-lucide="arrow-right"></i>
+    </button>
+    <button class="btn btn-primary" id="btnSubmit" onclick="submitForm()" style="display:none">
+      <i data-lucide="send"></i> Gửi khai báo
+    </button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="custom-footer-copyright">
+  © 2026 Công an tỉnh Ninh Bình. Tất cả quyền được bảo lưu.
+</footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // ── AUTHENTICATION & ACCESS CONTROL ────────────────────────
+    const session = typeof Auth !== 'undefined' ? Auth.getSession() : null;
+    const authArea = document.getElementById('headerAuthArea');
+    const authModal = document.getElementById('authGateModal');
+    const authCancel = document.getElementById('authGateCancel');
+
+    // 1. Cập nhật header widget
+    if (session && authArea) {
+      authArea.innerHTML = `
+        <div class="topbar-menu-wrap" style="position:relative; z-index:1000; font-family:'Roboto',sans-serif;">
+          <button id="publicUserMenuToggle" class="user-menu-btn" type="button" aria-label="Mở menu tài khoản" aria-expanded="false" style="display:flex; align-items:center; gap:12px; background:transparent; border:none; cursor:pointer; padding:4px 10px; border-radius:8px; transition:background 160ms ease; text-align:left; outline:none; height:46px;">
+            <div style="width:38px; height:38px; border-radius:50%; color:white; font-weight:900; font-size:14px; display:grid; place-items:center; background:${session.avatarColor || '#bd0000'}; flex-shrink:0;">
+              ${session.avatar}
+            </div>
+            <div class="hidden text-left sm:block" style="display:block;"><div style="font-size:15px; font-weight:600; color:#ffffff; line-height:1.2;">${session.name}</div><div style="font-size:12px; font-weight:500; color:rgba(255,255,255,0.85); margin-top:2px;">${session.unit}</div></div>
+            <i data-lucide="chevron-down" class="user-chevron" style="color:#ffffff; width:16px; height:16px; transition:transform 160ms ease;"></i>
+          </button>
+          <div id="publicUserMenu" class="topbar-dropdown user-dropdown" style="display:none; position:absolute; right:0; top:calc(100% + 12px); z-index:999; overflow:hidden; border:1px solid #e3e8f0; border-radius:12px; background:#fff; color:#1f2937; box-shadow:0 18px 42px rgba(15,23,42,0.18); width:260px;">
+            <!-- Arrow Caret -->
+            <div style="position:absolute; right:20px; top:-6px; width:12px; height:12px; border-left:1px solid #e3e8f0; border-top:1px solid #e3e8f0; background:#fff; transform:rotate(45deg); z-index:1;"></div>
+            <div class="user-card" style="display:flex; align-items:center; gap:12px; border-bottom:1px solid #edf1f6; padding:15px; position:relative; z-index:2; background:#fff;">
+              <div style="width:38px; height:38px; border-radius:50%; color:white; font-weight:900; font-size:14px; display:grid; place-items:center; background:${session.avatarColor || '#bd0000'}">
+                ${session.avatar}
+              </div>
+              <div>
+                <div class="user-name" style="color:#111827; font-size:14px; font-weight:700;">${session.name}</div>
+                <div class="user-role" style="margin-top:3px; color:#6b7280; font-size:11px; font-weight:600; line-height:1.35;">${session.unit}</div>
+              </div>
+            </div>
+            <!-- Actions -->
+            <div style="position:relative; z-index:2; background:#fff;">
+              ${session.role === 'admin' 
+                ? `<a class="dropdown-action" href="Dashboard.html" style="display:flex; width:100%; align-items:center; gap:10px; padding:12px 15px; color:#273140; font-size:13px; font-weight:600; text-decoration:none; box-sizing:border-box;"><i data-lucide="layout-dashboard" style="width:16px; height:16px;"></i>Trang quản trị (Admin)</a>`
+                : `<a class="dropdown-action" href="CongCSKD-HoSoCuaToi.html" style="display:flex; width:100%; align-items:center; gap:10px; padding:12px 15px; color:#273140; font-size:13px; font-weight:600; text-decoration:none; box-sizing:border-box;"><i data-lucide="store" style="width:16px; height:16px;"></i>Hồ sơ cơ sở của tôi</a>`
+              }
+              <a class="dropdown-action" href="HoSoCaNhan.html" style="display:flex; width:100%; align-items:center; gap:10px; padding:12px 15px; color:#273140; font-size:13px; font-weight:600; text-decoration:none; box-sizing:border-box;"><i data-lucide="id-card" style="width:16px; height:16px;"></i>Hồ sơ cá nhân</a>
+              <button class="dropdown-action danger" type="button" id="publicLogoutBtn">
+                <i data-lucide="log-out" style="width:16px; height:16px;"></i>Đăng xuất
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+      if (window.lucide) {
+        window.lucide.createIcons();
+      }
+      
+      const toggle = document.getElementById('publicUserMenuToggle');
+      const menu = document.getElementById('publicUserMenu');
+      
+      toggle?.addEventListener('click', (event) => {
+        event.stopPropagation();
+        const isOpen = toggle.classList.contains('is-open');
+        
+        if (isOpen) {
+          toggle.classList.remove('is-open');
+          toggle.setAttribute('aria-expanded', 'false');
+          if (menu) menu.style.display = 'none';
+        } else {
+          toggle.classList.add('is-open');
+          toggle.setAttribute('aria-expanded', 'true');
+          if (menu) menu.style.display = 'block';
+        }
+      });
+      
+      document.addEventListener('click', (event) => {
+        if (!event.target.closest('.topbar-menu-wrap')) {
+          toggle?.classList.remove('is-open');
+          toggle?.setAttribute('aria-expanded', 'false');
+          if (menu) menu.style.display = 'none';
+        }
+      });
+
+      document.getElementById('publicLogoutBtn')?.addEventListener('click', () => {
+        Auth.logout('DangNhap.html');
+      });
+    }
+
+    const protectedLinks = [
+      document.querySelector('.dropdown-feedback-link'),
+      document.querySelector('.sub-card-feedback')
+    ];
+
+    protectedLinks.forEach(link => {
+      if (!link) return;
+      
+      link.addEventListener('click', (e) => {
+        if (!session) {
+          e.preventDefault();
+          e.stopPropagation();
+          if (authModal) authModal.style.display = 'flex';
+        }
+      });
+    });
+
+    authCancel?.addEventListener('click', () => {
+      if (authModal) authModal.style.display = 'none';
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && authModal) {
+        authModal.style.display = 'none';
+      }
+    });
+
+    if (window.lucide) {
+      window.lucide.createIcons();
+    }
+  });
+
+  lucide.createIcons();
+
+  let currentStep = 1;
+  const totalSteps = 3;
+
+  const bizData = {
+    'ks_hg': { name:'Khách sạn Hoàng Gia', type:'Doanh nghiệp', addr:'số 88, đường Trần Hưng Đạo, P. Đông Thành, TP. Ninh Bình, Tỉnh Ninh Bình', phone:'0229 123 4567', gcn:'123/GCN-ANTT', gcnDate:'15/03/2024', gcnOrg:'Công an tỉnh Ninh Bình', gcnExpiry:'14/03/2027' },
+    'kk_hg': { name:'Karaoke Hoàng Gia', type:'Hộ kinh doanh', addr:'số 123, Trần Hưng Đạo, TP. Ninh Bình', phone:'0912 345 678', gcn:'124/GCN-ANTT', gcnDate:'20/04/2024', gcnOrg:'Công an tỉnh Ninh Bình', gcnExpiry:'19/04/2027' },
+    'nt_la': { name:'Nhà trọ Lan Anh', type:'Hộ kinh doanh', addr:'số 45, Lê Thái Tổ, TP. Ninh Bình', phone:'0985 678 901', gcn:'125/GCN-ANTT', gcnDate:'10/05/2024', gcnOrg:'Công an tỉnh Ninh Bình', gcnExpiry:'09/05/2027' }
+  };
+
+  function loadBusinessInfo(val) {
+    const block = document.getElementById('bizInfoBlock');
+    if (!val || !bizData[val]) { block.style.display = 'none'; return; }
+    const d = bizData[val];
+    document.getElementById('bizName').value = d.name;
+    document.getElementById('bizType').value = d.type;
+    document.getElementById('bizAddr').value = d.addr;
+    document.getElementById('bizPhone').value = d.phone;
+    document.getElementById('bizGcn').value = d.gcn;
+    document.getElementById('bizGcnDate').value = d.gcnDate;
+    document.getElementById('bizGcnOrg').value = d.gcnOrg;
+    document.getElementById('bizGcnExpiry').value = d.gcnExpiry;
+    block.style.display = '';
+  }
+
+  function toggleChange(el) {
+    el.classList.toggle('selected');
+    lucide.createIcons();
+  }
+
+  function updateStepUI() {
+    for (let i = 1; i <= totalSteps; i++) {
+      const stepEl = document.getElementById('form-step-' + i);
+      if (stepEl) stepEl.style.display = (i === currentStep) ? '' : 'none';
+      const itemEl = document.getElementById('step-item-' + i);
+      if (itemEl) {
+        itemEl.classList.remove('active', 'done');
+        if (i < currentStep) itemEl.classList.add('done');
+        else if (i === currentStep) itemEl.classList.add('active');
+      }
+    }
+    document.getElementById('btnPrev').style.display = currentStep > 1 ? '' : 'none';
+    document.getElementById('btnNext').style.display = currentStep < totalSteps ? '' : 'none';
+    document.getElementById('btnSubmit').style.display = currentStep === totalSteps ? '' : 'none';
+    lucide.createIcons();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function nextStep() { if (currentStep < totalSteps) { currentStep++; updateStepUI(); } }
+  function prevStep() { if (currentStep > 1) { currentStep--; updateStepUI(); } }
+  function cancelForm() { if (confirm('Hủy khai báo? Dữ liệu chưa lưu sẽ bị mất.')) window.location.href = '../index.html'; }
+  function saveDraft() { alert('Hồ sơ đã được lưu nháp thành công!'); }
+  function submitForm() {
+    alert('Khai báo thay đổi thông tin đã được gửi thành công!\nMã hồ sơ: HS25050001');
+    window.location.href = 'TheoDoiHoSo.html';
+  }
+</script>
+</body>
+</html>

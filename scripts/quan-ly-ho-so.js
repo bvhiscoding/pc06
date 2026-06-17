@@ -1,30 +1,12 @@
-const records = [
-  { id: 'HS-2026-00125', procedure: 'Cấp mới giấy chứng nhận đủ ĐK ANTT', business: 'Karaoke Hoa Sen', owner: 'Nguyễn Văn B', phone: '0912 345 125', area: 'P. Đông Thành, TP. Ninh Bình', submittedAt: '2026-05-20T09:15:00', deadline: '2026-06-04', status: 'Chờ tiếp nhận', officer: '-', unit: 'Đội QLHC số 1' },
-  { id: 'HS-2026-00124', procedure: 'Cấp giấy chứng nhận đủ ĐK ANTT', business: 'Nhà nghỉ Bình Minh', owner: 'Trần Thị C', phone: '0988 400 124', area: 'P. Nam Thành, TP. Ninh Bình', submittedAt: '2026-05-20T08:42:00', deadline: '2026-06-04', status: 'Đang xử lý', officer: 'Nguyễn Văn A', unit: 'Đội QLHC số 2' },
-  { id: 'HS-2026-00123', procedure: 'Cấp đổi giấy chứng nhận đủ ĐK ANTT', business: 'Khách sạn Tràng An', owner: 'Lê Văn D', phone: '0977 210 123', area: 'P. Đông Thành, TP. Ninh Bình', submittedAt: '2026-05-19T16:28:00', deadline: '2026-06-03', status: 'Cần bổ sung', officer: 'Phạm Thị H', unit: 'Đội QLHC số 1' },
-  { id: 'HS-2026-00122', procedure: 'Cấp lại giấy chứng nhận đủ ĐK ANTT', business: 'Bar New Life', owner: 'Hoàng Quốc E', phone: '0904 800 122', area: 'P. Nam Bình, TP. Ninh Bình', submittedAt: '2026-05-19T10:05:00', deadline: '2026-06-03', status: 'Đã tiếp nhận', officer: 'Trần Văn K', unit: 'Đội QLHC số 3' },
-  { id: 'HS-2026-00121', procedure: 'Khai báo thay đổi thông tin cơ sở', business: 'Nhà hàng Thắng Cố 36', owner: 'Phạm Văn F', phone: '0936 500 121', area: 'P. Phúc Thành, TP. Ninh Bình', submittedAt: '2026-05-18T14:30:00', deadline: '2026-06-01', status: 'Đang xử lý', officer: 'Nguyễn Văn A', unit: 'Đội QLHC số 2' },
-  { id: 'HS-2026-00120', procedure: 'Tạm dừng hoạt động', business: 'Karaoke Hải Đăng', owner: 'Vũ Thị G', phone: '0915 700 120', area: 'P. Đông Thành, TP. Ninh Bình', submittedAt: '2026-05-18T09:10:00', deadline: '2026-05-30', status: 'Đã hoàn thành', officer: 'Phạm Thị H', unit: 'Đội QLHC số 1' },
-  { id: 'HS-2026-00119', procedure: 'Cấp mới giấy chứng nhận đủ ĐK ANTT', business: 'Dịch vụ cầm đồ Phát Lộc', owner: 'Đinh Văn H', phone: '0968 119 119', area: 'P. Tân Thành, TP. Ninh Bình', submittedAt: '2026-05-17T11:22:00', deadline: '2026-05-31', status: 'Từ chối', officer: 'Trần Văn K', unit: 'Đội QLHC số 3' },
-  { id: 'HS-2026-00118', procedure: 'Ngừng hoạt động', business: 'Nhà nghỉ Hoàng Gia', owner: 'Bùi Thị I', phone: '0945 118 118', area: 'P. Nam Thành, TP. Ninh Bình', submittedAt: '2026-05-17T08:55:00', deadline: '2026-05-30', status: 'Quá hạn', officer: 'Nguyễn Văn A', unit: 'Đội QLHC số 2' },
-  { id: 'HS-2026-00117', procedure: 'Cấp mới giấy chứng nhận đủ ĐK ANTT', business: 'Massage An Nhiên', owner: 'Mai Thanh L', phone: '0913 117 777', area: 'P. Bích Đào, TP. Ninh Bình', submittedAt: '2026-05-16T15:40:00', deadline: '2026-05-31', status: 'Chờ tiếp nhận', officer: '-', unit: 'Đội QLHC số 1' },
-  { id: 'HS-2026-00116', procedure: 'Cấp đổi giấy chứng nhận đủ ĐK ANTT', business: 'Khách sạn Hoa Lư', owner: 'Đỗ Minh M', phone: '0888 116 116', area: 'P. Vân Giang, TP. Ninh Bình', submittedAt: '2026-05-16T10:18:00', deadline: '2026-05-30', status: 'Đã tiếp nhận', officer: 'Phạm Thị H', unit: 'Đội QLHC số 1' },
-  { id: 'HS-2026-00115', procedure: 'Kiểm tra điều kiện ANTT định kỳ', business: 'Karaoke Sao Mai', owner: 'Ngô Văn N', phone: '0972 115 115', area: 'P. Ninh Khánh, TP. Ninh Bình', submittedAt: '2026-05-15T13:20:00', deadline: '2026-05-29', status: 'Đang xử lý', officer: 'Trần Văn K', unit: 'Đội QLHC số 3' },
-  { id: 'HS-2026-00114', procedure: 'Khai báo thay đổi thông tin cơ sở', business: 'Nhà hàng Bến Đò', owner: 'Lương Thị O', phone: '0906 114 114', area: 'P. Thanh Bình, TP. Ninh Bình', submittedAt: '2026-05-15T09:08:00', deadline: '2026-05-28', status: 'Cần bổ sung', officer: 'Nguyễn Văn A', unit: 'Đội QLHC số 2' },
-  { id: 'HS-2026-00113', procedure: 'Cấp mới giấy chứng nhận đủ ĐK ANTT', business: 'Cầm đồ Minh Quân', owner: 'Tạ Quốc P', phone: '0932 113 113', area: 'P. Nam Bình, TP. Ninh Bình', submittedAt: '2026-05-14T16:05:00', deadline: '2026-05-29', status: 'Đã hoàn thành', officer: 'Trần Văn K', unit: 'Đội QLHC số 3' },
-  { id: 'HS-2026-00112', procedure: 'Cấp lại giấy chứng nhận đủ ĐK ANTT', business: 'Nhà nghỉ Sen Vàng', owner: 'Hà Thị Q', phone: '0917 112 112', area: 'P. Đông Thành, TP. Ninh Bình', submittedAt: '2026-05-14T07:52:00', deadline: '2026-05-28', status: 'Quá hạn', officer: 'Phạm Thị H', unit: 'Đội QLHC số 1' },
-  { id: 'HS-2026-00111', procedure: 'Tạm dừng hoạt động', business: 'Bar Riverside', owner: 'Cao Văn R', phone: '0966 111 111', area: 'P. Nam Thành, TP. Ninh Bình', submittedAt: '2026-05-13T14:48:00', deadline: '2026-05-27', status: 'Từ chối', officer: 'Nguyễn Văn A', unit: 'Đội QLHC số 2' },
-  { id: 'HS-2026-00110', procedure: 'Cấp giấy chứng nhận đủ ĐK ANTT', business: 'Khách sạn Cố Đô', owner: 'Tô Thị S', phone: '0909 110 110', area: 'P. Phúc Thành, TP. Ninh Bình', submittedAt: '2026-05-13T08:30:00', deadline: '2026-05-27', status: 'Đang xử lý', officer: 'Trần Văn K', unit: 'Đội QLHC số 3' },
-  { id: 'HS-2026-00109', procedure: 'Ngừng hoạt động', business: 'Karaoke Ruby', owner: 'Võ Văn T', phone: '0981 109 109', area: 'P. Tân Thành, TP. Ninh Bình', submittedAt: '2026-05-12T15:22:00', deadline: '2026-05-26', status: 'Đã hoàn thành', officer: 'Phạm Thị H', unit: 'Đội QLHC số 1' },
-  { id: 'HS-2026-00108', procedure: 'Cấp mới giấy chứng nhận đủ ĐK ANTT', business: 'Massage Hương Sen', owner: 'Lý Thị U', phone: '0911 108 108', area: 'P. Bích Đào, TP. Ninh Bình', submittedAt: '2026-05-12T09:45:00', deadline: '2026-05-26', status: 'Chờ tiếp nhận', officer: '-', unit: 'Đội QLHC số 2' },
-  { id: 'HS-2026-00107', procedure: 'Cấp đổi giấy chứng nhận đủ ĐK ANTT', business: 'Nhà nghỉ Đại Nam', owner: 'Phan Văn V', phone: '0974 107 107', area: 'P. Vân Giang, TP. Ninh Bình', submittedAt: '2026-05-11T11:35:00', deadline: '2026-05-25', status: 'Đã tiếp nhận', officer: 'Nguyễn Văn A', unit: 'Đội QLHC số 1' },
-  { id: 'HS-2026-00106', procedure: 'Kiểm tra điều kiện ANTT định kỳ', business: 'Cầm đồ Tín Phát', owner: 'Dương Văn X', phone: '0939 106 106', area: 'P. Ninh Khánh, TP. Ninh Bình', submittedAt: '2026-05-11T08:15:00', deadline: '2026-05-25', status: 'Cần bổ sung', officer: 'Trần Văn K', unit: 'Đội QLHC số 3' },
-  { id: 'HS-2026-00105', procedure: 'Khai báo thay đổi thông tin cơ sở', business: 'Nhà hàng Lam Sơn', owner: 'Trịnh Thị Y', phone: '0948 105 105', area: 'P. Thanh Bình, TP. Ninh Bình', submittedAt: '2026-05-10T16:42:00', deadline: '2026-05-24', status: 'Quá hạn', officer: 'Phạm Thị H', unit: 'Đội QLHC số 1' },
-  { id: 'HS-2026-00104', procedure: 'Cấp mới giấy chứng nhận đủ ĐK ANTT', business: 'Karaoke Thiên Thanh', owner: 'Nguyễn Hoàng Z', phone: '0963 104 104', area: 'P. Đông Thành, TP. Ninh Bình', submittedAt: '2026-05-10T10:12:00', deadline: '2026-05-24', status: 'Đang xử lý', officer: 'Nguyễn Văn A', unit: 'Đội QLHC số 2' },
-  { id: 'HS-2026-00103', procedure: 'Cấp lại giấy chứng nhận đủ ĐK ANTT', business: 'Khách sạn Bình An', owner: 'Trần Văn AA', phone: '0902 103 103', area: 'P. Nam Thành, TP. Ninh Bình', submittedAt: '2026-05-09T14:25:00', deadline: '2026-05-23', status: 'Đã hoàn thành', officer: 'Trần Văn K', unit: 'Đội QLHC số 3' },
-  { id: 'HS-2026-00102', procedure: 'Tạm dừng hoạt động', business: 'Bar Galaxy', owner: 'Phạm Thị BB', phone: '0987 102 102', area: 'P. Nam Bình, TP. Ninh Bình', submittedAt: '2026-05-09T09:18:00', deadline: '2026-05-23', status: 'Từ chối', officer: 'Phạm Thị H', unit: 'Đội QLHC số 1' },
-  { id: 'HS-2026-00101', procedure: 'Cấp giấy chứng nhận đủ ĐK ANTT', business: 'Nhà nghỉ Trúc Xanh', owner: 'Vũ Văn CC', phone: '0919 101 101', area: 'P. Phúc Thành, TP. Ninh Bình', submittedAt: '2026-05-08T15:05:00', deadline: '2026-05-22', status: 'Chờ tiếp nhận', officer: '-', unit: 'Đội QLHC số 2' }
-];
+/**
+ * quan-ly-ho-so.js — Quản lý hồ sơ CSKD
+ * Dữ liệu được lấy từ AppData (app-data.js) và phân quyền theo session.
+ * Phụ thuộc: auth.js, app-data.js
+ */
+
+// Lấy danh sách hồ sơ đã được phân quyền theo session
+const records = window.AppData ? window.AppData.getHoSo() : [];
+
 
 const notifications = [
   { title: 'Hồ sơ mới chờ tiếp nhận', text: 'HS-2026-00125 - Karaoke Hoa Sen vừa được nộp.', time: '5 phút trước', icon: 'file-plus-2' },
@@ -159,12 +141,13 @@ function renderRows(filtered) {
   const rows = filtered.slice(startIndex, startIndex + state.pageSize);
 
   if (!rows.length) {
-    els.body.innerHTML = '<tr><td class="empty-state" colspan="11">Không tìm thấy hồ sơ phù hợp với điều kiện lọc.</td></tr>';
+    els.body.innerHTML = '<tr><td class="empty-state" colspan="12">Không tìm thấy hồ sơ phù hợp với điều kiện lọc.</td></tr>';
     return;
   }
 
   els.body.innerHTML = rows.map((record, index) => `
         <tr>
+          <td class="text-center"><input type="checkbox" aria-label="Chọn dòng ${startIndex + index + 1}" /></td>
           <td class="text-center">${startIndex + index + 1}</td>
           <td class="text-center font-semibold text-[#ff0000]">${escapeHTML(record.id)}</td>
           <td>${escapeHTML(record.procedure)}</td>

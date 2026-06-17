@@ -1,0 +1,1188 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thêm thủ tục mới - CSKD-ANTT Ninh Bình</title>
+  <meta name="description" content="Thêm mới thủ tục hành chính vào hệ thống quản lý cơ sở kinh doanh có điều kiện về ANTT." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/quan-ly-ho-so.css">
+  <link rel="stylesheet" href="../styles/admin-danh-sach.css">
+  <style>
+    /* Fix layout overlap with sidebar */
+    .content {
+      margin-left: 292px !important;
+      transition: margin-left 220ms ease !important;
+    }
+    .desktop-shell.is-collapsed .content {
+      margin-left: 88px !important;
+    }
+
+    /* ── Thêm mới thủ tục ── */
+    .form-page {
+      color: #111827;
+    }
+
+    .form-card {
+      border: 1px solid #edf1f6;
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 3px 12px rgba(15,23,42,0.045);
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+
+    .form-card-head {
+      padding: 16px 22px 14px;
+      border-bottom: 1px solid #edf1f6;
+      background: #fff;
+    }
+
+    .form-card-title {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 15px;
+      font-weight: 900;
+      color: #111827;
+    }
+
+    .form-card-title svg {
+      width: 17px;
+      height: 17px;
+      color: #c50000;
+      flex-shrink: 0;
+    }
+
+    .form-card-body {
+      padding: 22px;
+    }
+
+    /* Form grid */
+    .fields-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px 24px;
+    }
+
+    .fields-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px 24px;
+    }
+
+    @media (max-width: 1024px) {
+      .fields-grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 640px) {
+      .fields-grid-3,
+      .fields-grid-2 { grid-template-columns: 1fr; }
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .field-group.span-full {
+      grid-column: 1 / -1;
+    }
+
+    .field-group.span-2 {
+      grid-column: span 2;
+    }
+
+    .field-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 800;
+      color: #344054;
+    }
+
+    .field-label b {
+      color: #c50000;
+      font-weight: 900;
+    }
+
+    .field-helper {
+      font-size: 12px;
+      font-weight: 600;
+      color: #9098a5;
+      margin-top: 4px;
+    }
+
+    .form-input,
+    .form-select,
+    .form-textarea {
+      height: 42px;
+      width: 100%;
+      border: 1px solid #d8dee8;
+      border-radius: 7px;
+      background: #fff;
+      padding: 0 14px;
+      color: #1f2937;
+      font-size: 14px;
+      font-family: 'Roboto', Arial, sans-serif;
+      outline: none;
+      box-shadow: inset 0 1px 0 rgba(15,23,42,0.02);
+      transition: border-color 150ms ease, box-shadow 150ms ease;
+    }
+
+    .form-input:focus,
+    .form-select:focus,
+    .form-textarea:focus {
+      border-color: #c50000;
+      box-shadow: 0 0 0 3px rgba(197,0,0,0.08);
+    }
+
+    .form-input::placeholder,
+    .form-textarea::placeholder {
+      color: #9098a5;
+    }
+
+    .form-select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23374151' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 38px;
+    }
+
+    .form-textarea {
+      height: auto;
+      min-height: 108px;
+      padding: 12px 14px;
+      resize: vertical;
+      line-height: 1.55;
+    }
+
+    .char-count {
+      text-align: right;
+      font-size: 11px;
+      font-weight: 700;
+      color: #9098a5;
+      margin-top: 4px;
+    }
+
+    /* File upload zone */
+    .upload-zone {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 2px dashed #d8dee8;
+      border-radius: 8px;
+      background: #fafcff;
+      padding: 32px 20px;
+      text-align: center;
+      transition: border-color 160ms ease, background 160ms ease;
+      cursor: pointer;
+      width: 100%;
+      min-height: 160px;
+    }
+
+    .upload-zone:hover {
+      border-color: #c50000;
+      background: #fff8f8;
+    }
+
+    .upload-icon {
+      width: 44px;
+      height: 44px;
+      margin: 0 auto 12px;
+      color: #6b7280;
+    }
+
+    .upload-text {
+      font-size: 14px;
+      font-weight: 700;
+      color: #374151;
+      margin-bottom: 10px;
+    }
+
+    .upload-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      height: 36px;
+      padding: 0 18px;
+      border: 1px solid #d8dee8;
+      border-radius: 6px;
+      background: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      color: #374151;
+      cursor: pointer;
+      transition: all 150ms ease;
+    }
+
+    .upload-zone:hover .upload-btn {
+      border-color: #c50000;
+      color: #c50000;
+      background: #fff8f8;
+    }
+
+    .upload-hint {
+      margin-top: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #9098a5;
+    }
+
+    .uploaded-file-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      background: #fafcff;
+      border: 1px solid #d8dee8;
+      border-radius: 8px;
+      margin-top: 8px;
+    }
+
+    /* Status radio group */
+    .status-radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .status-radio-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 11px;
+      cursor: pointer;
+    }
+
+    .status-radio-item input[type="radio"] {
+      width: 18px;
+      height: 18px;
+      margin-top: 1px;
+      accent-color: #178942;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    .status-radio-item input[type="radio"]:nth-of-type(1):checked {
+      accent-color: #178942;
+    }
+
+    .status-radio-content {
+      flex: 1;
+    }
+
+    .status-radio-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 800;
+      color: #111827;
+      line-height: 1.3;
+    }
+
+    .status-radio-desc {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: #6b7280;
+      margin-top: 3px;
+      line-height: 1.4;
+    }
+
+    /* Attachment + Status two-col */
+    .attach-status-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.54fr) minmax(0, 0.46fr);
+      gap: 40px;
+    }
+
+    @media (max-width: 900px) {
+      .attach-status-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Footer action bar */
+    .form-footer {
+      position: sticky;
+      bottom: 0;
+      z-index: 20;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 28px;
+      background: rgba(255,255,255,0.97);
+      border-top: 1px solid #edf1f6;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 -4px 14px rgba(15,23,42,0.06);
+      margin-left: -24px;
+      margin-right: -24px;
+      margin-bottom: -8px;
+      margin-top: 24px;
+    }
+    @media (min-width: 1024px) {
+      .form-footer {
+        margin-left: -28px;
+        margin-right: -28px;
+      }
+    }
+
+    .btn-cancel {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      height: 42px;
+      padding: 0 20px;
+      border: 1px solid #d8dee8;
+      border-radius: 7px;
+      background: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      color: #374151;
+      cursor: pointer;
+      transition: border-color 150ms ease, color 150ms ease;
+    }
+
+    .btn-cancel:hover {
+      border-color: #c50000;
+      color: #c50000;
+    }
+
+    .btn-save-draft {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      height: 42px;
+      padding: 0 20px;
+      border: 1px solid #d8dee8;
+      border-radius: 7px;
+      background: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      color: #374151;
+      cursor: pointer;
+      transition: border-color 150ms ease, color 150ms ease, background 150ms ease;
+    }
+
+    .btn-save-draft:hover {
+      border-color: #374151;
+      background: #f9fafb;
+    }
+
+    .btn-save-done {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      height: 42px;
+      padding: 0 24px;
+      border-radius: 7px;
+      background: linear-gradient(180deg, #d90000 0%, #b80000 100%);
+      font-size: 14px;
+      font-weight: 800;
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 6px 14px rgba(197,0,0,0.24);
+      transition: filter 150ms ease, transform 150ms ease;
+    }
+
+    .btn-save-done:hover {
+      filter: brightness(1.08);
+    }
+
+    .btn-save-done:active {
+      transform: scale(0.98);
+    }
+
+    /* Module action button */
+    .module-action-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      height: 40px;
+      padding: 0 16px;
+      border: 1px solid #d8dee8;
+      border-radius: 7px;
+      background: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      color: #273140;
+      transition: border-color 150ms ease, color 150ms ease, background 150ms ease;
+    }
+
+    .module-action-secondary:hover {
+      border-color: #c50000;
+      color: #c50000;
+      background: #fffafa;
+    }
+
+    .module-action-secondary svg {
+      width: 15px;
+      height: 15px;
+    }
+
+    /* ── Quy trình thực hiện ── */
+    .process-input-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+    }
+
+    .process-input-table thead th {
+      background: #fff2f2;
+      color: #273140;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 11px 14px;
+      border-bottom: 1px solid #e8edf3;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    .process-input-table thead th.center { text-align: center; }
+
+    .process-input-table tbody td {
+      padding: 10px 10px;
+      vertical-align: top;
+      border-bottom: 1px solid #f0f3f8;
+    }
+
+    .process-input-table tbody tr:last-child td { border-bottom: 0; }
+    .process-input-table tbody tr:hover td { background: #fffafa; }
+
+    .step-num {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #e00000 0%, #a80000 100%);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 900;
+      margin: 6px auto 0;
+      flex-shrink: 0;
+    }
+
+    .process-input-table .form-input,
+    .process-input-table .form-textarea {
+      font-size: 13px;
+    }
+
+    .process-input-table .form-textarea {
+      min-height: 64px;
+      padding: 8px 12px;
+    }
+
+    .step-time-input {
+      width: 100%;
+      height: 42px;
+      border: 1px solid #d8dee8;
+      border-radius: 7px;
+      background: #fff;
+      padding: 0 12px;
+      color: #1f2937;
+      font-size: 13px;
+      font-family: 'Roboto', Arial, sans-serif;
+      outline: none;
+      text-align: center;
+      transition: border-color 150ms ease, box-shadow 150ms ease;
+    }
+
+    .step-time-input:focus {
+      border-color: #c50000;
+      box-shadow: 0 0 0 3px rgba(197,0,0,0.08);
+    }
+
+    .delete-step-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border: 1px solid #f0d0d0;
+      border-radius: 6px;
+      background: #fff8f8;
+      color: #c50000;
+      cursor: pointer;
+      margin: 4px auto 0;
+      transition: background 140ms ease, border-color 140ms ease;
+    }
+
+    .delete-step-btn:hover {
+      background: #ffe4e4;
+      border-color: #c50000;
+    }
+
+    .delete-step-btn svg { width: 15px; height: 15px; }
+
+    .add-step-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      height: 38px;
+      padding: 0 18px;
+      border: 1.5px dashed #c50000;
+      border-radius: 7px;
+      background: #fff8f8;
+      color: #c50000;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 140ms ease;
+    }
+
+    .add-step-btn:hover { background: #ffe4e4; }
+    .add-step-btn svg { width: 15px; height: 15px; }
+
+    .total-time-bar {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 12px;
+      padding: 12px 14px;
+      background: #fffafa;
+      border-top: 2px solid #f3c6c6;
+      font-size: 13px;
+      font-weight: 900;
+      color: #c50000;
+      border-radius: 0 0 8px 8px;
+    }
+
+    .total-time-bar span { color: #374151; font-weight: 700; }
+    .total-time-display { color: #c50000; min-width: 120px; text-align: right; }
+  </style>
+</head>
+
+<body class="font-sans antialiased">
+  <div class="desktop-shell min-h-screen">
+    <header class="app-header fixed left-0 right-0 top-0 z-30 flex h-[80px] items-center justify-between px-6 text-white"></header>
+    <aside class="sidebar fixed bottom-0 left-0 top-[80px] z-20 px-2 text-white"></aside>
+
+    <main class="content min-h-screen pt-[80px]">
+      <div class="form-page px-6 pb-2 pt-6 lg:px-7">
+
+        <!-- Breadcrumbs & Header Actions -->
+        <section class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-5">
+          <div class="flex items-center gap-2 text-[13px] font-medium text-[#6b7280]">
+            <i data-lucide="house" class="h-4 w-4 text-[#9098a5]"></i>
+            <a href="../index.html" class="hover:text-red-600 transition-colors">Trang chủ</a>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
+            <a href="ThuTuc-QuanTri.html" class="hover:text-red-600 transition-colors">Danh mục</a>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
+            <a href="ThuTuc-QuanTri.html" class="hover:text-red-600 transition-colors">Quản lý thủ tục</a>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
+            <span id="breadcrumbTitle" class="text-gray-900 font-semibold">Thêm thủ tục mới</span>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <a class="module-action-secondary" href="ThuTuc-QuanTri.html">
+              <i data-lucide="arrow-left"></i>Quay lại danh sách
+            </a>
+          </div>
+        </section>
+
+        <!-- Page Title -->
+
+        <form id="addProcedureForm" novalidate>
+
+          <!-- 1. Thông tin thủ tục -->
+          <div class="form-card">
+            <div class="form-card-head">
+              <div class="form-card-title">
+                <i data-lucide="clipboard-list"></i>
+                Thông tin thủ tục
+              </div>
+            </div>
+            <div class="form-card-body">
+              <div class="fields-grid-3">
+                <!-- Mã thủ tục -->
+                <div class="field-group">
+                  <label class="field-label" for="maThutuc">Mã thủ tục <b>*</b></label>
+                  <input class="form-input" id="maThutuc" name="maThutuc" type="text" placeholder="Nhập mã thủ tục" />
+                  <span class="field-helper">Mã tự động nếu để trống</span>
+                </div>
+                <!-- Tên thủ tục -->
+                <div class="field-group">
+                  <label class="field-label" for="tenThutuc">Tên thủ tục <b>*</b></label>
+                  <input class="form-input" id="tenThutuc" name="tenThutuc" type="text" placeholder="Nhập tên thủ tục" required />
+                </div>
+                <!-- Nhóm thủ tục -->
+                <div class="field-group">
+                  <label class="field-label" for="nhomThutuc">Nhóm thủ tục <b>*</b></label>
+                  <select class="form-select" id="nhomThutuc" name="nhomThutuc" required>
+                    <option value="" disabled selected>Chọn nhóm thủ tục</option>
+                    <option>Đăng ký kinh doanh</option>
+                    <option>Quản lý ANTT</option>
+                    <option>Phòng cháy chữa cháy</option>
+                    <option>Thuế và tài chính</option>
+                    <option>Lao động và xã hội</option>
+                  </select>
+                </div>
+                <!-- Cơ quan thực hiện -->
+                <div class="field-group">
+                  <label class="field-label" for="coQuanThucHien">Cơ quan thực hiện <b>*</b></label>
+                  <select class="form-select" id="coQuanThucHien" name="coQuanThucHien" required>
+                    <option value="" disabled selected>Chọn cơ quan thực hiện</option>
+                    <option>Phòng CS QLHC về TTXH</option>
+                    <option>Công an phường/xã</option>
+                    <option>UBND cấp huyện</option>
+                    <option>Sở Kế hoạch và Đầu tư</option>
+                  </select>
+                </div>
+                <!-- Thời hạn giải quyết -->
+                <div class="field-group">
+                  <label class="field-label" for="thoiHanGiaiQuyet">Thời hạn giải quyết <b>*</b></label>
+                  <select class="form-select" id="thoiHanGiaiQuyet" name="thoiHanGiaiQuyet" required>
+                    <option value="" disabled selected>Chọn thời hạn</option>
+                    <option>01 ngày làm việc</option>
+                    <option>02 ngày làm việc</option>
+                    <option>03 ngày làm việc</option>
+                    <option>05 ngày làm việc</option>
+                    <option>07 ngày làm việc</option>
+                    <option>10 ngày làm việc</option>
+                    <option>15 ngày làm việc</option>
+                    <option>20 ngày làm việc</option>
+                    <option>30 ngày làm việc</option>
+                  </select>
+                </div>
+                <!-- Mô tả thủ tục (full width) -->
+                <div class="field-group span-full">
+                  <label class="field-label" for="moTaThutuc">Mô tả thủ tục</label>
+                  <textarea class="form-textarea" id="moTaThutuc" name="moTaThutuc" placeholder="Nhập mô tả chi tiết về thủ tục (nếu có)" maxlength="500" oninput="document.getElementById('charCount').textContent = this.value.length + '/500'"></textarea>
+                  <div class="char-count" id="charCount">0/500</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. Tệp đính kèm & Trạng thái -->
+          <div class="form-card">
+            <div class="form-card-head">
+              <div class="form-card-title">
+                <i data-lucide="paperclip"></i>
+                Tệp đính kèm &amp; Trạng thái
+              </div>
+            </div>
+            <div class="form-card-body">
+              <div class="attach-status-grid">
+                <!-- Tệp đính kèm -->
+                <div>
+                  <p class="field-label mb-3">Tệp đính kèm</p>
+                  <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileUploadInput').click()">
+                    <input type="file" id="fileUploadInput" class="sr-only" multiple accept=".doc,.docx,.pdf" />
+                    <div class="upload-icon">
+                      <i data-lucide="cloud-upload" class="w-full h-full"></i>
+                    </div>
+                    <div class="upload-text">Kéo thả file vào đây hoặc</div>
+                    <div class="upload-btn">
+                      <i data-lucide="folder-open" class="h-4 w-4"></i>
+                      Chọn file
+                    </div>
+                    <div class="upload-hint">Định dạng cho phép: .doc, .docx, .pdf<br>Dung lượng tối đa: 10MB/file</div>
+                  </div>
+                  <div id="fileListContainer" class="mt-3 flex flex-col gap-2"></div>
+                </div>
+
+                <!-- Trạng thái -->
+                <div>
+                  <p class="field-label mb-3">Trạng thái <b style="color:#c50000">*</b></p>
+                  <div class="status-radio-group">
+                    <label class="status-radio-item">
+                      <input type="radio" name="trangThai" value="dang-hieu-luc" checked />
+                      <div class="status-radio-content">
+                        <span class="status-radio-label">Đang hiệu lực</span>
+                        <span class="status-radio-desc">Thủ tục đang được áp dụng và tiếp nhận hồ sơ</span>
+                      </div>
+                    </label>
+                    <label class="status-radio-item">
+                      <input type="radio" name="trangThai" value="tam-dung" />
+                      <div class="status-radio-content">
+                        <span class="status-radio-label">Tạm dừng</span>
+                        <span class="status-radio-desc">Thủ tục tạm thời không tiếp nhận hồ sơ</span>
+                      </div>
+                    </label>
+                    <label class="status-radio-item">
+                      <input type="radio" name="trangThai" value="het-hieu-luc" />
+                      <div class="status-radio-content">
+                        <span class="status-radio-label">Hết hiệu lực</span>
+                        <span class="status-radio-desc">Thủ tục không còn hiệu lực áp dụng</span>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Quy trình thực hiện -->
+          <div class="form-card" style="margin-bottom:16px">
+            <div class="form-card-head">
+              <div class="form-card-title">
+                <i data-lucide="list-ordered"></i>
+                Quy trình thực hiện
+              </div>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="process-input-table" id="processStepsTable">
+                <thead>
+                  <tr>
+                    <th class="w-[56px] center">Bước</th>
+                    <th class="w-[220px]">Tên bước <b style="color:#c50000">*</b></th>
+                    <th>Nội dung thực hiện</th>
+                    <th class="w-[160px]">Thời hạn (ngày LV) <b style="color:#c50000">*</b></th>
+                    <th class="w-[54px] center">Xóa</th>
+                  </tr>
+                </thead>
+                <tbody id="processStepsList">
+                  <!-- Rows injected by JS -->
+                </tbody>
+              </table>
+            </div>
+            <div class="total-time-bar">
+              <span>Tổng thời hạn giải quyết:</span>
+              <span class="total-time-display" id="totalTimeDisplay">— ngày làm việc</span>
+            </div>
+            <div class="form-card-body" style="padding-top:14px;padding-bottom:14px;border-top:1px solid #edf1f6">
+              <button type="button" class="add-step-btn" id="addStepBtn">
+                <i data-lucide="plus"></i>Thêm bước
+              </button>
+              <span class="field-helper" style="margin-left:12px">Bấm “Thêm bước” để bổ sung bước vào quy trình</span>
+            </div>
+          </div>
+
+        </form>
+
+        <!-- Footer action bar -->
+        <div class="form-footer">
+          <button class="btn-cancel" type="button" onclick="history.back()">
+            <i data-lucide="x" class="h-4 w-4"></i>
+            Hủy bỏ
+          </button>
+          <button class="btn-save-draft" type="button" id="saveDraftBtn">
+            <i data-lucide="file-pen" class="h-4 w-4"></i>
+            Lưu nháp
+          </button>
+          <button class="btn-save-done" type="submit" form="addProcedureForm" id="saveDoneBtn">
+            <i data-lucide="check" class="h-4 w-4"></i>
+            Lưu và hoàn tất
+          </button>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Toast notification -->
+  <div id="toast" class="toast"></div>
+
+  <!-- Success modal -->
+  <div id="successModal" class="modal-overlay" hidden>
+    <section class="case-modal max-w-sm text-center p-7 bg-white rounded-xl shadow-xl border border-gray-100" role="dialog" aria-modal="true" aria-labelledby="successModalTitle">
+      <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-inner" style="background:#e8f8ec;color:#178942">
+        <i data-lucide="check-check" class="h-8 w-8"></i>
+      </div>
+      <h2 id="successModalTitle" class="text-lg font-bold text-gray-900 mb-2">Thêm thủ tục thành công</h2>
+      <p class="text-xs text-gray-500 mb-6 leading-relaxed">Thông tin thủ tục đã được lưu và sẵn sàng áp dụng.</p>
+      <a href="ThuTuc-QuanTri.html" class="block w-full py-2.5 rounded-lg font-bold text-sm text-white transition shadow" style="background:#178942">Quay lại danh sách</a>
+    </section>
+  </div>
+
+  <style>
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(15,23,42,0.54);
+    }
+    .modal-overlay[hidden] { display: none !important; }
+  </style>
+
+  <script src="../scripts/auth.js"></script>
+  <script src="../scripts/layout-sync.js"></script>
+  <script>
+    lucide.createIcons();
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      if (!t) return;
+      t.textContent = msg;
+      t.classList.add('is-visible');
+      setTimeout(() => t.classList.remove('is-visible'), 2200);
+    }
+
+    // ── Quy trình thực hiện ──
+    const stepsList = document.getElementById('processStepsList');
+    const addStepBtn = document.getElementById('addStepBtn');
+    const totalTimeDisplay = document.getElementById('totalTimeDisplay');
+    let stepCount = 0;
+
+    function stepRowHTML(index) {
+      const n = index + 1;
+      return `
+        <tr data-step="${n}">
+          <td class="text-center"><div class="step-num">${n}</div></td>
+          <td>
+            <input class="form-input step-name" type="text"
+              name="step_name_${n}" placeholder="VD: Tiếp nhận hồ sơ"
+              required />
+          </td>
+          <td>
+            <textarea class="form-textarea step-content"
+              name="step_content_${n}"
+              placeholder="Mô tả nội dung thực hiện bước này..." rows="2"></textarea>
+          </td>
+          <td>
+            <input class="step-time-input step-time" type="number"
+              name="step_time_${n}" min="0.5" max="90" step="0.5"
+              placeholder="0.5" oninput="updateTotalTime()" />
+          </td>
+          <td class="text-center">
+            <button type="button" class="delete-step-btn" title="Xóa bước" onclick="removeStep(this)">
+              <i data-lucide="trash-2"></i>
+            </button>
+          </td>
+        </tr>`;
+    }
+
+    function addStep() {
+      const row = document.createElement('tbody');
+      row.innerHTML = stepRowHTML(stepCount);
+      const tr = row.firstElementChild;
+      stepsList.appendChild(tr);
+      stepCount++;
+      renumberSteps();
+      lucide.createIcons();
+      // Focus the name input of the new row
+      tr.querySelector('.step-name')?.focus();
+    }
+
+    function removeStep(btn) {
+      const tr = btn.closest('tr');
+      if (stepsList.children.length <= 1) {
+        showToast('Ít nhất phải có 1 bước trong quy trình.');
+        return;
+      }
+      tr.remove();
+      renumberSteps();
+      updateTotalTime();
+    }
+
+    function renumberSteps() {
+      [...stepsList.querySelectorAll('tr')].forEach((tr, i) => {
+        const numEl = tr.querySelector('.step-num');
+        if (numEl) numEl.textContent = i + 1;
+      });
+    }
+
+    function updateTotalTime() {
+      const inputs = stepsList.querySelectorAll('.step-time');
+      let total = 0;
+      inputs.forEach(inp => {
+        const val = parseFloat(inp.value);
+        if (!isNaN(val) && val > 0) total += val;
+      });
+      totalTimeDisplay.textContent = total > 0
+        ? total + ' ngày làm việc'
+        : '— ngày làm việc';
+    }
+
+    function addStepWithData(name, content, time) {
+      const row = document.createElement('tbody');
+      row.innerHTML = stepRowHTML(stepCount);
+      const tr = row.firstElementChild;
+      tr.querySelector('.step-name').value = name;
+      tr.querySelector('.step-content').value = content;
+      tr.querySelector('.step-time').value = time;
+      stepsList.appendChild(tr);
+      stepCount++;
+      renumberSteps();
+      updateTotalTime();
+    }
+
+    addStepBtn.addEventListener('click', addStep);
+
+    // Procedures database
+    const proceduresData = {
+      'TTHC-0001': {
+        code: 'TTHC-0001',
+        name: 'Cấp mới Giấy chứng nhận đăng ký kinh doanh',
+        group: 'Đăng ký kinh doanh',
+        agency: 'Phòng CS QLHC về TTXH',
+        limit: '03 ngày làm việc',
+        file: 'Mẫu đơn đề nghị cấp Giấy chứng nhận đăng ký kinh doanh.docx',
+        fileSize: '120 KB',
+        status: 'dang-hieu-luc',
+        desc: 'Thủ tục cấp mới Giấy chứng nhận đăng ký kinh doanh cho doanh nghiệp theo quy định hiện hành.',
+        steps: [
+          { name: 'Tiếp nhận hồ sơ', content: 'Tiếp nhận và kiểm tra tính đầy đủ, hợp lệ của hồ sơ.', time: 0.5 },
+          { name: 'Thẩm định hồ sơ', content: 'Thẩm định nội dung hồ sơ theo quy định.', time: 1.0 },
+          { name: 'Phê duyệt', content: 'Lãnh đạo đơn vị phê duyệt hồ sơ.', time: 1.0 },
+          { name: 'Trả kết quả', content: 'Trả kết quả Giấy chứng nhận đăng ký kinh doanh cho tổ chức, cá nhân.', time: 0.5 }
+        ]
+      },
+      'TTHC-0002': {
+        code: 'TTHC-0002',
+        name: 'Cấp đổi Giấy chứng nhận đăng ký kinh doanh',
+        group: 'Đăng ký kinh doanh',
+        agency: 'Phòng CS QLHC về TTXH',
+        limit: '02 ngày làm việc',
+        file: 'Mẫu đơn đề nghị cấp đổi Giấy chứng nhận đăng ký kinh doanh.docx',
+        fileSize: '115 KB',
+        status: 'dang-hieu-luc',
+        desc: 'Thủ tục cấp đổi Giấy chứng nhận đăng ký kinh doanh cho doanh nghiệp trong trường hợp thay đổi thông tin đăng ký.',
+        steps: [
+          { name: 'Tiếp nhận hồ sơ', content: 'Tiếp nhận và kiểm tra tính đầy đủ, hợp lệ của hồ sơ đề nghị cấp đổi.', time: 0.5 },
+          { name: 'Thẩm định hồ sơ', content: 'Thẩm định thông tin thay đổi đối chiếu với hồ sơ gốc.', time: 0.5 },
+          { name: 'Phê duyệt', content: 'Lãnh đạo phê duyệt và in Giấy chứng nhận mới.', time: 0.5 },
+          { name: 'Trả kết quả', content: 'Thu hồi Giấy chứng nhận cũ và trả Giấy chứng nhận mới.', time: 0.5 }
+        ]
+      },
+      'TTHC-0003': {
+        code: 'TTHC-0003',
+        name: 'Cấp lại Giấy chứng nhận đăng ký kinh doanh',
+        group: 'Đăng ký kinh doanh',
+        agency: 'Phòng CS QLHC về TTXH',
+        limit: '02 ngày làm việc',
+        file: 'Mẫu đơn đề nghị cấp lại Giấy chứng nhận đăng ký kinh doanh.docx',
+        fileSize: '110 KB',
+        status: 'dang-hieu-luc',
+        desc: 'Thủ tục cấp lại Giấy chứng nhận đăng ký kinh doanh bị mất, rách, cháy hoặc bị tiêu hủy dưới hình thức khác.',
+        steps: [
+          { name: 'Tiếp nhận hồ sơ', content: 'Tiếp nhận và kiểm tra tính hợp lệ của hồ sơ đề nghị cấp lại.', time: 0.5 },
+          { name: 'Thẩm định hồ sơ', content: 'Kiểm tra thông tin hồ sơ lưu trữ về việc cấp cũ.', time: 0.5 },
+          { name: 'Phê duyệt', content: 'Phê duyệt cấp lại Giấy chứng nhận đăng ký kinh doanh.', time: 0.5 },
+          { name: 'Trả kết quả', content: 'Trả Giấy chứng nhận đăng ký kinh doanh cấp lại.', time: 0.5 }
+        ]
+      },
+      'TTHC-0004': {
+        code: 'TTHC-0004',
+        name: 'Thông báo tạm ngưng kinh doanh của doanh nghiệp',
+        group: 'Đăng ký kinh doanh',
+        agency: 'Phòng CS QLHC về TTXH',
+        limit: '03 ngày làm việc',
+        file: 'Mẫu thông báo tạm ngừng hoạt động kinh doanh.docx',
+        fileSize: '95 KB',
+        status: 'dang-hieu-luc',
+        desc: 'Doanh nghiệp thông báo bằng văn bản về việc tạm ngừng kinh doanh đến cơ quan đăng ký kinh doanh trước ngày tạm ngừng.',
+        steps: [
+          { name: 'Tiếp nhận thông báo', content: 'Tiếp nhận văn bản thông báo tạm ngừng kinh doanh.', time: 0.5 },
+          { name: 'Xử lý hồ sơ', content: 'Kiểm tra thông tin pháp lý của doanh nghiệp và thời hạn tạm ngừng.', time: 1.0 },
+          { name: 'Ghi nhận hệ thống', content: 'Cập nhật trạng thái tạm ngừng kinh doanh trên hệ thống thông tin.', time: 1.0 },
+          { name: 'Trả kết quả', content: 'Trả Giấy xác nhận về việc doanh nghiệp đăng ký tạm ngừng kinh doanh.', time: 0.5 }
+        ]
+      },
+      'TTHC-0005': {
+        code: 'TTHC-0005',
+        name: 'Thông báo tiếp tục kinh doanh trước thời hạn đã thông báo',
+        group: 'Đăng ký kinh doanh',
+        agency: 'Phòng CS QLHC về TTXH',
+        limit: '02 ngày làm việc',
+        file: 'Mẫu thông báo tiếp tục hoạt động kinh doanh trước thời hạn.docx',
+        fileSize: '98 KB',
+        status: 'dang-hieu-luc',
+        desc: 'Thông báo bằng văn bản về việc tiếp tục kinh doanh trước thời hạn đã thông báo tạm ngừng trước đó.',
+        steps: [
+          { name: 'Tiếp nhận thông báo', content: 'Tiếp nhận văn bản thông báo tiếp tục hoạt động kinh doanh trở lại.', time: 0.5 },
+          { name: 'Kiểm tra thông tin', content: 'Đối chiếu thông tin đăng ký hoạt động trở lại của doanh nghiệp.', time: 0.5 },
+          { name: 'Cập nhật trạng thái', content: 'Cập nhật trạng thái hoạt động bình thường trên hệ thống.', time: 0.5 },
+          { name: 'Trả kết quả', content: 'Trả Giấy xác nhận về việc doanh nghiệp tiếp tục kinh doanh trước thời hạn.', time: 0.5 }
+        ]
+      },
+      'TTHC-0006': {
+        code: 'TTHC-0006',
+        name: 'Giải thể doanh nghiệp',
+        group: 'Đăng ký kinh doanh',
+        agency: 'Phòng CS QLHC về TTXH',
+        limit: '05 ngày làm việc',
+        file: 'Quyết định giải thể và biểu mẫu liên quan.zip',
+        fileSize: '450 KB',
+        status: 'tam-dung',
+        desc: 'Thực hiện thủ tục giải thể doanh nghiệp tự nguyện hoặc bắt buộc theo quy định pháp luật.',
+        steps: [
+          { name: 'Tiếp nhận hồ sơ giải thể', content: 'Kiểm tra hồ sơ giải thể gồm quyết định giải thể, danh sách chủ nợ.', time: 1.0 },
+          { name: 'Đối soát nghĩa vụ thuế', content: 'Phối hợp với cơ quan thuế để xác nhận hoàn tất nghĩa vụ thuế.', time: 2.0 },
+          { name: 'Phê duyệt giải thể', content: 'Xóa tên doanh nghiệp trong Sổ đăng ký doanh nghiệp.', time: 1.0 },
+          { name: 'Thông báo kết quả', content: 'Công bố thông tin giải thể doanh nghiệp trên cổng thông tin.', time: 1.0 }
+        ]
+      },
+      'TTHC-0007': {
+        code: 'TTHC-0007',
+        name: 'Cấp Giấy chứng nhận đủ điều kiện về ANTT (Cơ sở kinh doanh có điều kiện)',
+        group: 'Quản lý ANTT',
+        agency: 'Phòng CS QLHC về TTXH',
+        limit: '05 ngày làm việc',
+        file: 'Mẫu đơn đề nghị cấp Giấy chứng nhận đủ điều kiện về ANTT.docx',
+        fileSize: '145 KB',
+        status: 'dang-hieu-luc',
+        desc: 'Thủ tục cấp Giấy chứng nhận đủ điều kiện về an ninh, trật tự cho các cơ sở kinh doanh ngành nghề có điều kiện.',
+        steps: [
+          { name: 'Tiếp nhận hồ sơ ANTT', content: 'Kiểm tra tính hợp lệ của hồ sơ đề nghị cấp giấy chứng nhận ANTT.', time: 1.0 },
+          { name: 'Kiểm tra thực tế', content: 'Kiểm tra điều kiện thực tế về ANTT và PCCC tại cơ sở kinh doanh.', time: 2.0 },
+          { name: 'Duyệt cấp giấy', content: 'Lãnh đạo phê duyệt và ký Giấy chứng nhận đủ điều kiện về ANTT.', time: 1.0 },
+          { name: 'Trả kết quả', content: 'Bàn giao Giấy chứng nhận đủ điều kiện về ANTT cho cơ sở.', time: 1.0 }
+        ]
+      },
+      'TTHC-0008': {
+        code: 'TTHC-0008',
+        name: 'Cấp lại Giấy chứng nhận đủ điều kiện về ANTT',
+        group: 'Quản lý ANTT',
+        agency: 'Phòng CS QLHC về TTXH',
+        limit: '03 ngày làm việc',
+        file: 'Mẫu đơn đề nghị cấp lại Giấy chứng nhận ANTT.docx',
+        fileSize: '130 KB',
+        status: 'het-hieu-luc',
+        desc: 'Cấp lại Giấy chứng nhận đủ điều kiện về an ninh, trật tự trong trường hợp bị mất, hư hỏng hoặc có sự thay đổi thông tin.',
+        steps: [
+          { name: 'Tiếp nhận hồ sơ', content: 'Tiếp nhận văn bản đề nghị cấp lại và tài liệu chứng minh lý do.', time: 0.5 },
+          { name: 'Thẩm định hồ sơ', content: 'Rà soát thông tin lưu trữ cũ và kiểm tra các thay đổi mới (nếu có).', time: 1.0 },
+          { name: 'Phê duyệt cấp lại', content: 'Phê duyệt in cấp lại Giấy chứng nhận ANTT.', time: 1.0 },
+          { name: 'Trả kết quả', content: 'Trả Giấy chứng nhận ANTT cấp lại cho cơ sở.', time: 0.5 }
+        ]
+      },
+      'TTHC-0009': {
+        code: 'TTHC-0009',
+        name: 'Thu hồi Giấy chứng nhận đủ điều kiện về ANTT',
+        group: 'Quản lý ANTT',
+        agency: 'Phòng CS QLHC về TTXH',
+        limit: '03 ngày làm việc',
+        file: 'Quyết định thu hồi Giấy chứng nhận đủ điều kiện về ANTT.docx',
+        fileSize: '105 KB',
+        status: 'dang-hieu-luc',
+        desc: 'Quy trình thu hồi Giấy chứng nhận đủ điều kiện về an ninh, trật tự khi cơ sở vi phạm pháp luật hoặc chấm dứt hoạt động.',
+        steps: [
+          { name: 'Ghi nhận vi phạm/yêu cầu', content: 'Lập biên bản vi phạm hoặc tiếp nhận văn bản tự nguyện chấm dứt.', time: 0.5 },
+          { name: 'Thẩm định và đề xuất', content: 'Lập tờ trình đề xuất thu hồi Giấy chứng nhận đủ điều kiện về ANTT.', time: 1.0 },
+          { name: 'Ký quyết định', content: 'Lãnh đạo đơn vị ký quyết định thu hồi Giấy chứng nhận.', time: 1.0 },
+          { name: 'Thi hành quyết định', content: 'Tống đạt quyết định thu hồi và thu hồi hiện vật Giấy chứng nhận.', time: 0.5 }
+        ]
+      },
+      'TTHC-0010': {
+        code: 'TTHC-0010',
+        name: 'Xác nhận thay đổi nội dung đăng ký doanh nghiệp',
+        group: 'Đăng ký kinh doanh',
+        agency: 'Phòng CS QLHC về TTXH',
+        limit: '02 ngày làm việc',
+        file: 'Biểu mẫu thay đổi thông tin đăng ký doanh nghiệp.docx',
+        fileSize: '118 KB',
+        status: 'dang-hieu-luc',
+        desc: 'Xác nhận bằng văn bản đối với các nội dung thay đổi đăng ký doanh nghiệp mà không phải cấp lại Giấy chứng nhận mới.',
+        steps: [
+          { name: 'Tiếp nhận hồ sơ thay đổi', content: 'Tiếp nhận hồ sơ thông báo thay đổi thông tin đăng ký.', time: 0.5 },
+          { name: 'Cập nhật cơ sở dữ liệu', content: 'Kiểm tra hồ sơ và ghi nhận thông tin thay đổi vào hệ thống.', time: 0.5 },
+          { name: 'Phê duyệt xác nhận', content: 'Ký giấy xác nhận thay đổi nội dung đăng ký doanh nghiệp.', time: 0.5 },
+          { name: 'Trả kết quả', content: 'Trả Giấy xác nhận cho người đại diện doanh nghiệp.', time: 0.5 }
+        ]
+      }
+    };
+
+    // Check query params for edit mode
+    const urlParams = new URLSearchParams(window.location.search);
+    const isEditMode = urlParams.get('mode') === 'edit';
+    const procedureId = urlParams.get('id') || 'TTHC-0001';
+    const data = proceduresData[procedureId] || proceduresData['TTHC-0001'];
+
+    if (isEditMode) {
+      // Setup edit mode UI
+      document.getElementById('breadcrumbTitle').textContent = 'Chỉnh sửa thủ tục: ' + data.name;
+      document.getElementById('saveDoneBtn').innerHTML = '<i data-lucide="check" class="h-4 w-4"></i>Lưu thay đổi';
+      document.getElementById('successModalTitle').textContent = 'Cập nhật thủ tục thành công';
+      document.querySelector('#successModal p').textContent = 'Thông tin thay đổi đã được cập nhật thành công.';
+
+      // Pre-fill fields
+      document.getElementById('maThutuc').value = data.code;
+      document.getElementById('maThutuc').disabled = true;
+      document.getElementById('tenThutuc').value = data.name;
+      document.getElementById('nhomThutuc').value = data.group;
+      document.getElementById('coQuanThucHien').value = data.agency;
+      document.getElementById('thoiHanGiaiQuyet').value = data.limit;
+      document.getElementById('moTaThutuc').value = data.desc;
+      document.getElementById('charCount').textContent = data.desc.length + '/500';
+
+      // Set status radio button
+      const radios = document.getElementsByName('trangThai');
+      for (let radio of radios) {
+        if (radio.value === data.status) {
+          radio.checked = true;
+        }
+      }
+
+      // Seed steps for edit mode
+      data.steps.forEach(step => {
+        addStepWithData(step.name, step.content, step.time);
+      });
+
+      // Pre-fill file attachment
+      const fileListContainer = document.getElementById('fileListContainer');
+      if (fileListContainer) {
+        fileListContainer.innerHTML = `
+          <div class="uploaded-file-item">
+            <i data-lucide="file-text" class="h-6 w-6 text-red-500"></i>
+            <div class="flex-1 min-w-0">
+              <p class="text-xs font-bold text-gray-900 truncate">${data.file}</p>
+              <p class="text-[10px] text-gray-500 font-medium">${data.fileSize}</p>
+            </div>
+            <button type="button" class="text-gray-400 hover:text-red-600 transition-colors p-1" onclick="this.closest('.uploaded-file-item').remove()">
+              <i data-lucide="trash-2" class="h-4 w-4"></i>
+            </button>
+          </div>
+        `;
+        lucide.createIcons();
+      }
+    } else {
+      // Seed 2 default empty rows for add mode
+      addStep();
+      addStep();
+    }
+
+    // ── /Quy trình ──
+
+    // Drag-and-drop highlight
+    const uploadZone = document.getElementById('uploadZone');
+    uploadZone?.addEventListener('dragover', (e) => { e.preventDefault(); uploadZone.style.borderColor = '#c50000'; uploadZone.style.background = '#fff8f8'; });
+    uploadZone?.addEventListener('dragleave', () => { uploadZone.style.borderColor = ''; uploadZone.style.background = ''; });
+    uploadZone?.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadZone.style.borderColor = '';
+      uploadZone.style.background = '';
+      const files = [...e.dataTransfer.files];
+      if (files.length) showToast(`Đã chọn ${files.length} tệp đính kèm.`);
+    });
+
+    // File input change
+    document.getElementById('fileUploadInput')?.addEventListener('change', function() {
+      if (this.files.length) showToast(`Đã chọn ${this.files.length} tệp: ${this.files[0].name}`);
+    });
+
+    // Save draft
+    document.getElementById('saveDraftBtn')?.addEventListener('click', () => {
+      showToast('Đã lưu nháp thủ tục thành công.');
+    });
+
+    // Submit form
+    document.getElementById('addProcedureForm')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const tenThutuc = document.getElementById('tenThutuc')?.value?.trim();
+      const nhomThutuc = document.getElementById('nhomThutuc')?.value;
+      const coQuanThucHien = document.getElementById('coQuanThucHien')?.value;
+      const thoiHanGiaiQuyet = document.getElementById('thoiHanGiaiQuyet')?.value;
+
+      if (!tenThutuc || !nhomThutuc || !coQuanThucHien || !thoiHanGiaiQuyet) {
+        showToast('Vui lòng điền đầy đủ các trường bắt buộc (*).');
+        return;
+      }
+
+      const modal = document.getElementById('successModal');
+      if (modal) { modal.hidden = false; lucide.createIcons(); }
+    });
+  </script>
+</body>
+</html>

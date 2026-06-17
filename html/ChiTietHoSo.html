@@ -12,6 +12,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../styles/quan-ly-ho-so.css">
   <link rel="stylesheet" href="../styles/chi-tiet-ho-so.css">
+  <link rel="stylesheet" href="../styles/admin-danh-sach.css">
 </head>
 
 <body class="font-sans antialiased">
@@ -104,35 +105,31 @@
           <i data-lucide="file-text"></i>
           <span class="nav-copy">Quản lý hồ sơ</span>
         </a>
-        <a href="#" class="nav-item">
+        <a href="CoSoDuLieuCSKD.html" class="nav-item">
           <i data-lucide="database"></i>
           <span class="nav-copy">Cơ sở dữ liệu CSKD-ANTT</span>
         </a>
-        <a href="#" class="nav-item">
+        <a href="KiemTraCoSo.html" class="nav-item">
           <i data-lucide="clipboard-check"></i>
           <span class="nav-copy">Kiểm tra cơ sở</span>
         </a>
-        <a href="#" class="nav-item">
+        <a href="XuLyViPham.html" class="nav-item">
           <i data-lucide="octagon-alert"></i>
           <span class="nav-copy">Vi phạm / Xử lý vi phạm</span>
         </a>
-        <a href="#" class="nav-item">
+        <a href="QuanLyPhanAnh.html" class="nav-item">
           <i data-lucide="message-square-warning"></i>
           <span class="nav-copy">Phản ánh kiến nghị</span>
         </a>
 
         <div class="nav-section">Báo cáo</div>
-        <a href="#" class="nav-item mt-2">
-          <i data-lucide="chart-column-big"></i>
-          <span class="nav-copy">Báo cáo - thống kê</span>
-        </a>
+        <a href="BaoCao-ThongKe.html" class="nav-item mt-2"><i data-lucide="chart-column-big"></i>
+          <span class="nav-copy">Báo cáo - thống kê</span></a>
 
         <div class="nav-section">Cấu hình</div>
-        <a href="#" class="nav-item mt-2">
-          <i data-lucide="folder"></i>
+        <a href="DanhMuc.html" class="nav-item mt-2"><i data-lucide="folder"></i>
           <span class="nav-copy">Danh mục dùng chung</span>
-          <i data-lucide="chevron-down" class="ml-auto h-4 w-4 nav-copy"></i>
-        </a>
+          <i data-lucide="chevron-down" class="ml-auto h-4 w-4 nav-copy"></i></a>
         <a href="#" class="nav-item">
           <i data-lucide="settings"></i>
           <span class="nav-copy">Quản trị hệ thống</span>
@@ -150,13 +147,25 @@
 
     <main class="content min-h-screen pt-[80px]">
       <div class="detail-page px-6 pb-8 pt-6 lg:px-7">
-        <section class="detail-heading">
-          <h1>Chi tiết hồ sơ: HS-2026-00125</h1>
-          <a class="back-link" href="QuanLyHoSo.html">
-            <i data-lucide="arrow-left" class="h-4 w-4"></i>
-            Quay lại danh sách
-          </a>
+        <!-- Component: Breadcrumbs & Header Actions -->
+        <section class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-5">
+          <div class="flex items-center gap-2 text-[13px] font-medium text-[#6b7280]">
+            <i data-lucide="house" class="h-4 w-4 text-[#9098a5]"></i>
+            <a href="../index.html" class="hover:text-red-600 transition-colors">Trang chủ</a>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
+            <a href="QuanLyHoSo.html" class="hover:text-red-600 transition-colors">Quản lý hồ sơ</a>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
+            <a href="QuanLyHoSo.html" class="hover:text-red-600 transition-colors">Danh sách hồ sơ</a>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
+            <span class="text-gray-900 font-semibold">Chi tiết hồ sơ HS-2026-00125</span>
+          </div>
+          <div class="flex flex-wrap gap-3">
+            <a class="px-4 py-2 border rounded font-bold text-xs bg-white text-gray-700 hover:bg-gray-50 flex items-center gap-1.5 shadow-sm transition-colors" href="QuanLyHoSo.html">
+              <i data-lucide="arrow-left" class="h-4 w-4"></i> Quay lại
+            </a>
+          </div>
         </section>
+        <!-- End Component: Breadcrumbs -->
 
         <section class="summary-strip">
           <div>
@@ -590,7 +599,10 @@ Tài liệu cần rõ ràng, không bị mờ, cắt xén, đảm bảo xác nh�
     </section>
   </div>
 
+  <script src="../scripts/auth.js"></script>
+  <script src="../scripts/layout-sync.js"></script>
   <script src="../scripts/chi-tiet-ho-so.js"></script>
 </body>
 
 </html>
+

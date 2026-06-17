@@ -10,6 +10,7 @@ const notifications = [
 ];
 
 const facilities = [
+  // 1. Karaoke (3 facilities)
   {
     id: 'karaoke-hoa-sen',
     name: 'Karaoke Hoa Sen',
@@ -23,23 +24,52 @@ const facilities = [
     riskScore: 18,
     lastInspection: '12/05/2026',
     history: ['12/05/2026: Kiểm tra định kỳ, không phát hiện vi phạm.', '02/03/2026: Cập nhật hồ sơ phòng cháy chữa cháy.'],
-    position: { lat: 20.2538, lng: 105.9742 }
+    position: { lat: 20.2538, lng: 105.9742 },
+    owner: 'Nguyễn Văn B',
+    ratingAvg: 4.6,
+    reviewCount: 128,
+    photos: ['public/Kara/Kara1.jpg', 'public/Kara/Kara2.jpeg', 'public/Kara/Kara3.jpg']
   },
   {
-    id: 'nha-nghi-binh-minh',
-    name: 'Nhà nghỉ Bình Minh',
-    address: '45 Lê Thái Tổ, P. Nam Thành',
+    id: 'karaoke-luxury',
+    name: 'Karaoke Luxury',
+    address: '45 Lê Hồng Phong, P. Nam Thành',
     ward: 'P. Nam Thành',
-    status: 'yellow',
+    status: 'green',
     licenseStatus: 'Còn hiệu lực',
-    type: 'Nhà nghỉ',
-    officer: 'Trần Văn C',
-    phone: '0988 112 233',
-    riskScore: 35,
-    lastInspection: '21/04/2026',
-    history: ['21/04/2026: Nhắc nhở bổ sung sổ lưu trú.', '19/01/2026: Kiểm tra an ninh trật tự.'],
-    position: { lat: 20.2487, lng: 105.9691 }
+    type: 'Karaoke',
+    officer: 'Nguyễn Văn B',
+    phone: '0987 654 321',
+    riskScore: 22,
+    lastInspection: '10/04/2026',
+    history: ['10/04/2026: Kiểm tra an ninh trật tự định kỳ.'],
+    position: { lat: 20.2450, lng: 105.9800 },
+    owner: 'Trần Văn C',
+    ratingAvg: 4.5,
+    reviewCount: 85,
+    photos: ['public/Kara/Kara2.jpeg', 'public/Kara/Kara3.jpg']
   },
+  {
+    id: 'karaoke-hoa-mai',
+    name: 'Karaoke Hoa Mai',
+    address: '78 Đinh Tiên Hoàng, P. Đông Thành',
+    ward: 'P. Đông Thành',
+    status: 'purple',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Karaoke',
+    officer: 'Lê Văn E',
+    phone: '0905 111 222',
+    riskScore: 85,
+    lastInspection: '01/06/2026',
+    history: ['01/06/2026: Lập biên bản về tiếng ồn vượt mức cho phép.', '15/04/2026: Nhắc nhở về giờ giấc hoạt động.'],
+    position: { lat: 20.2525, lng: 105.9815 },
+    owner: 'Vũ Văn H',
+    ratingAvg: 3.8,
+    reviewCount: 42,
+    photos: ['public/Kara/Kara3.jpg']
+  },
+
+  // 2. Khách sạn (3 facilities)
   {
     id: 'khach-san-trang-an',
     name: 'Khách sạn Tràng An',
@@ -53,23 +83,111 @@ const facilities = [
     riskScore: 52,
     lastInspection: '08/05/2026',
     history: ['08/05/2026: Giấy phép ANTT còn 25 ngày hiệu lực.', '15/02/2026: Kiểm tra hồ sơ lưu trú.'],
-    position: { lat: 20.2629, lng: 105.9912 }
+    position: { lat: 20.2629, lng: 105.9912 },
+    owner: 'Phạm Thị D',
+    ratingAvg: 4.8,
+    reviewCount: 214,
+    photos: ['public/Hotel/Ht1.jpg', 'public/Hotel/Ht2.jpg', 'public/Hotel/Ht3.jpg']
   },
   {
-    id: 'bar-new-night',
-    name: 'Quán Bar New Night',
-    address: '12 Nguyễn Huệ, P. Đông Thành',
-    ward: 'P. Đông Thành',
+    id: 'khach-san-the-vissai',
+    name: 'Khách sạn The Vissai',
+    address: '84 Trần Hưng Đạo, P. Tân Thành',
+    ward: 'P. Tân Thành',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Khách sạn',
+    officer: 'Phạm Thị D',
+    phone: '0229 3894 567',
+    riskScore: 12,
+    lastInspection: '22/05/2026',
+    history: ['22/05/2026: Kiểm tra liên ngành, đạt tiêu chuẩn tốt.'],
+    position: { lat: 20.2515, lng: 105.9718 },
+    owner: 'Công ty Vissai',
+    ratingAvg: 4.7,
+    reviewCount: 310,
+    photos: ['public/Hotel/Ht2.jpg', 'public/Hotel/Ht3.jpg']
+  },
+  {
+    id: 'khach-san-legend',
+    name: 'Khách sạn Legend Ninh Bình',
+    address: '177 Lê Thái Tổ, P. Nam Bình',
+    ward: 'P. Nam Bình',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Khách sạn',
+    officer: 'Vũ Thị F',
+    phone: '0229 3899 888',
+    riskScore: 15,
+    lastInspection: '19/05/2026',
+    history: ['19/05/2026: Kiểm tra an ninh trật tự định kỳ.'],
+    position: { lat: 20.2380, lng: 105.9760 },
+    owner: 'Lê Văn L',
+    ratingAvg: 4.6,
+    reviewCount: 150,
+    photos: ['public/Hotel/Ht3.jpg', 'public/Hotel/Ht1.jpg']
+  },
+
+  // 3. Nhà nghỉ (3 facilities)
+  {
+    id: 'nha-nghi-binh-minh',
+    name: 'Nhà nghỉ Bình Minh',
+    address: '45 Lê Thái Tổ, P. Nam Thành',
+    ward: 'P. Nam Thành',
+    status: 'yellow',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Nhà nghỉ',
+    officer: 'Trần Văn C',
+    phone: '0988 112 233',
+    riskScore: 35,
+    lastInspection: '21/04/2026',
+    history: ['21/04/2026: Nhắc nhở bổ sung sổ lưu trú.', '19/01/2026: Kiểm tra an ninh trật tự.'],
+    position: { lat: 20.2487, lng: 105.9691 },
+    owner: 'Trần Văn C',
+    ratingAvg: 4.1,
+    reviewCount: 76,
+    photos: ['public/Nnghi/Nn1.jpg', 'public/Nnghi/Nn2.jpg', 'public/Nnghi/Nn3.jpg']
+  },
+  {
+    id: 'nha-nghi-phuong-nam',
+    name: 'Nhà nghỉ Phương Nam',
+    address: '12 Nguyễn Công Trứ, P. Nam Bình',
+    ward: 'P. Nam Bình',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Nhà nghỉ',
+    officer: 'Vũ Thị F',
+    phone: '0915 678 901',
+    riskScore: 25,
+    lastInspection: '14/03/2026',
+    history: ['14/03/2026: Kiểm tra hồ sơ phòng nghỉ, đạt yêu cầu.'],
+    position: { lat: 20.2395, lng: 105.9622 },
+    owner: 'Nguyễn Văn P',
+    ratingAvg: 4.0,
+    reviewCount: 35,
+    photos: ['public/Nnghi/Nn2.jpg', 'public/Nnghi/Nn3.jpg']
+  },
+  {
+    id: 'nha-nghi-thanh-binh',
+    name: 'Nhà nghỉ bình dân Thanh Bình',
+    address: '29 Lương Văn Thăng, P. Vân Giang',
+    ward: 'P. Vân Giang',
     status: 'red',
     licenseStatus: 'Hết hạn / Bị thu hồi',
-    type: 'Bar',
-    officer: 'Lê Văn E',
-    phone: '0904 555 666',
-    riskScore: 82,
-    lastInspection: '03/06/2026',
-    history: ['03/06/2026: Phát hiện hoạt động quá giờ quy định.', '18/05/2026: Lập biên bản vi phạm tiếng ồn.'],
-    position: { lat: 20.2418, lng: 105.9847 }
+    type: 'Nhà nghỉ',
+    officer: 'Phạm Thị D',
+    phone: '0979 333 444',
+    riskScore: 78,
+    lastInspection: '05/06/2026',
+    history: ['05/06/2026: Quyết định tạm đình chỉ do giấy phép hết hạn và không đủ điều kiện PCCC.'],
+    position: { lat: 20.2600, lng: 105.9840 },
+    owner: 'Phạm Thanh B',
+    ratingAvg: 3.2,
+    reviewCount: 18,
+    photos: ['public/Nnghi/Nn3.jpg', 'public/Nnghi/Nn1.jpg']
   },
+
+  // 4. Massage (3 facilities)
   {
     id: 'massage-hoang-gia',
     name: 'Massage Hoàng Gia',
@@ -83,8 +201,92 @@ const facilities = [
     riskScore: 28,
     lastInspection: '27/03/2026',
     history: ['27/03/2026: Cơ sở thông báo tạm ngừng hoạt động.', '10/01/2026: Kiểm tra điều kiện kinh doanh.'],
-    position: { lat: 20.2348, lng: 105.9634 }
+    position: { lat: 20.2348, lng: 105.9634 },
+    owner: 'Vũ Thị F',
+    ratingAvg: 4.2,
+    reviewCount: 63,
+    photos: ['public/Ms/Ms1.jpg', 'public/Ms/Ms2.jpg', 'public/Ms/Ms3.jpg']
   },
+  {
+    id: 'massage-hoa-mai',
+    name: 'Massage Hoa Mai',
+    address: '215 Trần Hưng Đạo, P. Đông Thành',
+    ward: 'P. Đông Thành',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Massage',
+    officer: 'Nguyễn Văn B',
+    phone: '0912 777 888',
+    riskScore: 24,
+    lastInspection: '02/05/2026',
+    history: ['02/05/2026: Kiểm tra đột xuất, các nhân viên có đầy đủ chứng chỉ hành nghề.'],
+    position: { lat: 20.2570, lng: 105.9780 },
+    owner: 'Lê Thị M',
+    ratingAvg: 4.3,
+    reviewCount: 52,
+    photos: ['public/Ms/Ms2.jpg', 'public/Ms/Ms3.jpg']
+  },
+  {
+    id: 'massage-dai-duong',
+    name: 'Massage Đại Dương',
+    address: '67 Nguyễn Trãi, P. Nam Thành',
+    ward: 'P. Nam Thành',
+    status: 'yellow',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Massage',
+    officer: 'Trần Văn C',
+    phone: '0904 999 000',
+    riskScore: 45,
+    lastInspection: '12/04/2026',
+    history: ['12/04/2026: Nhắc nhở khai báo lưu trú cho khách nghỉ qua đêm.'],
+    position: { lat: 20.2490, lng: 105.9770 },
+    owner: 'Trần Văn D',
+    ratingAvg: 4.0,
+    reviewCount: 29,
+    photos: ['public/Ms/Ms3.jpg', 'public/Ms/Ms1.jpg']
+  },
+
+  // 5. Bar (2 facilities)
+  {
+    id: 'bar-new-night',
+    name: 'Quán Bar New Night',
+    address: '12 Nguyễn Huệ, P. Đông Thành',
+    ward: 'P. Đông Thành',
+    status: 'red',
+    licenseStatus: 'Hết hạn / Bị thu hồi',
+    type: 'Bar',
+    officer: 'Lê Văn E',
+    phone: '0904 555 666',
+    riskScore: 82,
+    lastInspection: '03/06/2026',
+    history: ['03/06/2026: Phát hiện hoạt động quá giờ quy định.', '18/05/2026: Lập biên bản vi phạm tiếng ồn.'],
+    position: { lat: 20.2418, lng: 105.9847 },
+    owner: 'Lê Văn E',
+    ratingAvg: 3.5,
+    reviewCount: 49,
+    photos: ['public/Bar/Bar1.jpg', 'public/Bar/Bar2.jpg', 'public/Bar/Bar3.jpg']
+  },
+  {
+    id: 'bar-club-999',
+    name: 'Club 999',
+    address: '52 Vân Giang, P. Vân Giang',
+    ward: 'P. Vân Giang',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Bar',
+    officer: 'Phạm Thị D',
+    phone: '0914 999 999',
+    riskScore: 30,
+    lastInspection: '20/05/2026',
+    history: ['20/05/2026: Kiểm tra phòng cháy chữa cháy đạt tiêu chuẩn.'],
+    position: { lat: 20.2605, lng: 105.9880 },
+    owner: 'Nguyễn Văn C',
+    ratingAvg: 4.4,
+    reviewCount: 96,
+    photos: ['public/Bar/Bar2.jpg', 'public/Bar/Bar3.jpg']
+  },
+
+  // 6. Cầm đồ (3 facilities)
   {
     id: 'cam-do-phat-loc',
     name: 'Cầm đồ Phát Lộc',
@@ -98,7 +300,868 @@ const facilities = [
     riskScore: 91,
     lastInspection: '05/06/2026',
     history: ['05/06/2026: Đưa vào diện theo dõi rủi ro cao.', '29/05/2026: Có phản ánh liên quan tài sản cầm cố.'],
-    position: { lat: 20.2268, lng: 105.9797 }
+    position: { lat: 20.2268, lng: 105.9797 },
+    owner: 'Hoàng Văn G',
+    ratingAvg: 3.9,
+    reviewCount: 31,
+    photos: ['public/Bar/Bar1.jpg', 'public/Bar/Bar2.jpg', 'public/Bar/Bar3.jpg']
+  },
+  {
+    id: 'cam-do-anh-thu',
+    name: 'Cầm đồ Anh Thư',
+    address: '124 Lê Hồng Phong, P. Nam Thành',
+    ward: 'P. Nam Thành',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Cầm đồ',
+    officer: 'Trần Văn C',
+    phone: '0982 456 789',
+    riskScore: 20,
+    lastInspection: '18/04/2026',
+    history: ['18/04/2026: Kiểm tra sổ sách ghi chép, không phát hiện sai phạm.'],
+    position: { lat: 20.2470, lng: 105.9650 },
+    owner: 'Phạm Anh T',
+    ratingAvg: 4.2,
+    reviewCount: 15,
+    photos: ['public/Hotel/Ht1.jpg']
+  },
+  {
+    id: 'cam-do-hung-thinh',
+    name: 'Cầm đồ Hùng Thịnh',
+    address: '22 Lương Văn Tụy, P. Tân Thành',
+    ward: 'P. Tân Thành',
+    status: 'yellow',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Cầm đồ',
+    officer: 'Hoàng Văn G',
+    phone: '0977 654 321',
+    riskScore: 48,
+    lastInspection: '11/05/2026',
+    history: ['11/05/2026: Nhắc nhở lưu kho tài sản đúng quy định an toàn cháy nổ.'],
+    position: { lat: 20.2305, lng: 105.9710 },
+    owner: 'Lê Hùng T',
+    ratingAvg: 3.8,
+    reviewCount: 22,
+    photos: ['public/Hotel/Ht2.jpg']
+  },
+
+  // 7. Khắc dấu (2 facilities)
+  {
+    id: 'khac-dau-minh-anh',
+    name: 'Khắc dấu Minh Anh',
+    address: '52 Trần Hưng Đạo, P. Đông Thành',
+    ward: 'P. Đông Thành',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Khắc dấu',
+    officer: 'Nguyễn Văn B',
+    phone: '0915 222 333',
+    riskScore: 10,
+    lastInspection: '08/04/2026',
+    history: ['08/04/2026: Kiểm tra định kỳ quy trình khắc dấu và quản lý phôi dấu.'],
+    position: { lat: 20.2520, lng: 105.9760 },
+    owner: 'Nguyễn Minh A',
+    ratingAvg: 4.5,
+    reviewCount: 19,
+    photos: ['public/Hotel/Ht3.jpg']
+  },
+  {
+    id: 'khac-dau-ninh-binh',
+    name: 'Cơ sở Khắc dấu Ninh Bình',
+    address: '110 Đinh Tiên Hoàng, P. Nam Bình',
+    ward: 'P. Nam Bình',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Khắc dấu',
+    officer: 'Vũ Thị F',
+    phone: '0904 888 777',
+    riskScore: 15,
+    lastInspection: '22/03/2026',
+    history: ['22/03/2026: Kiểm tra sổ sách khách hàng đặt khắc dấu.'],
+    position: { lat: 20.2310, lng: 105.9680 },
+    owner: 'Trần Khắc D',
+    ratingAvg: 4.1,
+    reviewCount: 12,
+    photos: ['public/Hotel/Ht1.jpg']
+  },
+
+  // 8. Dịch vụ bảo vệ (3 facilities)
+  {
+    id: 'bao-ve-hoa-lu',
+    name: 'Dịch vụ bảo vệ Hoa Lư',
+    address: '45 Lương Văn Tụy, P. Tân Thành',
+    ward: 'P. Tân Thành',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Dịch vụ bảo vệ',
+    officer: 'Hoàng Văn G',
+    phone: '0912 999 111',
+    riskScore: 12,
+    lastInspection: '15/05/2026',
+    history: ['15/05/2026: Đạt chứng nhận đủ điều kiện an ninh trật tự.'],
+    position: { lat: 20.2585, lng: 105.9702 },
+    owner: 'Vũ Quốc H',
+    ratingAvg: 4.8,
+    reviewCount: 40,
+    photos: ['public/Hotel/Ht2.jpg']
+  },
+  {
+    id: 'bao-ve-thang-long',
+    name: 'Bảo vệ Thăng Long',
+    address: '89 Lê Hồng Phong, P. Nam Thành',
+    ward: 'P. Nam Thành',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Dịch vụ bảo vệ',
+    officer: 'Trần Văn C',
+    phone: '0978 555 666',
+    riskScore: 18,
+    lastInspection: '12/04/2026',
+    history: ['12/04/2026: Kiểm tra danh sách nhân viên bảo vệ có chứng chỉ nghiệp vụ.'],
+    position: { lat: 20.2435, lng: 105.9790 },
+    owner: 'Nguyễn Thăng L',
+    ratingAvg: 4.5,
+    reviewCount: 33,
+    photos: ['public/Hotel/Ht3.jpg']
+  },
+  {
+    id: 'bao-ve-hoang-gia',
+    name: 'Bảo vệ Hoàng Gia',
+    address: '223 Đinh Tiên Hoàng, P. Đông Thành',
+    ward: 'P. Đông Thành',
+    status: 'yellow',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Dịch vụ bảo vệ',
+    officer: 'Nguyễn Văn B',
+    phone: '0903 444 555',
+    riskScore: 32,
+    lastInspection: '19/05/2026',
+    history: ['19/05/2026: Nhắc nhở cập nhật hồ sơ lý lịch nhân viên bảo vệ mới tuyển dụng.'],
+    position: { lat: 20.2455, lng: 105.9830 },
+    owner: 'Phạm Gia B',
+    ratingAvg: 4.0,
+    reviewCount: 14,
+    photos: ['public/Hotel/Ht1.jpg']
+  },
+
+  // 9. In ấn (3 facilities)
+  {
+    id: 'nha-in-ninh-binh',
+    name: 'Nhà in Ninh Bình',
+    address: '14 Trần Phú, P. Vân Giang',
+    ward: 'P. Vân Giang',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'In ấn',
+    officer: 'Phạm Thị D',
+    phone: '0229 3872 111',
+    riskScore: 10,
+    lastInspection: '20/04/2026',
+    history: ['20/04/2026: Cơ sở in ấn xuất bản phẩm chấp hành đúng luật.'],
+    position: { lat: 20.2612, lng: 105.9825 },
+    owner: 'Nhà nước',
+    ratingAvg: 4.7,
+    reviewCount: 26,
+    photos: ['public/Hotel/Ht2.jpg']
+  },
+  {
+    id: 'in-quang-cao-thanh-cong',
+    name: 'In ấn quảng cáo Thành Công',
+    address: '150 Trần Hưng Đạo, P. Đông Thành',
+    ward: 'P. Đông Thành',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'In ấn',
+    officer: 'Nguyễn Văn B',
+    phone: '0912 345 543',
+    riskScore: 15,
+    lastInspection: '02/05/2026',
+    history: ['02/05/2026: Kiểm tra về điều kiện bảo vệ môi trường và PCCC.'],
+    position: { lat: 20.2505, lng: 105.9755 },
+    owner: 'Đỗ Thành C',
+    ratingAvg: 4.4,
+    reviewCount: 18,
+    photos: ['public/Hotel/Ht3.jpg']
+  },
+  {
+    id: 'in-gia-bao',
+    name: 'In ấn nhanh Gia Bảo',
+    address: '56 Lương Văn Tụy, P. Tân Thành',
+    ward: 'P. Tân Thành',
+    status: 'orange',
+    licenseStatus: 'Sắp hết hạn',
+    type: 'In ấn',
+    officer: 'Hoàng Văn G',
+    phone: '0988 888 777',
+    riskScore: 40,
+    lastInspection: '14/05/2026',
+    history: ['14/05/2026: Nhắc nhở làm thủ tục gia hạn Giấy phép hoạt động ngành in.'],
+    position: { lat: 20.2540, lng: 105.9690 },
+    owner: 'Nguyễn Gia B',
+    ratingAvg: 4.1,
+    reviewCount: 9,
+    photos: ['public/Hotel/Ht1.jpg']
+  },
+
+  // 10. Trò chơi điện tử (3 facilities)
+  {
+    id: 'net-gaming-center',
+    name: 'Net Gaming Center',
+    address: '77 Lương Văn Tụy, P. Tân Thành',
+    ward: 'P. Tân Thành',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Trò chơi điện tử',
+    officer: 'Hoàng Văn G',
+    phone: '0944 555 666',
+    riskScore: 20,
+    lastInspection: '08/05/2026',
+    history: ['08/05/2026: Kiểm tra giờ đóng cửa và quy định về khoảng cách trường học.'],
+    position: { lat: 20.2555, lng: 105.9710 },
+    owner: 'Trần Văn N',
+    ratingAvg: 4.6,
+    reviewCount: 75,
+    photos: ['public/Hotel/Ht2.jpg']
+  },
+  {
+    id: 'cyber-game-ninh-binh',
+    name: 'Cyber Game Ninh Bình',
+    address: '15 Lê Hồng Phong, P. Nam Thành',
+    ward: 'P. Nam Thành',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Trò chơi điện tử',
+    officer: 'Trần Văn C',
+    phone: '0976 123 789',
+    riskScore: 18,
+    lastInspection: '21/04/2026',
+    history: ['21/04/2026: Điểm game công cộng chấp hành tốt các quy định.'],
+    position: { lat: 20.2425, lng: 105.9685 },
+    owner: 'Nguyễn Hoài N',
+    ratingAvg: 4.3,
+    reviewCount: 54,
+    photos: ['public/Hotel/Ht3.jpg']
+  },
+  {
+    id: 'gaming-club-new-world',
+    name: 'Gaming Club New World',
+    address: '2 Lê Thái Tổ, P. Nam Thành',
+    ward: 'P. Nam Thành',
+    status: 'purple',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Trò chơi điện tử',
+    officer: 'Trần Văn C',
+    phone: '0909 888 888',
+    riskScore: 88,
+    lastInspection: '01/06/2026',
+    history: ['01/06/2026: Phát hiện mở cửa quá 22h và có học sinh chơi game trong giờ học.'],
+    position: { lat: 20.2415, lng: 105.9610 },
+    owner: 'Vũ Thế W',
+    ratingAvg: 3.5,
+    reviewCount: 38,
+    photos: ['public/Hotel/Ht1.jpg']
+  },
+
+  // 11. Casino (2 facilities)
+  {
+    id: 'casino-trang-an-resort',
+    name: 'Casino Tràng An Resort',
+    address: 'Khu du lịch sinh thái Tràng An, P. Vân Giang',
+    ward: 'P. Vân Giang',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Casino',
+    officer: 'Phạm Thị D',
+    phone: '0229 3888 999',
+    riskScore: 15,
+    lastInspection: '28/05/2026',
+    history: ['28/05/2026: Kiểm tra quản lý người nước ngoài vào chơi và đổi thưởng.'],
+    position: { lat: 20.2660, lng: 105.9960 },
+    owner: 'Tập đoàn Tràng An',
+    ratingAvg: 4.9,
+    reviewCount: 120,
+    photos: ['public/Hotel/Ht2.jpg']
+  },
+  {
+    id: 'club-vegas-ninh-binh',
+    name: 'Club Vegas Ninh Bình',
+    address: '15 Lê Hồng Phong, P. Tân Thành',
+    ward: 'P. Tân Thành',
+    status: 'yellow',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Casino',
+    officer: 'Hoàng Văn G',
+    phone: '0912 345 999',
+    riskScore: 35,
+    lastInspection: '05/05/2026',
+    history: ['05/05/2026: Nhắc nhở lưu trữ lịch sử camera giám sát khu vực đổi thưởng đầy đủ.'],
+    position: { lat: 20.2510, lng: 105.9730 },
+    owner: 'Vương Đại K',
+    ratingAvg: 4.2,
+    reviewCount: 45,
+    photos: ['public/Hotel/Ht3.jpg']
+  },
+
+  // 12. Phẫu thuật thẩm mỹ (2 facilities)
+  {
+    id: 'tham-my-ngoc-dung',
+    name: 'Thẩm mỹ viện Ngọc Dung',
+    address: '220 Đinh Tiên Hoàng, P. Đông Thành',
+    ward: 'P. Đông Thành',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Phẫu thuật thẩm mỹ',
+    officer: 'Nguyễn Văn B',
+    phone: '0933 555 666',
+    riskScore: 22,
+    lastInspection: '12/05/2026',
+    history: ['12/05/2026: Đầy đủ giấy phép hoạt động và chứng chỉ hành nghề của bác sĩ phẫu thuật.'],
+    position: { lat: 20.2545, lng: 105.9795 },
+    owner: 'Vũ Thị D',
+    ratingAvg: 4.7,
+    reviewCount: 88,
+    photos: ['public/Hotel/Ht1.jpg']
+  },
+  {
+    id: 'tham-my-kangnam',
+    name: 'Viện thẩm mỹ Kangnam',
+    address: '42 Trần Hưng Đạo, P. Nam Bình',
+    ward: 'P. Nam Bình',
+    status: 'orange',
+    licenseStatus: 'Sắp hết hạn',
+    type: 'Phẫu thuật thẩm mỹ',
+    officer: 'Vũ Thị F',
+    phone: '0915 999 123',
+    riskScore: 45,
+    lastInspection: '26/04/2026',
+    history: ['26/04/2026: Kiểm tra trang thiết bị y tế và điều kiện khử trùng khép kín.'],
+    position: { lat: 20.2330, lng: 105.9605 },
+    owner: 'Nguyễn Kang N',
+    ratingAvg: 4.4,
+    reviewCount: 65,
+    photos: ['public/Hotel/Ht2.jpg']
+  },
+
+  // 13. Chăm sóc da (2 facilities)
+  {
+    id: 'spa-thu-cuc',
+    name: 'Spa Thu Cúc Ninh Bình',
+    address: '89 Lương Văn Tụy, P. Đông Thành',
+    ward: 'P. Đông Thành',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Chăm sóc da',
+    officer: 'Nguyễn Văn B',
+    phone: '0911 345 678',
+    riskScore: 15,
+    lastInspection: '10/05/2026',
+    history: ['10/05/2026: Kiểm tra chất lượng sản phẩm mỹ phẩm sử dụng tại spa.'],
+    position: { lat: 20.2562, lng: 105.9735 },
+    owner: 'Nguyễn Thị C',
+    ratingAvg: 4.8,
+    reviewCount: 102,
+    photos: ['public/Hotel/Ht3.jpg']
+  },
+  {
+    id: 'seoul-spa-ninh-binh',
+    name: 'Seoul Spa Ninh Bình',
+    address: '14 Lê Thái Tổ, P. Nam Thành',
+    ward: 'P. Nam Thành',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Chăm sóc da',
+    officer: 'Trần Văn C',
+    phone: '0966 555 444',
+    riskScore: 18,
+    lastInspection: '18/04/2026',
+    history: ['18/04/2026: Đạt tiêu chuẩn chất lượng dịch vụ chăm sóc thẩm mỹ.'],
+    position: { lat: 20.2465, lng: 105.9785 },
+    owner: 'Seoul Spa Group',
+    ratingAvg: 4.5,
+    reviewCount: 74,
+    photos: ['public/Hotel/Ht1.jpg']
+  },
+
+  // 14. Kinh doanh pháo hoa (2 facilities)
+  {
+    id: 'phao-hoa-z121-nb',
+    name: 'Đại lý Pháo hoa Z121 Ninh Bình',
+    address: '99 Lương Văn Tụy, P. Tân Thành',
+    ward: 'P. Tân Thành',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Kinh doanh pháo hoa',
+    officer: 'Hoàng Văn G',
+    phone: '0912 121 121',
+    riskScore: 25,
+    lastInspection: '24/05/2026',
+    history: ['24/05/2026: Kiểm tra đặc biệt về an toàn kho bãi và tủ bảo quản chống cháy nổ.'],
+    position: { lat: 20.2502, lng: 105.9680 },
+    owner: 'Bộ Quốc Phòng / Đỗ Văn Pháo',
+    ratingAvg: 4.9,
+    reviewCount: 200,
+    photos: ['public/Hotel/Ht2.jpg']
+  },
+  {
+    id: 'phao-hoa-nam-binh',
+    name: 'Cửa hàng Pháo hoa Bộ Quốc Phòng',
+    address: '42 Đinh Tiên Hoàng, P. Nam Bình',
+    ward: 'P. Nam Bình',
+    status: 'yellow',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Kinh doanh pháo hoa',
+    officer: 'Vũ Thị F',
+    phone: '0983 121 121',
+    riskScore: 45,
+    lastInspection: '10/05/2026',
+    history: ['10/05/2026: Nhắc nhở bổ sung biển cảnh báo cấm lửa tại cửa hàng kinh doanh.'],
+    position: { lat: 20.2360, lng: 105.9655 },
+    owner: 'Nguyễn Văn Lửa',
+    ratingAvg: 4.4,
+    reviewCount: 55,
+    photos: ['public/Hotel/Ht3.jpg']
+  },
+
+  // 15. Súng bắn sơn (2 facilities)
+  {
+    id: 'paintball-dong-thanh',
+    name: 'CLB Súng bắn sơn Ninh Bình',
+    address: 'Công viên Đông Thành, P. Đông Thành',
+    ward: 'P. Đông Thành',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Súng bắn sơn',
+    officer: 'Nguyễn Văn B',
+    phone: '0904 123 321',
+    riskScore: 28,
+    lastInspection: '15/05/2026',
+    history: ['15/05/2026: Kiểm tra quản lý lưu kho súng bắn sơn, đạn màu và đồ bảo hộ.'],
+    position: { lat: 20.2680, lng: 105.9850 },
+    owner: 'CLB Paintball',
+    ratingAvg: 4.6,
+    reviewCount: 38,
+    photos: ['public/Hotel/Ht1.jpg']
+  },
+  {
+    id: 'paintball-trang-an',
+    name: 'Khu du lịch thể thao Paintball',
+    address: 'Đường Tràng An, P. Tân Thành',
+    ward: 'P. Tân Thành',
+    status: 'gray',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Súng bắn sơn',
+    officer: 'Hoàng Văn G',
+    phone: '0915 456 654',
+    riskScore: 30,
+    lastInspection: '12/03/2026',
+    history: ['12/03/2026: Cơ sở xin tạm dừng hoạt động sân bắn ngoài trời để cải tạo.'],
+    position: { lat: 20.2280, lng: 105.9720 },
+    owner: 'Trần Paint B',
+    ratingAvg: 4.0,
+    reviewCount: 22,
+    photos: ['public/Hotel/Ht2.jpg']
+  },
+
+  // 16. Công cụ hỗ trợ (2 facilities)
+  {
+    id: 'ccht-a-dong',
+    name: 'Thiết bị an ninh Á Đông',
+    address: '152 Lương Văn Thăng, P. Đông Thành',
+    ward: 'P. Đông Thành',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Công cụ hỗ trợ',
+    officer: 'Nguyễn Văn B',
+    phone: '0229 3888 123',
+    riskScore: 20,
+    lastInspection: '25/04/2026',
+    history: ['25/04/2026: Kiểm tra định kỳ sổ đăng ký và giấy phép của các đơn vị mua dùi cui, còng số 8.'],
+    position: { lat: 20.2590, lng: 105.9775 },
+    owner: 'Công ty Cổ phần Á Đông',
+    ratingAvg: 4.7,
+    reviewCount: 15,
+    photos: ['public/Hotel/Ht3.jpg']
+  },
+  {
+    id: 'ccht-viet-nam',
+    name: 'Cơ sở công cụ hỗ trợ Việt Nam',
+    address: '88 Lê Hồng Phong, P. Nam Thành',
+    ward: 'P. Nam Thành',
+    status: 'yellow',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Công cụ hỗ trợ',
+    officer: 'Trần Văn C',
+    phone: '0983 222 111',
+    riskScore: 35,
+    lastInspection: '12/05/2026',
+    history: ['12/05/2026: Nhắc nhở lưu trữ bản sao giấy phép mua của khách hàng trong thời gian 5 năm.'],
+    position: { lat: 20.2400, lng: 105.9715 },
+    owner: 'Lê Văn Khiên',
+    ratingAvg: 4.1,
+    reviewCount: 10,
+    photos: ['public/Hotel/Ht1.jpg']
+  },
+
+  // 17. Vật liệu nổ công nghiệp (2 facilities)
+  {
+    id: 'vln-ninh-binh',
+    name: 'Vật liệu nổ công nghiệp Ninh Bình',
+    address: 'Phố Vân Giang, P. Vân Giang',
+    ward: 'P. Vân Giang',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Vật liệu nổ công nghiệp',
+    officer: 'Phạm Thị D',
+    phone: '0229 3871 564',
+    riskScore: 30,
+    lastInspection: '04/06/2026',
+    history: ['04/06/2026: Đánh giá cao công tác an toàn kỹ thuật phòng chống cháy nổ tại kho chứa thuốc nổ.'],
+    position: { lat: 20.2640, lng: 105.9900 },
+    owner: 'Tổng công ty Vật liệu nổ',
+    ratingAvg: 4.8,
+    reviewCount: 18,
+    photos: ['public/Hotel/Ht2.jpg']
+  },
+  {
+    id: 'kho-vln-so1',
+    name: 'Kho vật liệu nổ công nghiệp số 1',
+    address: 'Khu công nghiệp Khánh Phú, P. Tân Thành',
+    ward: 'P. Tân Thành',
+    status: 'yellow',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Vật liệu nổ công nghiệp',
+    officer: 'Hoàng Văn G',
+    phone: '0911 000 111',
+    riskScore: 42,
+    lastInspection: '18/05/2026',
+    history: ['18/05/2026: Nhắc nhở việc niêm yết quy trình vận chuyển vật liệu nổ trên các xe chuyên dụng.'],
+    position: { lat: 20.2230, lng: 105.9750 },
+    owner: 'Công ty Khai khoáng Ninh Bình',
+    ratingAvg: 4.3,
+    reviewCount: 8,
+    photos: ['public/Hotel/Ht3.jpg']
+  },
+
+  // 18. Tiền chất thuốc nổ (2 facilities)
+  {
+    id: 'hoa-chat-nb',
+    name: 'Hóa chất công nghiệp Ninh Bình',
+    address: 'Khu công nghiệp Phúc Sơn, P. Tân Thành',
+    ward: 'P. Tân Thành',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Tiền chất thuốc nổ',
+    officer: 'Hoàng Văn G',
+    phone: '0229 3879 999',
+    riskScore: 28,
+    lastInspection: '22/05/2026',
+    history: ['22/05/2026: Các tiền chất thuốc nổ (Amoni Nitrat) được bảo quản đúng tiêu chuẩn quy chuẩn kỹ thuật.'],
+    position: { lat: 20.2550, lng: 105.9660 },
+    owner: 'Cty Hóa chất Ninh Bình',
+    ratingAvg: 4.5,
+    reviewCount: 14,
+    photos: ['public/Hotel/Ht1.jpg']
+  },
+  {
+    id: 'hoa-chat-nam-binh',
+    name: 'Cty hóa chất tiền chất nổ Nam Bình',
+    address: '15 Nguyễn Huệ, P. Nam Bình',
+    ward: 'P. Nam Bình',
+    status: 'orange',
+    licenseStatus: 'Sắp hết hạn',
+    type: 'Tiền chất thuốc nổ',
+    officer: 'Vũ Thị F',
+    phone: '0974 555 444',
+    riskScore: 50,
+    lastInspection: '10/05/2026',
+    history: ['10/05/2026: Đề nghị làm thủ tục cấp đổi giấy chứng nhận đủ điều kiện ANTT trước khi hết hạn.'],
+    position: { lat: 20.2325, lng: 105.9640 },
+    owner: 'Phạm Văn Acid',
+    ratingAvg: 3.9,
+    reviewCount: 7,
+    photos: ['public/Hotel/Ht2.jpg']
+  },
+
+  // 19. Thiết bị gây nhiễu, phá sóng (2 facilities)
+  {
+    id: 'thiet-bi-tran-vu',
+    name: 'Điện tử viễn thông Trấn Vũ',
+    address: '88 Trần Hưng Đạo, P. Đông Thành',
+    ward: 'P. Đông Thành',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Thiết bị gây nhiễu, phá sóng',
+    officer: 'Nguyễn Văn B',
+    phone: '0912 345 567',
+    riskScore: 20,
+    lastInspection: '02/06/2026',
+    history: ['02/06/2026: Kiểm tra nguồn gốc nhập khẩu và mục đích bán thiết bị gây nhiễu cho các cơ quan chức năng.'],
+    position: { lat: 20.2475, lng: 105.9810 },
+    owner: 'Vũ Văn Trấn',
+    ratingAvg: 4.6,
+    reviewCount: 20,
+    photos: ['public/Hotel/Ht3.jpg']
+  },
+  {
+    id: 'thiet-bi-nam-thanh',
+    name: 'Cơ sở thiết bị vô tuyến điện Nam Thành',
+    address: '54 Lê Thái Tổ, P. Nam Thành',
+    ward: 'P. Nam Thành',
+    status: 'yellow',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Thiết bị gây nhiễu, phá sóng',
+    officer: 'Trần Văn C',
+    phone: '0983 555 111',
+    riskScore: 38,
+    lastInspection: '14/04/2026',
+    history: ['14/04/2026: Nhắc nhở cập nhật danh mục máy phát vô tuyến và máy phá sóng lưu kho.'],
+    position: { lat: 20.2445, lng: 105.705 },
+    owner: 'Trần Thanh Sóng',
+    ratingAvg: 4.2,
+    reviewCount: 9,
+    photos: ['public/Hotel/Ht1.jpg']
+  },
+
+  // 20. Thiết bị định vị, phát tín hiệu (2 facilities)
+  {
+    id: 'gps-ninh-binh',
+    name: 'Định vị GPS Ninh Bình',
+    address: '33 Lương Văn Tụy, P. Tân Thành',
+    ward: 'P. Tân Thành',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Thiết bị định vị, phát tín hiệu',
+    officer: 'Hoàng Văn G',
+    phone: '0904 999 888',
+    riskScore: 12,
+    lastInspection: '05/05/2026',
+    history: ['05/05/2026: Cơ sở bán thiết bị giám sát hành trình cho xe vận tải đạt chuẩn quy định.'],
+    position: { lat: 20.2512, lng: 105.9740 },
+    owner: 'Nguyễn Định Vị',
+    ratingAvg: 4.7,
+    reviewCount: 52,
+    photos: ['public/Hotel/Ht2.jpg']
+  },
+  {
+    id: 'thiet-bi-tin-hieu-bien',
+    name: 'Thiết bị hàng hải tín hiệu biển',
+    address: '22 Vân Giang, P. Vân Giang',
+    ward: 'P. Vân Giang',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Thiết bị định vị, phát tín hiệu',
+    officer: 'Phạm Thị D',
+    phone: '0912 666 555',
+    riskScore: 18,
+    lastInspection: '12/04/2026',
+    history: ['12/04/2026: Kiểm tra định kỳ, đạt tiêu chuẩn kỹ thuật thiết bị định vị hàng hải.'],
+    position: { lat: 20.2618, lng: 105.9930 },
+    owner: 'Phạm Văn Phao',
+    ratingAvg: 4.4,
+    reviewCount: 16,
+    photos: ['public/Hotel/Ht3.jpg']
+  },
+
+  // 21. Cho thuê tài chính (2 facilities)
+  {
+    id: 'finance-acb',
+    name: 'Cho thuê tài chính ACB',
+    address: '15 Trần Hưng Đạo, P. Tân Thành',
+    ward: 'P. Tân Thành',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Cho thuê tài chính',
+    officer: 'Hoàng Văn G',
+    phone: '0229 3888 777',
+    riskScore: 10,
+    lastInspection: '20/05/2026',
+    history: ['20/05/2026: Đạt tiêu chuẩn đủ điều kiện ANTT cho hoạt động cho thuê tài chính.'],
+    position: { lat: 20.2530, lng: 105.9700 },
+    owner: 'Ngân hàng ACB',
+    ratingAvg: 4.8,
+    reviewCount: 48,
+    photos: ['public/Hotel/Ht1.jpg']
+  },
+  {
+    id: 'finance-vietinbank',
+    name: 'Công ty tài chính Vietinbank',
+    address: '56 Lê Hồng Phong, P. Nam Thành',
+    ward: 'P. Nam Thành',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Cho thuê tài chính',
+    officer: 'Trần Văn C',
+    phone: '0229 3899 999',
+    riskScore: 15,
+    lastInspection: '15/04/2026',
+    history: ['15/04/2026: Kiểm tra định kỳ, không phát hiện vi phạm hành chính.'],
+    position: { lat: 20.2460, lng: 105.9750 },
+    owner: 'Ngân hàng Vietinbank',
+    ratingAvg: 4.6,
+    reviewCount: 60,
+    photos: ['public/Hotel/Ht2.jpg']
+  },
+
+  // 22. Trụ sở Công an (10 facilities)
+  {
+    id: 'ca-tinh-ninh-binh',
+    name: 'Công an tỉnh Ninh Bình',
+    address: 'Đường Đinh Tất Miễn, Hoa Lư',
+    ward: 'Hoa Lư',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Trụ sở Công an',
+    officer: 'Trực chỉ huy',
+    phone: '113',
+    riskScore: 0,
+    lastInspection: 'N/A',
+    history: ['Trụ sở Công an tỉnh Ninh Bình.'],
+    position: { lat: 20.2479, lng: 105.9747 },
+    photos: ['public/CANB/CANB1.jpg', 'public/CANB/CANB2.jpeg', 'public/CANB/CANB3.jpg']
+  },
+  {
+    id: 'ca-tp-ninh-binh-cu',
+    name: 'Công an TP Ninh Bình cũ',
+    address: '12 Trần Nguyên Đán',
+    ward: 'P. Đông Thành',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Trụ sở Công an',
+    officer: 'Trực ban',
+    phone: '0229 3871 092',
+    riskScore: 0,
+    lastInspection: 'N/A',
+    history: ['Trụ sở Công an TP Ninh Bình (cơ sở cũ).'],
+    position: { lat: 20.2534, lng: 105.9741 },
+    photos: ['public/CANBc/CANBc1.jpg', 'public/CANBc/CANBc2.jpg', 'public/CANBc/CANBc3.jpg']
+  },
+  {
+    id: 'ca-p-hoa-lu',
+    name: 'Công an phường Hoa Lư',
+    address: 'Phường Hoa Lư',
+    ward: 'P. Hoa Lư',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Trụ sở Công an',
+    officer: 'Trực ban',
+    phone: '0229 3871 113',
+    riskScore: 0,
+    lastInspection: 'N/A',
+    history: ['Công an phường Hoa Lư.'],
+    position: { lat: 20.2481, lng: 105.9750 },
+    photos: ['public/CAHL/CAHL1.jpg', 'public/CAHL/CAHL2.jpg', 'public/CAHL/CAHL3.jpg']
+  },
+  {
+    id: 'ca-p-nam-dinh',
+    name: 'Công an phường Nam Định',
+    address: 'Phường Nam Định',
+    ward: 'P. Nam Định',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Trụ sở Công an',
+    officer: 'Trực ban',
+    phone: '113',
+    riskScore: 0,
+    lastInspection: 'N/A',
+    history: ['Trụ sở Công an phường Nam Định.'],
+    position: { lat: 20.4388, lng: 106.1627 },
+    photos: ['public/CAND/CAND1.jpg', 'public/CAND/CAND2.jpg', 'public/CAND/CAND3.jpg']
+  },
+  {
+    id: 'ca-p-ha-nam',
+    name: 'Công an phường Hà Nam',
+    address: 'Phường Hà Nam',
+    ward: 'P. Hà Nam',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Trụ sở Công an',
+    officer: 'Trực ban',
+    phone: '113',
+    riskScore: 0,
+    lastInspection: 'N/A',
+    history: ['Trụ sở Công an phường Hà Nam.'],
+    position: { lat: 20.5414, lng: 105.9135 },
+    photos: ['public/CAHN/CAHN1.jpg', 'public/CAHN/CAHN2.jpg', 'public/CAHN/CAHN3.jpg']
+  },
+  {
+    id: 'ca-p-kim-bang',
+    name: 'Công an phường Kim Bảng',
+    address: 'Phường Kim Bảng',
+    ward: 'P. Kim Bảng',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Trụ sở Công an',
+    officer: 'Trực ban',
+    phone: '113',
+    riskScore: 0,
+    lastInspection: 'N/A',
+    history: ['Trụ sở Công an phường Kim Bảng.'],
+    position: { lat: 20.5846, lng: 105.8492 },
+    photos: ['public/CAHL/CAHL1.jpg', 'public/CAHL/CAHL2.jpg', 'public/CAHL/CAHL3.jpg']
+  },
+  {
+    id: 'ca-p-nguyen-uy',
+    name: 'Công an phường Nguyễn Úy',
+    address: 'Phường Nguyễn Úy',
+    ward: 'P. Nguyễn Úy',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Trụ sở Công an',
+    officer: 'Trực ban',
+    phone: '113',
+    riskScore: 0,
+    lastInspection: 'N/A',
+    history: ['Trụ sở Công an phường Nguyễn Úy.'],
+    position: { lat: 20.5563, lng: 105.8638 },
+    photos: ['public/CAHN/CAHN1.jpg', 'public/CAHN/CAHN2.jpg', 'public/CAHN/CAHN3.jpg']
+  },
+  {
+    id: 'ca-x-thanh-binh',
+    name: 'Công an xã Thanh Bình',
+    address: 'Xã Thanh Bình',
+    ward: 'X. Thanh Bình',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Trụ sở Công an',
+    officer: 'Trực ban',
+    phone: '113',
+    riskScore: 0,
+    lastInspection: 'N/A',
+    history: ['Trụ sở Công an xã Thanh Bình.'],
+    position: { lat: 20.5034, lng: 105.9284 },
+    photos: ['public/CAND/CAND1.jpg', 'public/CAND/CAND2.jpg', 'public/CAND/CAND3.jpg']
+  },
+  {
+    id: 'ca-x-nam-ly',
+    name: 'Công an xã Nam Lý',
+    address: 'Xã Nam Lý',
+    ward: 'X. Nam Lý',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Trụ sở Công an',
+    officer: 'Trực ban',
+    phone: '113',
+    riskScore: 0,
+    lastInspection: 'N/A',
+    history: ['Trụ sở Công an xã Nam Lý.'],
+    position: { lat: 20.4852, lng: 106.0236 },
+    photos: ['public/CANBc/CANBc1.jpg', 'public/CANBc/CANBc2.jpg', 'public/CANBc/CANBc3.jpg']
+  },
+  {
+    id: 'ca-x-binh-an',
+    name: 'Công an xã Bình An',
+    address: 'Xã Bình An',
+    ward: 'X. Bình An',
+    status: 'green',
+    licenseStatus: 'Còn hiệu lực',
+    type: 'Trụ sở Công an',
+    officer: 'Trực ban',
+    phone: '113',
+    riskScore: 0,
+    lastInspection: 'N/A',
+    history: ['Trụ sở Công an xã Bình An.'],
+    position: { lat: 20.5147, lng: 105.9449 },
+    photos: ['public/CANB/CANB1.jpg', 'public/CANB/CANB2.jpeg', 'public/CANB/CANB3.jpg']
   }
 ];
 
@@ -112,12 +1175,28 @@ const statusMeta = {
 };
 
 const typeIconUrl = {
-  Karaoke: '../iconHKD/microphone.png',
+  'Karaoke': '../iconHKD/microphone.png',
   'Khách sạn': '../iconHKD/hotel.png',
   'Nhà nghỉ': '../iconHKD/hotel.png',
-  Massage: '../iconHKD/facial-treatment.png',
-  Bar: '../iconHKD/bar.png',
-  'Cầm đồ': '../iconHKD/assets.png'
+  'Massage': '../iconHKD/Massage.png',
+  'Bar': '../iconHKD/bar.png',
+  'Cầm đồ': '../iconHKD/Pawnshop.png',
+  'Khắc dấu': '../iconHKD/Stamp.png',
+  'Dịch vụ bảo vệ': '../iconHKD/security.png',
+  'In ấn': '../iconHKD/printer.png',
+  'Trò chơi điện tử': '../iconHKD/game.png',
+  'Casino': '../iconHKD/casino-chip.png',
+  'Phẫu thuật thẩm mỹ': '../iconHKD/surgery.png',
+  'Chăm sóc da': '../iconHKD/facial-treatment.png',
+  'Kinh doanh pháo hoa': '../iconHKD/firecracker.png',
+  'Súng bắn sơn': '../iconHKD/gun.png',
+  'Công cụ hỗ trợ': '../iconHKD/baton.png',
+  'Vật liệu nổ công nghiệp': '../iconHKD/blasting.png',
+  'Tiền chất thuốc nổ': '../iconHKD/material.png',
+  'Thiết bị gây nhiễu, phá sóng': '../iconHKD/jammer.png',
+  'Thiết bị định vị, phát tín hiệu': '../iconHKD/signal.png',
+  'Cho thuê tài chính': '../iconHKD/assets.png',
+  'Trụ sở Công an': '../iconHKD/LogoCongAn-Map.png'
 };
 
 const els = {
@@ -139,7 +1218,7 @@ const els = {
   gisLayout: document.querySelector('.gis-layout'),
   gisSide: document.querySelector('.gis-side'),
   floatingPanelToggle: document.querySelector('#floatingPanelToggle'),
-  footerStats: document.querySelector('#gisFooterStats'),
+  sideStats: document.querySelector('.gis-side-card .stat-grid'),
   searchFloating: document.querySelector('#facilitySearchFloating'),
   legacySearch: document.querySelector('#facilitySearch'),
   openFilterDrawerBtn: document.querySelector('#openFilterDrawerBtn'),
@@ -163,10 +1242,10 @@ const state = {
   searchQuery: '',
   filters: { ward: '', type: '', status: '', license: '' },
   layers: {
-    facilityLabels: true,
+    facilityLabels: false,
     administrative: true,
     roads: true,
-    water: false
+    water: true
   },
   selectedFacilityId: null,
   isHeatmapEnabled: false,
@@ -174,7 +1253,8 @@ const state = {
   drawingMode: null,
   radiusCenter: null,
   polygonPath: [],
-  activeRegion: null
+  activeRegion: null,
+  lockToCenter: false
 };
 
 let map;
@@ -244,6 +1324,15 @@ function renderNotifications() {
 
 function markerIcon(facility, highlighted = false) {
   const size = highlighted ? 48 : 40;
+  if (facility.type === 'Trụ sở Công an') {
+    const width = Math.round(size * 213 / 165);
+    return {
+      url: typeIconUrl[facility.type] || '../iconHKD/LogoCongAn-Map.png',
+      scaledSize: new google.maps.Size(width, size),
+      anchor: new google.maps.Point(width / 2, size),
+      labelOrigin: new google.maps.Point(width / 2, 6)
+    };
+  }
   return {
     url: typeIconUrl[facility.type] || '../iconHKD/assets.png',
     scaledSize: new google.maps.Size(size, size),
@@ -307,6 +1396,13 @@ function getMapStyles() {
 function applyLayerSettings() {
   if (map) {
     map.setOptions({ styles: getMapStyles() });
+  }
+
+  const gisMap = document.getElementById('gisMap');
+  if (gisMap) {
+    gisMap.classList.toggle('hide-water', !state.layers.water);
+    gisMap.classList.toggle('hide-roads', !state.layers.roads);
+    gisMap.classList.toggle('hide-admin', !state.layers.administrative);
   }
 
   markers.forEach((marker) => {
@@ -410,7 +1506,8 @@ function clearRiskPings() {
 
 function renderNearbyList(items = getFilteredFacilities()) {
   if (!els.nearbyList) return;
-  els.nearbyList.innerHTML = items.map((item) => {
+  const displayedItems = items.slice(0, 6);
+  els.nearbyList.innerHTML = displayedItems.map((item) => {
     const meta = statusMeta[item.status] || statusMeta.green;
     return `
       <button class="nearby-item" type="button" data-facility-id="${escapeHTML(item.id)}">
@@ -426,19 +1523,52 @@ function renderNearbyList(items = getFilteredFacilities()) {
 }
 
 function renderStats(items = getFilteredFacilities()) {
-  if (!els.footerStats) return;
+  if (!els.sideStats) return;
   const stats = Object.keys(statusMeta).map((status) => ({
     status,
     ...statusMeta[status],
     count: items.filter((item) => item.status === status).length
   })).filter((item) => item.count > 0 || ['green', 'yellow', 'red', 'purple'].includes(item.status));
 
-  els.footerStats.innerHTML = stats.map((item) => `
-    <span class="footer-stat-item">
-      <span class="marker-dot ${escapeHTML(item.status)}"><i data-lucide="${escapeHTML(item.icon)}" class="h-3.5 w-3.5"></i></span>
-      ${escapeHTML(item.label)}: <strong>${item.count}</strong>
-    </span>
+  els.sideStats.innerHTML = stats.map((item) => `
+    <div>
+      <span class="marker-dot ${escapeHTML(item.status)}"><i data-lucide="${escapeHTML(item.icon)}" class="h-4 w-4"></i></span>
+      <strong>${item.count}</strong>
+      <em>${escapeHTML(item.label)}</em>
+    </div>
   `).join('');
+}
+
+function renderTypeStatsLegend(items = getFilteredFacilities()) {
+  const legendList = document.getElementById('mapLegendList');
+  if (!legendList) return;
+
+  const counts = {};
+  items.forEach((item) => {
+    counts[item.type] = (counts[item.type] || 0) + 1;
+  });
+
+  const sortedTypes = Object.entries(counts)
+    .map(([type, count]) => ({ type, count }))
+    .sort((a, b) => b.count - a.count);
+
+  if (sortedTypes.length === 0) {
+    legendList.innerHTML = '<div style="color: #6b7280; font-size: 13px; padding: 4px 0;">Không có dữ liệu</div>';
+    return;
+  }
+
+  legendList.innerHTML = sortedTypes.map((item) => {
+    const iconUrl = typeIconUrl[item.type] || '../iconHKD/assets.png';
+    return `
+      <div style="display: flex; align-items: center; justify-content: space-between; font-size: 13px; font-weight: 500; color: #374151; padding: 2px 0;">
+        <span style="display: flex; align-items: center; gap: 8px;">
+          <img src="${escapeHTML(iconUrl)}" style="width: 18px; height: 18px; object-fit: contain;" alt="${escapeHTML(item.type)}">
+          <span>${escapeHTML(item.type)}</span>
+        </span>
+        <strong style="color: #b40000; font-size: 13px;">${item.count}</strong>
+      </div>
+    `;
+  }).join('');
 }
 
 function renderMapData() {
@@ -446,6 +1576,7 @@ function renderMapData() {
   hideFacilityTooltip();
   renderNearbyList(items);
   renderStats(items);
+  renderTypeStatsLegend(items);
 
   if (!map) {
     lucide.createIcons();
@@ -513,6 +1644,7 @@ function openFacilityTooltip(facility) {
   els.facilityPopup.querySelector('.popup-status').style.color = meta.color;
   els.facilityPopup.querySelector('.tooltip-type').textContent = `${facility.type} - ${facility.licenseStatus}`;
   els.facilityPopup.hidden = false;
+  state.lockToCenter = true;
   positionFacilityPopup(facility.position);
   highlightFacility(facility.id, true, true);
 
@@ -531,16 +1663,24 @@ function hideFacilityTooltip() {
 }
 
 function positionFacilityPopup(position) {
-  if (!projectionOverlay?.getProjection || !map) return;
-  const projection = projectionOverlay.getProjection();
-  if (!projection) return;
-
-  const point = projection.fromLatLngToContainerPixel(new google.maps.LatLng(position.lat, position.lng));
   const shellRect = els.mapShell.getBoundingClientRect();
   const width = 260;
   const height = 132;
-  const left = Math.max(16, Math.min(shellRect.width - width - 16, point.x - width / 2));
-  const top = Math.max(70, Math.min(shellRect.height - height - 74, point.y - height - 16));
+
+  let left, top;
+
+  if (state.lockToCenter) {
+    left = shellRect.width / 2 - width / 2;
+    top = shellRect.height / 2 - height - 16;
+  } else {
+    if (!projectionOverlay?.getProjection || !map) return;
+    const projection = projectionOverlay.getProjection();
+    if (!projection) return;
+
+    const point = projection.fromLatLngToContainerPixel(new google.maps.LatLng(position.lat, position.lng));
+    left = Math.max(16, Math.min(shellRect.width - width - 16, point.x - width / 2));
+    top = Math.max(70, Math.min(shellRect.height - height - 74, point.y - height - 16));
+  }
 
   els.facilityPopup.style.left = `${left}px`;
   els.facilityPopup.style.top = `${top}px`;
@@ -662,10 +1802,12 @@ function setPanelCollapsed(collapsed) {
   state.isPanelCollapsed = collapsed;
   els.gisSide.classList.toggle('is-collapsed', collapsed);
   els.gisLayout.classList.toggle('panel-collapsed', collapsed);
-  els.floatingPanelToggle.setAttribute('aria-expanded', String(!collapsed));
-  els.floatingPanelToggle.innerHTML = collapsed
-    ? '<i data-lucide="panel-right-open" class="h-5 w-5"></i><span>Mở rộng</span>'
-    : '<i data-lucide="panel-right-close" class="h-5 w-5"></i><span>Thu gọn</span>';
+  if (els.floatingPanelToggle) {
+    els.floatingPanelToggle.setAttribute('aria-expanded', String(!collapsed));
+    els.floatingPanelToggle.innerHTML = collapsed
+      ? '<i data-lucide="panel-right-open" class="h-5 w-5"></i><span>Mở rộng</span>'
+      : '<i data-lucide="panel-right-close" class="h-5 w-5"></i><span>Thu gọn</span>';
+  }
   lucide.createIcons();
 }
 
@@ -872,6 +2014,21 @@ window.initMap = function initMap() {
       positionFacilityPopup(facility.position);
     }
   });
+  map.addListener('idle', () => {
+    if (state.lockToCenter) {
+      state.lockToCenter = false;
+      const facility = findFacility(state.selectedFacilityId);
+      if (facility && !els.facilityPopup.hidden) {
+        positionFacilityPopup(facility.position);
+      }
+    }
+  });
+  map.addListener('dragstart', () => {
+    state.lockToCenter = false;
+  });
+  map.addListener('zoom_changed', () => {
+    state.lockToCenter = false;
+  });
 
   renderMapData();
 };
@@ -1051,6 +2208,7 @@ setTimeout(() => {
 
 ensurePanelRestoreButton();
 bindEvents();
+applyLayerSettings();
 renderNotifications();
 renderNearbyList();
 renderStats();

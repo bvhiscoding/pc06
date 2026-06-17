@@ -1,0 +1,816 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tạo kế hoạch kiểm tra - CSKD-ANTT Ninh Bình</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/quan-ly-ho-so.css">
+  <link rel="stylesheet" href="../styles/admin-danh-sach.css">
+  <style>
+    /* Premium Custom styles for Stepper */
+    .stepper-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      position: relative;
+      background: #fff;
+      padding: 1.25rem 2rem;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    }
+
+    .stepper-line {
+      position: absolute;
+      top: 50%;
+      left: 10%;
+      right: 10%;
+      height: 3px;
+      background: #e2e8f0;
+      z-index: 1;
+      transform: translateY(-13px); /* Offset to line up with icons */
+    }
+
+    .stepper-line-active {
+      position: absolute;
+      top: 50%;
+      left: 10%;
+      height: 3px;
+      background: #2563eb;
+      z-index: 1;
+      transform: translateY(-13px);
+      transition: width 0.3s ease;
+      width: 0%;
+    }
+
+    .step-item {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: #fff;
+      padding: 0 1rem;
+    }
+
+    .step-badge {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #fff;
+      border: 2px solid #cbd5e1;
+      color: #64748b;
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      font-size: 15px;
+      transition: all 0.3s ease;
+    }
+
+    .step-item.active .step-badge {
+      border-color: #2563eb;
+      background: #2563eb;
+      color: #fff;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
+    }
+
+    .step-item.completed .step-badge {
+      border-color: #16a34a;
+      background: #16a34a;
+      color: #fff;
+    }
+
+    .step-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #64748b;
+      margin-top: 0.5rem;
+      text-align: center;
+      transition: color 0.3s ease;
+    }
+
+    .step-item.active .step-label {
+      color: #2563eb;
+      font-weight: 700;
+    }
+
+    .step-item.completed .step-label {
+      color: #16a34a;
+    }
+
+    .step-content {
+      display: none;
+    }
+
+    .step-content.active {
+      display: block;
+      animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(15px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .business-row.selected {
+      background-color: #eff6ff;
+      border-color: #bfdbfe;
+    }
+
+    /* Modal overlay custom styles */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+    }
+    .modal-overlay[hidden] {
+      display: none !important;
+    }
+  </style>
+</head>
+
+<body class="font-sans antialiased">
+  <div class="desktop-shell min-h-screen">
+    <!-- Header -->
+    <header class="app-header fixed left-0 right-0 top-0 z-30 flex h-[80px] items-center justify-between px-6 text-white">
+      <div class="flex h-full items-center">
+        <img class="crest" src="../public/logocongan.png" alt="Logo Bộ Công an" />
+        <div class="brand-copy ml-4">
+          <div class="text-[22px] font-semibold leading-tight tracking-[0]">CÔNG AN TỈNH NINH BÌNH</div>
+          <div class="mt-1 text-[15px] font-medium tracking-[0] text-white/95">HỆ THỐNG QUẢN LÝ CƠ SỞ KINH DOANH CÓ ĐIỀU KIỆN VỀ ANTT</div>
+        </div>
+      </div>
+
+      <div class="topbar-actions flex h-full items-center gap-6">
+        <div class="topbar-menu-wrap">
+          <button id="notificationToggle" class="topbar-icon-btn relative" type="button" aria-label="Thông báo" aria-expanded="false">
+            <i data-lucide="bell" class="h-[26px] w-[26px]"></i>
+            <span id="notificationBadge" class="absolute right-0 top-1 grid h-5 min-w-5 place-items-center rounded-full bg-[#ff1e1e] px-1 text-[11px] font-semibold leading-none shadow">5</span>
+          </button>
+          <div id="notificationMenu" class="topbar-dropdown notification-dropdown" hidden>
+            <div class="dropdown-head">
+              <span>Thông báo</span>
+              <button id="markAllReadBtn" type="button">Đánh dấu đã đọc</button>
+            </div>
+            <div id="notificationList" class="notification-list"></div>
+          </div>
+        </div>
+
+        <div class="topbar-menu-wrap">
+          <button id="userMenuToggle" class="user-menu-btn" type="button" aria-label="Mở menu tài khoản" aria-expanded="false">
+            <div class="grid h-[46px] w-[46px] place-items-center rounded-full bg-white text-[#cf0000] shadow-sm">
+              <i data-lucide="user-round" class="h-7 w-7 fill-[#cf0000]/15"></i>
+            </div>
+            <div class="hidden text-left sm:block">
+              <div class="text-[15px] font-semibold leading-5">Nguyễn Văn A</div>
+              <div class="text-[13px] font-medium text-white/92">Phòng CS QLHC về TTXH</div>
+            </div>
+            <i data-lucide="chevron-down" class="user-chevron h-5 w-5 text-white"></i>
+          </button>
+          <div id="userMenu" class="topbar-dropdown user-dropdown" hidden>
+            <div class="user-card">
+              <div class="grid h-11 w-11 place-items-center rounded-full bg-[#fff2f2] text-[#cf0000]">
+                <i data-lucide="user-round" class="h-6 w-6"></i>
+              </div>
+              <div>
+                <div class="user-name">Nguyễn Văn A</div>
+                <div class="user-role">Phòng CS QLHC về TTXH</div>
+              </div>
+            </div>
+            <button class="dropdown-action" type="button" data-user-action="profile">
+              <i data-lucide="id-card" class="h-4 w-4"></i> Thông tin tài khoản
+            </button>
+            <button class="dropdown-action" type="button" data-user-action="settings">
+              <i data-lucide="settings" class="h-4 w-4"></i> Cài đặt hiển thị
+            </button>
+            <a class="dropdown-action danger" href="DangNhap.html">
+              <i data-lucide="log-out" class="h-4 w-4"></i> Đăng xuất
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar fixed bottom-0 left-0 top-[80px] z-20 px-2 text-white">
+      <div class="sidebar-scroll">
+        <div class="nav-section mt-0">Tổng quan</div>
+        <a href="#" class="nav-item mt-2">
+          <i data-lucide="house"></i>
+          <span class="nav-copy">Dashboard</span>
+        </a>
+
+        <div class="nav-section">Giám sát địa bàn</div>
+        <a href="BanDoSoGis.html" class="nav-item mt-2">
+          <i data-lucide="map-pin"></i>
+          <span class="nav-copy">Bản đồ số GIS</span>
+        </a>
+
+        <div class="nav-section">Nghiệp vụ</div>
+        <a href="QuanLyHoSo.html" class="nav-item mt-2">
+          <i data-lucide="file-text"></i>
+          <span class="nav-copy">Quản lý hồ sơ</span>
+        </a>
+        <a href="CoSoDuLieuCSKD.html" class="nav-item">
+          <i data-lucide="database"></i>
+          <span class="nav-copy">Cơ sở dữ liệu CSKD-ANTT</span>
+        </a>
+        <a href="KiemTraCoSo.html" class="nav-item active">
+          <i data-lucide="clipboard-check"></i>
+          <span class="nav-copy">Kiểm tra cơ sở</span>
+        </a>
+        <a href="XuLyViPham.html" class="nav-item">
+          <i data-lucide="octagon-alert"></i>
+          <span class="nav-copy">Vi phạm / Xử lý vi phạm</span>
+        </a>
+        <a href="QuanLyPhanAnh.html" class="nav-item">
+          <i data-lucide="message-square-warning"></i>
+          <span class="nav-copy">Phản ánh kiến nghị</span>
+        </a>
+
+        <div class="nav-section">Báo cáo</div>
+        <a href="BaoCao-ThongKe.html" class="nav-item mt-2"><i data-lucide="chart-column-big"></i>
+          <span class="nav-copy">Báo cáo - thống kê</span></a>
+
+        <div class="nav-section">Cấu hình</div>
+        <a href="DanhMuc.html" class="nav-item mt-2"><i data-lucide="folder"></i>
+          <span class="nav-copy">Danh mục dùng chung</span>
+          <i data-lucide="chevron-down" class="ml-auto h-4 w-4 nav-copy"></i></a>
+        <a href="#" class="nav-item">
+          <i data-lucide="settings"></i>
+          <span class="nav-copy">Quản trị hệ thống</span>
+          <i data-lucide="chevron-down" class="ml-auto h-4 w-4 nav-copy"></i>
+        </a>
+      </div>
+
+      <div class="sidebar-action">
+        <button id="sidebarToggle" class="sidebar-toggle" type="button" aria-label="Thu gọn menu" aria-expanded="true">
+          <i data-lucide="chevron-left" class="toggle-icon"></i>
+          <span class="collapse-label">Thu gọn</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="content min-h-screen pt-[80px]">
+      <div class="module-page px-6 pb-7 pt-6 lg:px-7">
+        <!-- Component: Breadcrumbs & Header Actions -->
+        <section class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-5">
+          <div class="flex items-center gap-2 text-[13px] font-medium text-[#6b7280]">
+            <i data-lucide="house" class="h-4 w-4 text-[#9098a5]"></i>
+            <a href="../index.html" class="hover:text-red-600 transition-colors">Trang chủ</a>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
+            <a href="KiemTraCoSo.html" class="hover:text-red-600 transition-colors">Kiểm tra cơ sở</a>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
+            <a href="KiemTraCoSo.html" class="hover:text-red-600 transition-colors">Danh sách cuộc kiểm tra</a>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
+            <span class="text-gray-900 font-semibold">Tạo kế hoạch kiểm tra</span>
+          </div>
+          <div class="flex flex-wrap gap-3">
+            <a class="module-action-btn module-action-secondary" href="KiemTraCoSo.html">
+              <i data-lucide="arrow-left" class="h-4 w-4"></i> Quay lại
+            </a>
+          </div>
+        </section>
+
+
+
+        <!-- Main Plan Creation Form -->
+        <section class="module-form-card">
+          <form id="planForm" onsubmit="event.preventDefault();">
+
+            <!-- Section 1: Thông tin cơ sở -->
+            <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm mb-6">
+              <h3 class="text-sm font-bold text-[#cf0000] flex items-center gap-2 mb-5 pb-2 border-b border-gray-100">
+                <i data-lucide="building" class="h-4 w-4"></i> 1. Thông tin cơ sở
+              </h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <label class="block">
+                  <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase tracking-wide">Tên cơ sở <b class="text-red-500">*</b></span>
+                  <select id="facilitySelect" class="field w-full" required>
+                    <option value="" disabled>-- Chọn cơ sở kinh doanh --</option>
+                    <option value="CSDD01248" selected>Khách sạn Ninh Bình Hotel</option>
+                    <option value="CSDD01238">Khách sạn Hoa Lư</option>
+                    <option value="CSDD01247">Karaoke New Star</option>
+                    <option value="CSDD01241">Cầm đồ Hoàng Long</option>
+                  </select>
+                </label>
+
+                <label class="block">
+                  <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase tracking-wide">Loại hình kinh doanh <b class="text-red-500">*</b></span>
+                  <select id="facilityType" class="field w-full bg-gray-50 cursor-not-allowed" disabled required>
+                    <option value="Dịch vụ lưu trú" selected>Dịch vụ lưu trú</option>
+                    <option value="Karaoke">Karaoke</option>
+                    <option value="Cầm đồ">Cầm đồ</option>
+                  </select>
+                </label>
+
+                <label class="col-span-2 block">
+                  <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase tracking-wide">Địa chỉ <b class="text-red-500">*</b></span>
+                  <input id="facilityAddress" class="field w-full bg-gray-50 cursor-not-allowed" type="text" value="Số 12, đường Trần Hưng Đạo, P. Đông Thành, TP. Ninh Bình" readonly required />
+                </label>
+
+                <label class="block">
+                  <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase tracking-wide">Người đại diện / quản lý <b class="text-red-500">*</b></span>
+                  <input id="facilityOwner" class="field w-full bg-gray-50 cursor-not-allowed" type="text" value="Trần Văn B" readonly required />
+                </label>
+
+                <label class="block">
+                  <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase tracking-wide">Số điện thoại liên hệ <b class="text-red-500">*</b></span>
+                  <input id="facilityPhone" class="field w-full bg-gray-50 cursor-not-allowed" type="text" value="0229 3 888 999" readonly required />
+                </label>
+
+                <label class="block">
+                  <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase tracking-wide">Giấy phép / trạng thái giấy phép (nếu có)</span>
+                  <select id="facilityLicenseStatus" class="field w-full bg-gray-50 cursor-not-allowed" disabled>
+                    <option value="Giấy phép đủ điều kiện" selected>Giấy phép đủ điều kiện</option>
+                    <option value="Chưa cấp">Chưa cấp</option>
+                  </select>
+                </label>
+
+                <label class="block">
+                  <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase tracking-wide">Số giấy phép</span>
+                  <input id="facilityLicenseNum" class="field w-full bg-gray-50 cursor-not-allowed" type="text" value="12A3456789" readonly />
+                </label>
+              </div>
+            </div>
+
+            <!-- Section 2: Thông tin kế hoạch kiểm tra -->
+            <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm mb-6">
+              <h3 class="text-sm font-bold text-[#cf0000] flex items-center gap-2 mb-5 pb-2 border-b border-gray-100">
+                <i data-lucide="clipboard-list" class="h-4 w-4"></i> 2. Thông tin kế hoạch kiểm tra
+              </h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <label class="block">
+                  <span class="block mb-1 text-xs font-bold text-gray-700 uppercase tracking-wide">Mã kế hoạch <b class="text-red-500">*</b></span>
+                  <input class="field w-full bg-gray-50 text-gray-500 cursor-not-allowed" type="text" id="planCode" value="KH-2024-0001" readonly />
+                  <span class="text-[11px] text-gray-400 mt-1 block">(Tự động sinh)</span>
+                </label>
+
+                <label class="block">
+                  <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase tracking-wide">Đơn vị thực hiện <b class="text-red-500">*</b></span>
+                  <select class="field w-full" id="planAgency" required>
+                    <option value="Đội QLHC về TTXH - CA TP. Ninh Bình" selected>Đội Quản lý hành chính về TTXH - CA TP. Ninh Bình</option>
+                    <option value="Phòng CS QLHC về TTXH">Phòng CS QLHC về TTXH - Công an tỉnh</option>
+                  </select>
+                </label>
+
+                <label class="block">
+                  <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase tracking-wide">Ngày dự kiến kiểm tra <b class="text-red-500">*</b></span>
+                  <div class="relative">
+                    <input class="field w-full pr-10" type="date" id="planDate" value="2024-05-25" required />
+                    <i data-lucide="calendar" class="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none"></i>
+                  </div>
+                </label>
+
+                <label class="block">
+                  <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase tracking-wide">Thời gian dự kiến <b class="text-red-500">*</b></span>
+                  <div class="relative">
+                    <input class="field w-full pr-10" type="time" id="planTime" value="08:30" required />
+                    <i data-lucide="clock" class="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none"></i>
+                  </div>
+                </label>
+
+                <label class="block">
+                  <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase tracking-wide">Cán bộ/Đội kiểm tra <b class="text-red-500">*</b></span>
+                  <div class="relative">
+                    <input class="field w-full pr-10" type="text" id="leaderInput" value="Nguyễn Văn A" placeholder="Nhập tên cán bộ trưởng đoàn..." required />
+                    <i data-lucide="user" class="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400"></i>
+                  </div>
+                </label>
+
+                <div class="block">
+                  <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase tracking-wide">Thành viên <b class="text-red-500">*</b></span>
+                  <div class="flex gap-2 items-center">
+                    <div class="relative flex-1">
+                      <div class="field w-full min-h-[42px] py-1 px-2 flex flex-wrap gap-1.5 items-center bg-white border border-gray-300 rounded focus-within:ring-2 focus-within:ring-blue-500">
+                        <span class="inline-flex items-center gap-1 bg-gray-100 border border-gray-200 text-xs font-semibold px-2 py-0.5 rounded text-gray-700">
+                          Trần Thị B <button type="button" class="text-gray-400 hover:text-gray-600 font-bold ml-0.5">&times;</button>
+                        </span>
+                        <span class="inline-flex items-center gap-1 bg-gray-100 border border-gray-200 text-xs font-semibold px-2 py-0.5 rounded text-gray-700">
+                          Phạm Văn C <button type="button" class="text-gray-400 hover:text-gray-600 font-bold ml-0.5">&times;</button>
+                        </span>
+                        <input type="text" class="flex-1 min-w-[60px] bg-transparent border-none outline-none text-xs text-gray-700" placeholder="Thêm thành viên..." />
+                        <i data-lucide="chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none"></i>
+                      </div>
+                    </div>
+                    <button type="button" class="border border-red-200 text-[#cf0000] px-4 py-2.5 rounded text-xs font-bold hover:bg-red-50 transition shrink-0 flex items-center gap-1">
+                      + Thêm
+                    </button>
+                  </div>
+                </div>
+
+                <label class="col-span-2 block">
+                  <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase tracking-wide">Mục đích / lý do kiểm tra <b class="text-red-500">*</b></span>
+                  <textarea class="field w-full h-20 py-2.5" id="planPurpose" placeholder="Nhập lý do kiểm tra..." required>Kiểm tra định kỳ theo kế hoạch Quý II/2024 đối với cơ sở kinh doanh dịch vụ lưu trú.</textarea>
+                </label>
+
+                <label class="col-span-2 block">
+                  <span class="block mb-1.5 text-xs font-bold text-gray-700 uppercase tracking-wide">Ghi chú / lưu ý đặc biệt (nếu cần)</span>
+                  <textarea class="field w-full h-20 py-2.5" id="planNotes" placeholder="Nhập ghi chú đặc biệt...">Yêu cầu kiểm tra hồ sơ nhân sự và hệ thống PCCC của cơ sở.</textarea>
+                </label>
+              </div>
+            </div>
+
+            <!-- Section 3: Chi tiết kiểm tra (tùy chọn) -->
+            <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm mb-6">
+              <h3 class="text-sm font-bold text-[#cf0000] flex items-center gap-2 mb-2 pb-2">
+                <i data-lucide="check-square" class="h-4 w-4"></i> 3. Chi tiết kiểm tra (tùy chọn)
+              </h3>
+              <p class="text-xs text-gray-500 mb-4 font-medium">Danh sách các hạng mục sẽ kiểm tra (Checklist)</p>
+              
+              <div class="overflow-x-auto border border-gray-200 rounded-lg">
+                <table class="w-full text-left border-collapse text-xs">
+                  <thead>
+                    <tr class="bg-gray-50 border-b border-gray-200 font-bold text-gray-700">
+                      <th class="p-3 w-12 text-center">STT</th>
+                      <th class="p-3 w-[40%]">Hạng mục kiểm tra</th>
+                      <th class="p-3 w-[25%]">Nhóm tiêu chí</th>
+                      <th class="p-3">Ghi chú</th>
+                      <th class="p-3 w-16 text-center">Thao tác</th>
+                    </tr>
+                  </thead>
+                  <tbody id="checklistTableBody">
+                    <tr class="border-b border-gray-100 hover:bg-gray-50">
+                      <td class="p-3 text-center font-medium text-gray-500 row-stt">1</td>
+                      <td class="p-3">
+                        <input type="text" class="field w-full bg-white border border-gray-200 p-1 px-2 text-xs" value="Điều kiện về an ninh, trật tự" />
+                      </td>
+                      <td class="p-3">
+                        <input type="text" class="field w-full bg-white border border-gray-200 p-1 px-2 text-xs" value="ATTT" />
+                      </td>
+                      <td class="p-3">
+                        <input type="text" class="field w-full bg-white border border-gray-200 p-1 px-2 text-xs" placeholder="Nhập ghi chú..." />
+                      </td>
+                      <td class="p-3 text-center">
+                        <button type="button" class="text-gray-400 hover:text-red-500 transition-colors btn-delete-row">
+                          <i data-lucide="trash-2" class="h-4 w-4 mx-auto"></i>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr class="border-b border-gray-100 hover:bg-gray-50">
+                      <td class="p-3 text-center font-medium text-gray-500 row-stt">2</td>
+                      <td class="p-3">
+                        <input type="text" class="field w-full bg-white border border-gray-200 p-1 px-2 text-xs" value="Điều kiện về PCCC" />
+                      </td>
+                      <td class="p-3">
+                        <input type="text" class="field w-full bg-white border border-gray-200 p-1 px-2 text-xs" value="PCCC" />
+                      </td>
+                      <td class="p-3">
+                        <input type="text" class="field w-full bg-white border border-gray-200 p-1 px-2 text-xs" placeholder="Nhập ghi chú..." />
+                      </td>
+                      <td class="p-3 text-center">
+                        <button type="button" class="text-gray-400 hover:text-red-500 transition-colors btn-delete-row">
+                          <i data-lucide="trash-2" class="h-4 w-4 mx-auto"></i>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr class="border-b border-gray-100 hover:bg-gray-50">
+                      <td class="p-3 text-center font-medium text-gray-500 row-stt">3</td>
+                      <td class="p-3">
+                        <input type="text" class="field w-full bg-white border border-gray-200 p-1 px-2 text-xs" value="Quản lý nhân sự" />
+                      </td>
+                      <td class="p-3">
+                        <input type="text" class="field w-full bg-white border border-gray-200 p-1 px-2 text-xs" value="QLNS" />
+                      </td>
+                      <td class="p-3">
+                        <input type="text" class="field w-full bg-white border border-gray-200 p-1 px-2 text-xs" placeholder="Nhập ghi chú..." />
+                      </td>
+                      <td class="p-3 text-center">
+                        <button type="button" class="text-gray-400 hover:text-red-500 transition-colors btn-delete-row">
+                          <i data-lucide="trash-2" class="h-4 w-4 mx-auto"></i>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr class="border-b border-gray-100 hover:bg-gray-50">
+                      <td class="p-3 text-center font-medium text-gray-500 row-stt">4</td>
+                      <td class="p-3">
+                        <input type="text" class="field w-full bg-white border border-gray-200 p-1 px-2 text-xs" value="Lưu trữ hồ sơ, sổ sách" />
+                      </td>
+                      <td class="p-3">
+                        <input type="text" class="field w-full bg-white border border-gray-200 p-1 px-2 text-xs" value="Hồ sơ" />
+                      </td>
+                      <td class="p-3">
+                        <input type="text" class="field w-full bg-white border border-gray-200 p-1 px-2 text-xs" placeholder="Nhập ghi chú..." />
+                      </td>
+                      <td class="p-3 text-center">
+                        <button type="button" class="text-gray-400 hover:text-red-500 transition-colors btn-delete-row">
+                          <i data-lucide="trash-2" class="h-4 w-4 mx-auto"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              
+              <button type="button" id="btnAddRow" class="mt-3 border border-red-200 text-[#cf0000] px-4 py-2 rounded text-xs font-bold hover:bg-red-50 transition flex items-center gap-1.5">
+                <i data-lucide="plus" class="h-3.5 w-3.5"></i> Thêm hạng mục
+              </button>
+            </div>
+
+            <!-- Section 5: Ghi chú / tài liệu tham khảo -->
+            <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm mb-6">
+              <h3 class="text-sm font-bold text-[#cf0000] flex items-center gap-2 mb-5 pb-2 border-b border-gray-100">
+                <i data-lucide="paperclip" class="h-4 w-4"></i> 5. Ghi chú / tài liệu tham khảo
+              </h3>
+              
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                
+                <!-- Left: Tài liệu áp dụng -->
+                <div>
+                  <h4 class="text-xs font-bold text-gray-700 uppercase tracking-wide mb-3">Tài liệu áp dụng</h4>
+                  <div class="space-y-2.5" id="attachmentsContainer">
+                    <div class="flex items-center gap-3 p-3 bg-gray-50 border border-gray-200 rounded-lg hover:border-gray-300 transition-colors relative group">
+                      <div class="w-10 h-10 bg-red-100 text-red-600 rounded flex items-center justify-center font-bold text-xs shrink-0">PDF</div>
+                      <div class="flex-1 min-w-0">
+                        <p class="text-xs font-bold text-gray-900 truncate">Hướng dẫn kiểm tra CSKD dịch vụ lưu trú.pdf</p>
+                        <p class="text-[10px] text-gray-500 font-medium">1.25 MB</p>
+                      </div>
+                      <button type="button" class="text-gray-400 hover:text-gray-900 transition-colors"><i data-lucide="download" class="h-4 w-4"></i></button>
+                    </div>
+                    
+                    <div class="flex items-center gap-3 p-3 bg-gray-50 border border-gray-200 rounded-lg hover:border-gray-300 transition-colors relative group">
+                      <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded flex items-center justify-center font-bold text-xs shrink-0">DOCX</div>
+                      <div class="flex-1 min-w-0">
+                        <p class="text-xs font-bold text-gray-900 truncate">Quy định về PCCC đối với cơ sở lưu trú.docx</p>
+                        <p class="text-[10px] text-gray-500 font-medium">256 KB</p>
+                      </div>
+                      <button type="button" class="text-gray-400 hover:text-gray-900 transition-colors"><i data-lucide="download" class="h-4 w-4"></i></button>
+                    </div>
+
+                    <div class="flex items-center gap-3 p-3 bg-gray-50 border border-gray-200 rounded-lg hover:border-gray-300 transition-colors relative group">
+                      <div class="w-10 h-10 bg-green-100 text-green-600 rounded flex items-center justify-center font-bold text-xs shrink-0">XLSX</div>
+                      <div class="flex-1 min-w-0">
+                        <p class="text-xs font-bold text-gray-900 truncate">Checklist kiểm tra cơ sở lưu trú.xlsx</p>
+                        <p class="text-[10px] text-gray-500 font-medium">98 KB</p>
+                      </div>
+                      <button type="button" class="text-gray-400 hover:text-gray-900 transition-colors"><i data-lucide="download" class="h-4 w-4"></i></button>
+                    </div>
+                  </div>
+
+                  <button type="button" id="btnUploadDoc" class="mt-3.5 border border-red-200 text-[#cf0000] px-4 py-2 rounded text-xs font-bold hover:bg-red-50 transition flex items-center gap-1.5">
+                    <i data-lucide="plus" class="h-3.5 w-3.5"></i> Thêm tài liệu
+                  </button>
+                  <input type="file" id="fileUploadInput" class="hidden" />
+                </div>
+
+                <!-- Right: Yêu cầu đặc biệt -->
+                <div>
+                  <h4 class="text-xs font-bold text-gray-700 uppercase tracking-wide mb-3">Lưu ý / yêu cầu đặc biệt cho đoàn kiểm tra</h4>
+                  <div class="relative">
+                    <textarea id="specialNotesArea" class="field w-full h-[156px] py-3 text-xs leading-relaxed font-medium" placeholder="Nhập lưu ý đặc biệt cho đoàn kiểm tra..." maxlength="500">
+• Mang theo đầy đủ biểu mẫu, máy ảnh.
+• Kiểm tra thực tế các trang thiết bị PCCC.
+• Đối chiếu hồ sơ giấy phép với hồ sơ lưu trữ tại cơ quan.
+• Báo cáo kết quả trong ngày.</textarea>
+                    <span id="charCount" class="absolute bottom-2.5 right-3 text-[10px] text-gray-400 font-semibold bg-white px-1">192/500</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Footer Action Buttons -->
+            <div class="flex justify-between items-center mt-6 pt-5 border-t border-gray-100">
+              <a href="KiemTraCoSo.html" class="px-5 py-2.5 text-xs font-bold text-gray-600 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition flex items-center gap-1.5 shadow-sm">
+                <i data-lucide="arrow-left" class="h-4 w-4"></i> Quay lại
+              </a>
+              <button type="submit" class="px-6 py-2.5 text-xs font-bold text-white bg-[#cf0000] border border-[#cf0000] rounded-lg hover:bg-[#b00000] transition flex items-center gap-1.5 shadow-sm">
+                <i data-lucide="save" class="h-4 w-4"></i> Lưu kế hoạch
+              </button>
+            </div>
+
+          </form>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <!-- SUCCESS POPUP MODAL -->
+  <div id="successModal" class="modal-overlay animate-[fadeIn_0.2s_ease-out]" hidden>
+    <section class="case-modal max-w-sm text-center p-6 bg-white rounded-xl shadow-2xl border border-gray-100" role="dialog" aria-modal="true">
+      <div class="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-4 text-green-600 shadow-inner">
+        <i data-lucide="check-check" class="h-8 w-8"></i>
+      </div>
+      <h2 class="text-base font-bold text-gray-900 mb-2">Lập kế hoạch thành công</h2>
+      <p class="text-xs text-gray-500 mb-6 leading-relaxed">Kế hoạch kiểm tra mới đã được lập và được đưa vào danh sách lịch kiểm tra của hệ thống.</p>
+      <button class="w-full py-2.5 bg-[#cf0000] text-white rounded-lg font-bold text-xs hover:bg-[#b00000] transition shadow-md" id="btnGoHome" type="button">
+        Quay lại trang danh sách
+      </button>
+    </section>
+  </div>
+
+  <script>
+    // Mock databases of facilities
+    const mockFacilities = {
+      "CSDD01248": {
+        name: "Khách sạn Ninh Bình Hotel",
+        type: "Dịch vụ lưu trú",
+        address: "Số 12, đường Trần Hưng Đạo, P. Đông Thành, TP. Ninh Bình",
+        owner: "Trần Văn B",
+        phone: "0229 3 888 999",
+        licenseStatus: "Giấy phép đủ điều kiện",
+        licenseNum: "12A3456789"
+      },
+      "CSDD01238": {
+        name: "Khách sạn Hoa Lư",
+        type: "Dịch vụ lưu trú",
+        address: "Số 27, đường Trương Hán Siêu, TP. Ninh Bình",
+        owner: "Đinh Thị Hạnh",
+        phone: "0912 100 238",
+        licenseStatus: "Giấy phép đủ điều kiện",
+        licenseNum: "GP-2700810038"
+      },
+      "CSDD01247": {
+        name: "Karaoke New Star",
+        type: "Karaoke",
+        address: "Số 45, đường Lê Thái Tổ, TP. Ninh Bình",
+        owner: "Trần Văn Nam",
+        phone: "0912 100 247",
+        licenseStatus: "Giấy phép đủ điều kiện",
+        licenseNum: "GP-2700810047"
+      },
+      "CSDD01241": {
+        name: "Cầm đồ Hoàng Long",
+        type: "Cầm đồ",
+        address: "Số 15, đường Hoàng Diệu, TP. Ninh Bình",
+        owner: "Vũ Quốc Long",
+        phone: "0912 100 241",
+        licenseStatus: "Giấy phép đủ điều kiện",
+        licenseNum: "GP-2700810041"
+      }
+    };
+
+    // Auto-populate logic on select change
+    const facilitySelect = document.getElementById('facilitySelect');
+    facilitySelect?.addEventListener('change', (e) => {
+      const id = e.target.value;
+      const data = mockFacilities[id];
+      if (!data) return;
+      document.getElementById('facilityType').value = data.type;
+      document.getElementById('facilityAddress').value = data.address;
+      document.getElementById('facilityOwner').value = data.owner;
+      document.getElementById('facilityPhone').value = data.phone;
+      document.getElementById('facilityLicenseStatus').value = data.licenseStatus;
+      document.getElementById('facilityLicenseNum').value = data.licenseNum;
+    });
+
+    // Collapsible Sidebar logic
+    document.querySelector('#sidebarToggle')?.addEventListener('click', () => {
+      document.querySelector('.desktop-shell')?.classList.toggle('is-collapsed');
+    });
+
+    // Topbar Dropdown toggling
+    const initMenuToggle = (btnId, menuId) => {
+      const btn = document.getElementById(btnId);
+      const menu = document.getElementById(menuId);
+      if (!btn || !menu) return;
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const opened = btn.classList.toggle('is-open');
+        menu.hidden = !opened;
+      });
+    };
+    initMenuToggle('notificationToggle', 'notificationMenu');
+    initMenuToggle('userMenuToggle', 'userMenu');
+    document.addEventListener('click', () => {
+      document.getElementById('notificationMenu').hidden = true;
+      document.getElementById('userMenu').hidden = true;
+      document.getElementById('notificationToggle')?.classList.remove('is-open');
+      document.getElementById('userMenuToggle')?.classList.remove('is-open');
+    });
+
+    // Dynamic checklist table logic
+    const checklistBody = document.getElementById('checklistTableBody');
+    const btnAddRow = document.getElementById('btnAddRow');
+
+    const updateSTT = () => {
+      const rows = checklistBody.querySelectorAll('tr');
+      rows.forEach((row, index) => {
+        row.querySelector('.row-stt').textContent = index + 1;
+      });
+    };
+
+    checklistBody?.addEventListener('click', (e) => {
+      const deleteBtn = e.target.closest('.btn-delete-row');
+      if (deleteBtn) {
+        const row = deleteBtn.closest('tr');
+        row.remove();
+        updateSTT();
+      }
+    });
+
+    btnAddRow?.addEventListener('click', () => {
+      const tr = document.createElement('tr');
+      tr.className = 'border-b border-gray-100 hover:bg-gray-50';
+      tr.innerHTML = `
+        <td class="p-3 text-center font-medium text-gray-500 row-stt"></td>
+        <td class="p-3">
+          <input type="text" class="field w-full bg-white border border-gray-200 p-1 px-2 text-xs" placeholder="Hạng mục kiểm tra..." />
+        </td>
+        <td class="p-3">
+          <input type="text" class="field w-full bg-white border border-gray-200 p-1 px-2 text-xs" placeholder="Nhóm tiêu chí..." />
+        </td>
+        <td class="p-3">
+          <input type="text" class="field w-full bg-white border border-gray-200 p-1 px-2 text-xs" placeholder="Nhập ghi chú..." />
+        </td>
+        <td class="p-3 text-center">
+          <button type="button" class="text-gray-400 hover:text-red-500 transition-colors btn-delete-row">
+            <i data-lucide="trash-2" class="h-4 w-4 mx-auto"></i>
+          </button>
+        </td>
+      `;
+      checklistBody.appendChild(tr);
+      updateSTT();
+      if (window.lucide) window.lucide.createIcons();
+    });
+
+    // Special notes character count logic
+    const notesArea = document.getElementById('specialNotesArea');
+    const charCount = document.getElementById('charCount');
+    const updateCharCount = () => {
+      if (!notesArea || !charCount) return;
+      charCount.textContent = `${notesArea.value.length}/500`;
+    };
+    notesArea?.addEventListener('input', updateCharCount);
+    updateCharCount();
+
+    // Reference files upload simulation
+    const fileUploadInput = document.getElementById('fileUploadInput');
+    const btnUploadDoc = document.getElementById('btnUploadDoc');
+    const attachmentsContainer = document.getElementById('attachmentsContainer');
+
+    btnUploadDoc?.addEventListener('click', () => fileUploadInput?.click());
+    fileUploadInput?.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const sizeStr = file.size > 1024 * 1024 
+        ? `${(file.size / (1024 * 1024)).toFixed(2)} MB` 
+        : `${(file.size / 1024).toFixed(0)} KB`;
+      const ext = file.name.split('.').pop().toUpperCase();
+      
+      let badgeColor = 'bg-gray-100 text-gray-600';
+      if (ext === 'PDF') badgeColor = 'bg-red-100 text-red-600';
+      else if (ext === 'DOC' || ext === 'DOCX') badgeColor = 'bg-blue-100 text-blue-600';
+      else if (ext === 'XLS' || ext === 'XLSX') badgeColor = 'bg-green-100 text-green-600';
+
+      const fileItem = document.createElement('div');
+      fileItem.className = 'flex items-center gap-3 p-3 bg-gray-50 border border-gray-200 rounded-lg hover:border-gray-300 transition-colors relative group';
+      fileItem.innerHTML = `
+        <div class="w-10 h-10 ${badgeColor} rounded flex items-center justify-center font-bold text-xs shrink-0">${ext}</div>
+        <div class="flex-1 min-w-0">
+          <p class="text-xs font-bold text-gray-900 truncate">${file.name}</p>
+          <p class="text-[10px] text-gray-500 font-medium">${sizeStr}</p>
+        </div>
+        <button type="button" class="text-gray-400 hover:text-gray-900 transition-colors"><i data-lucide="download" class="h-4 w-4"></i></button>
+      `;
+      attachmentsContainer?.appendChild(fileItem);
+      if (window.lucide) window.lucide.createIcons();
+    });
+
+    // Form submit success dialog logic
+    const planForm = document.getElementById('planForm');
+    planForm?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      // Check if Leader is input
+      const leader = document.getElementById('leaderInput').value.trim();
+      if (!leader) {
+        alert('Vui lòng nhập cán bộ Trưởng đoàn.');
+        return;
+      }
+
+      // Show Success Modal
+      document.getElementById('successModal').hidden = false;
+    });
+
+    document.getElementById('btnGoHome').addEventListener('click', () => {
+      window.location.href = 'KiemTraCoSo.html';
+    });
+
+    window.addEventListener('load', () => {
+      if (window.lucide) window.lucide.createIcons();
+    });
+  </script>
+  <script src="../scripts/auth.js"></script>
+  <script src='../scripts/layout-sync.js'></script>
+</body>
+
+</html>

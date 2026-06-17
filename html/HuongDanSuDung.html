@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hướng dẫn sử dụng – Công an tỉnh Ninh Bình</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/public-pages.css">
+  <script src="../scripts/auth.js"></script>
+  <style>
+    .faq-accordion-header {
+      cursor: pointer;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+    .faq-accordion-header:hover {
+      background: #fff8f8;
+      border-color: #fca5a5;
+    }
+    .faq-accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s cubic-bezier(0, 1, 0, 1);
+    }
+    .faq-accordion-item.active .faq-accordion-content {
+      max-height: 1000px;
+      transition: max-height 0.3s cubic-bezier(1, 0, 1, 0);
+    }
+    .faq-accordion-item.active .faq-accordion-header {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      background: #fff5f5;
+      border-color: #fca5a5;
+    }
+    .faq-accordion-item.active .chevron-icon {
+      transform: rotate(180deg);
+      color: #bd0000;
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="custom-header">
+  <a href="../index.html" class="custom-brand">
+    <img src="../public/logocongan.png" alt="Logo Bộ Công an">
+    <div class="custom-brand-text">
+      <h1>CÔNG AN TỈNH NINH BÌNH</h1>
+      <p>HỆ THỐNG QUẢN LÝ CƠ SỞ KINH DOANH CÓ ĐIỀU KIỆN VỀ ANTT</p>
+    </div>
+  </a>
+
+  <nav>
+    <ul class="custom-nav">
+      <li class="custom-nav-item" id="nav-home">
+        <a class="custom-nav-link" href="../index.html">
+          <i data-lucide="home"></i> Trang chủ
+        </a>
+      </li>
+      <li class="custom-nav-item" id="nav-map">
+        <a class="custom-nav-link" href="../index.html?tab=map">
+          <i data-lucide="map"></i> Bản đồ số
+        </a>
+      </li>
+      <li class="custom-nav-item" id="nav-procedures">
+        <a class="custom-nav-link" href="../index.html?tab=procedures">
+          <i data-lucide="file-text"></i> Thủ tục <i data-lucide="chevron-down" class="ml-0.5"></i>
+        </a>
+        <div class="custom-nav-dropdown">
+          <a href="DangKyCoSo.html">Đăng ký cơ sở mới</a>
+          <a href="ThayDoiThongTin.html">Khai báo thay đổi</a>
+          <a href="../index.html?tab=procedures">Danh mục thủ tục</a>
+        </div>
+      </li>
+      <li class="custom-nav-item" id="nav-search">
+        <a class="custom-nav-link" href="../index.html?tab=search">
+          <i data-lucide="search"></i> Tra cứu hồ sơ
+        </a>
+      </li>
+      <li class="custom-nav-item active" id="nav-support">
+        <a class="custom-nav-link" href="../index.html?tab=feedback">
+          <i data-lucide="headset"></i> Hỗ trợ <i data-lucide="chevron-down" class="ml-0.5"></i>
+        </a>
+        <div class="custom-nav-dropdown">
+          <a href="HuongDanSuDung.html">Hướng dẫn sử dụng</a>
+          <a href="TinTucThongBao.html">Tin tức & Thông báo</a>
+          <a href="CauHoiThuongGap.html">Câu hỏi thường gặp</a>
+          <a href="LienHeHoTro.html">Liên hệ hỗ trợ</a>
+          <a href="../index.html?tab=feedback">Tiếp nhận phản ánh</a>
+        </div>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Auth widget: populated by JS below -->
+  <div id="headerAuthArea">
+    <a class="custom-login-btn" href="DangNhap.html">
+      <i data-lucide="user"></i>
+      Đăng nhập
+    </a>
+  </div>
+</header>
+
+<!-- ── Auth-gate modal ──────────────────────────────── -->
+<div id="authGateModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.55);backdrop-filter:blur(3px);align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:20px;padding:36px 40px 32px;max-width:420px;width:90%;box-shadow:0 24px 56px rgba(0,0,0,0.22);text-align:center;">
+    <div style="width:56px;height:56px;border-radius:50%;background:#fff2f2;display:grid;place-items:center;margin:0 auto 16px;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#bd0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    </div>
+    <h3 style="font-size:18px;font-weight:700;color:#1b2430;margin:0 0 8px;">Yêu cầu đăng nhập</h3>
+    <p style="font-size:14px;color:#6b7280;margin:0 0 24px;line-height:1.55;">Chức năng này yêu cầu bạn đăng nhập vào hệ thống. Vui lòng đăng nhập để tiếp tục.</p>
+    <div style="display:flex;gap:12px;justify-content:center;">
+      <button id="authGateCancel" style="flex:1;height:44px;border-radius:8px;border:1.5px solid #d1d5db;background:#fff;font-size:14px;font-weight:600;color:#374151;cursor:pointer;">Hủy</button>
+      <a href="DangNhap.html" style="flex:1;height:44px;border-radius:8px;background:linear-gradient(180deg,#ed000b,#d80008);font-size:14px;font-weight:700;color:#fff;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;">Đăng nhập ngay</a>
+    </div>
+  </div>
+</div>
+
+<!-- BREADCRUMB -->
+<div class="pub-breadcrumb">
+  <a href="../index.html">Trang chủ</a>
+  <i data-lucide="chevron-right" style="width:14px;height:14px;color:#d1d5db"></i>
+  <span>Hỗ trợ</span>
+  <i data-lucide="chevron-right" style="width:14px;height:14px;color:#d1d5db"></i>
+  <span style="color:#374151;font-weight:600">Hướng dẫn sử dụng</span>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="pub-main max-w-7xl mx-auto px-10 box-sizing-border-box" style="padding-top: 24px;">
+  <!-- Title and Search controls -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-200 pb-4 mb-6 gap-4">
+    <h1 class="text-2xl font-bold text-slate-800">Hướng dẫn sử dụng</h1>
+    <div class="relative w-72">
+      <input type="text" id="guideSearchInput" placeholder="Tìm kiếm tài liệu hướng dẫn..." class="w-full h-10 pl-10 pr-4 rounded-lg border border-slate-200 focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 text-sm" />
+      <i data-lucide="search" class="absolute left-3.5 top-3 w-4 h-4 text-slate-400"></i>
+    </div>
+  </div>
+  <!-- Sub-navigation Tabs -->
+  <div class="tab-pills mb-6">
+    <button class="tab-pill active" onclick="switchGuideTab('all', this)">
+      <i data-lucide="layout-grid"></i> Tất cả hướng dẫn
+    </button>
+    <button class="tab-pill" onclick="switchGuideTab('register', this)">
+      <i data-lucide="plus-circle"></i> Đăng ký cơ sở mới
+    </button>
+    <button class="tab-pill" onclick="switchGuideTab('change', this)">
+      <i data-lucide="file-edit"></i> Thay đổi thông tin
+    </button>
+    <button class="tab-pill" onclick="switchGuideTab('daily', this)">
+      <i data-lucide="calendar"></i> Khai báo định kỳ
+    </button>
+  </div>
+
+  <div class="pub-form-layout">
+    <!-- Left Column: Guidelines List -->
+    <div class="pub-form-main flex flex-col gap-5">
+      
+      <!-- Interactive Visual Workflow diagram as signature element -->
+      <div class="form-card">
+        <div class="form-card-title">
+          <i data-lucide="git-branch"></i> QUY TRÌNH KÊ KHAI TRỰC TUYẾN 4 BƯỚC
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 py-2">
+          <div class="flex flex-col items-center text-center p-3 bg-slate-50 rounded-xl border border-slate-100">
+            <div class="w-10 h-10 rounded-full bg-red-100 text-red-700 flex items-center justify-center font-bold text-base shadow-sm mb-3">1</div>
+            <h4 class="font-bold text-sm text-slate-800 mb-1">Nộp Hồ Sơ</h4>
+            <p class="text-xs text-slate-500 leading-relaxed">Điền thông tin trực tuyến và đính kèm giấy tờ chứng minh.</p>
+          </div>
+          <div class="flex flex-col items-center text-center p-3 bg-slate-50 rounded-xl border border-slate-100">
+            <div class="w-10 h-10 rounded-full bg-red-100 text-red-700 flex items-center justify-center font-bold text-base shadow-sm mb-3">2</div>
+            <h4 class="font-bold text-sm text-slate-800 mb-1">Tiếp Nhận</h4>
+            <p class="text-xs text-slate-500 leading-relaxed">Cán bộ Công an kiểm tra tính hợp lệ trong vòng 24h làm việc.</p>
+          </div>
+          <div class="flex flex-col items-center text-center p-3 bg-slate-50 rounded-xl border border-slate-100">
+            <div class="w-10 h-10 rounded-full bg-red-100 text-red-700 flex items-center justify-center font-bold text-base shadow-sm mb-3">3</div>
+            <h4 class="font-bold text-sm text-slate-800 mb-1">Thẩm Định</h4>
+            <p class="text-xs text-slate-500 leading-relaxed">Khảo sát cơ sở thực tế về điều kiện PCCC và ANTT hành chính.</p>
+          </div>
+          <div class="flex flex-col items-center text-center p-3 bg-slate-50 rounded-xl border border-slate-100">
+            <div class="w-10 h-10 rounded-full bg-red-100 text-red-700 flex items-center justify-center font-bold text-base shadow-sm mb-3">4</div>
+            <h4 class="font-bold text-sm text-slate-800 mb-1">Trả Kết Quả</h4>
+            <p class="text-xs text-slate-500 leading-relaxed">Nhận Giấy chứng nhận đủ điều kiện ANTT bản số hoặc bản giấy.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ Guides List -->
+      <div class="flex flex-col gap-4" id="guidesContainer">
+        
+        <!-- Item 1: Register -->
+        <div class="faq-accordion-item active border border-slate-200 rounded-lg bg-white overflow-hidden shadow-sm" data-category="register">
+          <div class="faq-accordion-header flex items-center justify-between p-5 font-semibold text-slate-800 border-b border-slate-100" onclick="toggleAccordion(this)">
+            <span class="flex items-center gap-3"><i data-lucide="store" class="w-5 h-5 text-red-600"></i> Hướng dẫn kê khai đăng ký cơ sở mới</span>
+            <i data-lucide="chevron-down" class="chevron-icon w-5 h-5 text-slate-400 transition-transform"></i>
+          </div>
+          <div class="faq-accordion-content">
+            <div class="p-5 text-sm text-slate-600 leading-relaxed flex flex-col gap-3">
+              <p>Quy trình kê khai và đăng ký cơ sở kinh doanh có điều kiện về ANTT lần đầu trên hệ thống:</p>
+              <div class="flex flex-col gap-2.5 pl-4 border-l-2 border-red-500">
+                <div><strong>Bước 1:</strong> Đăng nhập hệ thống bằng tài khoản được cấp. Chọn menu <strong>Đăng ký cơ sở mới</strong> trên Trang chủ hoặc tab Thủ tục.</div>
+                <div><strong>Bước 2:</strong> Nhập đầy đủ thông tin cơ sở gồm: Tên cơ sở, MST, Địa chỉ trụ sở, Người đại diện pháp luật.</div>
+                <div><strong>Bước 3:</strong> Khai báo thông tin PCCC và Cơ sở vật chất của cơ sở. Tải lên ảnh chụp mặt tiền và sơ đồ phòng.</div>
+                <div><strong>Bước 4:</strong> Đính kèm hồ sơ bắt buộc (Văn bản đề nghị, Bản sao ĐKKD, Giấy tờ PCCC). Chọn <strong>Gửi hồ sơ</strong> để hoàn thành.</div>
+              </div>
+              <div class="bg-red-50 text-red-800 p-3 rounded-lg flex items-start gap-2.5 mt-2">
+                <i data-lucide="alert-circle" class="w-4 h-4 mt-0.5 flex-shrink-0"></i>
+                <span class="text-xs">Lưu ý: Tất cả các file hồ sơ đính kèm cần chụp rõ nét từ bản gốc, định dạng PDF hoặc ảnh (JPG, PNG), dung lượng mỗi file không quá 10MB.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 2: Change -->
+        <div class="faq-accordion-item border border-slate-200 rounded-lg bg-white overflow-hidden shadow-sm" data-category="change">
+          <div class="faq-accordion-header flex items-center justify-between p-5 font-semibold text-slate-800 border-b border-slate-100" onclick="toggleAccordion(this)">
+            <span class="flex items-center gap-3"><i data-lucide="file-edit" class="w-5 h-5 text-red-600"></i> Hướng dẫn khai báo thay đổi thông tin cơ sở</span>
+            <i data-lucide="chevron-down" class="chevron-icon w-5 h-5 text-slate-400 transition-transform"></i>
+          </div>
+          <div class="faq-accordion-content">
+            <div class="p-5 text-sm text-slate-600 leading-relaxed flex flex-col gap-3">
+              <p>Khi thay đổi người đại diện pháp luật, địa điểm kinh doanh hoặc ngành nghề, chủ cơ sở phải khai báo thay đổi thông tin:</p>
+              <div class="flex flex-col gap-2.5 pl-4 border-l-2 border-red-500">
+                <div><strong>Bước 1:</strong> Truy cập mục <strong>Khai báo thay đổi</strong>. Chọn cơ sở cần thay đổi từ danh sách cơ sở kinh doanh của bạn.</div>
+                <div><strong>Bước 2:</strong> Chọn các mục thay đổi cụ thể (Thông tin nhân sự, Địa điểm hoặc Ngành nghề).</div>
+                <div><strong>Bước 3:</strong> Nhập nội dung thay đổi chi tiết và lý do điều chỉnh. Tải lên tệp văn bản đề nghị thay đổi.</div>
+                <div><strong>Bước 4:</strong> Ký xác nhận điện tử cam kết tính chính xác và bấm <strong>Gửi khai báo</strong>.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 3: Daily -->
+        <div class="faq-accordion-item border border-slate-200 rounded-lg bg-white overflow-hidden shadow-sm" data-category="daily">
+          <div class="faq-accordion-header flex items-center justify-between p-5 font-semibold text-slate-800 border-b border-slate-100" onclick="toggleAccordion(this)">
+            <span class="flex items-center gap-3"><i data-lucide="users" class="w-5 h-5 text-red-600"></i> Quy định và cách thức khai báo lưu trú qua đêm</span>
+            <i data-lucide="chevron-down" class="chevron-icon w-5 h-5 text-slate-400 transition-transform"></i>
+          </div>
+          <div class="faq-accordion-content">
+            <div class="p-5 text-sm text-slate-600 leading-relaxed flex flex-col gap-3">
+              <p>Đối với cơ sở kinh doanh dịch vụ lưu trú (Khách sạn, Nhà nghỉ, Nhà trọ), việc khai báo khách lưu trú qua đêm là bắt buộc trước 23h00 hàng ngày:</p>
+              <div class="flex flex-col gap-2.5 pl-4 border-l-2 border-red-500">
+                <div><strong>Cách 1: Khai báo trực tiếp trực tuyến:</strong> Nhập họ tên, CCCD/Hộ chiếu, Quốc tịch và số phòng của khách trực tiếp vào giao diện Khai báo lưu trú.</div>
+                <div><strong>Cách 2: Tải file excel danh sách:</strong> Sử dụng file mẫu do Công an tỉnh cung cấp, điền thông tin khách lưu trú và import lên hệ thống để nộp hàng loạt.</div>
+              </div>
+              <p class="text-xs text-slate-500 mt-1">Thông tin lưu trú sau khi gửi sẽ được đồng bộ ngay lập tức tới cơ quan Công an cấp xã để quản lý.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 4: Daily -->
+        <div class="faq-accordion-item border border-slate-200 rounded-lg bg-white overflow-hidden shadow-sm" data-category="daily">
+          <div class="faq-accordion-header flex items-center justify-between p-5 font-semibold text-slate-800 border-b border-slate-100" onclick="toggleAccordion(this)">
+            <span class="flex items-center gap-3"><i data-lucide="shield-alert" class="w-5 h-5 text-red-600"></i> Hướng dẫn báo cáo định kỳ về tình hình ANTT</span>
+            <i data-lucide="chevron-down" class="chevron-icon w-5 h-5 text-slate-400 transition-transform"></i>
+          </div>
+          <div class="faq-accordion-content">
+            <div class="p-5 text-sm text-slate-600 leading-relaxed flex flex-col gap-3">
+              <p>Báo cáo định kỳ hàng quý/năm được nộp trực tuyến qua chức năng Báo cáo tình hình ANTT:</p>
+              <div class="flex flex-col gap-2.5 pl-4 border-l-2 border-red-500">
+                <div><strong>Báo cáo quý:</strong> Nộp trước ngày 25 của tháng cuối quý.</div>
+                <div><strong>Báo cáo năm:</strong> Nộp trước ngày 15 tháng 12 hàng năm.</div>
+                <div><strong>Quy trình nộp:</strong> Tải biểu mẫu báo cáo, nhập số liệu tình hình an ninh, nhân sự biến động, sự cố phát sinh, đóng dấu đỏ của cơ sở, quét PDF và tải lên hệ thống.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Right Column: Sidebar Resources -->
+    <div class="pub-form-sidebar">
+      <div class="side-card">
+        <div class="side-card-title">
+          <i data-lucide="download"></i> TÀI LIỆU VÀ BIỂU MẪU TẢI VỀ
+        </div>
+        <div class="flex flex-col gap-3">
+          <a href="#" class="flex items-center justify-between p-2.5 border border-slate-200 rounded-lg hover:border-red-600 hover:bg-red-50 transition text-xs font-semibold text-slate-700">
+            <span class="flex items-center gap-2"><i data-lucide="file-text" class="w-4 h-4 text-red-600"></i> 1. Đơn đề nghị cấp GCN ANTT</span>
+            <i data-lucide="download" class="w-4 h-4 text-slate-400"></i>
+          </a>
+          <a href="#" class="flex items-center justify-between p-2.5 border border-slate-200 rounded-lg hover:border-red-600 hover:bg-red-50 transition text-xs font-semibold text-slate-700">
+            <span class="flex items-center gap-2"><i data-lucide="file-spreadsheet" class="w-4 h-4 text-red-600"></i> 2. Mẫu danh sách khách lưu trú</span>
+            <i data-lucide="download" class="w-4 h-4 text-slate-400"></i>
+          </a>
+          <a href="#" class="flex items-center justify-between p-2.5 border border-slate-200 rounded-lg hover:border-red-600 hover:bg-red-50 transition text-xs font-semibold text-slate-700">
+            <span class="flex items-center gap-2"><i data-lucide="file-spreadsheet" class="w-4 h-4 text-red-600"></i> 3. Mẫu danh sách nhân sự cơ sở</span>
+            <i data-lucide="download" class="w-4 h-4 text-slate-400"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="side-card">
+        <div class="side-card-title">
+          <i data-lucide="video"></i> VIDEO HƯỚNG DẪN TRỰC QUAN
+        </div>
+        <div class="flex flex-col gap-3">
+          <div class="relative rounded-lg overflow-hidden border border-slate-200 bg-slate-100 flex items-center justify-center group cursor-pointer" style="height: 140px;">
+            <i data-lucide="play-circle" class="w-12 h-12 text-red-600 group-hover:scale-110 transition-transform z-10"></i>
+            <div class="absolute inset-0 bg-slate-900/10 group-hover:bg-slate-900/30 transition-colors"></div>
+            <div class="absolute bottom-2 left-2 right-2 bg-white/90 backdrop-blur-sm px-2.5 py-1.5 rounded text-[11px] font-semibold text-slate-800 flex items-center justify-between">
+              <span>HD kê khai đăng ký mới</span>
+              <span class="text-slate-400 text-[10px]">3:45</span>
+            </div>
+          </div>
+          <div class="relative rounded-lg overflow-hidden border border-slate-200 bg-slate-100 flex items-center justify-center group cursor-pointer" style="height: 140px;">
+            <i data-lucide="play-circle" class="w-12 h-12 text-red-600 group-hover:scale-110 transition-transform z-10"></i>
+            <div class="absolute inset-0 bg-slate-900/10 group-hover:bg-slate-900/30 transition-colors"></div>
+            <div class="absolute bottom-2 left-2 right-2 bg-white/90 backdrop-blur-sm px-2.5 py-1.5 rounded text-[11px] font-semibold text-slate-800 flex items-center justify-between">
+              <span>HD khai báo lưu trú qua đêm</span>
+              <span class="text-slate-400 text-[10px]">2:15</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="custom-footer-copyright">
+  © 2026 Công an tỉnh Ninh Bình. Tất cả quyền được bảo lưu.
+</footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Session widget setup
+    const session = typeof Auth !== 'undefined' ? Auth.getSession() : null;
+    const authArea = document.getElementById('headerAuthArea');
+    if (session && authArea) {
+      authArea.innerHTML = `
+        <div class="topbar-menu-wrap" style="position:relative; z-index:1000; font-family:'Roboto',sans-serif;">
+          <button id="publicUserMenuToggle" class="user-menu-btn" type="button" aria-label="Mở menu tài khoản" style="display:flex; align-items:center; gap:12px; background:transparent; border:none; cursor:pointer; padding:4px 10px; border-radius:8px; height:46px;">
+            <div style="width:38px; height:38px; border-radius:50%; color:white; font-weight:900; font-size:14px; display:grid; place-items:center; background:${session.avatarColor || '#bd0000'}; flex-shrink:0;">
+              ${session.avatar}
+            </div>
+            <div style="text-align:left;"><div style="font-size:15px; font-weight:600; color:#ffffff; line-height:1.2;">${session.name}</div><div style="font-size:12px; font-weight:500; color:rgba(255,255,255,0.85); margin-top:2px;">${session.unit}</div></div>
+            <i data-lucide="chevron-down" style="color:#ffffff; width:16px; height:16px;"></i>
+          </button>
+        </div>
+      `;
+    }
+    
+    // Lucide Icons init
+    if (window.lucide) {
+      window.lucide.createIcons();
+    }
+
+    // Search filter logic
+    const searchInput = document.getElementById('guideSearchInput');
+    searchInput.addEventListener('input', (e) => {
+      const term = e.target.value.toLowerCase().trim();
+      const items = document.querySelectorAll('.faq-accordion-item');
+      items.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        if (text.includes(term)) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  // Accordion toggle logic
+  function toggleAccordion(header) {
+    const item = header.closest('.faq-accordion-item');
+    const isActive = item.classList.contains('active');
+    
+    // Close all accordion items
+    document.querySelectorAll('.faq-accordion-item').forEach(el => {
+      el.classList.remove('active');
+    });
+    
+    if (!isActive) {
+      item.classList.add('active');
+    }
+  }
+
+  // Tab switching logic
+  function switchGuideTab(category, btn) {
+    document.querySelectorAll('.tab-pill').forEach(pill => pill.classList.remove('active'));
+    btn.classList.add('active');
+
+    const items = document.querySelectorAll('.faq-accordion-item');
+    items.forEach(item => {
+      if (category === 'all' || item.getAttribute('data-category') === category) {
+        item.style.display = 'block';
+      } else {
+        item.style.display = 'none';
+      }
+    });
+  }
+</script>
+</body>
+</html>

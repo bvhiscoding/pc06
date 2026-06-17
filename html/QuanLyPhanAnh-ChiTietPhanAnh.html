@@ -1,0 +1,136 @@
+﻿<!doctype html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chi tiết phản ánh - CSKD-ANTT Ninh Bình</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/quan-ly-ho-so.css">
+  <link rel="stylesheet" href="../styles/admin-danh-sach.css">
+  <link rel="stylesheet" href="../styles/phan-anh-form.css">
+</head>
+
+<body class="font-sans antialiased">
+  <div class="desktop-shell min-h-screen">
+    <header class="app-header fixed left-0 right-0 top-0 z-30 flex h-[80px] items-center justify-between px-6 text-white"></header>
+    <aside class="sidebar fixed bottom-0 left-0 top-[80px] z-20 px-2 text-white"></aside>
+
+    <main class="content min-h-screen pt-[80px]">
+      <div class="module-page complaint-page px-6 pb-8 pt-6 lg:px-7">
+        <!-- Component: Breadcrumbs & Header Actions -->
+        <section class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-5">
+          <div class="flex items-center gap-2 text-[13px] font-medium text-[#6b7280]">
+            <i data-lucide="house" class="h-4 w-4 text-[#9098a5]"></i>
+            <a href="../index.html" class="hover:text-red-600 transition-colors">Trang chủ</a>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
+            <a href="QuanLyPhanAnh.html" class="hover:text-red-600 transition-colors">Phản ánh kiến nghị</a>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
+            <a href="QuanLyPhanAnh.html" class="hover:text-red-600 transition-colors">Danh sách phản ánh</a>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
+            <span class="text-gray-900 font-semibold">Chi tiết phản ánh PA-2024-00123</span>
+          </div>
+          <div class="flex flex-wrap gap-3">
+            <a class="module-action-btn module-action-secondary" href="QuanLyPhanAnh.html"><i data-lucide="arrow-left" class="h-4 w-4"></i>Quay lại</a>
+            <button class="module-action-btn module-action-secondary" type="button"><i data-lucide="printer" class="h-4 w-4"></i>In</button>
+            <a class="module-action-btn module-action-primary" href="QuanLyPhanAnh-ChinhSuaPhanAnh.html?id=PA-2024-00123"><i data-lucide="square-pen" class="h-4 w-4"></i>Chỉnh sửa</a>
+          </div>
+        </section>
+
+        <!-- Component: Badge only (since H1 is removed) -->
+        <div class="mb-6 flex items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <span class="module-badge badge-green">Đã phản hồi</span>
+          </div>
+        </div>
+
+        <form id="complaintDetailForm" class="complaint-detail-layout" data-mode="detail">
+          <div class="complaint-detail-main">
+            <section class="complaint-card">
+              <h2 class="complaint-section-title"><i data-lucide="badge-alert"></i>1. Thông tin phản ánh</h2>
+              <div class="complaint-view-grid two-col">
+                <div class="view-row" data-field="code"><span>Mã phản ánh:</span><strong>PA-2024-00123</strong></div>
+                <div class="view-row" data-field="topic"><span>Chủ đề phản ánh:</span><strong><em class="tag tag-orange">Cơ sở hoạt động sai phép</em></strong></div>
+                <div class="view-row" data-field="sender"><span>Người phản ánh:</span><strong>Nguyễn Thị Lan</strong></div>
+                <div class="view-row" data-field="phone"><span>Số điện thoại:</span><strong>0912 345 678</strong></div>
+                <div class="view-row" data-field="email"><span>Email:</span><strong>lannt@example.com</strong></div>
+                <div class="view-row" data-field="channel"><span>Hình thức tiếp nhận:</span><strong>Cổng thông tin điện tử</strong></div>
+                <div class="view-row" data-field="reportedAt"><span>Thời gian phản ánh:</span><strong>20/05/2024 14:30</strong></div>
+                <div class="view-row wide" data-field="location"><span>Địa điểm xảy ra:</span><strong>Số 12, đường Trần Hưng Đạo, P. Đông Thành, TP. Ninh Bình, Ninh Bình</strong></div>
+                <div class="view-row wide" data-field="title"><span>Tiêu đề:</span><strong>Quán Karaoke Galaxy hoạt động quá giờ quy định</strong></div>
+              </div>
+            </section>
+
+            <section class="complaint-card">
+              <h2 class="complaint-section-title"><i data-lucide="message-square-warning"></i>2. Nội dung phản ánh</h2>
+              <div class="content-box" data-field="content">Quán Karaoke Galaxy tại địa chỉ trên thường xuyên hoạt động quá giờ quy định (sau 24h).
+Gây ồn ào, ảnh hưởng đến sinh hoạt của người dân xung quanh.
+Đề nghị cơ quan chức năng kiểm tra và xử lý.</div>
+            </section>
+
+            <section class="complaint-card">
+              <h2 class="complaint-section-title"><i data-lucide="paperclip"></i>3. Tập đính kèm</h2>
+              <div class="attachment-row">
+                <article class="attachment-card video"><div class="attachment-thumb"><i data-lucide="play"></i><span>00:45</span></div><strong>Video_2005_1.mp4</strong><small>65.3 MB</small></article>
+                <article class="attachment-card video"><div class="attachment-thumb"><i data-lucide="play"></i><span>00:12</span></div><strong>Video_2005_2.mp4</strong><small>48.7 MB</small></article>
+                <article class="attachment-card image"><div class="attachment-thumb"><i data-lucide="image"></i></div><strong>Hình ảnh 1.jpg</strong><small>1.2 MB</small></article>
+                <article class="attachment-card pdf"><div class="attachment-thumb"><span>PDF</span></div><strong>Đơn kiến nghị.pdf</strong><small>512 KB</small></article>
+              </div>
+              <button class="filter-btn filter-reset mt-4" type="button"><i data-lucide="download" class="h-4 w-4"></i>Tải tất cả</button>
+            </section>
+
+            <section class="complaint-card">
+              <h2 class="complaint-section-title danger"><i data-lucide="clipboard-check"></i>4. Thông tin xử lý</h2>
+              <div class="complaint-view-grid two-col">
+                <div class="view-row" data-field="currentStatus"><span>Trạng thái hiện tại:</span><strong><em class="tag tag-green">Đã phản hồi</em></strong></div>
+                <div class="view-row" data-field="handler"><span>Cán bộ xử lý:</span><strong>Trần Văn B</strong></div>
+                <div class="view-row" data-field="team"><span>Nghiệp phân công:</span><strong>2A TXH</strong></div>
+                <div class="view-row" data-field="assignedAt"><span>Ngày phân công:</span><strong>20/05/2024 15:10</strong></div>
+                <div class="view-row" data-field="deadline"><span>Hạn xử lý:</span><strong>27/05/2024</strong></div>
+                <div class="view-row" data-field="priority"><span>Độ ưu tiên:</span><strong><em class="tag tag-orange">Trung bình</em></strong></div>
+              </div>
+            </section>
+
+            <section class="complaint-card result-card">
+              <h2 class="complaint-section-title danger"><i data-lucide="message-circle-reply"></i>5. Kết quả xử lý</h2>
+              <div class="result-readonly" data-field="replyContent">
+                <p><strong>Ngày phản hồi:</strong> 23/05/2024 10:30</p>
+                <p><strong>Nội dung phản hồi:</strong></p>
+                <p>Phòng Cảnh sát QLHC về TTXH đã phối hợp với Công an phường Đông Thành kiểm tra cơ sở Karaoke Galaxy.</p>
+                <p>Kết quả: Cơ sở vi phạm hoạt động quá giờ quy định. Đã lập biên bản và xử phạt vi phạm hành chính theo quy định.</p>
+                <p>Chúng tôi chân thành cảm ơn phản ánh của quý công dân.</p>
+                <p>Trân trọng!</p>
+                <p>Đính kèm: Biên bản làm việc, Quyết định xử phạt.</p>
+                <div class="reply-file-row">
+                  <span class="reply-file"><b>PDF</b>Biên bản làm việc.pdf <small>1.1 MB</small></span>
+                  <span class="reply-file"><b>PDF</b>Quyết định xử phạt.pdf <small>1.3 MB</small></span>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <aside class="complaint-timeline-card">
+            <h2 class="complaint-section-title"><i data-lucide="history"></i>6. Lịch sử xử lý</h2>
+            <div class="timeline-list">
+              <article class="timeline-item orange"><span><i data-lucide="inbox"></i></span><strong>Tiếp nhận phản ánh</strong><time>20/05/2024 14:30</time><p>Hệ thống đã tiếp nhận phản ánh</p><small>Người tiếp nhận: Hệ thống</small></article>
+              <article class="timeline-item blue"><span><i data-lucide="clipboard-check"></i></span><strong>Phân công xử lý</strong><time>20/05/2024 15:10</time><p>Phân công cho cán bộ xử lý</p><small>Cán bộ xử lý: Trần Văn B</small></article>
+              <article class="timeline-item purple"><span><i data-lucide="message-square"></i></span><strong>Đang xử lý</strong><time>21/05/2024 09:15</time><p>Cán bộ xử lý đang xác minh thông tin</p><small>Ghi chú: Đã liên hệ người phản ánh</small></article>
+              <article class="timeline-item cyan"><span><i data-lucide="search-check"></i></span><strong>Xác minh thông tin</strong><time>21/05/2024 14:20</time><p>Đã tiến hành xác minh tại địa điểm</p><small>Ghi chú: Cơ sở hoạt động quá giờ quy định</small></article>
+              <article class="timeline-item orange"><span><i data-lucide="file-warning"></i></span><strong>Lập biên bản vi phạm</strong><time>22/05/2024 10:00</time><p>Đã lập biên bản vi phạm hành chính</p><small>Ghi chú: Chuyển hồ sơ xử phạt</small></article>
+              <article class="timeline-item green"><span><i data-lucide="send"></i></span><strong>Đã phản hồi</strong><time>23/05/2024 10:30</time><p>Đã phản hồi kết quả xử lý cho người phản ánh</p><small>Người phản hồi: Trần Văn B</small></article>
+            </div>
+          </aside>
+        </form>
+      </div>
+    </main>
+  </div>
+
+  <script src="../scripts/auth.js"></script>
+  <script src="../scripts/layout-sync.js"></script>
+  <script src="../scripts/phan-anh-form.js"></script>
+</body>
+</html>
