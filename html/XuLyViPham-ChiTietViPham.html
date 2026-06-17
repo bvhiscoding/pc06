@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="vi">
 
 <head>
@@ -264,13 +264,19 @@
         <section class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-5">
           <div class="flex items-center gap-2 text-[13px] font-medium text-[#6b7280]">
             <i data-lucide="house" class="h-4 w-4 text-[#9098a5]"></i>
-            <span>Trang chủ</span>
+            <a href="../index.html" class="hover:text-red-600 transition-colors">Trang chủ</a>
             <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
-            <span>Xử lý vi phạm</span>
+            <a href="XuLyViPham.html" class="hover:text-red-600 transition-colors">Vi phạm / Xử lý vi phạm</a>
             <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
-            <span>Chi tiết quyết định xử phạt</span>
+            <a href="XuLyViPham.html" class="hover:text-red-600 transition-colors">Danh sách vi phạm</a>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
+            <span class="text-gray-900 font-semibold">Chi tiết quyết định xử phạt 124/QĐ-XPHC</span>
           </div>
           <div class="flex flex-wrap gap-3">
+            <a href="XuLyViPham.html" class="inline-flex h-[42px] items-center gap-2 rounded-md border border-[#d9dfe8] bg-white px-5 text-[14px] font-medium text-[#202833] shadow-sm transition hover:border-[#c50000] hover:text-[#c50000] hover:bg-[#fffafa] transition-colors">
+              <i data-lucide="arrow-left" class="h-4.5 w-4.5"></i>
+              Quay lại
+            </a>
             <button onclick="window.print()" class="inline-flex h-[42px] items-center gap-2 rounded-md border border-[#d9dfe8] bg-white px-5 text-[14px] font-medium text-[#202833] shadow-sm transition hover:border-[#c50000] hover:text-[#c50000] hover:bg-[#fffafa]" type="button">
               <i data-lucide="printer" class="h-4.5 w-4.5"></i>
               In quyết định
@@ -282,15 +288,9 @@
           </div>
         </section>
 
-        <!-- Component: Title & Description -->
-        <div class="mb-6 flex items-center gap-3">
-          <a href="XuLyViPham.html" class="grid h-10 w-10 place-items-center rounded-md border border-[#dfe5ed] bg-white text-gray-500 hover:text-gray-900 transition hover:bg-gray-50 shadow-sm shrink-0">
-            <i data-lucide="arrow-left" class="h-5 w-5"></i>
-          </a>
-          <div>
-            <h1 class="text-[20px] font-bold text-[#1e293b] uppercase tracking-wide">Chi tiết quyết định xử phạt</h1>
-            <p class="text-[13px] text-gray-500">Số quyết định: <strong class="text-[#c50000]">124/QĐ-XPHC</strong></p>
-          </div>
+        <!-- Component: Description only (since H1 is removed) -->
+        <div class="mb-6">
+          <p class="text-[13px] text-gray-500">Số quyết định: <strong class="text-[#c50000]">124/QĐ-XPHC</strong></p>
         </div>
 
         <!-- Vertical Stack Layout (Full Width Sections) -->
@@ -472,6 +472,7 @@
       if (window.lucide) window.lucide.createIcons();
     });
   </script>
+  <script src="../scripts/auth.js"></script>
   <script src='../scripts/layout-sync.js'></script>
 </body>
 

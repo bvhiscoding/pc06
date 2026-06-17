@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="vi">
 
 <head>
@@ -224,26 +224,33 @@
     <main class="content min-h-screen pt-[80px]">
       <div class="detail-page px-6 pb-8 pt-6 lg:px-7">
         
-        <!-- Heading / Toolbar -->
-        <section class="detail-heading flex justify-between items-start">
-          <div>
-            <h1 id="headerBusinessName">Khách sạn Ninh Bình Hotel</h1>
-            <a class="back-link" href="CoSoDuLieuCSKD.html">
-              <i data-lucide="arrow-left" class="h-4 w-4"></i> Quay lại danh sách cơ sở
-            </a>
+        <!-- Component: Breadcrumbs & Header Actions -->
+        <section class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-5">
+          <div class="flex items-center gap-2 text-[13px] font-medium text-[#6b7280]">
+            <i data-lucide="house" class="h-4 w-4 text-[#9098a5]"></i>
+            <a href="../index.html" class="hover:text-red-600 transition-colors">Trang chủ</a>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
+            <a href="CoSoDuLieuCSKD.html" class="hover:text-red-600 transition-colors">Cơ sở dữ liệu CSKD-ANTT</a>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
+            <a href="CoSoDuLieuCSKD.html" class="hover:text-red-600 transition-colors">Danh sách cơ sở</a>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
+            <span id="headerBusinessName" class="text-gray-900 font-semibold">Khách sạn Ninh Bình Hotel</span>
           </div>
-          <div class="flex gap-3 mt-3">
-            <button class="view-mode-el px-4 py-2 border rounded font-bold text-xs bg-white text-gray-700 hover:bg-gray-50 flex items-center gap-1.5 shadow-sm" onclick="window.print()">
+          <div class="flex flex-wrap gap-3">
+            <a class="px-4 py-2 border rounded font-bold text-xs bg-white text-gray-700 hover:bg-gray-50 flex items-center gap-1.5 shadow-sm transition-colors" href="CoSoDuLieuCSKD.html">
+              <i data-lucide="arrow-left" class="h-4 w-4"></i> Quay lại
+            </a>
+            <button class="view-mode-el px-4 py-2 border rounded font-bold text-xs bg-white text-gray-700 hover:bg-gray-50 flex items-center gap-1.5 shadow-sm transition-colors" onclick="window.print()">
               <i data-lucide="printer" class="h-4 w-4"></i> In hồ sơ
             </button>
-            <button class="view-mode-el px-4 py-2 border rounded font-bold text-xs bg-[#c60000] text-white border-[#b90000] hover:bg-[#ad0000] flex items-center gap-1.5 shadow-sm" id="btnEditBusiness">
-              <i data-lucide="square-pen" class="h-4 w-4"></i> Chỉnh sửa thông tin
+            <button class="view-mode-el px-4 py-2 border rounded font-bold text-xs bg-[#c60000] text-white border-[#b90000] hover:bg-[#ad0000] flex items-center gap-1.5 shadow-sm transition-colors" id="btnEditBusiness">
+              <i data-lucide="square-pen" class="h-4 w-4"></i> Chỉnh sửa
             </button>
-            <button class="edit-mode-el hidden px-4 py-2 border rounded font-bold text-xs bg-[#16a34a] text-white border-[#15803d] hover:bg-[#15803d] flex items-center gap-1.5 shadow-sm" id="btnSaveBusiness">
-              <i data-lucide="check" class="h-4 w-4"></i> Lưu thay đổi
+            <button class="edit-mode-el hidden px-4 py-2 border rounded font-bold text-xs bg-[#16a34a] text-white border-[#15803d] hover:bg-[#15803d] flex items-center gap-1.5 shadow-sm transition-colors" id="btnSaveBusiness">
+              <i data-lucide="check" class="h-4 w-4"></i> Lưu
             </button>
-            <button class="edit-mode-el hidden px-4 py-2 border rounded font-bold text-xs bg-white text-gray-700 hover:bg-gray-50 flex items-center gap-1.5 shadow-sm" id="btnCancelEdit">
-              <i data-lucide="x" class="h-4 w-4"></i> Hủy bỏ
+            <button class="edit-mode-el hidden px-4 py-2 border rounded font-bold text-xs bg-white text-gray-700 hover:bg-gray-50 flex items-center gap-1.5 shadow-sm transition-colors" id="btnCancelEdit">
+              <i data-lucide="x" class="h-4 w-4"></i> Hủy
             </button>
           </div>
         </section>
@@ -1254,6 +1261,7 @@
       if (window.lucide) window.lucide.createIcons();
     });
   </script>
+  <script src="../scripts/auth.js"></script>
   <script src='../scripts/layout-sync.js'></script>
 </body>
 

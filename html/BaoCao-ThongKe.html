@@ -1,61 +1,288 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="vi">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Báo cáo thống kê - CSKD-ANTT Ninh Bình</title>
+  <title>Báo cáo - Thống kê | CSKD-ANTT Ninh Bình</title>
+  <meta name="description" content="Tổng hợp báo cáo thống kê số liệu cơ sở kinh doanh có điều kiện về ANTT tỉnh Ninh Bình." />
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
-  <!-- Chart.js CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../styles/quan-ly-ho-so.css">
-  <link rel="stylesheet" href="../styles/admin-danh-sach.css">
+  <link rel="stylesheet" href="../styles/design-system.css">
+  <link rel="stylesheet" href="../styles/module-pages.css">
+  <link rel="stylesheet" href="../styles/dashboard.css">
+
   <style>
-    /* Custom style for dashboards and reports */
-    .kpi-card {
-      background: #fff;
-      border: 1px solid #e2e8f0;
-      border-radius: 12px;
-      padding: 1.25rem 1.5rem;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    /* ── Page layout ─────────────────────────────── */
+    .bc-main { background: #f6f8fb; }
+    .bc-content { padding: 20px 28px 48px; }
+
+    /* ── Breadcrumb ──────────────────────────────── */
+    .bc-breadcrumb {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 13px; color: #6b7280; margin-bottom: 14px;
+    }
+    .bc-breadcrumb a { color: #bd0000; text-decoration: none; font-weight: 500; }
+    .bc-breadcrumb a:hover { text-decoration: underline; }
+    .bc-breadcrumb .sep { color: #d1d5db; }
+    .bc-breadcrumb .current { color: #374151; font-weight: 500; }
+
+    /* ── Toolbar ─────────────────────────────────── */
+    .bc-toolbar {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; margin-bottom: 16px; flex-wrap: wrap;
+    }
+    .bc-page-title {
+      font-size: 22px; font-weight: 900; color: #111827;
+      letter-spacing: -0.3px; text-transform: uppercase;
+    }
+    .bc-toolbar-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .bc-date-range {
+      display: flex; align-items: center; gap: 6px;
+      border: 1px solid #e2e8f0; background: #fff; border-radius: 7px;
+      padding: 0 12px; height: 36px; font-size: 13px; color: #374151; font-weight: 500;
+      cursor: pointer;
+    }
+    .bc-date-range i { color: #9ca3af; }
+    .bc-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      height: 36px; padding: 0 14px; border-radius: 7px;
+      font-size: 13px; font-weight: 700; cursor: pointer; border: 1px solid;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .bc-btn-outline {
+      background: #fff; border-color: #e2e8f0; color: #374151;
+    }
+    .bc-btn-outline:hover { background: #f8fafc; border-color: #cbd5e1; }
+    .bc-btn-primary {
+      background: #bd0000; border-color: #bd0000; color: #fff;
+    }
+    .bc-btn-primary:hover { background: #990000; border-color: #990000; }
+
+    /* ── Tab nav ─────────────────────────────────── */
+    .bc-tabs {
+      display: flex; gap: 0; border-bottom: 2px solid #e8edf3;
+      margin-bottom: 20px; overflow-x: auto;
+    }
+    .bc-tab {
+      padding: 10px 18px; font-size: 14px; font-weight: 700;
+      color: #6b7280; cursor: pointer; border-bottom: 2px solid transparent;
+      margin-bottom: -2px; white-space: nowrap; transition: color 0.15s;
+    }
+    .bc-tab.active { color: #bd0000; border-bottom-color: #bd0000; }
+    .bc-tab:hover:not(.active) { color: #374151; }
+
+    /* ── Card base ───────────────────────────────── */
+    .bc-card {
+      background: #fff; border-radius: 10px;
+      box-shadow: 0 1px 4px rgba(15,23,42,0.07);
+      border: 1px solid #f0f2f5;
+    }
+    .bc-card-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 20px 0; margin-bottom: 14px;
+    }
+    .bc-card-title {
+      font-size: 14px; font-weight: 700; color: #111827;
+    }
+    .bc-card-link {
+      font-size: 12px; color: #bd0000; font-weight: 700;
+      text-decoration: none; white-space: nowrap;
+      display: flex; align-items: center; gap: 3px;
+    }
+    .bc-card-link:hover { text-decoration: underline; }
+
+    /* ── Stat Cards ──────────────────────────────── */
+    .bc-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 14px; margin-bottom: 18px;
+    }
+    @media (max-width: 1400px) { .bc-stats-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 900px) { .bc-stats-grid { grid-template-columns: repeat(2, 1fr); } }
+
+    .bc-stat-card {
+      background: #fff; border-radius: 10px;
+      padding: 14px 16px 10px;
+      box-shadow: 0 1px 4px rgba(15,23,42,0.07);
+      border: 1px solid #f0f2f5;
+      display: flex; flex-direction: column; gap: 6px;
+      min-width: 0; overflow: hidden;
+    }
+    .bc-stat-top { display: flex; align-items: center; gap: 10px; }
+    .bc-stat-icon {
+      width: 40px; height: 40px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .bc-stat-icon svg { width: 20px; height: 20px; }
+    .bc-stat-icon.blue   { background: #eff6ff; color: #2563eb; }
+    .bc-stat-icon.green  { background: #f0fdf4; color: #16a34a; }
+    .bc-stat-icon.amber  { background: #fffbeb; color: #d97706; }
+    .bc-stat-icon.purple { background: #f5f3ff; color: #7c3aed; }
+    .bc-stat-icon.red    { background: #fff0f0; color: #bd0000; }
+    .bc-stat-icon.teal   { background: #f0fdfa; color: #0d9488; }
+
+    .bc-stat-info { min-width: 0; }
+    .bc-stat-value { font-size: 26px; font-weight: 900; color: #111827; line-height: 1; }
+    .bc-stat-label { font-size: 12px; color: #6b7280; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .bc-stat-trend {
+      display: flex; align-items: center; gap: 3px;
+      font-size: 11px; font-weight: 700; margin-top: 2px;
+    }
+    .bc-stat-trend.up { color: #16a34a; }
+    .bc-stat-trend.down { color: #dc2626; }
+    .bc-stat-sparkline { height: 36px; width: 100%; }
+
+    /* ── Charts row ──────────────────────────────── */
+    .bc-charts-row {
+      display: grid;
+      grid-template-columns: 2fr 2.4fr 1.6fr;
+      gap: 16px; margin-bottom: 18px;
+    }
+    @media (max-width: 1350px) { .bc-charts-row { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 900px) { .bc-charts-row { grid-template-columns: 1fr; } }
+
+    /* ── Status progress list ────────────────────── */
+    .bc-status-list { display: flex; flex-direction: column; gap: 16px; padding: 0 20px 22px; }
+    .bc-status-item { display: flex; align-items: center; gap: 12px; font-size: 13px; }
+    .bc-status-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .bc-status-name { flex: 1; min-width: 0; color: #374151; font-weight: 500; white-space: nowrap; }
+    .bc-status-bar-wrap { flex: 0 0 100px; height: 8px; background: #f3f4f6; border-radius: 99px; }
+    .bc-status-bar { height: 100%; border-radius: 99px; }
+    .bc-status-count { flex: 0 0 46px; text-align: right; font-weight: 700; color: #111827; }
+    .bc-status-total { padding: 14px 20px; font-size: 13px; font-weight: 700; color: #6b7280; border-top: 1px solid #f3f4f6; }
+
+    /* ── Row 3 ───────────────────────────────────── */
+    .bc-row3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px; margin-bottom: 18px;
+    }
+    @media (max-width: 1200px) { .bc-row3 { grid-template-columns: 1fr 1fr; } }
+
+    /* ── Treemap ─────────────────────────────────── */
+    .bc-treemap {
       display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+      gap: 4px;
+      height: 340px;
+      padding: 0 20px 18px;
     }
-    
-    .chart-card {
-      background: #fff;
-      border: 1px solid #e2e8f0;
-      border-radius: 12px;
-      padding: 1.5rem;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    .bc-tree-cell {
+      border-radius: 6px; padding: 12px 10px;
+      display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end;
+      color: #fff; min-height: 0; height: 100%; position: relative; cursor: pointer;
+      transition: opacity 0.15s;
+    }
+    .bc-tree-cell:hover { opacity: 0.9; }
+    .bc-tree-name { font-size: 12px; font-weight: 700; line-height: 1.2; }
+    .bc-tree-value { font-size: 11px; opacity: 0.88; margin-top: 3px; }
+
+    /* ── Donut legend ────────────────────────────── */
+    .bc-donut-wrap { padding: 0 20px 14px; }
+    .bc-donut-center-wrap { position: relative; height: 180px; margin-bottom: 12px; }
+    .bc-donut-center {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      text-align: center;
+    }
+    .bc-donut-center-num { font-size: 28px; font-weight: 900; color: #111827; line-height: 1; }
+    .bc-donut-center-sub { font-size: 11px; color: #6b7280; }
+    .bc-donut-legend { display: flex; flex-direction: column; gap: 8px; }
+    .bc-donut-legend-row {
+      display: flex; align-items: center; gap: 8px; font-size: 13px;
+    }
+    .bc-donut-legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .bc-donut-legend-label { flex: 1; color: #374151; }
+    .bc-donut-legend-val { font-weight: 700; color: #111827; }
+    .bc-donut-legend-pct { color: #6b7280; font-size: 12px; }
+
+    /* ── Violation panel ─────────────────────────── */
+    .bc-vio-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; padding: 0 20px 14px; }
+    .bc-vio-stat {
+      border-radius: 8px; padding: 12px 10px;
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+    }
+    .bc-vio-stat-num { font-size: 22px; font-weight: 900; }
+    .bc-vio-stat-label { font-size: 10px; font-weight: 700; text-align: center; }
+    .bc-vio-bar-section { padding: 0 20px 18px; }
+    .bc-vio-bar-title { font-size: 11.5px; font-weight: 700; color: #374151; margin-bottom: 8px; }
+
+    /* ── Row 4 ───────────────────────────────────── */
+    .bc-row4 {
+      display: grid;
+      grid-template-columns: 3fr 2fr;
+      gap: 16px; margin-bottom: 18px;
+    }
+    @media (max-width: 1100px) { .bc-row4 { grid-template-columns: 1fr; } }
+
+    /* ── Combo chart period selector ─────────────── */
+    .bc-period-select {
+      border: 1px solid #e2e8f0; border-radius: 6px; font-size: 12px;
+      padding: 4px 8px; color: #374151; background: #fff; cursor: pointer;
     }
 
-    .report-table th {
-      background-color: #f8fafc;
-      color: #475569;
-      font-weight: 700;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      border-bottom: 2px solid #cbd5e1;
+    /* ── Performance table ───────────────────────── */
+    .bc-perf-table { width: 100%; border-collapse: collapse; }
+    .bc-perf-table thead th {
+      font-size: 11px; font-weight: 700; color: #9ca3af;
+      text-align: left; padding: 6px 20px 8px; text-transform: uppercase; border-bottom: 1px solid #f3f4f6;
     }
+    .bc-perf-table tbody tr { border-bottom: 1px solid #f9fafb; }
+    .bc-perf-table tbody tr:last-child { border-bottom: none; }
+    .bc-perf-table tbody td { padding: 10px 20px; }
+    .bc-perf-rank { font-size: 12px; font-weight: 700; color: #9ca3af; }
+    .bc-perf-rank.gold { color: #d97706; }
+    .bc-perf-rank.silver { color: #6b7280; }
+    .bc-perf-rank.bronze { color: #d97706; opacity: 0.65; }
+    .bc-perf-avatar {
+      width: 30px; height: 30px; border-radius: 50%; background: #f3f4f6;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700; color: #6b7280; flex-shrink: 0;
+    }
+    .bc-perf-name { font-size: 13px; font-weight: 700; color: #1b2430; }
+    .bc-perf-count { font-size: 13px; font-weight: 700; color: #374151; }
+    .bc-perf-bar-wrap { width: 90px; height: 5px; background: #f3f4f6; border-radius: 99px; }
+    .bc-perf-bar { height: 100%; border-radius: 99px; background: #16a34a; }
+    .bc-perf-pct { font-size: 12px; font-weight: 700; color: #16a34a; }
 
-    .report-table tr.total-row {
-      background-color: #f1f5f9;
-      font-weight: 700;
-      border-top: 2px solid #cbd5e1;
+    /* ── Quick reports ───────────────────────────── */
+    .bc-quick-reports {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 12px;
     }
+    @media (max-width: 1200px) { .bc-quick-reports { grid-template-columns: repeat(4, 1fr); } }
+
+    .bc-quick-btn {
+      background: #fff; border-radius: 10px; padding: 16px 10px;
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      border: 1px solid #f0f2f5; box-shadow: 0 1px 4px rgba(15,23,42,0.06);
+      cursor: pointer; transition: box-shadow 0.15s, transform 0.15s;
+      text-decoration: none;
+    }
+    .bc-quick-btn:hover { box-shadow: 0 4px 14px rgba(15,23,42,0.1); transform: translateY(-2px); }
+    .bc-quick-icon {
+      width: 44px; height: 44px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .bc-quick-icon svg { width: 22px; height: 22px; }
+    .bc-quick-label { font-size: 12px; font-weight: 700; color: #374151; text-align: center; line-height: 1.3; }
+
+    /* Chart padding override */
+    .bc-chart-body { padding: 0 20px 18px; }
+
+    /* Section subtitle ──────────────────────────── */
+    .bc-section-title { font-size: 13px; font-weight: 700; color: #111827; margin-bottom: 12px; }
   </style>
 </head>
 
 <body class="font-sans antialiased">
   <div class="desktop-shell min-h-screen">
-    <!-- Header -->
+
+    <!-- Header injected by layout-sync.js -->
     <header class="app-header fixed left-0 right-0 top-0 z-30 flex h-[80px] items-center justify-between px-6 text-white">
       <div class="flex h-full items-center">
         <img class="crest" src="../public/logocongan.png" alt="Logo Bộ Công an" />
@@ -64,515 +291,700 @@
           <div class="mt-1 text-[15px] font-medium tracking-[0] text-white/95">HỆ THỐNG QUẢN LÝ CƠ SỞ KINH DOANH CÓ ĐIỀU KIỆN VỀ ANTT</div>
         </div>
       </div>
-
-      <div class="topbar-actions flex h-full items-center gap-6">
+      <div class="topbar-actions flex h-full items-center gap-4">
         <div class="topbar-menu-wrap">
           <button id="notificationToggle" class="topbar-icon-btn relative" type="button" aria-label="Thông báo" aria-expanded="false">
             <i data-lucide="bell" class="h-[26px] w-[26px]"></i>
-            <span id="notificationBadge" class="absolute right-0 top-1 grid h-5 min-w-5 place-items-center rounded-full bg-[#ff1e1e] px-1 text-[11px] font-semibold leading-none shadow">5</span>
+            <span class="absolute right-0 top-1 grid h-5 min-w-5 place-items-center rounded-full bg-[#ff1e1e] px-1 text-[11px] font-semibold leading-none shadow">4</span>
           </button>
           <div id="notificationMenu" class="topbar-dropdown notification-dropdown" hidden>
-            <div class="dropdown-head">
-              <span>Thông báo</span>
-              <button id="markAllReadBtn" type="button">Đánh dấu đã đọc</button>
-            </div>
+            <div class="dropdown-head"><span>Thông báo</span><button id="markAllReadBtn" type="button">Đánh dấu đã đọc</button></div>
             <div id="notificationList" class="notification-list"></div>
           </div>
         </div>
-
         <div class="topbar-menu-wrap">
           <button id="userMenuToggle" class="user-menu-btn" type="button" aria-label="Mở menu tài khoản" aria-expanded="false">
-            <div class="grid h-[46px] w-[46px] place-items-center rounded-full bg-white text-[#cf0000] shadow-sm">
-              <i data-lucide="user-round" class="h-7 w-7 fill-[#cf0000]/15"></i>
-            </div>
-            <div class="hidden text-left sm:block">
-              <div class="text-[15px] font-semibold leading-5">Nguyễn Văn A</div>
-              <div class="text-[13px] font-medium text-white/92">Phòng CS QLHC về TTXH</div>
-            </div>
+            <div class="grid h-[46px] w-[46px] place-items-center rounded-full bg-white text-[#cf0000] shadow-sm"><i data-lucide="user-round" class="h-7 w-7 fill-[#cf0000]/15"></i></div>
+            <div class="hidden text-left sm:block"><div class="text-[15px] font-semibold leading-5">Nguyễn Văn A</div><div class="text-[13px] font-medium text-white/92">Phòng CS QLHC về TTXH</div></div>
             <i data-lucide="chevron-down" class="user-chevron h-5 w-5 text-white"></i>
           </button>
           <div id="userMenu" class="topbar-dropdown user-dropdown" hidden>
-            <div class="user-card">
-              <div class="grid h-11 w-11 place-items-center rounded-full bg-[#fff2f2] text-[#cf0000]">
-                <i data-lucide="user-round" class="h-6 w-6"></i>
-              </div>
-              <div>
-                <div class="user-name">Nguyễn Văn A</div>
-                <div class="user-role">Phòng CS QLHC về TTXH</div>
-              </div>
-            </div>
-            <button class="dropdown-action" type="button" data-user-action="profile">
-              <i data-lucide="id-card" class="h-4 w-4"></i> Thông tin tài khoản
-            </button>
-            <button class="dropdown-action" type="button" data-user-action="settings">
-              <i data-lucide="settings" class="h-4 w-4"></i> Cài đặt hiển thị
-            </button>
-            <a class="dropdown-action danger" href="DangNhap.html">
-              <i data-lucide="log-out" class="h-4 w-4"></i> Đăng xuất
-            </a>
+            <div class="user-card"><div class="grid h-11 w-11 place-items-center rounded-full bg-[#fff2f2] text-[#cf0000]"><i data-lucide="user-round" class="h-6 w-6"></i></div><div><div class="user-name">Nguyễn Văn A</div><div class="user-role">Phòng CS QLHC về TTXH</div></div></div>
+            <a class="dropdown-action" href="HoSoCaNhan.html"><i data-lucide="id-card" class="h-4 w-4"></i>Hồ sơ cá nhân</a>
+            <a class="dropdown-action danger" href="DangNhap.html"><i data-lucide="log-out" class="h-4 w-4"></i>Đăng xuất</a>
           </div>
         </div>
       </div>
     </header>
 
-    <!-- Sidebar -->
+    <!-- Sidebar injected by layout-sync.js -->
     <aside class="sidebar fixed bottom-0 left-0 top-[80px] z-20 px-2 text-white">
       <div class="sidebar-scroll">
         <div class="nav-section mt-0">Tổng quan</div>
-        <a href="#" class="nav-item mt-2">
-          <i data-lucide="house"></i>
-          <span class="nav-copy">Dashboard</span>
-        </a>
-
+        <a href="Dashboard.html" class="nav-item"><i data-lucide="layout-dashboard"></i><span class="nav-copy">Dashboard</span></a>
         <div class="nav-section">Giám sát địa bàn</div>
-        <a href="BanDoSoGis.html" class="nav-item mt-2">
-          <i data-lucide="map-pin"></i>
-          <span class="nav-copy">Bản đồ số GIS</span>
-        </a>
-
+        <a href="BanDoSoGis.html" class="nav-item"><i data-lucide="map-pin"></i><span class="nav-copy">Bản đồ số GIS</span></a>
         <div class="nav-section">Nghiệp vụ</div>
-        <a href="QuanLyHoSo.html" class="nav-item mt-2">
-          <i data-lucide="file-text"></i>
-          <span class="nav-copy">Quản lý hồ sơ</span>
-        </a>
-        <a href="CoSoDuLieuCSKD.html" class="nav-item">
-          <i data-lucide="database"></i>
-          <span class="nav-copy">Cơ sở dữ liệu CSKD-ANTT</span>
-        </a>
-        <a href="KiemTraCoSo.html" class="nav-item">
-          <i data-lucide="clipboard-check"></i>
-          <span class="nav-copy">Kiểm tra cơ sở</span>
-        </a>
-        <a href="XuLyViPham.html" class="nav-item">
-          <i data-lucide="octagon-alert"></i>
-          <span class="nav-copy">Vi phạm / Xử lý vi phạm</span>
-        </a>
-        <a href="QuanLyPhanAnh.html" class="nav-item">
-          <i data-lucide="message-square-warning"></i>
-          <span class="nav-copy">Phản ánh kiến nghị</span>
-        </a>
-
+        <a href="QuanLyHoSo.html" class="nav-item"><i data-lucide="file-text"></i><span class="nav-copy">Quản lý hồ sơ</span></a>
+        <a href="CoSoDuLieuCSKD.html" class="nav-item"><i data-lucide="database"></i><span class="nav-copy">Cơ sở dữ liệu CSKD-ANTT</span></a>
+        <a href="QuanLyKhaiBao.html" class="nav-item"><i data-lucide="inbox"></i><span class="nav-copy">Khai báo từ cơ sở</span></a>
+        <a href="KiemTraCoSo.html" class="nav-item"><i data-lucide="clipboard-check"></i><span class="nav-copy">Kiểm tra cơ sở</span></a>
+        <a href="XuLyViPham.html" class="nav-item"><i data-lucide="octagon-alert"></i><span class="nav-copy">Vi phạm / Xử lý vi phạm</span></a>
+        <a href="QuanLyPhanAnh.html" class="nav-item"><i data-lucide="message-square-warning"></i><span class="nav-copy">Phản ánh kiến nghị</span></a>
         <div class="nav-section">Báo cáo</div>
-        <a href="BaoCao-ThongKe.html" class="nav-item active mt-2">
-          <i data-lucide="chart-column-big"></i>
-          <span class="nav-copy">Báo cáo - thống kê</span>
-        </a>
-
+        <a href="BaoCao-ThongKe.html" class="nav-item active"><i data-lucide="chart-column-big"></i><span class="nav-copy">Báo cáo - thống kê</span></a>
         <div class="nav-section">Cấu hình</div>
-        <a href="DanhMuc.html" class="nav-item mt-2">
-          <i data-lucide="folder"></i>
-          <span class="nav-copy">Danh mục dùng chung</span>
-          <i data-lucide="chevron-down" class="ml-auto h-4 w-4 nav-copy"></i>
-        </a>
-        <a href="#" class="nav-item">
-          <i data-lucide="settings"></i>
-          <span class="nav-copy">Quản trị hệ thống</span>
-          <i data-lucide="chevron-down" class="ml-auto h-4 w-4 nav-copy"></i>
-        </a>
+        <a href="DanhMuc.html" class="nav-item"><i data-lucide="folder"></i><span class="nav-copy">Danh mục dùng chung</span></a>
+        <a href="QuanLyTaiKhoan.html" class="nav-item"><i data-lucide="users"></i><span class="nav-copy">Người dùng &amp; phân quyền</span></a>
+        <a href="QuanLyCanBo.html" class="nav-item"><i data-lucide="users-round"></i><span class="nav-copy">Quản lý cán bộ</span></a>
+        <a href="NhatKyHeThong.html" class="nav-item"><i data-lucide="history"></i><span class="nav-copy">Nhật ký hệ thống</span></a>
+        <a href="CauHinhHeThong.html" class="nav-item"><i data-lucide="settings"></i><span class="nav-copy">Cấu hình hệ thống</span></a>
       </div>
-
-      <div class="sidebar-action">
-        <button id="sidebarToggle" class="sidebar-toggle" type="button" aria-label="Thu gọn menu" aria-expanded="true">
-          <i data-lucide="chevron-left" class="toggle-icon"></i>
-          <span class="collapse-label">Thu gọn</span>
-        </button>
-      </div>
+      <div class="sidebar-action"><button id="sidebarToggle" class="sidebar-toggle" type="button" aria-label="Thu gọn menu" aria-expanded="true"><i data-lucide="chevron-left" class="toggle-icon"></i><span class="collapse-label">Thu gọn</span></button></div>
     </aside>
 
     <!-- Main Content -->
-    <main class="content min-h-screen pt-[80px]">
-      <div class="module-page px-6 pb-7 pt-6 lg:px-7">
-        <nav class="module-breadcrumb">
-          <span>Trang chủ</span>
-          <i data-lucide="chevron-right" class="h-4 w-4"></i>
-          <span>Báo cáo - thống kê</span>
+    <main class="content bc-main" id="bcMain">
+      <div class="bc-content">
+
+        <!-- Breadcrumb -->
+        <nav class="bc-breadcrumb" aria-label="Breadcrumb">
+          <a href="../index.html">Trang chủ</a>
+          <span class="sep"><i data-lucide="chevron-right" style="width:12px;height:12px;"></i></span>
+          <span class="current">Báo cáo - thống kê</span>
         </nav>
 
-        <section class="module-toolbar">
-          <div class="module-title">
-            <h1>Báo cáo - Thống kê số liệu</h1>
-            <div class="module-total">Hệ thống tổng hợp biểu đồ, số liệu tình hình cơ sở và xử lý vi phạm an ninh trật tự</div>
-          </div>
-          <div class="module-actions flex gap-2">
-            <button onclick="window.print()" class="module-action-btn module-action-secondary">
-              <i data-lucide="printer" class="h-4 w-4"></i>In báo cáo
+        <!-- Toolbar -->
+        <div class="bc-toolbar">
+          <div class="bc-page-title">Báo cáo - thống kê</div>
+          <div class="bc-toolbar-right">
+            <button class="bc-date-range" type="button" onclick="alert('Chọn khoảng thời gian')">
+              <i data-lucide="calendar" style="width:14px;height:14px;"></i>
+              01/05/2024 – 31/05/2024
             </button>
-            <button onclick="alert('Đã xuất file báo cáo tổng hợp Excel')" class="module-action-btn module-action-primary bg-emerald-600 border-emerald-600 text-white hover:bg-emerald-700">
-              <i data-lucide="file-spreadsheet" class="h-4 w-4"></i>Xuất Excel
+            <button class="bc-btn bc-btn-outline" type="button">
+              <i data-lucide="filter" style="width:14px;height:14px;"></i>
+              Bộ lọc
+            </button>
+            <button class="bc-btn bc-btn-primary" type="button" onclick="alert('Đang xuất báo cáo...')">
+              <i data-lucide="download" style="width:14px;height:14px;"></i>
+              Xuất báo cáo
             </button>
           </div>
-        </section>
+        </div>
 
-        <!-- Filters Bar -->
-        <section class="details-card mb-6">
-          <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 items-end">
-            <label>
-              <span class="block mb-1 text-[11px] font-bold text-gray-500 uppercase">Từ ngày</span>
-              <input type="date" class="field w-full" value="2024-01-01" />
-            </label>
-            <label>
-              <span class="block mb-1 text-[11px] font-bold text-gray-500 uppercase">Đến ngày</span>
-              <input type="date" class="field w-full" value="2024-12-31" />
-            </label>
-            <label>
-              <span class="block mb-1 text-[11px] font-bold text-gray-500 uppercase">Đơn vị thực hiện</span>
-              <select class="field w-full">
-                <option value="">Tất cả đơn vị</option>
-                <option value="PC06">Phòng CS QLHC về TTXH</option>
-                <option value="CATP">Công an TP. Ninh Bình</option>
-                <option value="CAHL">Công an huyện Hoa Lư</option>
-                <option value="CAGV">Công an huyện Gia Viễn</option>
-              </select>
-            </label>
-            <label>
-              <span class="block mb-1 text-[11px] font-bold text-gray-500 uppercase">Loại hình kinh doanh</span>
-              <select class="field w-full">
-                <option value="">Tất cả loại hình</option>
-                <option value="Lưu trú">Cơ sở lưu trú</option>
-                <option value="Karaoke">Karaoke / Vũ trường</option>
-                <option value="Cầm đồ">Dịch vụ cầm đồ</option>
-                <option value="Massage">Massage / Xoa bóp</option>
-              </select>
-            </label>
-            <div class="sm:col-span-4 flex justify-end gap-3 mt-2">
-              <button onclick="alert('Đã cập nhật dữ liệu lọc')" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-bold text-xs flex items-center gap-1.5 transition">
-                <i data-lucide="filter" class="h-3.5 w-3.5"></i>Lọc dữ liệu
-              </button>
-            </div>
-          </div>
-        </section>
+        <!-- Tab navigation -->
+        <div class="bc-tabs" role="tablist">
+          <button class="bc-tab active" role="tab" aria-selected="true">Tổng quan</button>
+          <button class="bc-tab" role="tab" onclick="alert('Đang phát triển')">Cơ sở</button>
+          <button class="bc-tab" role="tab" onclick="alert('Đang phát triển')">Hồ sơ</button>
+          <button class="bc-tab" role="tab" onclick="alert('Đang phát triển')">Giấy phép</button>
+          <button class="bc-tab" role="tab" onclick="alert('Đang phát triển')">Kiểm tra</button>
+          <button class="bc-tab" role="tab" onclick="alert('Đang phát triển')">Vi phạm</button>
+          <button class="bc-tab" role="tab" onclick="alert('Đang phát triển')">Phản ánh kiến nghị</button>
+          <button class="bc-tab" role="tab" onclick="alert('Đang phát triển')">Hiệu suất cán bộ</button>
+        </div>
 
-        <!-- KPI Cards Row -->
-        <div class="grid grid-cols-1 sm:grid-cols-4 gap-6 mb-6">
-          <div class="kpi-card">
-            <div>
-              <span class="text-xs font-bold text-gray-500 uppercase">Tổng số cơ sở</span>
-              <h2 class="text-2xl font-black text-gray-900 mt-1">1,250</h2>
+        <!-- ── ROW 1: KPI STAT CARDS ──────────────────────────── -->
+        <div class="bc-stats-grid">
+          <!-- Card 1 -->
+          <div class="bc-stat-card">
+            <div class="bc-stat-top">
+              <div class="bc-stat-icon blue"><i data-lucide="store"></i></div>
+              <div class="bc-stat-info">
+                <div class="bc-stat-value">2.845</div>
+                <div class="bc-stat-label">Tổng số cơ sở</div>
+              </div>
             </div>
-            <div class="text-[11px] text-green-600 font-bold mt-2 flex items-center gap-1">
-              <i data-lucide="trending-up" class="h-3 w-3"></i> +15 cơ sở mới tháng này
+            <div class="bc-stat-trend up"><i data-lucide="trending-up" style="width:12px;height:12px;"></i>↑ 12,5% so với kỳ trước</div>
+            <canvas class="bc-stat-sparkline" id="spark1" aria-hidden="true"></canvas>
+          </div>
+          <!-- Card 2 -->
+          <div class="bc-stat-card">
+            <div class="bc-stat-top">
+              <div class="bc-stat-icon green"><i data-lucide="file-plus-2"></i></div>
+              <div class="bc-stat-info">
+                <div class="bc-stat-value">1.256</div>
+                <div class="bc-stat-label">Hồ sơ tiếp nhận</div>
+              </div>
+            </div>
+            <div class="bc-stat-trend up"><i data-lucide="trending-up" style="width:12px;height:12px;"></i>↑ 8,7% so với kỳ trước</div>
+            <canvas class="bc-stat-sparkline" id="spark2" aria-hidden="true"></canvas>
+          </div>
+          <!-- Card 3 -->
+          <div class="bc-stat-card">
+            <div class="bc-stat-top">
+              <div class="bc-stat-icon amber"><i data-lucide="circle-check-big"></i></div>
+              <div class="bc-stat-info">
+                <div class="bc-stat-value">1.089</div>
+                <div class="bc-stat-label">Hồ sơ đã giải quyết</div>
+              </div>
+            </div>
+            <div class="bc-stat-trend up"><i data-lucide="trending-up" style="width:12px;height:12px;"></i>↑ 10,3% so với kỳ trước</div>
+            <canvas class="bc-stat-sparkline" id="spark3" aria-hidden="true"></canvas>
+          </div>
+          <!-- Card 4 -->
+          <div class="bc-stat-card">
+            <div class="bc-stat-top">
+              <div class="bc-stat-icon purple"><i data-lucide="calendar-x"></i></div>
+              <div class="bc-stat-info">
+                <div class="bc-stat-value">96</div>
+                <div class="bc-stat-label">Giấy phép sắp hết hạn</div>
+              </div>
+            </div>
+            <div class="bc-stat-trend down"><i data-lucide="trending-down" style="width:12px;height:12px;"></i>↓ 5,2% so với kỳ trước</div>
+            <canvas class="bc-stat-sparkline" id="spark4" aria-hidden="true"></canvas>
+          </div>
+          <!-- Card 5 -->
+          <div class="bc-stat-card">
+            <div class="bc-stat-top">
+              <div class="bc-stat-icon red"><i data-lucide="triangle-alert"></i></div>
+              <div class="bc-stat-info">
+                <div class="bc-stat-value">37</div>
+                <div class="bc-stat-label">Vi phạm chưa xử lý</div>
+              </div>
+            </div>
+            <div class="bc-stat-trend up" style="color:#dc2626;"><i data-lucide="trending-up" style="width:12px;height:12px;"></i>↑ 3,1% so với kỳ trước</div>
+            <canvas class="bc-stat-sparkline" id="spark5" aria-hidden="true"></canvas>
+          </div>
+          <!-- Card 6 -->
+          <div class="bc-stat-card">
+            <div class="bc-stat-top">
+              <div class="bc-stat-icon teal"><i data-lucide="message-circle-more"></i></div>
+              <div class="bc-stat-info">
+                <div class="bc-stat-value">128</div>
+                <div class="bc-stat-label">Phản ánh mới</div>
+              </div>
+            </div>
+            <div class="bc-stat-trend up"><i data-lucide="trending-up" style="width:12px;height:12px;"></i>↑ 18,6% so với kỳ trước</div>
+            <canvas class="bc-stat-sparkline" id="spark6" aria-hidden="true"></canvas>
+          </div>
+        </div>
+
+        <!-- ── ROW 2: 3 CHARTS ─────────────────────────────────── -->
+        <div class="bc-charts-row">
+
+          <!-- Chart 1: Horizontal bar - địa bàn -->
+          <div class="bc-card">
+            <div class="bc-card-header">
+              <div class="bc-card-title">1. Thống kê cơ sở theo địa bàn</div>
+              <a href="CoSoDuLieuCSKD.html" class="bc-card-link">Xem chi tiết <i data-lucide="arrow-right" style="width:12px;height:12px;"></i></a>
+            </div>
+            <div class="bc-chart-body">
+              <div style="height:250px; position:relative;">
+                <canvas id="hbarChart" aria-label="Thống kê cơ sở theo địa bàn"></canvas>
+              </div>
             </div>
           </div>
-          <div class="kpi-card">
-            <div>
-              <span class="text-xs font-bold text-gray-500 uppercase">Lượt kiểm tra</span>
-              <h2 class="text-2xl font-black text-gray-900 mt-1">180</h2>
+
+          <!-- Chart 2: Line - xu hướng hồ sơ -->
+          <div class="bc-card">
+            <div class="bc-card-header">
+              <div class="bc-card-title">2. Xu hướng hồ sơ theo thời gian</div>
+              <select class="bc-period-select">
+                <option>Theo tháng</option>
+                <option>Theo quý</option>
+                <option>Theo năm</option>
+              </select>
             </div>
-            <div class="text-[11px] text-blue-600 font-bold mt-2">
-              Đã hoàn thành: 120 | Đang thực hiện: 60
+            <div class="bc-chart-body">
+              <div style="height:250px; position:relative;">
+                <canvas id="lineChart2" aria-label="Xu hướng hồ sơ theo thời gian"></canvas>
+              </div>
             </div>
           </div>
-          <div class="kpi-card">
-            <div>
-              <span class="text-xs font-bold text-gray-500 uppercase">Quyết định xử phạt</span>
-              <h2 class="text-2xl font-black text-gray-900 mt-1">24</h2>
+
+          <!-- Chart 3: Status progress -->
+          <div class="bc-card">
+            <div class="bc-card-header">
+              <div class="bc-card-title">3. Tỷ lệ hồ sơ theo trạng thái</div>
             </div>
-            <div class="text-[11px] text-red-600 font-bold mt-2">
-              Tổng tiền: 120.000.000 VNĐ
+            <div class="bc-status-list">
+              <div class="bc-status-item">
+                <span class="bc-status-dot" style="background:#16a34a;"></span>
+                <span class="bc-status-name">Đã giải quyết</span>
+                <div class="bc-status-bar-wrap"><div class="bc-status-bar" style="width:61.9%;background:#16a34a;"></div></div>
+                <span class="bc-status-count">1.089</span>
+              </div>
+              <div class="bc-status-item">
+                <span class="bc-status-dot" style="background:#f59e0b;"></span>
+                <span class="bc-status-name">Đang xử lý</span>
+                <div class="bc-status-bar-wrap"><div class="bc-status-bar" style="width:9.5%;background:#f59e0b;"></div></div>
+                <span class="bc-status-count">167</span>
+              </div>
+              <div class="bc-status-item">
+                <span class="bc-status-dot" style="background:#3b82f6;"></span>
+                <span class="bc-status-name">Chờ bổ sung</span>
+                <div class="bc-status-bar-wrap"><div class="bc-status-bar" style="width:9.1%;background:#3b82f6;"></div></div>
+                <span class="bc-status-count">160</span>
+              </div>
+              <div class="bc-status-item">
+                <span class="bc-status-dot" style="background:#8b5cf6;"></span>
+                <span class="bc-status-name">Mới tiếp nhận</span>
+                <div class="bc-status-bar-wrap"><div class="bc-status-bar" style="width:18.1%;background:#8b5cf6;"></div></div>
+                <span class="bc-status-count">318</span>
+              </div>
+              <div class="bc-status-item">
+                <span class="bc-status-dot" style="background:#dc2626;"></span>
+                <span class="bc-status-name">Quá hạn xử lý</span>
+                <div class="bc-status-bar-wrap"><div class="bc-status-bar" style="width:1.3%;background:#dc2626;"></div></div>
+                <span class="bc-status-count">22</span>
+              </div>
+            </div>
+            <div class="bc-status-total">Tổng số: <strong>1.756 hồ sơ</strong></div>
+          </div>
+        </div>
+
+        <!-- ── ROW 3: Treemap + Donut + Viphạm ───────────────── -->
+        <div class="bc-row3">
+
+          <!-- Panel 4: Treemap loại hình -->
+          <div class="bc-card">
+            <div class="bc-card-header">
+              <div class="bc-card-title">4. Phân bố cơ sở theo loại hình</div>
+              <a href="CoSoDuLieuCSKD.html" class="bc-card-link">Xem chi tiết <i data-lucide="arrow-right" style="width:12px;height:12px;"></i></a>
+            </div>
+            <div class="bc-treemap">
+              <!-- Cột 1: Karaoke (34.7%) -->
+              <div style="flex: 34.7; display: flex; flex-direction: column;">
+                <div class="bc-tree-cell" style="background:#2563eb;">
+                  <div class="bc-tree-name">Karaoke</div>
+                  <div class="bc-tree-value">1.013 (35,6%)</div>
+                </div>
+              </div>
+              <!-- Cột 2: Khách sạn & Nhà nghỉ (40%) -->
+              <div style="flex: 40; display: flex; flex-direction: column; gap: 4px;">
+                <div class="bc-tree-cell" style="background:#16a34a; flex: 21.8;">
+                  <div class="bc-tree-name">Khách sạn</div>
+                  <div class="bc-tree-value">637 (22,4%)</div>
+                </div>
+                <div class="bc-tree-cell" style="background:#d97706; flex: 18.2;">
+                  <div class="bc-tree-name">Nhà nghỉ</div>
+                  <div class="bc-tree-value">532 (18,7%)</div>
+                </div>
+              </div>
+              <!-- Cột 3: Vũ trường, Bar, Massage, Khác, Cầm đồ (25.3%) -->
+              <div style="flex: 25.3; display: flex; flex-direction: column; gap: 4px;">
+                <div class="bc-tree-cell" style="background:#0d9488; flex: 9.1;">
+                  <div class="bc-tree-name">Vũ trường</div>
+                  <div class="bc-tree-value">264 (9,3%)</div>
+                </div>
+                <div class="bc-tree-cell" style="background:#7c3aed; flex: 6.0;">
+                  <div class="bc-tree-name">Bar, Pub</div>
+                  <div class="bc-tree-value">174 (6,1%)</div>
+                </div>
+                <!-- Dòng phụ chứa Massage và (Khác, Cầm đồ) -->
+                <div style="flex: 10.2; display: flex; gap: 4px;">
+                  <div class="bc-tree-cell" style="background:#be185d; flex: 4.4;">
+                    <div class="bc-tree-name">Massage</div>
+                    <div class="bc-tree-value">128 (4,9%)</div>
+                  </div>
+                  <!-- Cột nhỏ chứa Khác và Cầm đồ -->
+                  <div style="flex: 5.8; display: flex; flex-direction: column; gap: 4px;">
+                    <div class="bc-tree-cell" style="background:#64748b; flex: 3.3;">
+                      <div class="bc-tree-name">Khác</div>
+                      <div class="bc-tree-value">97 (3,4%)</div>
+                    </div>
+                    <div class="bc-tree-cell" style="background:#dc2626; flex: 2.5;">
+                      <div class="bc-tree-name">Cầm đồ</div>
+                      <div class="bc-tree-value">72 (2,5%)</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="kpi-card">
-            <div>
-              <span class="text-xs font-bold text-gray-500 uppercase">Phản ánh kiến nghị</span>
-              <h2 class="text-2xl font-black text-gray-900 mt-1">45</h2>
+
+          <!-- Panel 5: Donut giấy phép -->
+          <div class="bc-card">
+            <div class="bc-card-header">
+              <div class="bc-card-title">5. Giấy phép sắp hết hạn</div>
+              <a href="CoSoDuLieuCSKD.html" class="bc-card-link">Xem chi tiết <i data-lucide="arrow-right" style="width:12px;height:12px;"></i></a>
             </div>
-            <div class="text-[11px] text-slate-600 font-bold mt-2">
-              Đã giải quyết: 40 | Đang xử lý: 5
+            <div class="bc-donut-wrap">
+              <div class="bc-donut-center-wrap">
+                <canvas id="donutChart" style="width:100%;height:100%;"></canvas>
+                <div class="bc-donut-center">
+                  <div class="bc-donut-center-num">96</div>
+                  <div class="bc-donut-center-sub">Tổng số</div>
+                </div>
+              </div>
+              <div class="bc-donut-legend">
+                <div class="bc-donut-legend-row">
+                  <span class="bc-donut-legend-dot" style="background:#dc2626;"></span>
+                  <span class="bc-donut-legend-label">Trong 7 ngày tới</span>
+                  <span class="bc-donut-legend-val">18</span>
+                  <span class="bc-donut-legend-pct">(18,8%)</span>
+                </div>
+                <div class="bc-donut-legend-row">
+                  <span class="bc-donut-legend-dot" style="background:#f59e0b;"></span>
+                  <span class="bc-donut-legend-label">Từ 8 – 30 ngày</span>
+                  <span class="bc-donut-legend-val">42</span>
+                  <span class="bc-donut-legend-pct">(43,8%)</span>
+                </div>
+                <div class="bc-donut-legend-row">
+                  <span class="bc-donut-legend-dot" style="background:#3b82f6;"></span>
+                  <span class="bc-donut-legend-label">Từ 31 – 60 ngày</span>
+                  <span class="bc-donut-legend-val">24</span>
+                  <span class="bc-donut-legend-pct">(25,0%)</span>
+                </div>
+                <div class="bc-donut-legend-row">
+                  <span class="bc-donut-legend-dot" style="background:#16a34a;"></span>
+                  <span class="bc-donut-legend-label">Từ 61 – 90 ngày</span>
+                  <span class="bc-donut-legend-val">12</span>
+                  <span class="bc-donut-legend-pct">(12,5%)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Panel 6: Thống kê vi phạm -->
+          <div class="bc-card">
+            <div class="bc-card-header">
+              <div class="bc-card-title">6. Thống kê vi phạm</div>
+              <a href="XuLyViPham.html" class="bc-card-link">Xem chi tiết <i data-lucide="arrow-right" style="width:12px;height:12px;"></i></a>
+            </div>
+            <div class="bc-vio-stats">
+              <div class="bc-vio-stat" style="background:#fff0f0;">
+                <i data-lucide="triangle-alert" style="width:18px;height:18px;color:#dc2626;"></i>
+                <div class="bc-vio-stat-num" style="color:#dc2626;">128</div>
+                <div class="bc-vio-stat-label" style="color:#dc2626;">Tổng số vụ</div>
+              </div>
+              <div class="bc-vio-stat" style="background:#f0fdf4;">
+                <i data-lucide="check-circle-2" style="width:18px;height:18px;color:#16a34a;"></i>
+                <div class="bc-vio-stat-num" style="color:#16a34a;">102</div>
+                <div class="bc-vio-stat-label" style="color:#16a34a;">Đã xử lý (79,7%)</div>
+              </div>
+              <div class="bc-vio-stat" style="background:#fffbeb;">
+                <i data-lucide="clock" style="width:18px;height:18px;color:#d97706;"></i>
+                <div class="bc-vio-stat-num" style="color:#d97706;">26</div>
+                <div class="bc-vio-stat-label" style="color:#d97706;">Chưa xử lý (20,3%)</div>
+              </div>
+            </div>
+            <div class="bc-vio-bar-section">
+              <div class="bc-vio-bar-title">Vi phạm theo mức độ</div>
+              <div style="height:180px;position:relative;">
+                <canvas id="vioBarChart" aria-label="Vi phạm theo mức độ"></canvas>
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- Charts Grid Row -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-          <!-- Combo Bar/Line Chart (Kiểm tra và Vi phạm) -->
-          <div class="chart-card lg:col-span-2">
-            <h3 class="text-sm font-bold text-gray-700 uppercase mb-4 flex items-center gap-1.5">
-              <i data-lucide="activity" class="h-4 w-4 text-blue-600"></i> Xu hướng kiểm tra và vi phạm năm 2024
-            </h3>
-            <div class="relative h-[280px]">
-              <canvas id="comboChart"></canvas>
-            </div>
-          </div>
-          
-          <!-- Donut Chart (Loại hình cơ sở) -->
-          <div class="chart-card">
-            <h3 class="text-sm font-bold text-gray-700 uppercase mb-4 flex items-center gap-1.5">
-              <i data-lucide="pie-chart" class="h-4 w-4 text-blue-600"></i> Cơ cấu loại hình cơ sở
-            </h3>
-            <div class="relative h-[220px] flex justify-center">
-              <canvas id="donutChart"></canvas>
-            </div>
-          </div>
-        </div>
+        <!-- ── ROW 4: Combo chart + Hiệu suất cán bộ ──────────── -->
+        <div class="bc-row4">
 
-        <!-- Table Data Section -->
-        <section class="details-card">
-          <h3 class="details-title">
-            <i data-lucide="table" class="h-5 w-5 text-blue-600"></i> Bảng tổng hợp chi tiết theo địa bàn huyện/thành phố
-          </h3>
-          <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse text-xs report-table">
+          <!-- Panel 7: Combo chart kiểm tra -->
+          <div class="bc-card">
+            <div class="bc-card-header">
+              <div class="bc-card-title">7. Thống kê kiểm tra theo thời gian</div>
+              <select class="bc-period-select">
+                <option>Theo tháng</option>
+                <option>Theo quý</option>
+              </select>
+            </div>
+            <!-- Legend -->
+            <div style="display:flex;gap:18px;padding:0 20px 10px;font-size:12px;font-weight:600;">
+              <span style="display:flex;align-items:center;gap:6px;color:#2563eb;"><span style="width:12px;height:12px;border-radius:50%;background:#2563eb;display:inline-block;"></span>Số lượt kiểm tra</span>
+              <span style="display:flex;align-items:center;gap:6px;color:#dc2626;"><span style="width:12px;height:12px;border-radius:50%;background:#dc2626;display:inline-block;"></span>Số cơ sở vi phạm</span>
+            </div>
+            <div class="bc-chart-body">
+              <div style="height:220px;position:relative;">
+                <canvas id="comboChart" aria-label="Thống kê kiểm tra theo thời gian"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Panel 8: Hiệu suất cán bộ -->
+          <div class="bc-card">
+            <div class="bc-card-header">
+              <div class="bc-card-title">8. Hiệu suất cán bộ</div>
+              <a href="QuanLyCanBo.html" class="bc-card-link">Xem chi tiết <i data-lucide="arrow-right" style="width:12px;height:12px;"></i></a>
+            </div>
+            <table class="bc-perf-table">
               <thead>
-                <tr class="border-b">
-                  <th class="p-3 text-center w-12">STT</th>
-                  <th class="p-3">Đơn vị thực hiện</th>
-                  <th class="p-3 text-center">Tổng cơ sở</th>
-                  <th class="p-3 text-center">Tổng lượt kiểm tra</th>
-                  <th class="p-3 text-center">Đã hoàn thành</th>
-                  <th class="p-3 text-center">Đang thực hiện</th>
-                  <th class="p-3 text-center">Số vụ vi phạm</th>
-                  <th class="p-3 text-right">Tổng tiền phạt (VNĐ)</th>
-                  <th class="p-3 text-center">Phản ánh tiếp nhận</th>
-                  <th class="p-3 text-center">Đã xử lý</th>
+                <tr>
+                  <th style="width:32px;">#</th>
+                  <th>Cán bộ</th>
+                  <th>Hồ sơ xử lý</th>
+                  <th>Tỷ lệ đúng hạn</th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-gray-200">
+              <tbody>
                 <tr>
-                  <td class="p-3 text-center">1</td>
-                  <td class="p-3 font-semibold text-gray-800">Công an TP. Ninh Bình</td>
-                  <td class="p-3 text-center font-semibold">320</td>
-                  <td class="p-3 text-center">54</td>
-                  <td class="p-3 text-center">42</td>
-                  <td class="p-3 text-center">12</td>
-                  <td class="p-3 text-center text-red-600 font-bold">6</td>
-                  <td class="p-3 text-right font-semibold">30.000.000</td>
-                  <td class="p-3 text-center">12</td>
-                  <td class="p-3 text-center">10</td>
+                  <td><span class="bc-perf-rank gold">🥇</span></td>
+                  <td>
+                    <div style="display:flex;align-items:center;gap:8px;">
+                      <div class="bc-perf-avatar" style="background:#fef3c7;color:#d97706;">T</div>
+                      <span class="bc-perf-name">Trần Văn B</span>
+                    </div>
+                  </td>
+                  <td><span class="bc-perf-count">126</span></td>
+                  <td>
+                    <div style="display:flex;align-items:center;gap:8px;">
+                      <div class="bc-perf-bar-wrap"><div class="bc-perf-bar" style="width:93.7%;"></div></div>
+                      <span class="bc-perf-pct">93,7%</span>
+                    </div>
+                  </td>
                 </tr>
                 <tr>
-                  <td class="p-3 text-center">2</td>
-                  <td class="p-3 font-semibold text-gray-800">Công an TP. Tam Điệp</td>
-                  <td class="p-3 text-center font-semibold">150</td>
-                  <td class="p-3 text-center">25</td>
-                  <td class="p-3 text-center">18</td>
-                  <td class="p-3 text-center">7</td>
-                  <td class="p-3 text-center text-red-600 font-bold">2</td>
-                  <td class="p-3 text-right font-semibold">10.000.000</td>
-                  <td class="p-3 text-center">5</td>
-                  <td class="p-3 text-center">5</td>
+                  <td><span class="bc-perf-rank silver">🥈</span></td>
+                  <td>
+                    <div style="display:flex;align-items:center;gap:8px;">
+                      <div class="bc-perf-avatar" style="background:#f1f5f9;color:#475569;">L</div>
+                      <span class="bc-perf-name">Lê Văn C</span>
+                    </div>
+                  </td>
+                  <td><span class="bc-perf-count">112</span></td>
+                  <td>
+                    <div style="display:flex;align-items:center;gap:8px;">
+                      <div class="bc-perf-bar-wrap"><div class="bc-perf-bar" style="width:89.2%;"></div></div>
+                      <span class="bc-perf-pct">89,2%</span>
+                    </div>
+                  </td>
                 </tr>
                 <tr>
-                  <td class="p-3 text-center">3</td>
-                  <td class="p-3 font-semibold text-gray-800">Công an huyện Hoa Lư</td>
-                  <td class="p-3 text-center font-semibold">180</td>
-                  <td class="p-3 text-center">30</td>
-                  <td class="p-3 text-center">20</td>
-                  <td class="p-3 text-center">10</td>
-                  <td class="p-3 text-center text-red-600 font-bold">4</td>
-                  <td class="p-3 text-right font-semibold">20.000.000</td>
-                  <td class="p-3 text-center">6</td>
-                  <td class="p-3 text-center">5</td>
+                  <td><span class="bc-perf-rank bronze">🥉</span></td>
+                  <td>
+                    <div style="display:flex;align-items:center;gap:8px;">
+                      <div class="bc-perf-avatar" style="background:#fce7f3;color:#be185d;">P</div>
+                      <span class="bc-perf-name">Phạm Thị D</span>
+                    </div>
+                  </td>
+                  <td><span class="bc-perf-count">98</span></td>
+                  <td>
+                    <div style="display:flex;align-items:center;gap:8px;">
+                      <div class="bc-perf-bar-wrap"><div class="bc-perf-bar" style="width:87.1%;"></div></div>
+                      <span class="bc-perf-pct">87,1%</span>
+                    </div>
+                  </td>
                 </tr>
                 <tr>
-                  <td class="p-3 text-center">4</td>
-                  <td class="p-3 font-semibold text-gray-800">Công an huyện Gia Viễn</td>
-                  <td class="p-3 text-center font-semibold">140</td>
-                  <td class="p-3 text-center">22</td>
-                  <td class="p-3 text-center">15</td>
-                  <td class="p-3 text-center">7</td>
-                  <td class="p-3 text-center text-red-600 font-bold">3</td>
-                  <td class="p-3 text-right font-semibold">15.000.000</td>
-                  <td class="p-3 text-center">7</td>
-                  <td class="p-3 text-center">6</td>
+                  <td><span class="bc-perf-rank" style="color:#374151;font-size:13px;">4</span></td>
+                  <td>
+                    <div style="display:flex;align-items:center;gap:8px;">
+                      <div class="bc-perf-avatar">H</div>
+                      <span class="bc-perf-name">Hoàng Văn E</span>
+                    </div>
+                  </td>
+                  <td><span class="bc-perf-count">86</span></td>
+                  <td>
+                    <div style="display:flex;align-items:center;gap:8px;">
+                      <div class="bc-perf-bar-wrap"><div class="bc-perf-bar" style="width:82.5%;background:#2563eb;"></div></div>
+                      <span class="bc-perf-pct" style="color:#2563eb;">82,5%</span>
+                    </div>
+                  </td>
                 </tr>
                 <tr>
-                  <td class="p-3 text-center">5</td>
-                  <td class="p-3 font-semibold text-gray-800">Công an huyện Nho Quan</td>
-                  <td class="p-3 text-center font-semibold">110</td>
-                  <td class="p-3 text-center">18</td>
-                  <td class="p-3 text-center">10</td>
-                  <td class="p-3 text-center">8</td>
-                  <td class="p-3 text-center text-red-600 font-bold">2</td>
-                  <td class="p-3 text-right font-semibold">10.000.000</td>
-                  <td class="p-3 text-center">4</td>
-                  <td class="p-3 text-center">4</td>
-                </tr>
-                <tr>
-                  <td class="p-3 text-center">6</td>
-                  <td class="p-3 font-semibold text-gray-800">Công an huyện Yên Khánh</td>
-                  <td class="p-3 text-center font-semibold">120</td>
-                  <td class="p-3 text-center">16</td>
-                  <td class="p-3 text-center">10</td>
-                  <td class="p-3 text-center">6</td>
-                  <td class="p-3 text-center text-red-600 font-bold">3</td>
-                  <td class="p-3 text-right font-semibold">15.000.000</td>
-                  <td class="p-3 text-center">5</td>
-                  <td class="p-3 text-center">4</td>
-                </tr>
-                <tr>
-                  <td class="p-3 text-center">7</td>
-                  <td class="p-3 font-semibold text-gray-800">Công an huyện Kim Sơn</td>
-                  <td class="p-3 text-center font-semibold">130</td>
-                  <td class="p-3 text-center">10</td>
-                  <td class="p-3 text-center">5</td>
-                  <td class="p-3 text-center">5</td>
-                  <td class="p-3 text-center text-red-600 font-bold">2</td>
-                  <td class="p-3 text-right font-semibold">10.000.000</td>
-                  <td class="p-3 text-center">3</td>
-                  <td class="p-3 text-center">3</td>
-                </tr>
-                <tr>
-                  <td class="p-3 text-center">8</td>
-                  <td class="p-3 font-semibold text-gray-800">Công an huyện Yên Mô</td>
-                  <td class="p-3 text-center font-semibold">100</td>
-                  <td class="p-3 text-center">5</td>
-                  <td class="p-3 text-center">2</td>
-                  <td class="p-3 text-center">3</td>
-                  <td class="p-3 text-center text-red-600 font-bold">2</td>
-                  <td class="p-3 text-right font-semibold">10.000.000</td>
-                  <td class="p-3 text-center">3</td>
-                  <td class="p-3 text-center">3</td>
-                </tr>
-                <tr class="total-row">
-                  <td class="p-3 text-center">-</td>
-                  <td class="p-3">TỔNG CỘNG</td>
-                  <td class="p-3 text-center">1,250</td>
-                  <td class="p-3 text-center">180</td>
-                  <td class="p-3 text-center">120</td>
-                  <td class="p-3 text-center">60</td>
-                  <td class="p-3 text-center text-red-600">24</td>
-                  <td class="p-3 text-right">120.000.000</td>
-                  <td class="p-3 text-center">45</td>
-                  <td class="p-3 text-center">40</td>
+                  <td><span class="bc-perf-rank" style="color:#374151;font-size:13px;">5</span></td>
+                  <td>
+                    <div style="display:flex;align-items:center;gap:8px;">
+                      <div class="bc-perf-avatar" style="background:#f0fdf4;color:#16a34a;">N</div>
+                      <span class="bc-perf-name">Nguyễn Thị F</span>
+                    </div>
+                  </td>
+                  <td><span class="bc-perf-count">74</span></td>
+                  <td>
+                    <div style="display:flex;align-items:center;gap:8px;">
+                      <div class="bc-perf-bar-wrap"><div class="bc-perf-bar" style="width:78.3%;background:#2563eb;"></div></div>
+                      <span class="bc-perf-pct" style="color:#2563eb;">78,3%</span>
+                    </div>
+                  </td>
                 </tr>
               </tbody>
             </table>
           </div>
-        </section>
+        </div>
 
-      </div>
+        <!-- ── ROW 5: BÁO CÁO NHANH ──────────────────────────── -->
+        <div class="bc-section-title">Báo cáo nhanh</div>
+        <div class="bc-quick-reports">
+          <a href="#" class="bc-quick-btn" onclick="alert('Đang xuất báo cáo tổng hợp...');return false;">
+            <div class="bc-quick-icon" style="background:#eff6ff;color:#2563eb;"><i data-lucide="layout-list"></i></div>
+            <span class="bc-quick-label">Báo cáo tổng hợp</span>
+          </a>
+          <a href="#" class="bc-quick-btn" onclick="alert('Đang xuất báo cáo cơ sở...');return false;">
+            <div class="bc-quick-icon" style="background:#f0fdf4;color:#16a34a;"><i data-lucide="store"></i></div>
+            <span class="bc-quick-label">Báo cáo cơ sở</span>
+          </a>
+          <a href="#" class="bc-quick-btn" onclick="alert('Đang xuất báo cáo hồ sơ...');return false;">
+            <div class="bc-quick-icon" style="background:#fffbeb;color:#d97706;"><i data-lucide="file-text"></i></div>
+            <span class="bc-quick-label">Báo cáo hồ sơ</span>
+          </a>
+          <a href="#" class="bc-quick-btn" onclick="alert('Đang xuất báo cáo giấy phép...');return false;">
+            <div class="bc-quick-icon" style="background:#f5f3ff;color:#7c3aed;"><i data-lucide="badge-check"></i></div>
+            <span class="bc-quick-label">Báo cáo giấy phép</span>
+          </a>
+          <a href="#" class="bc-quick-btn" onclick="alert('Đang xuất báo cáo kiểm tra...');return false;">
+            <div class="bc-quick-icon" style="background:#fff0f0;color:#bd0000;"><i data-lucide="clipboard-check"></i></div>
+            <span class="bc-quick-label">Báo cáo kiểm tra</span>
+          </a>
+          <a href="#" class="bc-quick-btn" onclick="alert('Đang xuất báo cáo vi phạm...');return false;">
+            <div class="bc-quick-icon" style="background:#fff7ed;color:#ea580c;"><i data-lucide="triangle-alert"></i></div>
+            <span class="bc-quick-label">Báo cáo vi phạm</span>
+          </a>
+          <a href="#" class="bc-quick-btn" onclick="alert('Đang xuất báo cáo cán bộ...');return false;">
+            <div class="bc-quick-icon" style="background:#f0fdfa;color:#0d9488;"><i data-lucide="users-round"></i></div>
+            <span class="bc-quick-label">Báo cáo cán bộ</span>
+          </a>
+        </div>
+
+      </div><!-- /bc-content -->
     </main>
-  </div>
+
+  </div><!-- /desktop-shell -->
 
   <script>
-    // Collapsible Sidebar logic
-    document.querySelector('#sidebarToggle')?.addEventListener('click', () => {
-      document.querySelector('.desktop-shell')?.classList.toggle('is-collapsed');
-    });
+    Chart.defaults.font.family = "'Roboto', Arial, sans-serif";
 
-    // Topbar Dropdown toggling
-    const initMenuToggle = (btnId, menuId) => {
-      const btn = document.getElementById(btnId);
-      const menu = document.getElementById(menuId);
-      if (!btn || !menu) return;
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const opened = btn.classList.toggle('is-open');
-        menu.hidden = !opened;
-      });
-    };
-    initMenuToggle('notificationToggle', 'notificationMenu');
-    initMenuToggle('userMenuToggle', 'userMenu');
-    document.addEventListener('click', () => {
-      document.getElementById('notificationMenu').hidden = true;
-      document.getElementById('userMenu').hidden = true;
-      document.getElementById('notificationToggle')?.classList.remove('is-open');
-      document.getElementById('userMenuToggle')?.classList.remove('is-open');
-    });
-
-    // Chart.js Implementations
-    window.addEventListener('load', () => {
-      if (window.lucide) window.lucide.createIcons();
-
-      // 1. Combo Bar & Line Chart
-      const comboCtx = document.getElementById('comboChart').getContext('2d');
-      new Chart(comboCtx, {
-        type: 'bar',
+    // ── Sparkline helper ─────────────────────────────────────────
+    function makeSparkline(id, color, data) {
+      const ctx = document.getElementById(id);
+      if (!ctx) return;
+      const parentW = ctx.parentElement ? ctx.parentElement.offsetWidth : 200;
+      ctx.width  = parentW || 200;
+      ctx.height = 36;
+      new Chart(ctx, {
+        type: 'line',
         data: {
-          labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
-          datasets: [{
-            type: 'bar',
-            label: 'Số lượt kiểm tra',
-            data: [12, 19, 15, 8, 22, 30, 24, 18, 15, 20, 28, 25],
-            backgroundColor: 'rgba(37, 99, 235, 0.75)', // Blue
-            borderColor: 'rgb(37, 99, 235)',
-            borderWidth: 1,
-            borderRadius: 4
-          }, {
-            type: 'line',
-            label: 'Số vụ vi phạm',
-            data: [2, 3, 1, 0, 4, 6, 2, 1, 1, 3, 4, 2],
-            borderColor: 'rgb(239, 68, 68)', // Red
-            backgroundColor: 'rgba(239, 68, 68, 0.1)',
-            borderWidth: 2.5,
-            tension: 0.35,
-            fill: false
-          }]
+          labels: data.map((_, i) => i),
+          datasets: [{ data, borderColor: color, borderWidth: 2, pointRadius: 0, tension: 0.45, fill: true, backgroundColor: color.replace('rgb', 'rgba').replace(')', ', 0.1)') }]
         },
         options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          scales: {
-            y: {
-              beginAtZero: true,
-              grid: {
-                color: '#f1f5f9'
-              }
-            },
-            x: {
-              grid: {
-                display: false
-              }
-            }
-          },
+          responsive: false, maintainAspectRatio: false,
+          plugins: { legend: { display: false }, tooltip: { enabled: false } },
+          scales: { x: { display: false }, y: { display: false } },
+          animation: { duration: 600 }
+        }
+      });
+    }
+    makeSparkline('spark1', 'rgb(37,99,235)',   [62,68,75,72,85,88,95,98,105,108,110,115]);
+    makeSparkline('spark2', 'rgb(22,163,74)',   [40,45,48,42,55,60,65,62,72,70,68,75]);
+    makeSparkline('spark3', 'rgb(217,119,6)',   [38,42,45,40,50,55,58,60,65,62,68,72]);
+    makeSparkline('spark4', 'rgb(124,58,237)',  [110,108,105,100,102,98,96,98,95,92,94,96]);
+    makeSparkline('spark5', 'rgb(220,38,38)',   [28,30,25,32,35,30,38,32,36,34,38,37]);
+    makeSparkline('spark6', 'rgb(13,148,136)',  [58,62,68,72,80,85,90,95,100,108,115,128]);
+
+    // ── Chart 1: Horizontal Bar (địa bàn) ───────────────────────
+    (function() {
+      const ctx = document.getElementById('hbarChart');
+      if (!ctx) return;
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['TP. Ninh Bình', 'H. Yên Khánh', 'H. Kim Sơn', 'H. Gia Viễn', 'H. Yên Mô', 'H. Hoa Lư'],
+          datasets: [{ data: [856, 512, 498, 386, 312, 281], backgroundColor: '#2563eb', borderRadius: 4, barThickness: 20, hoverBackgroundColor: '#1d4ed8' }]
+        },
+        options: {
+          indexAxis: 'y', responsive: true, maintainAspectRatio: false,
           plugins: {
-            legend: {
-              position: 'bottom',
-              labels: {
-                font: {
-                  family: 'Roboto',
-                  size: 11,
-                  weight: '600'
-                }
-              }
-            }
+            legend: { display: false },
+            tooltip: { backgroundColor: '#1b2430', callbacks: { label: c => ` ${c.parsed.x} cơ sở (${((c.parsed.x/2845)*100).toFixed(1)}%)` } }
+          },
+          scales: {
+            x: { grid: { color: '#f3f4f6' }, ticks: { color: '#6b7280', font: { size: 11 } }, title: { display: true, text: 'Số lượng cơ sở', color: '#9ca3af', font: { size: 11 } } },
+            y: { grid: { display: false }, ticks: { color: '#374151', font: { size: 12, weight: '600' } } }
           }
         }
       });
+    })();
 
-      // 2. Donut Chart (Loại hình cơ sở)
-      const donutCtx = document.getElementById('donutChart').getContext('2d');
-      new Chart(donutCtx, {
-        type: 'doughnut',
+    // ── Chart 2: Line - xu hướng hồ sơ ─────────────────────────
+    (function() {
+      const ctx = document.getElementById('lineChart2');
+      if (!ctx) return;
+      new Chart(ctx, {
+        type: 'line',
         data: {
-          labels: ['Lưu trú', 'Karaoke/Vũ trường', 'Cầm đồ', 'Massage', 'Khác'],
-          datasets: [{
-            data: [625, 250, 187, 125, 63],
-            backgroundColor: [
-              '#3b82f6', // blue
-              '#8b5cf6', // purple
-              '#f59e0b', // amber
-              '#ec4899', // pink
-              '#94a3b8'  // slate
-            ],
-            borderWidth: 2,
-            borderColor: '#fff'
-          }]
+          labels: ['T12/23','T1/24','T2/24','T3/24','T4/24','T5/24'],
+          datasets: [
+            { label: 'Tiếp nhận', data: [920, 980, 1050, 1100, 1200, 1256], borderColor: '#2563eb', backgroundColor: 'rgba(37,99,235,0.07)', borderWidth: 2.5, pointRadius: 4, pointBackgroundColor: '#2563eb', pointBorderColor: '#fff', pointBorderWidth: 2, tension: 0.35, fill: true },
+            { label: 'Đã giải quyết', data: [880, 920, 970, 1010, 1060, 1089], borderColor: '#16a34a', backgroundColor: 'rgba(22,163,74,0.05)', borderWidth: 2.5, pointRadius: 4, pointBackgroundColor: '#16a34a', pointBorderColor: '#fff', pointBorderWidth: 2, tension: 0.35, fill: true },
+            { label: 'Đang xử lý', data: [120, 150, 160, 170, 180, 187], borderColor: '#f59e0b', backgroundColor: 'rgba(245,158,11,0.05)', borderWidth: 2, pointRadius: 4, pointBackgroundColor: '#f59e0b', pointBorderColor: '#fff', pointBorderWidth: 2, tension: 0.35, fill: true }
+          ]
         },
         options: {
-          responsive: true,
-          maintainAspectRatio: false,
+          responsive: true, maintainAspectRatio: false,
+          interaction: { mode: 'index', intersect: false },
           plugins: {
-            legend: {
-              position: 'bottom',
-              labels: {
-                boxWidth: 12,
-                padding: 10,
-                font: {
-                  family: 'Roboto',
-                  size: 10,
-                  weight: '600'
-                }
-              }
-            }
+            legend: { position: 'top', labels: { boxWidth: 12, padding: 14, font: { size: 12, weight: '600' } } },
+            tooltip: { backgroundColor: '#1b2430', padding: 10, cornerRadius: 6 }
           },
-          cutout: '65%'
+          scales: {
+            x: { grid: { color: '#f3f4f6' }, ticks: { color: '#6b7280', font: { size: 11 } } },
+            y: { grid: { color: '#f3f4f6' }, ticks: { color: '#6b7280', font: { size: 11 } }, beginAtZero: false, min: 100 }
+          }
         }
       });
-    });
+    })();
+
+    // ── Chart 3: Donut - giấy phép hết hạn ─────────────────────
+    (function() {
+      const ctx = document.getElementById('donutChart');
+      if (!ctx) return;
+      new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Trong 7 ngày', 'Từ 8-30 ngày', 'Từ 31-60 ngày', 'Từ 61-90 ngày'],
+          datasets: [{ data: [18, 42, 24, 12], backgroundColor: ['#dc2626', '#f59e0b', '#3b82f6', '#16a34a'], borderWidth: 3, borderColor: '#fff', hoverOffset: 6 }]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false }, tooltip: { backgroundColor: '#1b2430', callbacks: { label: c => ` ${c.label}: ${c.parsed} GP` } } },
+          cutout: '68%'
+        }
+      });
+    })();
+
+    // ── Chart 4: Vi phạm mức độ (Bar mini) ──────────────────────
+    (function() {
+      const ctx = document.getElementById('vioBarChart');
+      if (!ctx) return;
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Nhẹ', 'Trung bình', 'Nghiêm trọng'],
+          datasets: [{ data: [76, 34, 18], backgroundColor: ['#16a34a', '#f59e0b', '#dc2626'], borderRadius: 4, barThickness: 32 }]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false }, tooltip: { backgroundColor: '#1b2430', callbacks: { label: c => ` ${c.parsed.y} vụ` } }, datalabels: { display: false } },
+          scales: {
+            x: { grid: { display: false }, ticks: { color: '#6b7280', font: { size: 11 } } },
+            y: { grid: { color: '#f9fafb' }, ticks: { color: '#6b7280', font: { size: 10 } }, beginAtZero: true }
+          }
+        }
+      });
+    })();
+
+    // ── Chart 5: Combo - kiểm tra (dual axis) ───────────────────
+    (function() {
+      const ctx = document.getElementById('comboChart');
+      if (!ctx) return;
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['T12/23','T1/24','T2/24','T3/24','T4/24','T5/24'],
+          datasets: [
+            { type: 'bar', label: 'Số lượt kiểm tra', data: [135, 159, 130, 180, 171, 98], backgroundColor: 'rgba(37,99,235,0.8)', borderRadius: 4, barThickness: 28, yAxisID: 'y' },
+            { type: 'line', label: 'Số cơ sở vi phạm', data: [21, 31, 34, 44, 31, 21], borderColor: '#dc2626', backgroundColor: 'rgba(220,38,38,0.06)', borderWidth: 2.5, pointRadius: 5, pointBackgroundColor: '#dc2626', pointBorderColor: '#fff', pointBorderWidth: 2, tension: 0.35, fill: false, yAxisID: 'y1' }
+          ]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          interaction: { mode: 'index', intersect: false },
+          plugins: { legend: { display: false }, tooltip: { backgroundColor: '#1b2430' } },
+          scales: {
+            x: { grid: { display: false }, ticks: { color: '#6b7280', font: { size: 11 } } },
+            y: { type: 'linear', position: 'left', grid: { color: '#f3f4f6' }, ticks: { color: '#6b7280', font: { size: 11 } }, title: { display: true, text: 'Số lượt', color: '#9ca3af', font: { size: 10 } } },
+            y1: { type: 'linear', position: 'right', grid: { drawOnChartArea: false }, ticks: { color: '#dc2626', font: { size: 11 } }, title: { display: true, text: 'Số vi phạm', color: '#dc2626', font: { size: 10 } } }
+          }
+        }
+      });
+    })();
   </script>
+
+  <script src="../scripts/auth.js"></script>
   <script src='../scripts/layout-sync.js'></script>
 </body>
 
 </html>
-

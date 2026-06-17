@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="vi">
 
 <head>
@@ -148,11 +148,13 @@
         <section class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-5">
           <div class="flex items-center gap-2 text-[13px] font-medium text-[#6b7280]">
             <i data-lucide="house" class="h-4 w-4 text-[#9098a5]"></i>
-            <span>Trang chủ</span>
+            <a href="../index.html" class="hover:text-red-600 transition-colors">Trang chủ</a>
             <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
-            <span>Kiểm tra cơ sở</span>
+            <a href="KiemTraCoSo.html" class="hover:text-red-600 transition-colors">Kiểm tra cơ sở</a>
             <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
-            <span>Lịch kiểm tra</span>
+            <a href="KiemTraCoSo.html" class="hover:text-red-600 transition-colors">Danh sách cuộc kiểm tra</a>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
+            <span class="text-gray-900 font-semibold">Lịch kiểm tra</span>
           </div>
           <div class="flex flex-wrap gap-3">
             <a class="module-action-btn module-action-secondary" href="KiemTraCoSo.html">
@@ -164,9 +166,8 @@
           </div>
         </section>
 
-        <!-- Component: Title & Description -->
+        <!-- Component: Description only (since H1 is removed) -->
         <div class="mb-6">
-          <h1 class="text-[20px] font-bold text-[#1e293b]">Lịch kiểm tra</h1>
           <p class="text-[13px] text-gray-500">Tháng 05/2024</p>
         </div>
         <section class="module-form-card"><h2 class="module-section-title">Danh sách lịch kiểm tra</h2><div class="module-detail-grid"><div class="module-detail-item"><span>Loại kiểm tra</span><strong>Định kỳ</strong></div><div class="module-detail-item"><span>Đơn vị thực hiện</span><strong>Phòng CS QLHC về TTXH</strong></div><div class="module-detail-item"><span>Người kiểm tra</span><strong>Nguyễn Văn A</strong></div><div class="module-detail-item"><span>Ngày kiểm tra</span><strong>15/05/2024</strong></div><div class="module-detail-item"><span>Trạng thái</span><strong><span class="module-badge badge-green">Đạt</span></strong></div><div class="module-detail-item"><span>Cơ sở</span><strong>Khách sạn Hoa Lư</strong></div></div></section>
@@ -177,6 +178,7 @@
     document.querySelector('#sidebarToggle')?.addEventListener('click', () => document.querySelector('.desktop-shell')?.classList.toggle('is-collapsed'));
     window.addEventListener('load', () => { if (window.lucide) window.lucide.createIcons(); });
   </script>
+  <script src="../scripts/auth.js"></script>
   <script src='../scripts/layout-sync.js'></script>
 </body>
 

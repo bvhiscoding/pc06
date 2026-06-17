@@ -459,7 +459,7 @@ function moduleCheckConfig() {
     entities: ['SystemSetting', 'Permission', 'ActivityLog'],
     filters: filters(['Module', 'Route', 'Quyền', 'Trạng thái']),
     columns: ['Module', 'Số màn', 'Route chính', 'Entity sử dụng', 'Quyền', 'Link', 'State', 'Trạng thái'],
-    rows: [['Người dùng và phân quyền', '05', 'QuanLyTaiKhoan.html', 'UserProfile/Role', 'admin', 'OK', 'Đủ', 'Thành công'], ['Cổng cơ sở', '07', 'CongCSKD-Dashboard.html', 'Business/Declaration', 'business', 'OK', 'Đủ', 'Thành công'], ['Kiểm tra/vi phạm', '02', 'QuanLyMauChecklist.html', 'Checklist/Violation', 'officer', 'OK', 'Đủ', 'Thành công'], ['Vận hành', '07', 'NhatKyHeThong.html', 'ActivityLog/Setting', 'admin', 'OK', 'Đủ', 'Thành công']],
+    rows: [['Người dùng và phân quyền', '05', 'QuanLyTaiKhoan.html', 'UserProfile/Role', 'admin', 'OK', 'Đủ', 'Thành công'], ['Cổng cơ sở', '07', 'Dashboard.html', 'Business/Declaration', 'business', 'OK', 'Đủ', 'Thành công'], ['Kiểm tra/vi phạm', '02', 'QuanLyMauChecklist.html', 'Checklist/Violation', 'officer', 'OK', 'Đủ', 'Thành công'], ['Vận hành', '07', 'NhatKyHeThong.html', 'ActivityLog/Setting', 'admin', 'OK', 'Đủ', 'Thành công']],
     details: [['Route kiểm tra', '64'], ['Link hợp lệ', '64'], ['Màn có state', '24/24 màn mới'], ['Quyền mô phỏng', '06 vai trò']],
     workflow: ['Quét danh sách route', 'Kiểm tra menu và quyền', 'Kiểm tra state cơ bản', 'Xuất kết quả kiểm tra'],
     docs: ['Báo cáo link', 'Báo cáo quyền', 'Danh sách màn mới']
@@ -517,7 +517,7 @@ function filters(labels) {
 
 const currentModule = document.querySelector('#moduleApp')?.dataset.module || 'accounts';
 const config = moduleConfigs[currentModule] || moduleConfigs.accounts;
-const noSidePanelModules = new Set(['accounts', 'procedure-admin', 'notifications-center', 'activity-log', 'declaration-admin', 'my-business', 'business-dashboard']);
+const noSidePanelModules = new Set(['accounts', 'procedure-admin', 'notifications-center', 'activity-log', 'declaration-admin', 'my-business', 'business-dashboard', 'system-config']);
 const modulesWithoutStats = new Set(['declaration-admin', 'procedure-admin', 'notifications-center', 'accounts', 'activity-log']);
 
 const state = {
@@ -601,7 +601,7 @@ function sidebarTemplate() {
     <aside class="sidebar fixed bottom-0 left-0 top-[80px] z-20 px-2 text-white">
       <div class="sidebar-scroll">
         <div class="nav-section mt-0">Tổng quan</div>
-        ${navItem('CongCSKD-Dashboard.html', 'layout-dashboard', 'Dashboard cơ sở', ['business-dashboard'])}
+        ${navItem('Dashboard.html', 'layout-dashboard', 'Dashboard', ['business-dashboard', 'dashboard'])}
         <div class="nav-section">Giám sát địa bàn</div>
         ${navItem('BanDoSoGis.html', 'map-pin', 'Bản đồ số GIS')}
         <div class="nav-section">Nghiệp vụ</div>

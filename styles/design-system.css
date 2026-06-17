@@ -63,6 +63,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.font-sans {
+  font-family: var(--font-base) !important;
+}
+
 /* ──────────────────────────────────────────
    3. TYPOGRAPHY
 ────────────────────────────────────────── */

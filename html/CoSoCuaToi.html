@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cơ sở của tôi – Công an tỉnh Ninh Bình</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/public-pages.css">
+  <style>
+    .detail-panel {
+      position: sticky; top: 100px;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      box-shadow: 0 4px 14px rgba(0,0,0,.07);
+      overflow: hidden;
+    }
+    .detail-panel-header {
+      background: linear-gradient(135deg, #bd0000 0%, #970000 100%);
+      padding: 18px 20px 16px;
+      color: #fff;
+    }
+    .dp-code { font-size: 13px; opacity: .85; font-weight: 500; }
+    .dp-name { font-size: 17px; font-weight: 700; margin-top: 3px; }
+    .dp-tag  { display:inline-flex;align-items:center;gap:5px;margin-top:8px;background:rgba(255,255,255,.18);padding:3px 10px;border-radius:20px;font-size:12px;font-weight:600; }
+    .detail-panel-body { padding: 18px 20px; }
+    .dp-section { margin-bottom: 20px; }
+    .dp-section-title {
+      font-size: 12px; font-weight: 700;
+      color: #bd0000; text-transform: uppercase; letter-spacing: .5px;
+      margin-bottom: 10px;
+      padding-bottom: 7px;
+      border-bottom: 1px solid #f3f4f6;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .dp-section-title svg { width: 14px; height: 14px; }
+    .dp-row {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      gap: 8px; margin-bottom: 7px; font-size: 13px;
+    }
+    .dp-label { color: #9ca3af; font-weight: 500; flex-shrink: 0; }
+    .dp-value { color: #111827; font-weight: 600; text-align: right; word-break: break-word; }
+    .dp-value.red { color: #bd0000; }
+    .no-data {
+      text-align: center; padding: 60px 20px;
+      color: #9ca3af; font-size: 14px;
+    }
+    .no-data svg { width: 48px; height: 48px; color: #e5e7eb; margin: 0 auto 12px; display: block; }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="pub-header">
+  <a href="../index.html" class="pub-header-brand">
+    <img src="../public/logocongan.png" alt="Logo Bộ Công an">
+    <div class="pub-brand-text">
+      <h1>CÔNG AN TỈNH NINH BÌNH</h1>
+      <p>HỆ THỐNG QUẢN LÝ CƠ SỞ KINH DOANH CÓ ĐIỀU KIỆN VỀ ANTT</p>
+    </div>
+  </a>
+  <nav>
+    <ul class="pub-nav">
+      <li class="pub-nav-item">
+        <a href="../index.html" class="pub-nav-link"><i data-lucide="home"></i> Trang chủ</a>
+      </li>
+      <li class="pub-nav-item">
+        <a href="#" class="pub-nav-link"><i data-lucide="map"></i> Bản đồ số</a>
+      </li>
+      <li class="pub-nav-item">
+        <a class="pub-nav-link">
+          <i data-lucide="file-text"></i> Thủ tục <i data-lucide="chevron-down" class="chevron"></i>
+        </a>
+        <div class="pub-nav-dropdown">
+          <a href="DangKyCoSo.html">Đăng ký cơ sở mới</a>
+          <a href="ThayDoiThongTin.html">Khai báo thay đổi</a>
+          <a href="#">Danh mục thủ tục</a>
+        </div>
+      </li>
+      <li class="pub-nav-item">
+        <a href="TheoDoiHoSo.html" class="pub-nav-link"><i data-lucide="search"></i> Tra cứu hồ sơ</a>
+      </li>
+      <li class="pub-nav-item">
+        <a class="pub-nav-link">
+          <i data-lucide="headset"></i> Hỗ trợ <i data-lucide="chevron-down" class="chevron"></i>
+        </a>
+        <div class="pub-nav-dropdown">
+          <a href="#">Hướng dẫn quy trình</a>
+          <a href="#">Biểu mẫu tải về</a>
+          <a href="#">Câu hỏi thường gặp</a>
+        </div>
+      </li>
+    </ul>
+  </nav>
+  <div class="pub-header-auth">
+    <a href="DangNhap.html" class="pub-login-btn" id="headerLoginBtn">
+      <i data-lucide="user"></i> Đăng nhập
+    </a>
+  </div>
+</header>
+
+<!-- BREADCRUMB -->
+<div class="pub-breadcrumb">
+  <a href="../index.html">Trang chủ</a>
+  <i data-lucide="chevron-right" style="width:14px;height:14px;color:#d1d5db"></i>
+  <span style="color:#374151;font-weight:600">Cơ sở của tôi</span>
+</div>
+
+<!-- PAGE HERO -->
+<div class="pub-page-hero">
+  <div class="pub-page-hero-row">
+    <div>
+      <h1>Cơ sở của tôi</h1>
+      <p>Quản lý danh sách và thông tin các cơ sở kinh doanh đã đăng ký.</p>
+    </div>
+    <a href="DangKyCoSo.html" class="btn btn-primary btn-lg">
+      <i data-lucide="plus-circle"></i> Đăng ký cơ sở mới
+    </a>
+  </div>
+</div>
+
+<div class="pub-main">
+  <!-- FILTER BAR -->
+  <div class="filter-card">
+    <div class="filter-row" style="grid-template-columns:220px 1fr 1fr 1fr auto">
+      <div class="filter-field">
+        <label>Mã cơ sở</label>
+        <input type="text" placeholder="Nhập mã cơ sở" id="filterMa">
+      </div>
+      <div class="filter-field">
+        <label>Tên cơ sở</label>
+        <input type="text" placeholder="Nhập tên cơ sở" id="filterTen">
+      </div>
+      <div class="filter-field">
+        <label>Ngành nghề</label>
+        <select id="filterNganh">
+          <option value="">Chọn ngành nghề</option>
+          <option>Kinh doanh karaoke</option>
+          <option>Kinh doanh lưu trú</option>
+          <option>Kinh doanh cầm đồ</option>
+          <option>Dịch vụ bảo vệ</option>
+          <option>Kinh doanh massage</option>
+          <option>Kinh doanh bar</option>
+          <option>Dịch vụ Internet</option>
+        </select>
+      </div>
+      <div class="filter-field">
+        <label>Trạng thái</label>
+        <select id="filterTT">
+          <option value="">Chọn trạng thái</option>
+          <option>Đang hoạt động</option>
+          <option>Tạm ngừng</option>
+          <option>Chờ cập nhật</option>
+          <option>Hết hiệu lực GCN</option>
+        </select>
+      </div>
+      <div class="filter-actions">
+        <button class="btn btn-outline btn-sm" onclick="resetFilter()">
+          <i data-lucide="rotate-ccw"></i> Đặt lại
+        </button>
+        <button class="btn btn-primary btn-sm" onclick="doFilter()">
+          <i data-lucide="search"></i> Tìm kiếm
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB PILLS -->
+  <div class="tab-pills">
+    <button class="tab-pill active" onclick="filterByTab('all', this)">
+      <i data-lucide="layout-grid"></i> Tất cả <span class="pill-count">8</span>
+    </button>
+    <button class="tab-pill" onclick="filterByTab('dang_hd', this)">
+      <i data-lucide="check-circle"></i> Đang hoạt động <span class="pill-count" style="background:#16a34a">5</span>
+    </button>
+    <button class="tab-pill" onclick="filterByTab('tam_ngung', this)">
+      <i data-lucide="pause-circle"></i> Tạm ngừng <span class="pill-count" style="background:#6b7280">1</span>
+    </button>
+    <button class="tab-pill" onclick="filterByTab('cho_cap_nhat', this)">
+      <i data-lucide="clock"></i> Chờ cập nhật <span class="pill-count" style="background:#d97706">1</span>
+    </button>
+    <button class="tab-pill" onclick="filterByTab('het_hieu_luc', this)">
+      <i data-lucide="x-circle"></i> Hết hiệu lực GCN <span class="pill-count">1</span>
+    </button>
+  </div>
+
+  <!-- TABLE + DETAIL PANEL -->
+  <div style="display:grid;grid-template-columns:1fr 340px;gap:20px;margin-top:16px;align-items:start">
+    <!-- LEFT: Table -->
+    <div style="background:#fff;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.07)">
+      <div style="padding:14px 18px;border-bottom:1px solid #e5e7eb;font-weight:700;font-size:14px;color:#111827">
+        Danh sách cơ sở
+      </div>
+      <div class="data-table-wrap">
+        <table class="data-table" id="cosoTable">
+          <thead>
+            <tr>
+              <th>STT</th>
+              <th>Mã cơ sở</th>
+              <th>Tên cơ sở</th>
+              <th>Ngành nghề</th>
+              <th>Địa chỉ</th>
+              <th>Trạng thái</th>
+              <th>Giấy CN ANTT</th>
+              <th>Thao tác</th>
+            </tr>
+          </thead>
+          <tbody id="cosoTbody">
+            <!-- rendered by JS -->
+          </tbody>
+        </table>
+      </div>
+      <div class="pagination" style="padding:14px 18px">
+        <span id="paginationInfo">Hiển thị 1 - 8 trong tổng số 8 cơ sở</span>
+        <div class="page-btns">
+          <button class="page-btn" disabled><i data-lucide="chevron-left" style="width:14px;height:14px"></i></button>
+          <button class="page-btn active">1</button>
+          <button class="page-btn"><i data-lucide="chevron-right" style="width:14px;height:14px"></i></button>
+        </div>
+        <div class="page-per-page">
+          <select><option>10 / trang</option><option>20 / trang</option><option>50 / trang</option></select>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Detail -->
+    <div>
+      <div class="detail-panel" id="detailPanel">
+        <div class="detail-panel-header">
+          <div class="dp-code" id="dpCode">HS000128</div>
+          <div class="dp-name" id="dpName">Karaoke Hoàng Gia</div>
+          <span class="dp-tag"><i data-lucide="check-circle" style="width:13px;height:13px"></i> <span id="dpStatusTag">Đang hoạt động</span></span>
+        </div>
+        <div class="detail-panel-body">
+
+          <!-- Thông tin cơ sở -->
+          <div class="dp-section">
+            <div class="dp-section-title"><i data-lucide="store"></i> Thông tin cơ sở</div>
+            <div class="dp-row"><span class="dp-label">Mã cơ sở</span><span class="dp-value red" id="dpMa">HS000128</span></div>
+            <div class="dp-row"><span class="dp-label">Tên cơ sở</span><span class="dp-value" id="dpTen">Karaoke Hoàng Gia</span></div>
+            <div class="dp-row"><span class="dp-label">Loại hình</span><span class="dp-value" id="dpLoai">Hộ kinh doanh</span></div>
+            <div class="dp-row"><span class="dp-label">Ngành nghề</span><span class="dp-value" id="dpNganh">Kinh doanh karaoke</span></div>
+            <div class="dp-row"><span class="dp-label">Chủ cơ sở / Người đại diện</span><span class="dp-value" id="dpChuCoSo">Nguyễn Văn Hùng</span></div>
+            <div class="dp-row"><span class="dp-label">Số điện thoại</span><span class="dp-value" id="dpPhone">0912 345 678</span></div>
+            <div class="dp-row"><span class="dp-label">Email</span><span class="dp-value" id="dpEmail" style="font-size:12px">hoanggiakaraoke@gmail.com</span></div>
+            <div class="dp-row"><span class="dp-label">Địa chỉ</span><span class="dp-value" id="dpAddr" style="font-size:12px">Số 123, Trần Hưng Đạo, TP. Ninh Bình, Ninh Bình</span></div>
+          </div>
+
+          <!-- Giấy chứng nhận ANTT -->
+          <div class="dp-section">
+            <div class="dp-section-title"><i data-lucide="shield-check"></i> Giấy chứng nhận ANTT</div>
+            <div class="dp-row"><span class="dp-label">Số giấy chứng nhận</span><span class="dp-value red" id="dpGcn">123/GCN-ANTT</span></div>
+            <div class="dp-row"><span class="dp-label">Ngày cấp</span><span class="dp-value" id="dpGcnDate">15/03/2023</span></div>
+            <div class="dp-row"><span class="dp-label">Ngày hết hạn</span><span class="dp-value" id="dpGcnExpiry">14/03/2028</span></div>
+            <div class="dp-row"><span class="dp-label">Trạng thái hoạt động</span>
+              <span class="dp-value"><span class="badge-status badge-active" id="dpStatusBadge">Đang hoạt động</span></span>
+            </div>
+          </div>
+
+          <!-- Chức năng nhanh -->
+          <div class="dp-section" style="margin-bottom:0">
+            <div class="dp-section-title"><i data-lucide="zap"></i> Chức năng nhanh</div>
+            <div class="quick-actions">
+              <a href="#" class="quick-action-btn" onclick="viewDetail(event)">
+                <i data-lucide="eye" style="width:20px;height:20px;color:#bd0000"></i>
+                Xem chi tiết
+              </a>
+              <a href="ThayDoiThongTin.html" class="quick-action-btn">
+                <i data-lucide="edit-3" style="width:20px;height:20px;color:#bd0000"></i>
+                Khai báo thay đổi
+              </a>
+              <a href="TheoDoiHoSo.html" class="quick-action-btn">
+                <i data-lucide="folder-search" style="width:20px;height:20px;color:#bd0000"></i>
+                Theo dõi hồ sơ
+              </a>
+              <a href="#" class="quick-action-btn" onclick="downloadGcn(event)">
+                <i data-lucide="download" style="width:20px;height:20px;color:#bd0000"></i>
+                Tải giấy chứng nhận
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="pub-footer">
+  © 2026 Công an tỉnh Ninh Bình. Tất cả quyền được bảo lưu.
+</footer>
+
+<script>
+  lucide.createIcons();
+
+  const cosoData = [
+    { stt:1, ma:'HS000128', ten:'Karaoke Hoàng Gia',       nganh:'Kinh doanh karaoke', addr:'Số 123, Trần Hưng Đạo, TP. Ninh Bình, Ninh Bình', tt:'dang_hd',     gcn:'123/GCN-ANTT', loai:'Hộ kinh doanh', chu:'Nguyễn Văn Hùng', phone:'0912 345 678', email:'hoanggiakaraoke@gmail.com', gcnDate:'15/03/2023', gcnExpiry:'14/03/2028' },
+    { stt:2, ma:'HS000127', ten:'Nhà nghỉ Lan Anh',        nganh:'Kinh doanh lưu trú', addr:'Số 45, Lê Thái Tổ, TP. Ninh Bình, Ninh Bình',    tt:'dang_hd',     gcn:'098/GCN-ANTT', loai:'Hộ kinh doanh', chu:'Nguyễn Thị Lan', phone:'0982 111 222', email:'nhanghilananh@gmail.com', gcnDate:'10/06/2022', gcnExpiry:'09/06/2027' },
+    { stt:3, ma:'HS000125', ten:'Cầm đồ Thành Đạt',        nganh:'Kinh doanh cầm đồ',  addr:'Số 67, Nguyễn Huệ, TP. Ninh Bình, Ninh Bình',   tt:'tam_ngung',   gcn:'056/GCN-ANTT', loai:'Hộ kinh doanh', chu:'Lê Thành Đạt', phone:'0979 333 444', email:'camdo.thanh@gmail.com', gcnDate:'20/01/2022', gcnExpiry:'19/01/2027' },
+    { stt:4, ma:'HS000124', ten:'Công ty TNHH Dịch vụ Bảo vệ An Ninh Việt', nganh:'Dịch vụ bảo vệ', addr:'Số 89, Trần Phú, TP. Ninh Bình, Ninh Bình', tt:'dang_hd', gcn:'221/GCN-ANTT', loai:'Công ty TNHH', chu:'Trần Minh Tuấn', phone:'0229 456 789', email:'anv.security@gmail.com', gcnDate:'05/04/2023', gcnExpiry:'04/04/2028' },
+    { stt:5, ma:'HS000123', ten:'Massage Hoàng Long',       nganh:'Kinh doanh massage',  addr:'Số 12, Đinh Tiên Hoàng, TP. Ninh Bình, Ninh Bình',tt:'cho_cap_nhat',gcn:'—',            loai:'Hộ kinh doanh', chu:'Hoàng Long', phone:'0908 555 666', email:'massage.hoangl@gmail.com', gcnDate:'—', gcnExpiry:'—' },
+    { stt:6, ma:'HS000122', ten:'Khách sạn Tràng An',       nganh:'Kinh doanh lưu trú', addr:'Số 98, Lương Văn Tụy, TP. Ninh Bình, Ninh Bình', tt:'dang_hd',     gcn:'176/GCN-ANTT', loai:'Công ty CP', chu:'Phạm Thị Hoa', phone:'0229 777 888', email:'kstrangan@gmail.com', gcnDate:'14/09/2021', gcnExpiry:'13/09/2026' },
+    { stt:7, ma:'HS000121', ten:'Quán bar New Star',        nganh:'Kinh doanh bar',      addr:'Số 33, Lê Đại Hành, TP. Tam Điệp, Ninh Bình',  tt:'het_hieu_luc',gcn:'012/GCN-ANTT', loai:'Hộ kinh doanh', chu:'Nguyễn Trung Kiên', phone:'0912 999 000', email:'barnewstar@gmail.com', gcnDate:'01/02/2020', gcnExpiry:'31/01/2025' },
+    { stt:8, ma:'HS000120', ten:'Hộ kinh doanh Internet 68',nganh:'Dịch vụ Internet',   addr:'Số 68, Phan Bội Châu, TP. Ninh Bình, Ninh Bình', tt:'dang_hd',     gcn:'310/GCN-ANTT', loai:'Hộ kinh doanh', chu:'Đinh Văn Thắng', phone:'0376 123 456', email:'internet68@gmail.com', gcnDate:'22/07/2023', gcnExpiry:'21/07/2028' },
+  ];
+
+  const statusMap = {
+    'dang_hd':     { label:'Đang hoạt động', cls:'badge-active', tagCls:'badge-active' },
+    'tam_ngung':   { label:'Tạm ngừng',       cls:'badge-paused', tagCls:'badge-paused' },
+    'cho_cap_nhat':{ label:'Chờ cập nhật',    cls:'badge-pending', tagCls:'badge-pending' },
+    'het_hieu_luc':{ label:'Hết hiệu lực GCN',cls:'badge-expired', tagCls:'badge-expired' },
+  };
+
+  let selectedIdx = 0;
+
+  function renderTable(data) {
+    const tbody = document.getElementById('cosoTbody');
+    tbody.innerHTML = data.map((r, i) => {
+      const sc = statusMap[r.tt] || { label:r.tt, cls:'' };
+      return `<tr onclick="selectRow(${cosoData.indexOf(r)})" style="cursor:pointer" id="row-${cosoData.indexOf(r)}" class="${cosoData.indexOf(r) === selectedIdx ? 'row-selected' : ''}">
+        <td>${r.stt}</td>
+        <td class="td-red">${r.ma}</td>
+        <td style="max-width:160px;white-space:normal;font-weight:600">${r.ten}</td>
+        <td style="font-size:12.5px">${r.nganh}</td>
+        <td style="font-size:12px;color:#6b7280;max-width:160px;white-space:normal">${r.addr}</td>
+        <td><span class="badge-status ${sc.cls}">${sc.label}</span></td>
+        <td class="td-red" style="font-size:13px;font-weight:700">${r.gcn}</td>
+        <td>
+          <div class="action-btns">
+            <button class="icon-btn" title="Xem chi tiết" onclick="event.stopPropagation();selectRow(${cosoData.indexOf(r)})">
+              <i data-lucide="eye"></i>
+            </button>
+            <button class="icon-btn" title="Khai báo thay đổi" onclick="event.stopPropagation();window.location.href='ThayDoiThongTin.html'">
+              <i data-lucide="edit-3"></i>
+            </button>
+          </div>
+        </td>
+      </tr>`;
+    }).join('');
+    document.getElementById('paginationInfo').textContent = `Hiển thị 1 - ${data.length} trong tổng số ${data.length} cơ sở`;
+    lucide.createIcons();
+    // Reapply selected highlight
+    const selRow = document.getElementById('row-' + selectedIdx);
+    if (selRow) selRow.style.background = '#fff5f5';
+  }
+
+  function selectRow(idx) {
+    // Reset all highlights
+    document.querySelectorAll('#cosoTbody tr').forEach(tr => tr.style.background = '');
+    const r = cosoData[idx];
+    if (!r) return;
+    selectedIdx = idx;
+    const row = document.getElementById('row-' + idx);
+    if (row) row.style.background = '#fff5f5';
+
+    const sc = statusMap[r.tt] || { label:r.tt, cls:'' };
+
+    // Update header
+    document.getElementById('dpCode').textContent = r.ma;
+    document.getElementById('dpName').textContent = r.ten;
+    document.getElementById('dpStatusTag').textContent = sc.label;
+
+    // Update body
+    document.getElementById('dpMa').textContent = r.ma;
+    document.getElementById('dpTen').textContent = r.ten;
+    document.getElementById('dpLoai').textContent = r.loai;
+    document.getElementById('dpNganh').textContent = r.nganh;
+    document.getElementById('dpChuCoSo').textContent = r.chu;
+    document.getElementById('dpPhone').textContent = r.phone;
+    document.getElementById('dpEmail').textContent = r.email;
+    document.getElementById('dpAddr').textContent = r.addr;
+    document.getElementById('dpGcn').textContent = r.gcn;
+    document.getElementById('dpGcnDate').textContent = r.gcnDate;
+    document.getElementById('dpGcnExpiry').textContent = r.gcnExpiry;
+    document.getElementById('dpStatusBadge').textContent = sc.label;
+    document.getElementById('dpStatusBadge').className = 'badge-status ' + sc.cls;
+  }
+
+  function filterByTab(tab, btn) {
+    document.querySelectorAll('.tab-pill').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    if (tab === 'all') renderTable(cosoData);
+    else renderTable(cosoData.filter(r => r.tt === tab));
+  }
+
+  function resetFilter() {
+    ['filterMa','filterTen','filterNganh','filterTT'].forEach(id => { document.getElementById(id).value = ''; });
+    renderTable(cosoData);
+  }
+
+  function doFilter() {
+    const ma   = document.getElementById('filterMa').value.trim().toLowerCase();
+    const ten  = document.getElementById('filterTen').value.trim().toLowerCase();
+    const ng   = document.getElementById('filterNganh').value;
+    const tt   = document.getElementById('filterTT').value;
+    const filtered = cosoData.filter(r => {
+      if (ma  && !r.ma.toLowerCase().includes(ma))   return false;
+      if (ten && !r.ten.toLowerCase().includes(ten)) return false;
+      if (ng  && r.nganh !== ng)   return false;
+      if (tt  && statusMap[r.tt]?.label !== tt) return false;
+      return true;
+    });
+    renderTable(filtered);
+  }
+
+  function viewDetail(e) {
+    e.preventDefault();
+    alert('Xem chi tiết cơ sở: ' + cosoData[selectedIdx]?.ten);
+  }
+  function downloadGcn(e) {
+    e.preventDefault();
+    alert('Tải giấy chứng nhận ANTT: ' + cosoData[selectedIdx]?.gcn);
+  }
+
+  // Init
+  renderTable(cosoData);
+</script>
+</body>
+</html>

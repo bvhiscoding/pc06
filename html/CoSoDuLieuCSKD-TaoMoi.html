@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="vi">
 
 <head>
@@ -261,22 +261,23 @@
         <section class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-5">
           <div class="flex items-center gap-2 text-[13px] font-medium text-[#6b7280]">
             <i data-lucide="house" class="h-4 w-4 text-[#9098a5]"></i>
-            <span>Trang chủ</span>
+            <a href="../index.html" class="hover:text-red-600 transition-colors">Trang chủ</a>
             <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
-            <span>Cơ sở dữ liệu CSKD-ANTT</span>
+            <a href="CoSoDuLieuCSKD.html" class="hover:text-red-600 transition-colors">Cơ sở dữ liệu CSKD-ANTT</a>
             <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
-            <span>Thêm mới cơ sở</span>
+            <a href="CoSoDuLieuCSKD.html" class="hover:text-red-600 transition-colors">Danh sách cơ sở</a>
+            <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
+            <span class="text-gray-900 font-semibold">Thêm mới cơ sở kinh doanh</span>
           </div>
           <div class="flex flex-wrap gap-3">
             <a class="module-action-btn module-action-secondary" href="CoSoDuLieuCSKD.html">
-              <i data-lucide="arrow-left" class="h-4 w-4"></i>Quay lại danh sách
+              <i data-lucide="arrow-left" class="h-4 w-4"></i>Quay lại
             </a>
           </div>
         </section>
 
-        <!-- Component: Title & Description -->
+        <!-- Component: Description only (since H1 is removed) -->
         <div class="mb-6">
-          <h1 class="text-[20px] font-bold text-[#1e293b]">Thêm mới cơ sở kinh doanh</h1>
           <p class="text-[13px] text-gray-500">Nhập thông tin đăng ký cơ sở mới vào hệ thống quản lý</p>
         </div>
 
@@ -883,6 +884,7 @@
       if (window.lucide) window.lucide.createIcons();
     });
   </script>
+  <script src="../scripts/auth.js"></script>
   <script src='../scripts/layout-sync.js'></script>
 </body>
 

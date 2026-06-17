@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="vi">
 
 <head>
@@ -26,13 +26,13 @@
         <section class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-5">
           <div class="flex items-center gap-2 text-[13px] font-medium text-[#6b7280]">
             <i data-lucide="house" class="h-4 w-4 text-[#9098a5]"></i>
-            <span>Trang chủ</span>
+            <a href="../index.html" class="hover:text-red-600 transition-colors">Trang chủ</a>
             <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
-            <span>Phản ánh kiến nghị</span>
+            <a href="QuanLyPhanAnh.html" class="hover:text-red-600 transition-colors">Phản ánh kiến nghị</a>
             <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
-            <span>Danh sách phản ánh</span>
+            <a href="QuanLyPhanAnh.html" class="hover:text-red-600 transition-colors">Danh sách phản ánh</a>
             <i data-lucide="chevron-right" class="h-4 w-4 text-[#9aa3af]"></i>
-            <span>Chi tiết phản ánh</span>
+            <span class="text-gray-900 font-semibold">Chi tiết phản ánh PA-2024-00123</span>
           </div>
           <div class="flex flex-wrap gap-3">
             <a class="module-action-btn module-action-secondary" href="QuanLyPhanAnh.html"><i data-lucide="arrow-left" class="h-4 w-4"></i>Quay lại</a>
@@ -41,10 +41,9 @@
           </div>
         </section>
 
-        <!-- Component: Title & Description -->
+        <!-- Component: Badge only (since H1 is removed) -->
         <div class="mb-6 flex items-center justify-between gap-4">
           <div class="flex items-center gap-3">
-            <h1 class="text-[20px] font-bold text-[#1e293b]">Chi tiết phản ánh</h1>
             <span class="module-badge badge-green">Đã phản hồi</span>
           </div>
         </div>
@@ -130,6 +129,7 @@ Gây ồn ào, ảnh hưởng đến sinh hoạt của người dân xung quanh.
     </main>
   </div>
 
+  <script src="../scripts/auth.js"></script>
   <script src="../scripts/layout-sync.js"></script>
   <script src="../scripts/phan-anh-form.js"></script>
 </body>

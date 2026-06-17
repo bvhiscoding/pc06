@@ -1,4 +1,16 @@
 (() => {
+  // ── Auth Guard: chỉ admin mới được vào ─────────────────────────
+  // Đảm bảo auth.js đã load (các trang admin đều include layout-sync.js)
+  if (typeof Auth !== 'undefined') {
+    if (!Auth.requireAdmin()) return;  // redirect + halt
+  }
+
+  const session = (typeof Auth !== 'undefined') ? Auth.getSession() : null;
+  const sessionName = session?.name || 'Nguyễn Văn A';
+  const sessionUnit = session?.unit || 'Phòng CS QLHC về TTXH';
+  const sessionAvatar = session?.avatar || 'A';
+  const sessionAvatarColor = session?.avatarColor || '#bd0000';
+
   const currentFile = decodeURIComponent(window.location.pathname.split('/').pop() || '');
   const isActive = (...files) => files.includes(currentFile) ? ' active' : '';
   const icon = (name, cls = '') => `<i data-lucide="${name}"${cls ? ` class="${cls}"` : ''}></i>`;
@@ -101,15 +113,15 @@
 
           <div class="topbar-menu-wrap">
             <button id="userMenuToggle" class="user-menu-btn" type="button" aria-label="Mở menu tài khoản" aria-expanded="false">
-              <div class="grid h-[46px] w-[46px] place-items-center rounded-full bg-white text-[#cf0000] shadow-sm">${icon('user-round', 'h-7 w-7 fill-[#cf0000]/15')}</div>
-              <div class="hidden text-left sm:block"><div class="text-[15px] font-semibold leading-5">Nguyễn Văn A</div><div class="text-[13px] font-medium text-white/92">Phòng CS QLHC về TTXH</div></div>
+              <div class="grid h-[46px] w-[46px] place-items-center rounded-full shadow-sm text-white text-[18px] font-black" style="background:${sessionAvatarColor}">${sessionAvatar}</div>
+              <div class="hidden text-left sm:block"><div class="text-[15px] font-semibold leading-5">${sessionName}</div><div class="text-[13px] font-medium text-white/92">${sessionUnit}</div></div>
               ${icon('chevron-down', 'user-chevron h-5 w-5 text-white')}
             </button>
             <div id="userMenu" class="topbar-dropdown user-dropdown" hidden>
-              <div class="user-card"><div class="grid h-11 w-11 place-items-center rounded-full bg-[#fff2f2] text-[#cf0000]">${icon('user-round', 'h-6 w-6')}</div><div><div class="user-name">Nguyễn Văn A</div><div class="user-role">Phòng CS QLHC về TTXH</div></div></div>
+              <div class="user-card"><div class="grid h-11 w-11 place-items-center rounded-full text-white text-[16px] font-black" style="background:${sessionAvatarColor}">${sessionAvatar}</div><div><div class="user-name">${sessionName}</div><div class="user-role">${sessionUnit}</div></div></div>
               <a class="dropdown-action" href="HoSoCaNhan.html">${icon('id-card', 'h-4 w-4')}Hồ sơ cá nhân</a>
               <a class="dropdown-action" href="CauHinhHeThong.html">${icon('settings', 'h-4 w-4')}Cài đặt hiển thị</a>
-              <a class="dropdown-action danger" href="DangNhap.html">${icon('log-out', 'h-4 w-4')}Đăng xuất</a>
+              <button class="dropdown-action danger" type="button" id="logoutBtn">${icon('log-out', 'h-4 w-4')}Đăng xuất</button>
             </div>
           </div>
         </div>
@@ -125,7 +137,7 @@
       <aside class="sidebar fixed bottom-0 left-0 top-[80px] z-20 px-2 text-white">
         <div class="sidebar-scroll">
           <div class="nav-section mt-0">Tổng quan</div>
-          ${navItem('CongCSKD-Dashboard.html', 'layout-dashboard', 'Dashboard cơ sở', ['CongCSKD-Dashboard.html'])}
+          ${navItem('Dashboard.html', 'layout-dashboard', 'Dashboard', ['Dashboard.html'])}
 
           <div class="nav-section">Giám sát địa bàn</div>
           ${navItem('BanDoSoGis.html', 'map-pin', 'Bản đồ số GIS', ['BanDoSoGis.html'])}
@@ -226,6 +238,12 @@
     });
     document.addEventListener('click', (event) => {
       if (!event.target.closest('.topbar-menu-wrap')) closeMenus();
+    });
+
+    // Logout button
+    document.querySelector('#logoutBtn')?.addEventListener('click', () => {
+      if (typeof Auth !== 'undefined') Auth.logout();
+      else window.location.href = 'DangNhap.html';
     });
   }
 
