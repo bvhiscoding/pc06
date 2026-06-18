@@ -38,7 +38,8 @@ const state = {
   dateTo: '',
   page: 1,
   pageSize: 10,
-  openActionId: ''
+  openActionId: '',
+  activeRecordId: ''
 };
 
 const els = {
@@ -63,7 +64,9 @@ const els = {
   notificationBadge: document.querySelector('#notificationBadge'),
   markAllReadBtn: document.querySelector('#markAllReadBtn'),
   userMenuToggle: document.querySelector('#userMenuToggle'),
-  userMenu: document.querySelector('#userMenu')
+  userMenu: document.querySelector('#userMenu'),
+  receiveModal: document.querySelector('#receiveModal'),
+  completeModal: document.querySelector('#completeModal')
 };
 
 const escapeHTML = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({
@@ -243,16 +246,155 @@ function handleRowAction(action, id) {
   }
 
   if (action === 'receive') {
-    record.status = 'Đã tiếp nhận';
-    record.officer = record.officer === '-' ? 'Nguyễn Văn A' : record.officer;
+    openReceiveModal(id);
   }
 
   if (action === 'complete') {
-    record.status = 'Đã hoàn thành';
-    record.officer = record.officer === '-' ? 'Nguyễn Văn A' : record.officer;
+    openCompleteModal(id);
   }
 
   state.openActionId = '';
+  render();
+}
+
+function openReceiveModal(id) {
+  const record = records.find((item) => item.id === id);
+  if (!record) return;
+
+  state.activeRecordId = id;
+
+  // Điền thông tin hồ sơ lên modal
+  document.querySelector('#recDossierId').textContent = record.id;
+  document.querySelector('#recBusinessName').textContent = record.business;
+  document.querySelector('#recProcedureName').textContent = record.procedure;
+
+  // Nạp danh sách cán bộ
+  const officerSelect = document.querySelector('#recOfficer');
+  const officersList = uniqueValues('officer').filter((o) => o !== '-');
+  if (!officersList.includes('Nguyễn Văn A')) {
+    officersList.unshift('Nguyễn Văn A');
+  }
+  officerSelect.innerHTML = officersList.map((o) => `<option value="${escapeHTML(o)}" ${o === 'Nguyễn Văn A' ? 'selected' : ''}>${escapeHTML(o)}</option>`).join('');
+
+  // Điền ngày giờ hiện tại
+  const now = new Date();
+  const tzoffset = now.getTimezoneOffset() * 60000;
+  const localISOTime = (new Date(now - tzoffset)).toISOString().slice(0, 16);
+  document.querySelector('#recDate').value = localISOTime;
+
+  // Reset ghi chú
+  document.querySelector('#recNotes').value = '';
+
+  // Hiển thị modal
+  els.receiveModal.removeAttribute('hidden');
+  lucide.createIcons();
+}
+
+function openCompleteModal(id) {
+  const record = records.find((item) => item.id === id);
+  if (!record) return;
+
+  state.activeRecordId = id;
+
+  // Điền thông tin hồ sơ
+  document.querySelector('#compDossierId').textContent = record.id;
+  document.querySelector('#compBusinessName').textContent = record.business;
+
+  // Sinh ngẫu nhiên số GCN
+  const randNum = Math.floor(100 + Math.random() * 900);
+  document.querySelector('#compDocNumber').value = `${randNum}/GCN-ANTT`;
+
+  // Thiết lập ngày ký mặc định là ngày hôm nay
+  const today = new Date().toISOString().split('T')[0];
+  document.querySelector('#compSignDate').value = today;
+
+  // Người ký mặc định
+  document.querySelector('#compSigner').value = 'Thượng tá Nguyễn Văn Bình';
+  
+  // Cán bộ xử lý mặc định
+  document.querySelector('#compOfficer').value = record.officer === '-' ? 'Nguyễn Văn A' : record.officer;
+
+  // Reset khu vực tải tệp
+  const uploadZone = document.querySelector('#compUploadZone');
+  const fileNameDisplay = document.querySelector('#compFileName');
+  const fileInput = document.querySelector('#compFileInput');
+  fileInput.value = '';
+  fileNameDisplay.textContent = 'Định dạng tệp hỗ trợ: PDF, DOC, DOCX (Tối đa 15MB)';
+  fileNameDisplay.className = 'text-xs text-[#828c9a] mt-1';
+  uploadZone.style.borderColor = '';
+  uploadZone.style.backgroundColor = '';
+
+  // Reset ghi chú
+  document.querySelector('#compNotes').value = '';
+
+  // Hiển thị modal
+  els.completeModal.removeAttribute('hidden');
+  lucide.createIcons();
+}
+
+function closeModal(type) {
+  if (type === 'receive') {
+    els.receiveModal.setAttribute('hidden', '');
+  } else if (type === 'complete') {
+    els.completeModal.setAttribute('hidden', '');
+  }
+  state.activeRecordId = '';
+}
+
+function confirmReceive() {
+  const record = records.find((item) => item.id === state.activeRecordId);
+  if (!record) return;
+
+  const officer = document.querySelector('#recOfficer').value;
+  record.status = 'Đã tiếp nhận';
+  record.officer = officer;
+
+  // Thêm thông báo hệ thống giả lập
+  notifications.unshift({
+    title: 'Đã tiếp nhận hồ sơ',
+    text: `Hồ sơ ${record.id} đã được tiếp nhận và phân công cho ${officer}.`,
+    time: 'Vừa xong',
+    icon: 'user-check'
+  });
+  renderNotifications();
+
+  closeModal('receive');
+  render();
+}
+
+function confirmComplete() {
+  const record = records.find((item) => item.id === state.activeRecordId);
+  if (!record) return;
+
+  const docNumber = document.querySelector('#compDocNumber').value.trim();
+  const signer = document.querySelector('#compSigner').value.trim();
+  const fileInput = document.querySelector('#compFileInput');
+
+  if (!docNumber) {
+    alert('Vui lòng nhập Số quyết định / Giấy phép.');
+    return;
+  }
+  if (!signer) {
+    alert('Vui lòng nhập Người ký.');
+    return;
+  }
+  if (!fileInput.files || !fileInput.files.length) {
+    alert('Vui lòng đính kèm tệp kết quả xử lý.');
+    return;
+  }
+
+  record.status = 'Đã hoàn thành';
+  
+  // Thêm thông báo hệ thống giả lập
+  notifications.unshift({
+    title: 'Hoàn thành hồ sơ',
+    text: `Hồ sơ ${record.id} đã hoàn thành. Số quyết định: ${docNumber}.`,
+    time: 'Vừa xong',
+    icon: 'check-circle-2'
+  });
+  renderNotifications();
+
+  closeModal('complete');
   render();
 }
 
@@ -408,8 +550,63 @@ document.addEventListener('keydown', (event) => {
       state.openActionId = '';
       render();
     }
+    if (!els.receiveModal.hidden) closeModal('receive');
+    if (!els.completeModal.hidden) closeModal('complete');
   }
 });
+
+// Đóng và xác nhận modal
+document.querySelectorAll('[data-modal-close]').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    closeModal(btn.dataset.modalClose);
+  });
+});
+
+document.querySelector('#btnConfirmReceive')?.addEventListener('click', confirmReceive);
+document.querySelector('#btnConfirmComplete')?.addEventListener('click', confirmComplete);
+
+// Xử lý kéo thả và tải tệp kết quả trong modal hoàn thành
+const uploadZone = document.querySelector('#compUploadZone');
+const fileInput = document.querySelector('#compFileInput');
+const fileNameDisplay = document.querySelector('#compFileName');
+
+if (uploadZone && fileInput) {
+  uploadZone.addEventListener('click', () => fileInput.click());
+
+  fileInput.addEventListener('change', () => {
+    if (fileInput.files.length) {
+      handleAttachedFile(fileInput.files[0]);
+    }
+  });
+
+  uploadZone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    uploadZone.style.borderColor = '#16a34a';
+    uploadZone.style.backgroundColor = '#f0fdf4';
+  });
+
+  ['dragleave', 'dragend', 'drop'].forEach((type) => {
+    uploadZone.addEventListener(type, () => {
+      uploadZone.style.borderColor = '';
+      uploadZone.style.backgroundColor = '';
+    });
+  });
+
+  uploadZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    if (e.dataTransfer.files.length) {
+      fileInput.files = e.dataTransfer.files;
+      handleAttachedFile(e.dataTransfer.files[0]);
+    }
+  });
+
+  function handleAttachedFile(file) {
+    fileNameDisplay.textContent = `Đã chọn tệp: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
+    fileNameDisplay.className = 'text-xs text-[#16a34a] font-semibold mt-1';
+    uploadZone.style.borderColor = '#16a34a';
+    uploadZone.style.backgroundColor = '#eaf9ee';
+  }
+}
 
 initFilters();
 renderNotifications();

@@ -1326,10 +1326,12 @@
   <script src="scripts/auth.js"></script>
   <script src="https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js"></script>
   <script src="https://unpkg.com/deck.gl@latest/dist.min.js"></script>
+  <script src="scripts/env.js"></script>
+  <script src="scripts/google-maps-loader.js"></script>
   <script src="scripts/ban-do-so.js"></script>
-  <script type="text/javascript"
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA9oDzJjHCZH4iVCowyZ-UR9eG6X4qFpGY&callback=initPublicMap&libraries=places,geometry"
-    async defer></script>
+  <script>
+    window.loadGoogleMapsApi('initPublicMap').catch(console.error);
+  </script>
 </body>
 
 </html>

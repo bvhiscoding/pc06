@@ -131,11 +131,66 @@ document.querySelectorAll('.detail-tab').forEach((tab) => {
   });
 });
 
+function initReceiveModalData() {
+  const now = new Date();
+  const tzoffset = now.getTimezoneOffset() * 60000;
+  const localISOTime = (new Date(now - tzoffset)).toISOString().slice(0, 16);
+  
+  // Điền thông tin lên các phần tử của modal tiếp nhận trùng ID với QuanLyHoSo.html
+  document.querySelector('#recDossierId').textContent = 'HS-2026-00125';
+  document.querySelector('#recBusinessName').textContent = 'Karaoke Hoa Sen';
+  document.querySelector('#recProcedureName').textContent = 'Cấp mới giấy chứng nhận đủ điều kiện về ANTT';
+
+  const recDateInput = document.querySelector('#recDate');
+  if (recDateInput) recDateInput.value = localISOTime;
+
+  const recNotesInput = document.querySelector('#recNotes');
+  if (recNotesInput) recNotesInput.value = '';
+}
+
+function initRejectModalData() {
+  const rejDetailInput = document.querySelector('#rejDetailInput');
+  const rejBasisInput = document.querySelector('#rejBasisInput');
+  const rejNotesInput = document.querySelector('#rejNotesInput');
+
+  if (rejDetailInput) {
+    rejDetailInput.value = `Hồ sơ nộp không thuộc thủ tục "Cấp mới giấy chứng nhận đủ điều kiện về ANTT". Theo thông tin khai báo, cơ sở chỉ thay đổi thông tin về người đại diện và địa chỉ hoạt động, cần thực hiện thủ tục "Thay đổi thông tin giấy chứng nhận đủ điều kiện về ANTT". Đề nghị cơ sở nộp đúng thủ tục theo quy định.`;
+    updateCharCount(rejDetailInput, '#rejDetailCount');
+  }
+
+  if (rejBasisInput) {
+    rejBasisInput.value = `- Nghị định số 96/2016/NĐ-CP ngày 01/07/2016 của Chính phủ\n- Thông tư số 04/2021/TT-BCA ngày 16/03/2021 của Bộ Công an`;
+    updateCharCount(rejBasisInput, '#rejBasisCount');
+  }
+
+  if (rejNotesInput) {
+    rejNotesInput.value = `Vui lòng kiểm tra lại và nộp đúng thủ tục tương ứng với nội dung đề nghị giải quyết.`;
+    updateCharCount(rejNotesInput, '#rejNotesCount');
+  }
+
+  const fileInput = document.querySelector('#rejFileInput');
+  const fileNameDisplay = document.querySelector('#rejFileName');
+  if (fileInput) fileInput.value = '';
+  if (fileNameDisplay) fileNameDisplay.textContent = '';
+}
+
+function updateCharCount(textarea, countSelector) {
+  const countLabel = document.querySelector(countSelector);
+  if (countLabel) {
+    countLabel.textContent = `${textarea.value.length}/1000`;
+  }
+}
+
 document.querySelectorAll('.action-btn').forEach((button) => {
   button.addEventListener('click', () => {
     const modalTarget = button.dataset.modalTarget;
     if (modalTarget) {
       openModal(modalTarget);
+      if (modalTarget === 'receiveModal') {
+        initReceiveModalData();
+      } else if (modalTarget === 'rejectModal') {
+        initRejectModalData();
+      }
       return;
     }
 
@@ -150,6 +205,106 @@ document.querySelectorAll('.action-btn').forEach((button) => {
 
 document.querySelectorAll('[data-modal-close]').forEach((button) => {
   button.addEventListener('click', closeModal);
+});
+
+// Đăng ký sự kiện đếm ký tự cho các textarea của modal từ chối
+['#rejDetailInput', '#rejBasisInput', '#rejNotesInput'].forEach((selector) => {
+  const textarea = document.querySelector(selector);
+  const countSelector = selector.replace('Input', 'Count');
+  if (textarea) {
+    textarea.addEventListener('input', () => {
+      updateCharCount(textarea, countSelector);
+    });
+  }
+});
+
+// Đính kèm tệp cho modal Từ chối
+const rejFileInput = document.querySelector('#rejFileInput');
+const btnAttachRejFile = document.querySelector('#btnAttachRejFile');
+const rejFileName = document.querySelector('#rejFileName');
+
+if (btnAttachRejFile && rejFileInput) {
+  btnAttachRejFile.addEventListener('click', () => rejFileInput.click());
+  rejFileInput.addEventListener('change', () => {
+    if (rejFileInput.files.length) {
+      const file = rejFileInput.files[0];
+      rejFileName.textContent = `Đã chọn: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
+    } else {
+      rejFileName.textContent = '';
+    }
+  });
+}
+
+// Click xác nhận tiếp nhận
+document.querySelector('#btnConfirmReceive')?.addEventListener('click', () => {
+  const officer = document.querySelector('#recOfficer').value;
+  
+  const summaryStatus = document.querySelector('#summaryStatus');
+  const sideStatus = document.querySelector('#sideStatus');
+  const summaryOfficer = document.querySelector('#summaryOfficer');
+  const sideOfficer = document.querySelector('#sideOfficer');
+
+  if (summaryStatus) {
+    summaryStatus.textContent = 'Đã tiếp nhận';
+    summaryStatus.className = 'status st-blue';
+  }
+  if (sideStatus) {
+    sideStatus.textContent = 'Đã tiếp nhận';
+    sideStatus.className = 'status st-blue';
+  }
+  if (summaryOfficer) {
+    summaryOfficer.textContent = officer;
+  }
+  if (sideOfficer) {
+    sideOfficer.textContent = officer;
+  }
+
+  // Thêm thông báo giả lập
+  notifications.unshift({
+    title: 'Đã tiếp nhận hồ sơ',
+    text: `Hồ sơ HS-2026-00125 đã được tiếp nhận và phân công cho ${officer}.`,
+    time: 'Vừa xong',
+    icon: 'user-check'
+  });
+  renderNotifications();
+
+  closeModal();
+  alert(`Đã tiếp nhận hồ sơ HS-2026-00125 thành công!`);
+});
+
+// Click xác nhận từ chối
+document.querySelector('#btnSubmitReject')?.addEventListener('click', () => {
+  const reason = document.querySelector('#rejReasonSelect').value;
+  const detail = document.querySelector('#rejDetailInput').value.trim();
+
+  if (!detail) {
+    alert('Vui lòng nhập Chi tiết lý do từ chối.');
+    return;
+  }
+
+  const summaryStatus = document.querySelector('#summaryStatus');
+  const sideStatus = document.querySelector('#sideStatus');
+
+  if (summaryStatus) {
+    summaryStatus.textContent = 'Từ chối';
+    summaryStatus.className = 'status st-red';
+  }
+  if (sideStatus) {
+    sideStatus.textContent = 'Từ chối';
+    sideStatus.className = 'status st-red';
+  }
+
+  // Thêm thông báo giả lập
+  notifications.unshift({
+    title: 'Từ chối hồ sơ',
+    text: `Hồ sơ HS-2026-00125 đã bị từ chối với lý do: ${reason}.`,
+    time: 'Vừa xong',
+    icon: 'x-circle'
+  });
+  renderNotifications();
+
+  closeModal();
+  alert(`Đã từ chối hồ sơ HS-2026-00125. Trạng thái đã được cập nhật thành "Từ chối".`);
 });
 
 document.querySelectorAll('[data-modal-submit]').forEach((button) => {

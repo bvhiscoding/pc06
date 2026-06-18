@@ -182,7 +182,7 @@
           </div>
           <div>
             <span>Trạng thái</span>
-            <span class="status st-orange">Chờ tiếp nhận</span>
+            <span id="summaryStatus" class="status st-orange">Chờ tiếp nhận</span>
           </div>
           <div>
             <span>Hạn xử lý</span>
@@ -190,7 +190,7 @@
           </div>
           <div>
             <span>Cán bộ xử lý</span>
-            <strong>-</strong>
+            <strong id="summaryOfficer">-</strong>
           </div>
         </section>
 
@@ -387,7 +387,7 @@
               <dl class="side-list">
                 <div>
                   <dt>Trạng thái hiện tại</dt>
-                  <dd><span class="status st-orange">Chờ tiếp nhận</span></dd>
+                  <dd><span id="sideStatus" class="status st-orange">Chờ tiếp nhận</span></dd>
                 </div>
                 <div>
                   <dt>Ngày nộp</dt>
@@ -399,7 +399,7 @@
                 </div>
                 <div>
                   <dt>Cán bộ xử lý</dt>
-                  <dd>Chưa phân công</dd>
+                  <dd id="sideOfficer">Chưa phân công</dd>
                 </div>
                 <div>
                   <dt>Đơn vị xử lý</dt>
@@ -411,16 +411,11 @@
             <article class="side-card">
               <h2><i data-lucide="file-cog" class="h-5 w-5"></i>Thao tác</h2>
               <div class="action-stack">
-                <button class="action-btn green" type="button"><i data-lucide="check-square" class="h-4 w-4"></i>Tiếp
-                  nhận hồ sơ</button>
-                <button class="action-btn orange" type="button" data-modal-target="supplementModal"><i data-lucide="circle-alert" class="h-4 w-4"></i>Yêu
-                  cầu bổ sung</button>
-                <button class="action-btn blue" type="button" data-modal-target="transferModal"><i data-lucide="circle-arrow-right"
-                    class="h-4 w-4"></i>Chuyển xử lý</button>
-                <button class="action-btn red" type="button"><i data-lucide="square-x" class="h-4 w-4"></i>Từ chối hồ
-                  sơ</button>
-                <button class="action-btn plain" type="button"><i data-lucide="printer" class="h-4 w-4"></i>In phiếu
-                  tiếp nhận</button>
+                <button class="action-btn green" type="button" data-modal-target="receiveModal"><i data-lucide="check-square" class="h-4 w-4"></i>Tiếp nhận hồ sơ</button>
+                <button class="action-btn orange" type="button" data-modal-target="supplementModal"><i data-lucide="circle-alert" class="h-4 w-4"></i>Yêu cầu bổ sung</button>
+                <button class="action-btn blue" type="button" data-modal-target="transferModal"><i data-lucide="circle-arrow-right" class="h-4 w-4"></i>Chuyển xử lý</button>
+                <button class="action-btn red" type="button" data-modal-target="rejectModal"><i data-lucide="square-x" class="h-4 w-4"></i>Từ chối hồ sơ</button>
+                <button class="action-btn plain" type="button"><i data-lucide="printer" class="h-4 w-4"></i>In phiếu tiếp nhận</button>
               </div>
             </article>
 
@@ -595,6 +590,163 @@ Tài liệu cần rõ ràng, không bị mờ, cắt xén, đảm bảo xác nh�
       <footer class="modal-actions">
         <button class="modal-cancel" type="button" data-modal-close>Hủy bỏ</button>
         <button class="modal-submit" type="button" data-modal-submit="supplement">Gửi yêu cầu bổ sung</button>
+      </footer>
+    </section>
+  </div>
+
+  <!-- Modal 1: Tiếp nhận hồ sơ -->
+  <div id="receiveModal" class="modal-backdrop" hidden>
+    <section class="module-modal" role="dialog" aria-modal="true" aria-labelledby="receiveTitle">
+      <div class="module-modal-head">
+        <h2 id="receiveTitle" class="module-modal-title">
+          <i data-lucide="file-check" class="h-5 w-5 text-[#c50000]"></i>
+          Tiếp nhận hồ sơ
+        </h2>
+        <button class="close-icon-btn" type="button" data-modal-close="receive" aria-label="Đóng">
+          <i data-lucide="x" class="h-5 w-5"></i>
+        </button>
+      </div>
+      <div class="module-modal-body">
+        <div class="form-section mb-4">
+          <div class="form-section-title">
+            <i data-lucide="info" class="h-4 w-4 text-[#c50000]"></i>
+            Thông tin hồ sơ
+          </div>
+          <div class="detail-list">
+            <div class="detail-row">
+              <span class="detail-label">Mã hồ sơ</span>
+              <span id="recDossierId" class="detail-value text-[#c50000]">-</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Cơ sở kinh doanh</span>
+              <span id="recBusinessName" class="detail-value">-</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Loại thủ tục</span>
+              <span id="recProcedureName" class="detail-value">-</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="form-section-title">
+            <i data-lucide="user-check" class="h-4 w-4 text-[#c50000]"></i>
+            Thông tin tiếp nhận
+          </div>
+          <div class="form-row">
+            <label>
+              <span class="form-label">Cán bộ xử lý <span class="required">*</span></span>
+              <span class="field-wrap block">
+                <select id="recOfficer" class="field appearance-none font-medium">
+                  <option value="Nguyễn Văn A">Nguyễn Văn A (Tôi)</option>
+                  <option value="Trần Văn K">Trần Văn K</option>
+                  <option value="Phạm Thị H">Phạm Thị H</option>
+                </select>
+                <i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>
+              </span>
+            </label>
+            <label>
+              <span class="form-label">Ngày tiếp nhận <span class="required">*</span></span>
+              <span class="field-wrap block">
+                <input id="recDate" class="field" type="datetime-local" />
+              </span>
+            </label>
+          </div>
+          <label class="mt-4 block">
+            <span class="form-label">Ý kiến tiếp nhận / Ghi chú</span>
+            <textarea id="recNotes" class="field textarea-field" placeholder="Nhập ý kiến tiếp nhận hoặc ghi chú xử lý..."></textarea>
+          </label>
+        </div>
+      </div>
+      <div class="module-modal-foot">
+        <button class="btn-secondary" type="button" data-modal-close="receive">Hủy bỏ</button>
+        <button id="btnConfirmReceive" class="btn-primary" type="button">
+          <i data-lucide="check" class="mr-2 h-4 w-4"></i>
+          Xác nhận tiếp nhận
+        </button>
+      </div>
+    </section>
+  </div>
+
+  <!-- Modal 2: Từ chối hồ sơ (Mockup) -->
+  <div id="rejectModal" class="modal-overlay" hidden>
+    <section class="case-modal" style="width: min(100%, 650px);" role="dialog" aria-modal="true" aria-labelledby="rejectTitle">
+      <header class="modal-head">
+        <h2 id="rejectTitle" class="flex items-center gap-2">
+          <i data-lucide="square-x" class="h-5 w-5 text-[#ef1010]"></i>
+          Từ chối hồ sơ
+        </h2>
+        <button class="modal-close" type="button" data-modal-close aria-label="Đóng">
+          <i data-lucide="x" class="h-5 w-5"></i>
+        </button>
+      </header>
+
+      <div class="modal-body">
+        <!-- Alert Warning -->
+        <div class="reject-alert-box">
+          <i data-lucide="alert-circle"></i>
+          <div>
+            <div class="alert-title">Hồ sơ sẽ được chuyển sang trạng thái "Từ chối".</div>
+            <div class="alert-desc">Người nộp sẽ nhận được thông báo và không thể xử lý tiếp hồ sơ này.</div>
+          </div>
+        </div>
+
+        <form class="modal-form">
+          <label class="modal-field">
+            <span>Lý do từ chối <b>*</b></span>
+            <span class="modal-select-wrap">
+              <select id="rejReasonSelect">
+                <option value="Hồ sơ không đúng thủ tục">Hồ sơ không đúng thủ tục</option>
+                <option value="Hồ sơ giả mạo thông tin">Hồ sơ giả mạo thông tin</option>
+                <option value="Không đủ điều kiện cấp phép">Không đủ điều kiện cấp phép</option>
+                <option value="Lý do khác">Lý do khác</option>
+              </select>
+              <i data-lucide="chevron-down" class="h-4 w-4"></i>
+            </span>
+          </label>
+
+          <label class="modal-field">
+            <span>Chi tiết lý do <b>*</b></span>
+            <span class="textarea-count-wrap">
+              <textarea id="rejDetailInput" rows="4">Hồ sơ nộp không thuộc thủ tục "Cấp mới giấy chứng nhận đủ điều kiện về ANTT". Theo thông tin khai báo, cơ sở chỉ thay đổi thông tin về người đại diện và địa chỉ hoạt động, cần thực hiện thủ tục "Thay đổi thông tin giấy chứng nhận đủ điều kiện về ANTT". Đề nghị cơ sở nộp đúng thủ tục theo quy định.</textarea>
+              <em id="rejDetailCount">234/1000</em>
+            </span>
+          </label>
+
+          <label class="modal-field">
+            <span>Căn cứ từ chối (nếu có)</span>
+            <span class="textarea-count-wrap">
+              <textarea id="rejBasisInput" rows="3">- Nghị định số 96/2016/NĐ-CP ngày 01/07/2016 của Chính phủ
+- Thông tư số 04/2021/TT-BCA ngày 16/03/2021 của Bộ Công an</textarea>
+              <em id="rejBasisCount">126/1000</em>
+            </span>
+          </label>
+
+          <label class="modal-field">
+            <span>Ghi chú cho người nộp</span>
+            <span class="textarea-count-wrap">
+              <textarea id="rejNotesInput" rows="3">Vui lòng kiểm tra lại và nộp đúng thủ tục tương ứng với nội dung đề nghị giải quyết.</textarea>
+              <em id="rejNotesCount">78/1000</em>
+            </span>
+          </label>
+
+          <div class="modal-field" style="margin-top: 6px;">
+            <span>Tải tài liệu minh chứng (nếu có)</span>
+            <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+              <input type="file" id="rejFileInput" class="hidden" accept=".pdf,.doc,.docx,.png,.jpg" />
+              <button class="inline-flex h-9 items-center gap-2 rounded-md border border-[#dbe2eb] bg-white px-4 text-[13px] font-bold text-[#1f2937] shadow-sm hover:border-[#c50000] hover:text-[#c50000] transition-all" type="button" id="btnAttachRejFile">
+                <i data-lucide="plus" class="h-4 w-4" style="margin-right: 0px !important;"></i>
+                Đính kèm tài liệu
+              </button>
+              <span id="rejFileName" class="text-xs text-[#249447] font-semibold"></span>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <footer class="modal-actions">
+        <button class="modal-cancel" type="button" data-modal-close>Hủy bỏ</button>
+        <button class="modal-submit" type="button" id="btnSubmitReject">Xác nhận từ chối</button>
       </footer>
     </section>
   </div>
