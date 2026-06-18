@@ -244,6 +244,39 @@ function initModuleList(config) {
     state.openActionId = '';
     render();
   });
+  function showToast(message) {
+    const toast = document.querySelector('#toast');
+    if (!toast) return;
+    toast.textContent = message;
+    toast.classList.add('is-visible');
+    window.setTimeout(() => toast.classList.remove('is-visible'), 2200);
+  }
+
+  function openResultModal(id) {
+    const record = config.records.find(r => r.id === id);
+    if (!record) return;
+    
+    document.querySelector('#modalRecordCode').textContent = record.code || id;
+    document.querySelector('#modalRecordEstablishment').textContent = record.establishment || '-';
+    document.querySelector('#modalRecordType').textContent = record.type || '-';
+    document.querySelector('#modalRecordInspector').textContent = record.inspector || '-';
+    
+    const radios = document.getElementsByName('checkResult');
+    radios.forEach(radio => {
+      if (radio.value === 'Đạt yêu cầu') radio.checked = true;
+    });
+    
+    document.querySelector('#checkConclusion').value = `Qua kiểm tra, cơ sở đáp ứng đầy đủ các điều kiện về ANTT, phòng cháy chữa cháy. Các sổ quản lý lưu trú ghi chép đầy đủ đúng quy định.`;
+    document.querySelector('#uploadedDocName').textContent = 'Chưa chọn tệp';
+    
+    const modal = document.querySelector('#resultModal');
+    if (modal) {
+      modal.hidden = false;
+      state.openActionId = '';
+      render();
+    }
+  }
+
   els.body?.addEventListener('click', (event) => {
     const toggle = event.target.closest('[data-action-toggle]');
     const route = event.target.closest('[data-action-route]');
@@ -252,12 +285,57 @@ function initModuleList(config) {
       render();
       return;
     }
-    if (route) go(route.dataset.actionRoute, route.dataset.id);
+    if (route) {
+      const label = route.textContent.trim();
+      if (label === 'Cập nhật kết quả') {
+        openResultModal(route.dataset.id);
+      } else {
+        go(route.dataset.actionRoute, route.dataset.id);
+      }
+    }
   });
+
   document.addEventListener('click', (event) => {
     if (!event.target.closest('.topbar-menu-wrap')) closeTopbarMenus();
     if (!event.target.closest('.action-cell') && state.openActionId) {
       state.openActionId = '';
+      render();
+    }
+    const closeModal = event.target.closest('[data-close-modal]');
+    if (closeModal) {
+      document.querySelector('#resultModal').hidden = true;
+    }
+  });
+
+  document.querySelector('#btnUploadDoc')?.addEventListener('click', () => {
+    const code = document.querySelector('#modalRecordCode').textContent;
+    document.querySelector('#uploadedDocName').textContent = 'bien_ban_kiem_tra_' + code.toLowerCase() + '.pdf';
+    showToast('Đã tải lên tệp biên bản thành công.');
+  });
+
+  document.querySelector('#btnConfirmResult')?.addEventListener('click', () => {
+    const radios = document.getElementsByName('checkResult');
+    let resultVal = 'Đạt yêu cầu';
+    radios.forEach(radio => {
+      if (radio.checked) resultVal = radio.value;
+    });
+
+    const code = document.querySelector('#modalRecordCode').textContent;
+    const record = config.records.find(r => r.id === code);
+    if (record) {
+      if (resultVal === 'Đạt yêu cầu') {
+        record.status = 'Đã kiểm tra';
+        record.ket_qua = 'Đạt yêu cầu';
+      } else if (resultVal === 'Cần khắc phục') {
+        record.status = 'Cần tái kiểm tra';
+        record.ket_qua = 'Cần khắc phục';
+      } else if (resultVal === 'Vi phạm hành chính') {
+        record.status = 'Đã kiểm tra';
+        record.ket_qua = 'Có vi phạm';
+      }
+      
+      showToast(`Đã cập nhật kết quả cuộc kiểm tra ${code} thành công.`);
+      document.querySelector('#resultModal').hidden = true;
       render();
     }
   });

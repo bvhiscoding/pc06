@@ -306,6 +306,8 @@ els.body.addEventListener('click', (event) => {
       window.location.href = `CoSoDuLieuCSKD-ChiTiet.html?code=${business.code}`;
     } else if (action.dataset.rowAction === 'edit') {
       window.location.href = `CoSoDuLieuCSKD-ChiTiet.html?code=${business.code}&mode=edit`;
+    } else if (action.dataset.rowAction === 'license') {
+      showLicenseModal(business.code);
     } else {
       alert(`${action.textContent.trim()}: ${business?.name ?? action.dataset.id}`);
     }
@@ -313,6 +315,167 @@ els.body.addEventListener('click', (event) => {
     render();
   }
 });
+
+function showLicenseModal(businessCode) {
+  const business = businesses.find((b) => b.code === businessCode);
+  if (!business) return;
+
+  const modalBody = document.querySelector('#licenseModalBody');
+  if (!modalBody) return;
+
+  let content = '';
+
+  if (business.license === 'Đã cấp' || business.license === 'Sắp hết hạn') {
+    const isExpiring = business.license === 'Sắp hết hạn';
+    const badgeClass = isExpiring ? 'expiring' : 'valid';
+    const statusText = isExpiring ? 'Sắp hết hạn' : 'Đang hoạt động (Có hiệu lực)';
+    
+    // Generate simulated license data
+    const docNum = business.code.replace('CS', 'GCN') + '/ANTT';
+    
+    content = `
+      <div class="form-section mb-4">
+        <div class="form-section-title">
+          <i data-lucide="store" class="h-4 w-4 text-[#c50000]"></i>
+          Thông tin cơ sở
+        </div>
+        <div class="detail-list">
+          <div class="detail-row">
+            <span class="detail-label">Mã cơ sở</span>
+            <span class="detail-value">${escapeHTML(business.code)}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Tên cơ sở</span>
+            <span class="detail-value">${escapeHTML(business.name)}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Chủ cơ sở</span>
+            <span class="detail-value">${escapeHTML(business.owner)}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">
+          <i data-lucide="file-signature" class="h-4 w-4 text-[#c50000]"></i>
+          Thông tin Giấy phép ANTT
+        </div>
+        <div class="detail-list">
+          <div class="detail-row">
+            <span class="detail-label">Số Giấy phép</span>
+            <span class="detail-value text-[#c50000] font-bold">${escapeHTML(docNum)}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Trạng thái</span>
+            <span>
+              <span class="license-badge ${badgeClass}">${escapeHTML(statusText)}</span>
+            </span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Ngày cấp</span>
+            <span class="detail-value">15/06/2022</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Ngày hết hạn</span>
+            <span class="detail-value">${isExpiring ? '15/06/2026 (<span class="late-note">Còn 27 ngày</span>)' : 'Không thời hạn'}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Cơ quan cấp</span>
+            <span class="detail-value">Phòng CS QLHC về TTXH - Công an tỉnh Ninh Bình</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Người ký</span>
+            <span class="detail-value">Thượng tá Nguyễn Văn Bình</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Tài liệu đính kèm</span>
+            <span class="detail-value">
+              <a href="#" class="inline-flex items-center gap-1.5 text-[#0866e8] hover:underline font-semibold" onclick="alert('Đang tải xuống tệp Giấy phép...'); return false;">
+                <i data-lucide="file-text" class="h-4 w-4"></i>
+                GCN_ANTT_${escapeHTML(business.code)}.pdf
+              </a>
+            </span>
+          </div>
+        </div>
+      </div>
+    `;
+  } else if (business.license === 'Chưa cấp') {
+    content = `
+      <div class="form-section mb-4">
+        <div class="form-section-title">
+          <i data-lucide="store" class="h-4 w-4 text-[#c50000]"></i>
+          Thông tin cơ sở
+        </div>
+        <div class="detail-list">
+          <div class="detail-row">
+            <span class="detail-label">Mã cơ sở</span>
+            <span class="detail-value">${escapeHTML(business.code)}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Tên cơ sở</span>
+            <span class="detail-value">${escapeHTML(business.name)}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Chủ cơ sở</span>
+            <span class="detail-value">${escapeHTML(business.owner)}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="rounded-lg border border-[#ffd29d] bg-[#fffaf5] p-5 text-center" style="border: 1px solid #ffd29d; border-radius: 8px;">
+        <i data-lucide="shield-alert" class="mx-auto h-12 w-12 text-[#ff8500] mb-3" style="display: block; margin: 0 auto 12px; width: 48px; height: 48px;"></i>
+        <div class="font-bold text-[#1f2937] text-md mb-1.5" style="font-weight: 700; margin-bottom: 6px;">Cơ sở chưa được cấp Giấy phép ANTT</div>
+        <p class="text-xs text-[#6b7280] leading-relaxed max-w-[380px] mx-auto mb-4" style="margin-bottom: 16px; color: #6b7280; font-size: 12px; line-height: 1.5;">
+          Cơ sở này hiện chưa có Giấy chứng nhận đủ điều kiện về ANTT được kích hoạt trên hệ thống. Vui lòng kiểm tra hồ sơ đề nghị cấp phép đang xử lý.
+        </p>
+        <button class="inline-flex h-9 items-center gap-2 rounded-md bg-[#c50000] px-4 text-xs font-bold text-white shadow hover:bg-[#ad0000] transition-all" style="cursor: pointer; border: none; background: #c50000; color: white; padding: 0 16px; border-radius: 6px; font-weight: 700; height: 36px; display: inline-flex; align-items: center; gap: 8px;" onclick="window.location.href='QuanLyHoSo.html';">
+          <i data-lucide="file-search" class="h-4 w-4" style="margin-right: 0px !important;"></i>
+          Tra cứu hồ sơ cấp phép
+        </button>
+      </div>
+    `;
+  } else { // Không thuộc diện
+    content = `
+      <div class="form-section mb-4">
+        <div class="form-section-title">
+          <i data-lucide="store" class="h-4 w-4 text-[#c50000]"></i>
+          Thông tin cơ sở
+        </div>
+        <div class="detail-list">
+          <div class="detail-row">
+            <span class="detail-label">Mã cơ sở</span>
+            <span class="detail-value">${escapeHTML(business.code)}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Tên cơ sở</span>
+            <span class="detail-value">${escapeHTML(business.name)}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Loại hình</span>
+            <span class="detail-value">${escapeHTML(business.type)}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="rounded-lg border border-[#e2e8f0] bg-[#f8fafc] p-5 text-center" style="border: 1px solid #e2e8f0; border-radius: 8px; background: #f8fafc;">
+        <i data-lucide="shield-x" class="mx-auto h-12 w-12 text-[#64748b] mb-3" style="display: block; margin: 0 auto 12px; width: 48px; height: 48px; color: #64748b;"></i>
+        <div class="font-bold text-[#1f2937] text-md mb-1.5" style="font-weight: 700; margin-bottom: 6px;">Không thuộc diện cấp phép ANTT</div>
+        <p class="text-xs text-[#6b7280] leading-relaxed max-w-[380px] mx-auto" style="color: #6b7280; font-size: 12px; line-height: 1.5;">
+          Theo quy định tại Nghị định số 96/2016/NĐ-CP, ngành nghề kinh doanh này của cơ sở không nằm trong danh mục ngành, nghề đầu tư kinh doanh có điều kiện về ANTT cần cấp Giấy chứng nhận.
+        </p>
+      </div>
+    `;
+  }
+
+  modalBody.innerHTML = content;
+  document.querySelector('#licenseModal').removeAttribute('hidden');
+  lucide.createIcons();
+}
+
+function closeLicenseModal() {
+  const modal = document.querySelector('#licenseModal');
+  if (modal) modal.setAttribute('hidden', '');
+}
 
 els.exportBtn.addEventListener('click', () => alert('Đã tạo file Excel danh sách cơ sở kinh doanh.'));
 els.addBusinessBtn.addEventListener('click', () => {
@@ -325,6 +488,9 @@ document.addEventListener('click', (event) => {
     state.openActionId = '';
     render();
   }
+  if (event.target.closest('#licenseModal') && !event.target.closest('.module-modal')) {
+    closeLicenseModal();
+  }
 });
 
 document.addEventListener('keydown', (event) => {
@@ -334,7 +500,13 @@ document.addEventListener('keydown', (event) => {
       state.openActionId = '';
       render();
     }
+    closeLicenseModal();
   }
+});
+
+// Đăng ký sự kiện đóng cho nút trong modal
+document.querySelectorAll('[data-modal-close="license"]').forEach((btn) => {
+  btn.addEventListener('click', closeLicenseModal);
 });
 
 initFilters();

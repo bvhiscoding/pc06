@@ -515,6 +515,8 @@ function filters(labels) {
     const options = /vai trò/i.test(label) ? roleOptions 
       : /xã|phường|địa bàn/i.test(label) ? wardOptions 
       : /trạng thái|kết quả/i.test(label) ? statusOptions 
+      : /loại khai báo/i.test(label) ? ['Lưu trú', 'Tài sản', 'Báo cáo định kỳ']
+      : /cơ sở/i.test(label) ? ['Khách sạn Tràng An', 'Cầm đồ Phát Lộc', 'Nhà nghỉ Bình Minh', 'Karaoke Hoa Sen', 'Nhà nghỉ Cát Tường', 'Cầm đồ Kim Long', 'Khách sạn Hoa Lư']
       : /cảnh báo/i.test(label) ? ['Bình thường', 'Trung bình', 'Cao', 'Nghi vấn']
       : null;
     return { label, options };
@@ -534,7 +536,8 @@ const state = {
   sortIndex: null,
   sortDir: 1,
   selectedDeclarationId: 'KB-2026-0188',
-  openActionId: ''
+  openActionId: '',
+  modalType: null
 };
 
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({
@@ -656,6 +659,31 @@ function statsTemplate(stats = commonStats) {
 
 function filtersTemplate() {
   const filtersConfig = config.filters || filters(['Từ khóa', 'Trạng thái', 'Địa bàn', 'Ngày tạo']);
+
+  if (currentModule === 'declaration-admin') {
+    return `<section class="filter-panel">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-4">
+        ${filtersConfig.map((filter, index) => {
+          let fieldHTML = '';
+          if (filter.options) {
+            fieldHTML = `<select class="field appearance-none font-medium" data-filter><option>-- Tất cả --</option>${filter.options.map((option) => `<option>${esc(option)}</option>`).join('')}</select><i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>`;
+          } else {
+            const type = /ngày|thời gian|khoảng/i.test(filter.label) ? 'date' : 'text';
+            fieldHTML = `<input class="field" type="${type}" ${index === 0 ? 'id="keywordInput"' : 'data-filter'} placeholder="Nhập ${esc(filter.label.toLowerCase())}..." /><i data-lucide="${index === 0 ? 'search' : type === 'date' ? 'calendar-days' : 'filter'}" class="field-icon"></i>`;
+          }
+          return `<label class="col-span-1"><span class="form-label">${esc(filter.label)}</span><span class="field-wrap block">${fieldHTML}</span></label>`;
+        }).join('')}
+        <div class="col-span-1 flex items-end gap-3 h-[66px] pb-[1px]">
+          <button class="inline-flex h-[42px] flex-1 items-center justify-center gap-2 rounded-md border border-[#d9dfe8] bg-white px-4 text-[14px] font-medium text-[#202833] shadow-sm transition hover:bg-[#f8fafc]" type="button" data-reset>
+            <i data-lucide="rotate-ccw" class="h-4 w-4"></i>Đặt lại
+          </button>
+          <button class="inline-flex h-[42px] flex-1 items-center justify-center gap-2 rounded-md bg-[#c50000] px-4 text-[14px] font-semibold text-white shadow-[0_6px_13px_rgba(192,0,0,0.24)] transition hover:bg-[#ad0000]" type="button" data-search>
+            <i data-lucide="search" class="h-[18px] w-[18px]"></i>Tìm kiếm
+          </button>
+        </div>
+      </div>
+    </section>`;
+  }
 
   if (currentModule === 'roles') {
     return `<section class="filter-panel">
@@ -846,6 +874,22 @@ function renderRows() {
               <button type="button" data-open-modal><i data-lucide="eye" class="h-4 w-4"></i>Xem chi tiết</button>
               <button type="button" data-toast="Đã đánh dấu đã đọc"><i data-lucide="check" class="h-4 w-4"></i>Đánh dấu đã đọc</button>
               <button type="button" data-toast="Đã xóa thông báo" style="color:#c50000"><i data-lucide="trash-2" class="h-4 w-4"></i>Xóa thông báo</button>
+            </div>
+          ` : ''}
+        </td>
+      `;
+    }
+    if (currentModule === 'declaration-admin') {
+      return `
+        <td class="text-center action-cell">
+          <button class="mx-auto grid h-9 w-9 place-items-center rounded-md border border-[#dfe5ed] bg-white shadow-sm transition hover:border-[#c90000] hover:text-[#c90000]" type="button" data-action-toggle="${rowId}" aria-label="Mở thao tác">
+            <i data-lucide="ellipsis-vertical" class="h-5 w-5"></i>
+          </button>
+          ${state.openActionId === rowId ? `
+            <div class="row-action-menu">
+              <button type="button" data-open-modal><i data-lucide="eye" class="h-4 w-4"></i>Xem chi tiết</button>
+              <button type="button" data-declaration-action="approve"><i data-lucide="check-circle" class="h-4 w-4"></i>Phê duyệt</button>
+              <button type="button" data-declaration-action="supplement"><i data-lucide="edit-3" class="h-4 w-4"></i>Yêu cầu bổ sung</button>
             </div>
           ` : ''}
         </td>
@@ -1205,6 +1249,158 @@ function modalBodyTemplate() {
   }
 
   if (currentModule === 'declaration-admin') {
+    if (state.modalType === 'bulk-approve') {
+      const pendingDeclarations = declarationRows.filter(r => r[6] !== 'Đã hoàn thành');
+      
+      let tableRowsHTML = '';
+      if (pendingDeclarations.length === 0) {
+        tableRowsHTML = `<tr><td colspan="6" class="text-center p-4 text-slate-500 font-medium bg-slate-50">Không có khai báo nào chờ phê duyệt.</td></tr>`;
+      } else {
+        tableRowsHTML = pendingDeclarations.map(row => {
+          const code = row[0];
+          const type = row[1];
+          const businessName = row[2];
+          const summary = row[4];
+          const status = row[6];
+          return `
+            <tr class="hover:bg-slate-50">
+              <td class="p-2.5 text-center"><input type="checkbox" value="${esc(code)}" checked class="rounded border-slate-300 text-[#c50000] focus:ring-[#c50000]" /></td>
+              <td class="p-2.5 font-semibold text-slate-800">${esc(code)}</td>
+              <td class="p-2.5 text-slate-600">${esc(type)}</td>
+              <td class="p-2.5 text-slate-700 font-medium">${esc(businessName)}</td>
+              <td class="p-2.5 text-slate-600">${esc(summary)}</td>
+              <td class="p-2.5"><span class="status ${statusClass(status)} text-[11px] px-1.5 py-0.5">${esc(status)}</span></td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      return `
+        <!-- Danh sách khai báo chờ duyệt -->
+        <div class="form-section">
+          <div class="form-section-title">
+            <i data-lucide="list-todo" class="h-4 w-4 text-[#c50000]"></i>Danh sách khai báo cần duyệt
+          </div>
+          <div class="border border-slate-200 rounded-lg overflow-hidden text-xs mb-4">
+            <div class="max-h-[200px] overflow-y-auto">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold sticky top-0 z-10">
+                    <th class="p-2.5 w-[40px] text-center bg-slate-50"><input type="checkbox" id="bulkApproveSelectAll" checked /></th>
+                    <th class="p-2.5 bg-slate-50">Mã</th>
+                    <th class="p-2.5 bg-slate-50">Loại</th>
+                    <th class="p-2.5 bg-slate-50">Cơ sở</th>
+                    <th class="p-2.5 bg-slate-50">Nội dung</th>
+                    <th class="p-2.5 bg-slate-50">Trạng thái</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 text-slate-700 bg-white" id="bulkApproveTableBody">
+                  ${tableRowsHTML}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Nội dung ý kiến xử lý -->
+        <div class="form-section">
+          <div class="form-section-title">
+            <i data-lucide="message-square-text" class="h-4 w-4 text-[#c50000]"></i>Thông tin phê duyệt
+          </div>
+          <div class="space-y-3">
+            <label class="block">
+              <span class="form-label">Ý kiến phê duyệt hàng loạt</span>
+              <textarea id="bulkApproveComment" class="field textarea-field h-20">Đã đối soát thông tin tự động trùng khớp, hồ sơ khai báo hợp lệ theo quy định. Đồng ý phê duyệt tiếp nhận hàng loạt.</textarea>
+            </label>
+            <div class="flex flex-wrap gap-4 pt-1">
+              <label class="inline-flex items-center gap-2 text-xs font-semibold text-slate-700 cursor-pointer">
+                <input type="checkbox" id="bulkSendSMS" checked class="rounded border-slate-300 text-[#c50000] focus:ring-[#c50000]" />
+                <span>Gửi SMS thông báo</span>
+              </label>
+              <label class="inline-flex items-center gap-2 text-xs font-semibold text-slate-700 cursor-pointer">
+                <input type="checkbox" id="bulkSendZalo" checked class="rounded border-slate-300 text-[#c50000] focus:ring-[#c50000]" />
+                <span>Gửi thông báo Zalo OA</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+    if (state.modalType === 'supplement') {
+      const selectedId = state.selectedDeclarationId || 'KB-2026-0188';
+      const row = declarationRows.find(r => r[0] === selectedId) || declarationRows[0];
+      const code = row[0];
+      const businessName = row[2];
+      
+      return `
+        <!-- Thông tin hồ sơ -->
+        <div class="form-section">
+          <div class="form-section-title">
+            <i data-lucide="info" class="h-4 w-4 text-[#c50000]"></i>Thông tin khai báo cần bổ sung
+          </div>
+          <div class="grid grid-cols-2 gap-y-2.5 gap-x-4 text-xs font-semibold text-slate-700">
+            <div>
+              <span class="text-slate-400 block font-bold text-[11px]">MÃ KHAI BÁO</span>
+              <span class="text-slate-800 font-bold">${esc(code)}</span>
+            </div>
+            <div>
+              <span class="text-slate-400 block font-bold text-[11px]">CƠ SỞ KINH DOANH</span>
+              <span class="text-slate-800 font-bold">${esc(businessName)}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Thành phần cần bổ sung -->
+        <div class="form-section">
+          <div class="form-section-title">
+            <i data-lucide="check-square" class="h-4 w-4 text-[#c50000]"></i>Thành phần thông tin cần bổ sung
+          </div>
+          <div class="grid grid-cols-2 gap-3 text-xs font-semibold text-slate-700">
+            <label class="inline-flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" name="supplementField" value="Thông tin khách lưu trú" class="rounded border-slate-300 text-[#c50000] focus:ring-[#c50000]" checked />
+              <span>Thông tin khách lưu trú</span>
+            </label>
+            <label class="inline-flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" name="supplementField" value="Giấy tờ tùy thân (CCCD/Hộ chiếu)" class="rounded border-slate-300 text-[#c50000] focus:ring-[#c50000]" checked />
+              <span>Ảnh chụp/Quét CCCD/Hộ chiếu</span>
+            </label>
+            <label class="inline-flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" name="supplementField" value="Thông tin người đại diện" class="rounded border-slate-300 text-[#c50000] focus:ring-[#c50000]" />
+              <span>Thông tin người đại diện</span>
+            </label>
+            <label class="inline-flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" name="supplementField" value="Thông tin tài sản / giao dịch" class="rounded border-slate-300 text-[#c50000] focus:ring-[#c50000]" />
+              <span>Thông tin tài sản / giao dịch</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Lý do & Hướng dẫn chi tiết -->
+        <div class="form-section">
+          <div class="form-section-title">
+            <i data-lucide="message-square-text" class="h-4 w-4 text-[#c50000]"></i>Lý do & Hướng dẫn chi tiết
+          </div>
+          <div class="space-y-3">
+            <label class="block">
+              <span class="form-label">Nội dung yêu cầu bổ sung *</span>
+              <textarea id="supplementComment" class="field textarea-field h-24" placeholder="Nhập chi tiết thông tin thiếu hoặc sai sót cần cơ sở chỉnh sửa...">Thông tin CCCD của khách lưu trú Nguyễn Minh Quân bị mờ, không rõ số định danh. Yêu cầu cơ sở chụp lại và cập nhật bổ sung.</textarea>
+            </label>
+            
+            <div class="flex flex-wrap gap-4 pt-1">
+              <label class="inline-flex items-center gap-2 text-xs font-semibold text-slate-700 cursor-pointer">
+                <input type="checkbox" id="supplementSendSMS" checked class="rounded border-slate-300 text-[#c50000] focus:ring-[#c50000]" />
+                <span>Gửi SMS nhắc nhở</span>
+              </label>
+              <label class="inline-flex items-center gap-2 text-xs font-semibold text-slate-700 cursor-pointer">
+                <input type="checkbox" id="supplementSendZalo" checked class="rounded border-slate-300 text-[#c50000] focus:ring-[#c50000]" />
+                <span>Gửi thông báo qua Zalo OA</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
     const selectedId = state.selectedDeclarationId || 'KB-2026-0188';
     const row = declarationRows.find(r => r[0] === selectedId) || declarationRows[0];
     const code = row[0];
@@ -1556,6 +1752,24 @@ function modalFooterTemplate() {
     }
   }
   if (currentModule === 'declaration-admin') {
+    if (state.modalType === 'bulk-approve') {
+      return `
+        <button class="btn btn-secondary mr-auto" type="button" data-close-modal>Hủy bỏ</button>
+        <button class="btn bg-green-600 hover:bg-green-700 text-white font-bold px-4 py-2 rounded-md shadow-sm flex items-center gap-1.5 transition text-xs" type="button" data-confirm-bulk-approve>
+          <i data-lucide="check-circle" class="w-4 h-4"></i> Phê duyệt hàng loạt
+        </button>
+      `;
+    }
+    if (state.modalType === 'supplement') {
+      return `
+        <button class="btn btn-secondary mr-auto flex items-center gap-1.5" type="button" id="btnBackToDetail">
+          <i data-lucide="arrow-left" class="w-4 h-4"></i> Quay lại
+        </button>
+        <button class="btn bg-orange-500 hover:bg-orange-600 text-white font-bold px-4 py-2 rounded-md shadow-sm flex items-center gap-1.5 transition text-xs" type="button" data-confirm-supplement>
+          <i data-lucide="send" class="w-4 h-4"></i> Gửi yêu cầu bổ sung
+        </button>
+      `;
+    }
     return `
       <button class="btn btn-secondary mr-auto" type="button" data-close-modal>Đóng</button>
       <button class="btn bg-orange-500 hover:bg-orange-600 text-white font-bold px-4 py-2 rounded-md shadow-sm flex items-center gap-1.5 transition text-xs" type="button" data-declaration-action="supplement">
@@ -1577,7 +1791,7 @@ function modalFooterTemplate() {
 
 function modalTemplate() {
   const modalTitle = currentModule === 'accounts' ? 'Thêm / sửa tài khoản'
-    : currentModule === 'declaration-admin' ? 'Chi tiết khai báo'
+    : currentModule === 'declaration-admin' ? (state.modalType === 'bulk-approve' ? 'Phê duyệt hàng loạt khai báo' : 'Chi tiết khai báo')
       : currentModule === 'roles' ? (state.selectedRoleId !== undefined && state.selectedRoleId !== null ? 'Chỉnh sửa vai trò' : 'Thêm vai trò mới')
         : config.action;
   return `<div id="moduleModal" class="modal-backdrop" hidden>
@@ -1680,10 +1894,15 @@ function bindInteractions() {
 
     if (openModal) {
       const tr = openModal.closest('tr');
-      if (tr && currentModule === 'declaration-admin') {
-        const idCell = tr.querySelector('td:nth-child(3)');
-        if (idCell) {
-          state.selectedDeclarationId = idCell.textContent.trim();
+      if (currentModule === 'declaration-admin') {
+        if (tr) {
+          const idCell = tr.querySelector('td:nth-child(3)');
+          if (idCell) {
+            state.selectedDeclarationId = idCell.textContent.trim();
+          }
+          state.modalType = 'detail';
+        } else {
+          state.modalType = 'bulk-approve';
         }
       }
       if (tr && currentModule === 'notifications-center') {
@@ -1716,6 +1935,12 @@ function bindInteractions() {
           const modalTitle = document.querySelector('#moduleModalTitle');
           if (modalTitle) {
             modalTitle.textContent = state.selectedNotification ? 'Chi tiết thông báo' : 'Tạo thông báo';
+          }
+        }
+        if (currentModule === 'declaration-admin') {
+          const modalTitle = document.querySelector('#moduleModalTitle');
+          if (modalTitle) {
+            modalTitle.textContent = state.modalType === 'bulk-approve' ? 'Phê duyệt hàng loạt khai báo' : 'Chi tiết khai báo';
           }
         }
       }
@@ -1781,23 +2006,125 @@ function bindInteractions() {
       modal.hidden = true;
       showToast('Đã xác nhận thao tác và ghi nhận vào luồng xử lý.');
     }
+    const confirmBulkApprove = event.target.closest('[data-confirm-bulk-approve]');
+    if (confirmBulkApprove) {
+      const checkboxes = document.querySelectorAll('#bulkApproveTableBody input[type="checkbox"]:checked');
+      if (checkboxes.length === 0) {
+        showToast('Vui lòng chọn ít nhất một khai báo để phê duyệt.');
+        return;
+      }
+      
+      let count = 0;
+      checkboxes.forEach(cb => {
+        const declId = cb.value;
+        const row = declarationRows.find(r => r[0] === declId);
+        if (row) {
+          row[6] = 'Đã hoàn thành';
+          count++;
+        }
+      });
+      
+      modal.hidden = true;
+      const viaZalo = document.getElementById('bulkSendZalo')?.checked;
+      const viaSMS = document.getElementById('bulkSendSMS')?.checked;
+      let channelText = '';
+      if (viaZalo && viaSMS) channelText = ' qua Zalo & SMS';
+      else if (viaZalo) channelText = ' qua Zalo';
+      else if (viaSMS) channelText = ' qua SMS';
+      
+      showToast(`Đã phê duyệt thành công ${count} khai báo${channelText}.`);
+      renderRows();
+    }
+
+    const bulkApproveSelectAll = event.target.closest('#bulkApproveSelectAll');
+    if (bulkApproveSelectAll) {
+      const isChecked = bulkApproveSelectAll.checked;
+      document.querySelectorAll('#bulkApproveTableBody input[type="checkbox"]').forEach(cb => {
+        cb.checked = isChecked;
+      });
+    }
+
     if (declAction) {
       const actionType = declAction.dataset.declarationAction;
+      
+      const tr = declAction.closest('tr');
+      let declId = state.selectedDeclarationId;
+      if (tr) {
+        const idCell = tr.querySelector('td:nth-child(3)');
+        if (idCell) {
+          declId = idCell.textContent.trim();
+        }
+      }
+      if (declId) {
+        state.selectedDeclarationId = declId;
+      }
+      
+      if (actionType === 'supplement') {
+        state.modalType = 'supplement';
+        const modalBody = document.querySelector('.module-modal-body');
+        if (modalBody) modalBody.innerHTML = modalBodyTemplate();
+        const modalFoot = document.querySelector('.module-modal-foot');
+        if (modalFoot) modalFoot.innerHTML = modalFooterTemplate();
+        const modalTitle = document.querySelector('#moduleModalTitle');
+        if (modalTitle) modalTitle.textContent = 'Yêu cầu bổ sung thông tin khai báo';
+        modal.hidden = false;
+        lucide.createIcons();
+        return;
+      }
+      
       modal.hidden = true;
       let msg = '';
       if (actionType === 'approve') msg = 'Đã phê duyệt chấp nhận khai báo thành công.';
-      if (actionType === 'supplement') msg = 'Đã gửi yêu cầu bổ sung thông tin tới cơ sở.';
       if (actionType === 'verify') msg = 'Đã đánh dấu khai báo cần xác minh bổ sung.';
       showToast(msg);
-      if (state.selectedDeclarationId) {
-        const row = declarationRows.find(r => r[0] === state.selectedDeclarationId);
+      
+      if (declId) {
+        const row = declarationRows.find(r => r[0] === declId);
         if (row) {
           if (actionType === 'approve') row[6] = 'Đã hoàn thành';
-          if (actionType === 'supplement') row[6] = 'Cần bổ sung';
           if (actionType === 'verify') row[6] = 'Có cảnh báo';
           renderRows();
         }
       }
+    }
+
+    const confirmSupplement = event.target.closest('[data-confirm-supplement]');
+    if (confirmSupplement) {
+      const commentVal = document.getElementById('supplementComment')?.value.trim();
+      if (!commentVal) {
+        showToast('Vui lòng nhập nội dung yêu cầu bổ sung.');
+        return;
+      }
+      
+      const selectedId = state.selectedDeclarationId;
+      const row = declarationRows.find(r => r[0] === selectedId);
+      if (row) {
+        row[6] = 'Cần bổ sung';
+        renderRows();
+      }
+      
+      modal.hidden = true;
+      const viaZalo = document.getElementById('supplementSendZalo')?.checked;
+      const viaSMS = document.getElementById('supplementSendSMS')?.checked;
+      let channelText = '';
+      if (viaZalo && viaSMS) channelText = ' qua Zalo & SMS';
+      else if (viaZalo) channelText = ' qua Zalo';
+      else if (viaSMS) channelText = ' qua SMS';
+      
+      showToast(`Đã gửi yêu cầu bổ sung cho khai báo ${selectedId}${channelText}.`);
+    }
+
+    const backToDetail = event.target.closest('#btnBackToDetail');
+    if (backToDetail) {
+      state.modalType = 'detail';
+      const modalBody = document.querySelector('.module-modal-body');
+      if (modalBody) modalBody.innerHTML = modalBodyTemplate();
+      const modalFoot = document.querySelector('.module-modal-foot');
+      if (modalFoot) modalFoot.innerHTML = modalFooterTemplate();
+      const modalTitle = document.querySelector('#moduleModalTitle');
+      if (modalTitle) modalTitle.textContent = 'Chi tiết khai báo';
+      lucide.createIcons();
+      return;
     }
     const actionToggle = event.target.closest('[data-action-toggle]');
     if (actionToggle) {

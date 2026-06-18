@@ -827,3 +827,44 @@ body.modal-open {
     width: 100%;
   }
 }
+
+/* Warning Box style in Reject Modal */
+.reject-alert-box {
+  display: flex;
+  gap: 12px;
+  border-radius: 8px;
+  border: 1px solid #ffe4e4;
+  background-color: #fff1f1;
+  padding: 16px;
+  font-size: 13px;
+  color: #1f2937;
+  line-height: 1.5;
+  margin-bottom: 16px;
+  text-align: left;
+}
+.reject-alert-box svg {
+  flex-shrink: 0;
+  color: #ef1010;
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+}
+.reject-alert-box .alert-title {
+  font-weight: 700;
+  color: #ef1010;
+  margin-bottom: 2px;
+}
+.reject-alert-box .alert-desc {
+  color: #4b5563;
+}
+
+/* Green Modal Submit Button */
+.modal-submit.green {
+  border-color: #15803d !important;
+  background: linear-gradient(180deg, #16a34a 0%, #15803d 100%) !important;
+  color: #fff !important;
+  box-shadow: 0 6px 14px rgba(22, 163, 74, 0.2) !important;
+}
+.modal-submit.green:hover {
+  background: #15803d !important;
+}

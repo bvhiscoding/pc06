@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="vi">
 
 <head>
@@ -58,6 +58,37 @@
     }
     .is-editing .view-mode-el {
       display: none !important;
+    }
+    .is-editing button.edit-mode-el,
+    .is-editing a.edit-mode-el,
+    .is-editing .edit-mode-el.flex {
+      display: inline-flex !important;
+    }
+    .is-editing .detail-tabs .detail-tab[data-tab-target="documents"],
+    .is-editing .detail-tabs .detail-tab[data-tab-target="inspections"],
+    .is-editing .detail-tabs .detail-tab[data-tab-target="violations"],
+    .is-editing .detail-tabs .detail-tab[data-tab-target="declarations"],
+    .is-editing .detail-tabs .detail-tab[data-tab-target="history"] {
+      pointer-events: none;
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    #tab-overview .detail-grid {
+      grid-template-columns: 1fr;
+    }
+    #tab-overview .map-thumb .map-road.r1 {
+      height: 250px;
+    }
+    #tab-overview .map-thumb .map-road.r2 {
+      height: 250px;
+    }
+    #tab-overview .map-thumb .map-road.r3 {
+      width: 400px;
+    }
+    #tab-overview .map-thumb .map-pin {
+      top: 85px;
+      left: 45% !important;
     }
 
     /* Toast styles */
@@ -246,7 +277,7 @@
             <button class="view-mode-el px-4 py-2 border rounded font-bold text-xs bg-[#c60000] text-white border-[#b90000] hover:bg-[#ad0000] flex items-center gap-1.5 shadow-sm transition-colors" id="btnEditBusiness">
               <i data-lucide="square-pen" class="h-4 w-4"></i> Chỉnh sửa
             </button>
-            <button class="edit-mode-el hidden px-4 py-2 border rounded font-bold text-xs bg-[#16a34a] text-white border-[#15803d] hover:bg-[#15803d] flex items-center gap-1.5 shadow-sm transition-colors" id="btnSaveBusiness">
+            <button class="edit-mode-el hidden px-4 py-2 border rounded font-bold text-xs bg-[#c60000] text-white border-[#b90000] hover:bg-[#ad0000] flex items-center gap-1.5 shadow-sm transition-colors" id="btnSaveBusiness">
               <i data-lucide="check" class="h-4 w-4"></i> Lưu
             </button>
             <button class="edit-mode-el hidden px-4 py-2 border rounded font-bold text-xs bg-white text-gray-700 hover:bg-gray-50 flex items-center gap-1.5 shadow-sm transition-colors" id="btnCancelEdit">
@@ -302,84 +333,82 @@
           <div class="tab-content active" id="tab-overview">
             <div class="detail-grid">
               <div class="detail-main">
-                <section class="info-grid">
-                  <!-- Thông tin nhận diện -->
-                  <article class="detail-card">
-                    <h2><i data-lucide="store" class="h-5 w-5"></i>1. Thông tin nhận diện</h2>
-                    <div class="info-box">
-                      <dl class="detail-list">
-                        <div><dt>Mã cơ sở</dt><dd id="dtCode">CSDD01248</dd></div>
-                        <div><dt>Tên cơ sở</dt><dd>
-                          <span class="view-mode-el" id="dtName">Khách sạn Ninh Bình Hotel</span>
-                          <input type="text" class="edit-mode-el field hidden" id="inputName" required />
-                        </dd></div>
-                        <div><dt>Tên viết tắt</dt><dd>
-                          <span class="view-mode-el" id="dtShortName">Ninh Binh Hotel</span>
-                          <input type="text" class="edit-mode-el field hidden" id="inputShortName" />
-                        </dd></div>
-                        <div><dt>Loại hình kinh doanh</dt><dd>
-                          <span class="view-mode-el" id="dtType">Khách sạn</span>
-                          <select class="edit-mode-el field hidden" id="inputType">
-                            <option value="Khách sạn">Khách sạn</option>
-                            <option value="Karaoke">Karaoke</option>
-                            <option value="Quán bar">Quán bar</option>
-                            <option value="Massage">Massage</option>
-                            <option value="Cầm đồ">Cầm đồ</option>
-                            <option value="Nhà nghỉ">Nhà nghỉ</option>
-                            <option value="Kinh doanh vàng">Kinh doanh vàng</option>
-                            <option value="Dịch vụ trò chơi điện tử">Dịch vụ trò chơi điện tử</option>
-                            <option value="Dịch vụ chụp ảnh">Dịch vụ chụp ảnh</option>
-                          </select>
-                        </dd></div>
-                        <div><dt>Mã số thuế</dt><dd>
-                          <span class="view-mode-el" id="dtTaxCode">2700812345</span>
-                          <input type="text" class="edit-mode-el field hidden" id="inputTaxCode" required />
-                        </dd></div>
-                        <div><dt>Số đăng ký KD</dt><dd>
-                          <span class="view-mode-el" id="dtRegNo">2700812345-001</span>
-                          <input type="text" class="edit-mode-el field hidden" id="inputRegNo" required />
-                        </dd></div>
-                        <div><dt>Ngày thành lập</dt><dd>
-                          <span class="view-mode-el" id="dtEstDate">12/03/2018</span>
-                          <input type="date" class="edit-mode-el field hidden" id="inputEstDate" required />
-                        </dd></div>
-                      </dl>
-                    </div>
-                  </article>
+                <!-- Thông tin nhận diện -->
+                <article class="detail-card">
+                  <h2><i data-lucide="store" class="h-5 w-5"></i>1. Thông tin nhận diện</h2>
+                  <div class="info-box">
+                    <dl class="detail-list">
+                      <div><dt>Mã cơ sở</dt><dd id="dtCode">CSDD01248</dd></div>
+                      <div><dt>Tên cơ sở</dt><dd>
+                        <span class="view-mode-el" id="dtName">Khách sạn Ninh Bình Hotel</span>
+                        <input type="text" class="edit-mode-el field hidden" id="inputName" required />
+                      </dd></div>
+                      <div><dt>Tên viết tắt</dt><dd>
+                        <span class="view-mode-el" id="dtShortName">Ninh Binh Hotel</span>
+                        <input type="text" class="edit-mode-el field hidden" id="inputShortName" />
+                      </dd></div>
+                      <div><dt>Loại hình kinh doanh</dt><dd>
+                        <span class="view-mode-el" id="dtType">Khách sạn</span>
+                        <select class="edit-mode-el field hidden" id="inputType">
+                          <option value="Khách sạn">Khách sạn</option>
+                          <option value="Karaoke">Karaoke</option>
+                          <option value="Quán bar">Quán bar</option>
+                          <option value="Massage">Massage</option>
+                          <option value="Cầm đồ">Cầm đồ</option>
+                          <option value="Nhà nghỉ">Nhà nghỉ</option>
+                          <option value="Kinh doanh vàng">Kinh doanh vàng</option>
+                          <option value="Dịch vụ trò chơi điện tử">Dịch vụ trò chơi điện tử</option>
+                          <option value="Dịch vụ chụp ảnh">Dịch vụ chụp ảnh</option>
+                        </select>
+                      </dd></div>
+                      <div><dt>Mã số thuế</dt><dd>
+                        <span class="view-mode-el" id="dtTaxCode">2700812345</span>
+                        <input type="text" class="edit-mode-el field hidden" id="inputTaxCode" required />
+                      </dd></div>
+                      <div><dt>Số đăng ký KD</dt><dd>
+                        <span class="view-mode-el" id="dtRegNo">2700812345-001</span>
+                        <input type="text" class="edit-mode-el field hidden" id="inputRegNo" required />
+                      </dd></div>
+                      <div><dt>Ngày thành lập</dt><dd>
+                        <span class="view-mode-el" id="dtEstDate">12/03/2018</span>
+                        <input type="date" class="edit-mode-el field hidden" id="inputEstDate" required />
+                      </dd></div>
+                    </dl>
+                  </div>
+                </article>
 
-                  <!-- Thông tin liên hệ & người đại diện -->
-                  <article class="detail-card">
-                    <h2><i data-lucide="user-check" class="h-5 w-5"></i>2. Người đại diện & Liên hệ</h2>
-                    <div class="info-box">
-                      <dl class="detail-list">
-                        <div><dt>Chủ cơ sở/Đại diện</dt><dd>
-                          <span class="view-mode-el" id="dtOwner">Nguyễn Văn Hùng</span>
-                          <input type="text" class="edit-mode-el field hidden" id="inputOwner" required />
-                        </dd></div>
-                        <div><dt>Số CCCD/CMND</dt><dd>
-                          <span class="view-mode-el" id="dtOwnerId">037082001556</span>
-                          <input type="text" class="edit-mode-el field hidden" id="inputOwnerId" required />
-                        </dd></div>
-                        <div><dt>Số điện thoại</dt><dd>
-                          <span class="view-mode-el" id="dtPhone">0912 111 222</span>
-                          <input type="text" class="edit-mode-el field hidden" id="inputPhone" required />
-                        </dd></div>
-                        <div><dt>Địa chỉ Email</dt><dd>
-                          <span class="view-mode-el" id="dtEmail">hung.ninhbinhhotel@gmail.com</span>
-                          <input type="email" class="edit-mode-el field hidden" id="inputEmail" />
-                        </dd></div>
-                        <div><dt>Website/Trang tin</dt><dd>
-                          <span class="view-mode-el" id="dtWebsite">www.ninhbinhhotel.com.vn</span>
-                          <input type="text" class="edit-mode-el field hidden" id="inputWebsite" />
-                        </dd></div>
-                        <div><dt>Địa chỉ thường trú</dt><dd>
-                          <span class="view-mode-el" id="dtOwnerAddress">Số 12, đường Trần Hưng Đạo, P. Đông Thành, TP. Ninh Bình</span>
-                          <input type="text" class="edit-mode-el field hidden" id="inputOwnerAddress" required />
-                        </dd></div>
-                      </dl>
-                    </div>
-                  </article>
-                </section>
+                <!-- Thông tin liên hệ & người đại diện -->
+                <article class="detail-card">
+                  <h2><i data-lucide="user-check" class="h-5 w-5"></i>2. Người đại diện & Liên hệ</h2>
+                  <div class="info-box">
+                    <dl class="detail-list">
+                      <div><dt>Chủ cơ sở/Đại diện</dt><dd>
+                        <span class="view-mode-el" id="dtOwner">Nguyễn Văn Hùng</span>
+                        <input type="text" class="edit-mode-el field hidden" id="inputOwner" required />
+                      </dd></div>
+                      <div><dt>Số CCCD/CMND</dt><dd>
+                        <span class="view-mode-el" id="dtOwnerId">037082001556</span>
+                        <input type="text" class="edit-mode-el field hidden" id="inputOwnerId" required />
+                      </dd></div>
+                      <div><dt>Số điện thoại</dt><dd>
+                        <span class="view-mode-el" id="dtPhone">0912 111 222</span>
+                        <input type="text" class="edit-mode-el field hidden" id="inputPhone" required />
+                      </dd></div>
+                      <div><dt>Địa chỉ Email</dt><dd>
+                        <span class="view-mode-el" id="dtEmail">hung.ninhbinhhotel@gmail.com</span>
+                        <input type="email" class="edit-mode-el field hidden" id="inputEmail" />
+                      </dd></div>
+                      <div><dt>Website/Trang tin</dt><dd>
+                        <span class="view-mode-el" id="dtWebsite">www.ninhbinhhotel.com.vn</span>
+                        <input type="text" class="edit-mode-el field hidden" id="inputWebsite" />
+                      </dd></div>
+                      <div><dt>Địa chỉ thường trú</dt><dd>
+                        <span class="view-mode-el" id="dtOwnerAddress">Số 12, đường Trần Hưng Đạo, P. Đông Thành, TP. Ninh Bình</span>
+                        <input type="text" class="edit-mode-el field hidden" id="inputOwnerAddress" required />
+                      </dd></div>
+                    </dl>
+                  </div>
+                </article>
 
                 <!-- Quy mô hoạt động -->
                 <article class="detail-card compact">
@@ -421,59 +450,52 @@
                     </dd></div>
                   </dl>
                 </article>
-              </div>
 
-              <!-- Cột phụ bên phải -->
-              <aside class="detail-side">
-                <!-- Vị trí GIS -->
-                <article class="side-card">
-                  <h2><i data-lucide="map" class="h-5 w-5"></i>Vị trí bản đồ GIS</h2>
-                  <div class="mt-3">
-                    <span class="map-thumb w-full h-[120px] mb-2 relative block">
-                      <span class="map-road r1"></span>
-                      <span class="map-road r2"></span>
-                      <span class="map-road r3"></span>
-                      <i data-lucide="map-pin" class="map-pin" style="left: 45%;"></i>
-                    </span>
-                     <div class="text-[11px] text-gray-500 font-medium">
-                       <div class="flex items-center gap-1.5 mb-1">
-                         <span>Vĩ độ:</span>
-                         <strong class="text-gray-800 view-mode-el" id="dtLat">20.2546</strong>
-                         <input type="text" class="edit-mode-el field hidden !h-7 !py-0.5 !px-1.5 text-xs w-[100px]" id="inputLat" />
-                       </div>
-                       <div class="flex items-center gap-1.5">
-                         <span>Kinh độ:</span>
-                         <strong class="text-gray-800 view-mode-el" id="dtLng">105.9734</strong>
-                         <input type="text" class="edit-mode-el field hidden !h-7 !py-0.5 !px-1.5 text-xs w-[100px]" id="inputLng" />
-                       </div>
-                     </div>
-                    <a href="BanDoSoGis.html" class="map-link mt-2 inline-block font-bold">Mở bản đồ lớn GIS</a>
-                  </div>
-                </article>
-
-                <!-- Hình ảnh cơ sở -->
-                <article class="side-card">
-                  <h2><i data-lucide="image" class="h-5 w-5"></i>Hình ảnh cơ sở</h2>
-                  <div class="mt-3">
-                    <div class="border rounded bg-gray-100 aspect-video flex items-center justify-center text-gray-400 overflow-hidden relative">
-                      <i data-lucide="store" class="h-10 w-10 opacity-40"></i>
-                      <div class="absolute bottom-0 inset-x-0 bg-black/60 text-white text-[10px] p-1 truncate">Mặt tiền cơ sở kinh doanh</div>
+                <!-- Vị trí & Hình ảnh cơ sở -->
+                <article class="detail-card">
+                  <h2><i data-lucide="map" class="h-5 w-5"></i>4. Vị trí & Hình ảnh cơ sở</h2>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-3">
+                    <!-- Vị trí GIS -->
+                    <div class="border rounded p-4 bg-gray-50/50 text-xs flex flex-col justify-between">
+                      <h3 class="font-bold text-gray-800 border-b pb-1.5 flex items-center gap-1.5 mb-2"><i data-lucide="map-pin" class="h-4 w-4"></i>Vị trí bản đồ GIS</h3>
+                      <span class="map-thumb w-full mb-2 relative block" style="height: 200px;">
+                        <span class="map-road r1"></span>
+                        <span class="map-road r2"></span>
+                        <span class="map-road r3"></span>
+                        <i data-lucide="map-pin" class="map-pin" style="left: 45%;"></i>
+                      </span>
+                      <div class="text-[11px] text-gray-500 font-medium">
+                        <div class="flex items-center gap-1.5 mb-1">
+                          <span>Vĩ độ:</span>
+                          <strong class="text-gray-800 view-mode-el" id="dtLat">20.2546</strong>
+                          <input type="text" class="edit-mode-el field hidden !h-7 !py-0.5 !px-1.5 text-xs w-[100px]" id="inputLat" />
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                          <span>Kinh độ:</span>
+                          <strong class="text-gray-800 view-mode-el" id="dtLng">105.9734</strong>
+                          <input type="text" class="edit-mode-el field hidden !h-7 !py-0.5 !px-1.5 text-xs w-[100px]" id="inputLng" />
+                        </div>
+                      </div>
+                      <a href="BanDoSoGis.html" class="map-link mt-2 inline-block font-bold">Mở bản đồ lớn GIS</a>
                     </div>
-                    <span class="text-[11px] text-gray-400 block mt-1">Ảnh chụp cập nhật lúc: 15/05/2026</span>
+                    
+                    <!-- Hình ảnh cơ sở -->
+                    <div class="border rounded p-4 bg-gray-50/50 text-xs flex flex-col justify-between" style="min-height: 290px;">
+                      <h3 class="font-bold text-gray-800 border-b pb-1.5 flex items-center justify-between mb-2">
+                        <span><i data-lucide="image" class="h-4 w-4"></i>Hình ảnh cơ sở</span>
+                      </h3>
+                      
+                      <!-- Square Grid of Images -->
+                      <div class="grid grid-cols-3 gap-3 my-auto" id="imagesGrid">
+                        <!-- Dynamic squares will go here -->
+                      </div>
+                      
+                      <span class="text-[11px] text-gray-400 block mt-2">Ảnh chụp cập nhật lúc: 15/05/2026</span>
+                    </div>
                   </div>
                 </article>
 
-                <!-- Cảnh báo nghiệp vụ -->
-                <article class="side-card bg-red-50/40 border-red-100">
-                  <h2 class="text-red-700"><i data-lucide="triangle-alert" class="h-5 w-5 text-red-600"></i>Cảnh báo nghiệp vụ</h2>
-                  <div class="mt-3 text-xs text-red-700 leading-relaxed font-medium">
-                    <ul class="list-disc pl-4 space-y-1">
-                      <li>Yêu cầu bổ sung biên bản kiểm định PCCC định kỳ năm 2026.</li>
-                      <li>Giấy phép đăng ký ANTT còn hạn hiệu lực.</li>
-                    </ul>
-                  </div>
-                </article>
-              </aside>
+              </div>
             </div>
           </div>
 
@@ -550,15 +572,15 @@
                 <div class="grid grid-cols-2 gap-6 mt-3">
                   <div class="border rounded p-4 bg-gray-50 text-xs space-y-2">
                     <h3 class="font-bold text-gray-800 border-b pb-1.5 flex items-center gap-1.5"><i data-lucide="award" class="h-4 w-4"></i>Người đại diện pháp luật</h3>
-                    <div class="grid grid-cols-3 gap-1"><span class="text-gray-500">Họ và tên:</span><strong class="col-span-2 text-gray-900" id="personOwnerName">Nguyễn Văn Hùng</strong></div>
-                    <div class="grid grid-cols-3 gap-1"><span class="text-gray-500">Số CCCD:</span><span class="col-span-2 font-bold text-gray-800" id="personOwnerId">037082001556</span></div>
-                    <div class="grid grid-cols-3 gap-1"><span class="text-gray-500">Số điện thoại:</span><span class="col-span-2 font-bold text-gray-800" id="personOwnerPhone">0912 111 222</span></div>
+                    <div class="grid grid-cols-3 gap-1"><span class="text-gray-500">Họ và tên:</span><span class="col-span-2"><span class="view-mode-el text-gray-900 font-bold" id="personOwnerName">Nguyễn Văn Hùng</span><input type="text" class="edit-mode-el field hidden !py-0.5 !px-1.5 text-xs w-full" id="inputPersonOwnerName" required /></span></div>
+                    <div class="grid grid-cols-3 gap-1"><span class="text-gray-500">Số CCCD:</span><span class="col-span-2"><span class="view-mode-el font-bold text-gray-800" id="personOwnerId">037082001556</span><input type="text" class="edit-mode-el field hidden !py-0.5 !px-1.5 text-xs w-full" id="inputPersonOwnerId" required /></span></div>
+                    <div class="grid grid-cols-3 gap-1"><span class="text-gray-500">Số điện thoại:</span><span class="col-span-2"><span class="view-mode-el font-bold text-gray-800" id="personOwnerPhone">0912 111 222</span><input type="text" class="edit-mode-el field hidden !py-0.5 !px-1.5 text-xs w-full" id="inputPersonOwnerPhone" required /></span></div>
                   </div>
                   <div class="border rounded p-4 bg-gray-50 text-xs space-y-2">
                     <h3 class="font-bold text-gray-800 border-b pb-1.5 flex items-center gap-1.5"><i data-lucide="user-cog" class="h-4 w-4"></i>Người quản lý trực tiếp</h3>
-                    <div class="grid grid-cols-3 gap-1"><span class="text-gray-500">Họ và tên:</span><strong class="col-span-2 text-gray-900">Trần Huy Hoàng</strong></div>
-                    <div class="grid grid-cols-3 gap-1"><span class="text-gray-500">Chức vụ:</span><span class="col-span-2 font-bold text-gray-800">Giám đốc điều hành</span></div>
-                    <div class="grid grid-cols-3 gap-1"><span class="text-gray-500">Số điện thoại:</span><span class="col-span-2 font-bold text-gray-800">0983 444 555</span></div>
+                    <div class="grid grid-cols-3 gap-1"><span class="text-gray-500">Họ và tên:</span><span class="col-span-2"><strong class="view-mode-el text-gray-900" id="dtManagerName">Trần Huy Hoàng</strong><input type="text" class="edit-mode-el field hidden !py-0.5 !px-1.5 text-xs w-full" id="inputManagerName" required /></span></div>
+                    <div class="grid grid-cols-3 gap-1"><span class="text-gray-500">Chức vụ:</span><span class="col-span-2"><span class="view-mode-el font-bold text-gray-800" id="dtManagerRole">Giám đốc điều hành</span><input type="text" class="edit-mode-el field hidden !py-0.5 !px-1.5 text-xs w-full" id="inputManagerRole" required /></span></div>
+                    <div class="grid grid-cols-3 gap-1"><span class="text-gray-500">Số điện thoại:</span><span class="col-span-2"><span class="view-mode-el font-bold text-gray-800" id="dtManagerPhone">0983 444 555</span><input type="text" class="edit-mode-el field hidden !py-0.5 !px-1.5 text-xs w-full" id="inputManagerPhone" required /></span></div>
                   </div>
                 </div>
               </article>
@@ -639,12 +661,12 @@
                 <h2><i data-lucide="layout" class="h-5 w-5"></i>Thông số quy mô & Mặt bằng</h2>
                 <div class="info-box">
                   <dl class="detail-list">
-                    <div><dt>Tổng diện tích</dt><dd>450 m² mặt sàn</dd></div>
-                    <div><dt>Số tầng xây dựng</dt><dd>5 tầng nổi, 1 tầng hầm</dd></div>
-                    <div><dt>Số phòng hoạt động</dt><dd id="facilityRooms">45 phòng nghỉ</dd></div>
-                    <div><dt>Sức chứa lưu trú</dt><dd id="facilityCapacity">150 khách</dd></div>
-                    <div><dt>Hệ thống thang máy</dt><dd>02 thang máy chở khách đạt chuẩn kiểm định</dd></div>
-                    <div><dt>Mô tả chung</dt><dd>Cơ sở hoạt động lưu trú du lịch thương mại, trang bị thiết bị nội thất cao cấp đầy đủ tiện ích cơ bản.</dd></div>
+                    <div><dt>Tổng diện tích</dt><dd><span class="view-mode-el" id="dtArea">450 m² mặt sàn</span><input type="text" class="edit-mode-el field hidden !py-0.5 !px-1.5 text-xs w-full" id="inputArea" /></dd></div>
+                    <div><dt>Số tầng xây dựng</dt><dd><span class="view-mode-el" id="dtFloors">5 tầng nổi, 1 tầng hầm</span><input type="text" class="edit-mode-el field hidden !py-0.5 !px-1.5 text-xs w-full" id="inputFloors" /></dd></div>
+                    <div><dt>Số phòng hoạt động</dt><dd><span class="view-mode-el" id="facilityRooms">45 phòng nghỉ</span><input type="number" class="edit-mode-el field hidden !py-0.5 !px-1.5 text-xs w-full" id="inputFacilityRooms" /></dd></div>
+                    <div><dt>Sức chứa lưu trú</dt><dd><span class="view-mode-el" id="facilityCapacity">150 khách</span><input type="number" class="edit-mode-el field hidden !py-0.5 !px-1.5 text-xs w-full" id="inputFacilityCapacity" /></dd></div>
+                    <div><dt>Hệ thống thang máy</dt><dd><span class="view-mode-el" id="dtElevators">02 thang máy chở khách đạt chuẩn kiểm định</span><input type="text" class="edit-mode-el field hidden !py-0.5 !px-1.5 text-xs w-full" id="inputElevators" /></dd></div>
+                    <div><dt>Mô tả chung</dt><dd><span class="view-mode-el" id="dtDesc">Cơ sở hoạt động lưu trú du lịch thương mại, trang bị thiết bị nội thất cao cấp đầy đủ tiện ích cơ bản.</span><textarea class="edit-mode-el field hidden !py-0.5 !px-1.5 text-xs w-full h-12" id="inputDesc"></textarea></dd></div>
                   </dl>
                 </div>
               </article>
@@ -653,11 +675,11 @@
                 <h2><i data-lucide="video" class="h-5 w-5"></i>An ninh & Phòng cháy chữa cháy</h2>
                 <div class="info-box">
                   <dl class="detail-list">
-                    <div><dt>Hệ thống Camera</dt><dd>Đã lắp đặt 24 camera tại hành lang, bãi xe và cửa ra vào</dd></div>
-                    <div><dt>Đầu ghi / Lưu trữ</dt><dd>Ổ cứng 4TB lưu trữ dữ liệu an ninh tối thiểu 30 ngày</dd></div>
-                    <div><dt>Trạng thái PCCC</dt><dd><span class="file-status valid">Đạt tiêu chuẩn</span></dd></div>
-                    <div><dt>Thiết bị chữa cháy tại chỗ</dt><dd>18 bình bọt chữa cháy xách tay bố trí dọc các hành lang phòng</dd></div>
-                    <div><dt>Lối thoát hiểm</dt><dd>02 cầu thang thoát hiểm ngoài trời kết cấu thép</dd></div>
+                    <div><dt>Hệ thống Camera</dt><dd><span class="view-mode-el" id="dtCameras">Đã lắp đặt 24 camera tại hành lang, bãi xe và cửa ra vào</span><input type="text" class="edit-mode-el field hidden !py-0.5 !px-1.5 text-xs w-full" id="inputCameras" /></dd></div>
+                    <div><dt>Đầu ghi / Lưu trữ</dt><dd><span class="view-mode-el" id="dtStorage">Ổ cứng 4TB lưu trữ dữ liệu an ninh tối thiểu 30 ngày</span><input type="text" class="edit-mode-el field hidden !py-0.5 !px-1.5 text-xs w-full" id="inputStorage" /></dd></div>
+                    <div><dt>Trạng thái PCCC</dt><dd><span class="view-mode-el file-status valid" id="dtPccc">Đạt tiêu chuẩn</span><select class="edit-mode-el field hidden !py-0.5 !px-1.5 text-xs w-full" id="inputPccc"><option value="Đạt tiêu chuẩn">Đạt tiêu chuẩn</option><option value="Không đạt tiêu chuẩn">Không đạt tiêu chuẩn</option></select></dd></div>
+                    <div><dt>Thiết bị chữa cháy tại chỗ</dt><dd><span class="view-mode-el" id="dtFireEquip">18 bình bọt chữa cháy xách tay bố trí dọc các hành lang phòng</span><input type="text" class="edit-mode-el field hidden !py-0.5 !px-1.5 text-xs w-full" id="inputFireEquip" /></dd></div>
+                    <div><dt>Lối thoát hiểm</dt><dd><span class="view-mode-el" id="dtExits">02 cầu thang thoát hiểm ngoài trời kết cấu thép</span><input type="text" class="edit-mode-el field hidden !py-0.5 !px-1.5 text-xs w-full" id="inputExits" /></dd></div>
                   </dl>
                 </div>
               </article>
@@ -952,7 +974,24 @@
         rooms: b.rooms || (b.type === 'Khách sạn' ? '45' : '12'),
         capacity: b.capacity || '150',
         lat: b.lat || (20.25 + (i * 0.002)).toFixed(4),
-        lng: b.lng || (105.97 - (i * 0.002)).toFixed(4)
+        lng: b.lng || (105.97 - (i * 0.002)).toFixed(4),
+        managerName: b.managerName || 'Trần Huy Hoàng',
+        managerRole: b.managerRole || 'Giám đốc điều hành',
+        managerPhone: b.managerPhone || '0983 444 555',
+        area: b.area || '450 m² mặt sàn',
+        floors: b.floors || '5 tầng nổi, 1 tầng hầm',
+        elevators: b.elevators || '02 thang máy chở khách đạt chuẩn kiểm định',
+        desc: b.desc || 'Cơ sở hoạt động lưu trú du lịch thương mại, trang bị thiết bị nội thất cao cấp đầy đủ tiện ích cơ bản.',
+        cameras: b.cameras || 'Đã lắp đặt 24 camera tại hành lang, bãi xe và cửa ra vào',
+        storage: b.storage || 'Ổ cứng 4TB lưu trữ dữ liệu an ninh tối thiểu 30 ngày',
+        pccc: b.pccc || 'Đạt tiêu chuẩn',
+        fireEquip: b.fireEquip || '18 bình bọt chữa cháy xách tay bố trí dọc các hành lang phòng',
+        exits: b.exits || '02 cầu thang thoát hiểm ngoài trời kết cấu thép',
+        images: b.images || [
+          { name: 'Mặt tiền cơ sở', url: '', icon: 'store' },
+          { name: 'Quầy lễ tân', url: '', icon: 'contact-round' },
+          { name: 'Lối thoát hiểm', url: '', icon: 'door-closed' }
+        ]
       }));
       sessionStorage.setItem('mockBusinesses', JSON.stringify(mockBusinesses));
     }
@@ -997,11 +1036,131 @@
       }, 3000);
     }
 
+    // Render photos in a grid of squares
+    function renderSquares() {
+      const grid = document.getElementById('imagesGrid');
+      if (!grid) return;
+      
+      const images = business.images || [
+        { name: 'Mặt tiền cơ sở', url: '', icon: 'store' },
+        { name: 'Quầy lễ tân', url: '', icon: 'contact-round' },
+        { name: 'Lối thoát hiểm', url: '', icon: 'door-closed' }
+      ];
+      
+      grid.innerHTML = '';
+      const isEditing = document.querySelector('.detail-page').classList.contains('is-editing');
+      
+      // Render existing images
+      images.forEach((img, index) => {
+        const slot = document.createElement('div');
+        slot.className = 'border rounded bg-white overflow-hidden aspect-square relative flex flex-col items-center justify-center text-gray-400 shadow-sm';
+        
+        if (img.url) {
+          slot.innerHTML = `<img src="${img.url}" class="w-full h-full object-cover" />`;
+        } else {
+          slot.innerHTML = `<i data-lucide="${img.icon || 'image'}" class="h-8 w-8 opacity-50 mb-1"></i>`;
+        }
+        
+        // Caption
+        const caption = document.createElement('div');
+        caption.className = 'absolute bottom-0 inset-x-0 bg-black/60 text-white text-[9px] p-1 text-center truncate';
+        caption.textContent = img.name;
+        slot.appendChild(caption);
+        
+        // Remove button (edit mode)
+        if (isEditing) {
+          const removeBtn = document.createElement('button');
+          removeBtn.type = 'button';
+          removeBtn.className = 'absolute top-1 right-1 bg-red-600 text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px] hover:bg-red-800 shadow z-10';
+          removeBtn.innerHTML = '&times;';
+          removeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            images.splice(index, 1);
+            business.images = images;
+            // save to sessionStorage
+            const idx = mockBusinesses.findIndex(mb => mb.code === business.code);
+            if (idx !== -1) {
+              mockBusinesses[idx] = business;
+              sessionStorage.setItem('mockBusinesses', JSON.stringify(mockBusinesses));
+            }
+            renderSquares();
+          });
+          slot.appendChild(removeBtn);
+        }
+        
+        grid.appendChild(slot);
+      });
+      
+      // Render "+ Upload" button (edit mode)
+      if (isEditing) {
+        const uploadSlot = document.createElement('label');
+        uploadSlot.className = 'border border-dashed border-gray-300 rounded cursor-pointer aspect-square flex flex-col items-center justify-center text-gray-400 bg-white hover:bg-gray-50 hover:border-red-500 transition-all shadow-sm';
+        uploadSlot.innerHTML = `
+          <i data-lucide="plus" class="h-6 w-6"></i>
+          <span class="text-[9px] font-medium mt-1">Tải ảnh</span>
+          <input type="file" id="imageUploader" accept="image/*" multiple class="hidden" />
+        `;
+        
+        // Add change listener to file input
+        const fileInput = uploadSlot.querySelector('input');
+        fileInput.addEventListener('change', (e) => {
+          const files = e.target.files;
+          if (!files || files.length === 0) return;
+          
+          let loadedCount = 0;
+          const targetLength = files.length;
+          
+          for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            const reader = new FileReader();
+            reader.onload = (event) => {
+              const base64Url = event.target.result;
+              if (!business.images) business.images = [];
+              business.images.push({
+                name: file.name.split('.')[0] || 'Ảnh cơ sở',
+                url: base64Url,
+                icon: 'image'
+              });
+              loadedCount++;
+              if (loadedCount === targetLength) {
+                // save
+                const idx = mockBusinesses.findIndex(mb => mb.code === business.code);
+                if (idx !== -1) {
+                  mockBusinesses[idx] = business;
+                  sessionStorage.setItem('mockBusinesses', JSON.stringify(mockBusinesses));
+                }
+                renderSquares();
+                showToast(`Đã tải lên ${targetLength} ảnh thành công!`, 'success');
+              }
+            };
+            reader.readAsDataURL(file);
+          }
+        });
+        
+        grid.appendChild(uploadSlot);
+      }
+      
+      if (window.lucide) window.lucide.createIcons();
+    }
+
     // Toggle Edit Mode UI
     function toggleEditMode(isEditing) {
       const pageEl = document.querySelector('.detail-page');
       if (isEditing) {
         pageEl.classList.add('is-editing');
+        
+        // Switch to overview tab only if currently on a locked tab
+        const activeTabBtn = document.querySelector('.detail-tab.active');
+        if (activeTabBtn) {
+          const target = activeTabBtn.dataset.tabTarget;
+          const lockedTargets = ['documents', 'inspections', 'violations', 'declarations', 'history'];
+          if (lockedTargets.includes(target)) {
+            const overviewTab = document.querySelector('.detail-tab[data-tab-target="overview"]');
+            if (overviewTab) {
+              overviewTab.click();
+            }
+          }
+        }
         
         // Populate inputs with current business values
         document.getElementById('inputName').value = business.name || '';
@@ -1040,8 +1199,31 @@
         
         document.getElementById('inputStatus').value = business.status || 'Đang hoạt động';
         document.getElementById('inputRisk').value = business.risk || 'Trung bình';
+
+        // Populate Tab 3 (Personnel) inputs
+        document.getElementById('inputPersonOwnerName').value = business.owner || '';
+        document.getElementById('inputPersonOwnerId').value = business.ownerId || '';
+        document.getElementById('inputPersonOwnerPhone').value = business.phone || '';
+        document.getElementById('inputManagerName').value = business.managerName || 'Trần Huy Hoàng';
+        document.getElementById('inputManagerRole').value = business.managerRole || 'Giám đốc điều hành';
+        document.getElementById('inputManagerPhone').value = business.managerPhone || '0983 444 555';
+
+        // Populate Tab 4 (Facilities) inputs
+        document.getElementById('inputArea').value = business.area || '450 m² mặt sàn';
+        document.getElementById('inputFloors').value = business.floors || '5 tầng nổi, 1 tầng hầm';
+        document.getElementById('inputFacilityRooms').value = parseInt(business.rooms) || 0;
+        document.getElementById('inputFacilityCapacity').value = parseInt(business.capacity) || 0;
+        document.getElementById('inputElevators').value = business.elevators || '02 thang máy chở khách đạt chuẩn kiểm định';
+        document.getElementById('inputDesc').value = business.desc || '';
+        document.getElementById('inputCameras').value = business.cameras || 'Đã lắp đặt 24 camera tại hành lang, bãi xe và cửa ra vào';
+        document.getElementById('inputStorage').value = business.storage || 'Ổ cứng 4TB lưu trữ dữ liệu an ninh tối thiểu 30 ngày';
+        document.getElementById('inputPccc').value = business.pccc || 'Đạt tiêu chuẩn';
+        document.getElementById('inputFireEquip').value = business.fireEquip || '18 bình bọt chữa cháy xách tay bố trí dọc các hành lang phòng';
+        document.getElementById('inputExits').value = business.exits || '02 cầu thang thoát hiểm ngoài trời kết cấu thép';
+        renderSquares();
       } else {
         pageEl.classList.remove('is-editing');
+        renderSquares();
       }
     }
 
@@ -1098,10 +1280,35 @@
       document.getElementById('personOwnerName').textContent = business.owner;
       document.getElementById('personOwnerId').textContent = business.ownerId;
       document.getElementById('personOwnerPhone').textContent = business.phone;
+      document.getElementById('dtManagerName').textContent = business.managerName || 'Trần Huy Hoàng';
+      document.getElementById('dtManagerRole').textContent = business.managerRole || 'Giám đốc điều hành';
+      document.getElementById('dtManagerPhone').textContent = business.managerPhone || '0983 444 555';
 
       // Tab facilities bindings
       document.getElementById('facilityRooms').textContent = (parseInt(business.rooms) || 0) + ' phòng nghỉ';
       document.getElementById('facilityCapacity').textContent = (parseInt(business.capacity) || 0) + ' khách';
+      document.getElementById('dtArea').textContent = business.area || '450 m² mặt sàn';
+      document.getElementById('dtFloors').textContent = business.floors || '5 tầng nổi, 1 tầng hầm';
+      document.getElementById('dtElevators').textContent = business.elevators || '02 thang máy chở khách đạt chuẩn kiểm định';
+      document.getElementById('dtDesc').textContent = business.desc || '';
+      document.getElementById('dtCameras').textContent = business.cameras || 'Đã lắp đặt 24 camera tại hành lang, bãi xe và cửa ra vào';
+      document.getElementById('dtStorage').textContent = business.storage || 'Ổ cứng 4TB lưu trữ dữ liệu an ninh tối thiểu 30 ngày';
+      
+      const dtPccc = document.getElementById('dtPccc');
+      if (dtPccc) {
+        dtPccc.textContent = business.pccc || 'Đạt tiêu chuẩn';
+        dtPccc.className = 'view-mode-el file-status';
+        if (business.pccc === 'Không đạt tiêu chuẩn') {
+          dtPccc.classList.add('invalid');
+          dtPccc.setAttribute('style', 'color:#ef4444; background:#fef2f2; border-color:#fca5a5;');
+        } else {
+          dtPccc.classList.add('valid');
+          dtPccc.setAttribute('style', '');
+        }
+      }
+      
+      document.getElementById('dtFireEquip').textContent = business.fireEquip || '18 bình bọt chữa cháy xách tay bố trí dọc các hành lang phòng';
+      document.getElementById('dtExits').textContent = business.exits || '02 cầu thang thoát hiểm ngoài trời kết cấu thép';
       
       // Initial state load
       if (initialMode === 'edit') {
@@ -1168,6 +1375,22 @@
         business.status = document.getElementById('inputStatus').value;
         business.risk = document.getElementById('inputRisk').value;
 
+        // Save Tab 3 (Personnel) fields
+        business.managerName = document.getElementById('inputManagerName').value.trim();
+        business.managerRole = document.getElementById('inputManagerRole').value.trim();
+        business.managerPhone = document.getElementById('inputManagerPhone').value.trim();
+
+        // Save Tab 4 (Facilities) fields
+        business.area = document.getElementById('inputArea').value.trim();
+        business.floors = document.getElementById('inputFloors').value.trim();
+        business.elevators = document.getElementById('inputElevators').value.trim();
+        business.desc = document.getElementById('inputDesc').value.trim();
+        business.cameras = document.getElementById('inputCameras').value.trim();
+        business.storage = document.getElementById('inputStorage').value.trim();
+        business.pccc = document.getElementById('inputPccc').value;
+        business.fireEquip = document.getElementById('inputFireEquip').value.trim();
+        business.exits = document.getElementById('inputExits').value.trim();
+
         // Sync into sessionStorage list
         const idx = mockBusinesses.findIndex(b => b.code === business.code);
         if (idx !== -1) {
@@ -1218,12 +1441,39 @@
         document.getElementById('dtLat').textContent = business.lat;
         document.getElementById('dtLng').textContent = business.lng;
 
+        // Tab 3 UI updates
         document.getElementById('personOwnerName').textContent = business.owner;
         document.getElementById('personOwnerId').textContent = business.ownerId;
         document.getElementById('personOwnerPhone').textContent = business.phone;
+        document.getElementById('dtManagerName').textContent = business.managerName;
+        document.getElementById('dtManagerRole').textContent = business.managerRole;
+        document.getElementById('dtManagerPhone').textContent = business.managerPhone;
 
+        // Tab 4 UI updates
         document.getElementById('facilityRooms').textContent = business.rooms + ' phòng nghỉ';
         document.getElementById('facilityCapacity').textContent = business.capacity + ' khách';
+        document.getElementById('dtArea').textContent = business.area;
+        document.getElementById('dtFloors').textContent = business.floors;
+        document.getElementById('dtElevators').textContent = business.elevators;
+        document.getElementById('dtDesc').textContent = business.desc;
+        document.getElementById('dtCameras').textContent = business.cameras;
+        document.getElementById('dtStorage').textContent = business.storage;
+        
+        const dtPcccSave = document.getElementById('dtPccc');
+        if (dtPcccSave) {
+          dtPcccSave.textContent = business.pccc;
+          dtPcccSave.className = 'view-mode-el file-status';
+          if (business.pccc === 'Không đạt tiêu chuẩn') {
+            dtPcccSave.classList.add('invalid');
+            dtPcccSave.setAttribute('style', 'color:#ef4444; background:#fef2f2; border-color:#fca5a5;');
+          } else {
+            dtPcccSave.classList.add('valid');
+            dtPcccSave.setAttribute('style', '');
+          }
+        }
+        
+        document.getElementById('dtFireEquip').textContent = business.fireEquip;
+        document.getElementById('dtExits').textContent = business.exits;
 
         showToast('Cập nhật thông tin cơ sở thành công!', 'success');
 
@@ -1232,6 +1482,43 @@
         const newUrl = `${window.location.pathname}?code=${business.code}`;
         window.history.pushState({ path: newUrl }, '', newUrl);
       });
+
+      // Synchronize representative (owner) input fields between Tab 1 and Tab 3
+      document.getElementById('inputOwner').addEventListener('input', (e) => {
+        document.getElementById('inputPersonOwnerName').value = e.target.value;
+      });
+      document.getElementById('inputPersonOwnerName').addEventListener('input', (e) => {
+        document.getElementById('inputOwner').value = e.target.value;
+      });
+      document.getElementById('inputOwnerId').addEventListener('input', (e) => {
+        document.getElementById('inputPersonOwnerId').value = e.target.value;
+      });
+      document.getElementById('inputPersonOwnerId').addEventListener('input', (e) => {
+        document.getElementById('inputOwnerId').value = e.target.value;
+      });
+      document.getElementById('inputPhone').addEventListener('input', (e) => {
+        document.getElementById('inputPersonOwnerPhone').value = e.target.value;
+      });
+      document.getElementById('inputPersonOwnerPhone').addEventListener('input', (e) => {
+        document.getElementById('inputPhone').value = e.target.value;
+      });
+      
+      // Synchronize rooms and capacity fields between Tab 1 and Tab 4
+      document.getElementById('inputRooms').addEventListener('input', (e) => {
+        document.getElementById('inputFacilityRooms').value = e.target.value;
+      });
+      document.getElementById('inputFacilityRooms').addEventListener('input', (e) => {
+        document.getElementById('inputRooms').value = e.target.value;
+      });
+      document.getElementById('inputCapacity').addEventListener('input', (e) => {
+        document.getElementById('inputFacilityCapacity').value = e.target.value;
+      });
+      document.getElementById('inputFacilityCapacity').addEventListener('input', (e) => {
+        document.getElementById('inputCapacity').value = e.target.value;
+      });
+      
+      // Initialize photo grid on load
+      renderSquares();
     }
 
     // Tab switcher logic

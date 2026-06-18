@@ -898,3 +898,138 @@ body, .font-sans, button, input, select, textarea {
   background: #fff3f3;
   color: #c50000;
 }
+
+/* Scoped Modal Form Styles */
+.form-section {
+  border: 1px solid #e5ebf2;
+  border-radius: 7px;
+  padding: 14px;
+}
+.form-section + .form-section {
+  margin-top: 14px;
+}
+.form-section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  color: #17202d;
+  font-size: 14px;
+  font-weight: 900;
+}
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+textarea.field {
+  min-height: 96px;
+  padding-top: 10px;
+  resize: vertical;
+}
+.detail-list {
+  display: grid;
+  gap: 10px;
+}
+.detail-row {
+  display: grid;
+  grid-template-columns: 132px 1fr;
+  gap: 10px;
+  border-bottom: 1px solid #edf1f6;
+  padding-bottom: 10px;
+  color: #1f2937;
+  font-size: 13px;
+}
+.detail-row:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+.detail-label {
+  color: #697386;
+  font-weight: 700;
+}
+.detail-value {
+  font-weight: 800;
+}
+.upload-zone {
+  display: grid;
+  min-height: 120px;
+  place-items: center;
+  border: 1px dashed #cbd5e1;
+  border-radius: 7px;
+  background: #fbfcfe;
+  color: #64748b;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 160ms ease, background 160ms ease;
+  padding: 15px;
+}
+.upload-zone:hover {
+  border-color: #c50000;
+  background: #fff8f8;
+}
+.upload-zone svg {
+  margin: 0 auto 8px;
+  width: 30px;
+  height: 30px;
+  color: #c50000;
+}
+.upload-zone span {
+  font-size: 13px;
+  font-weight: 600;
+}
+.upload-zone p {
+  font-size: 12px;
+  color: #828c9a;
+  margin-top: 4px;
+}
+
+/* Modals layout styles */
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 42px;
+  padding: 0 20px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 14px;
+  border: 1px solid #d8dee8;
+  background-color: #ffffff;
+  color: #334155;
+  cursor: pointer;
+  transition: all 160ms ease;
+}
+.btn-secondary:hover {
+  border-color: #c50000;
+  color: #c50000;
+  background-color: #fffafa;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 42px;
+  padding: 0 20px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 14px;
+  border: 1px solid #c70000;
+  background: linear-gradient(180deg, #d90000 0%, #c40000 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(196, 0, 0, 0.2);
+  cursor: pointer;
+  transition: all 160ms ease;
+}
+.btn-primary:hover {
+  background: #ad0000;
+  border-color: #a00000;
+}
+
+@media (max-width: 600px) {
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+}

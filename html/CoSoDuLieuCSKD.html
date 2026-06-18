@@ -262,6 +262,27 @@
     </main>
   </div>
 
+  <!-- Modal Giấy phép ANTT -->
+  <div id="licenseModal" class="modal-backdrop" hidden>
+    <section class="module-modal" role="dialog" aria-modal="true" aria-labelledby="licenseTitle" style="width: min(580px, 100%);">
+      <div class="module-modal-head">
+        <h2 id="licenseTitle" class="module-modal-title">
+          <i data-lucide="shield-check" class="h-5 w-5 text-[#c50000]"></i>
+          Thông tin Giấy phép ANTT
+        </h2>
+        <button class="close-icon-btn" type="button" data-modal-close="license" aria-label="Đóng">
+          <i data-lucide="x" class="h-5 w-5"></i>
+        </button>
+      </div>
+      <div id="licenseModalBody" class="module-modal-body">
+        <!-- Will be populated dynamically via JavaScript -->
+      </div>
+      <div class="module-modal-foot">
+        <button class="btn-secondary" type="button" data-modal-close="license">Đóng lại</button>
+      </div>
+    </section>
+  </div>
+
   <script src="../scripts/auth.js"></script>
   <script src="../scripts/app-data.js"></script>
   <script src="../scripts/layout-sync.js"></script>
