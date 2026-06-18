@@ -83,7 +83,11 @@ function renderRows() {
           <div class="row-action-menu officer-action-menu">
             <button type="button" data-row-action="detail" data-username="${escapeHTML(item.username)}"><i data-lucide="eye" class="h-4 w-4"></i>Xem chi tiết</button>
             <button type="button" data-row-action="edit" data-username="${escapeHTML(item.username)}"><i data-lucide="pencil" class="h-4 w-4"></i>Chỉnh sửa</button>
-            <button type="button" data-row-action="lock" data-username="${escapeHTML(item.username)}"><i data-lucide="lock" class="h-4 w-4"></i>Tạm khóa</button>
+            ${item.status === 'Tạm khóa' ? `
+              <button type="button" data-row-action="unlock" data-username="${escapeHTML(item.username)}" style="color:#10b981"><i data-lucide="unlock" class="h-4 w-4"></i>Mở khóa</button>
+            ` : `
+              <button type="button" data-row-action="lock" data-username="${escapeHTML(item.username)}" style="color:#c50000"><i data-lucide="lock" class="h-4 w-4"></i>Tạm khóa</button>
+            `}
           </div>
         ` : ''}
       </td>
@@ -349,8 +353,39 @@ function bindEvents() {
     }
 
     if (!action) return;
+    const username = action.dataset.username;
+    const record = officerRecords.find(r => r.username === username);
+    
     if (action.dataset.rowAction === 'detail') {
-      window.location.href = `ChiTietCanBo.html?username=${encodeURIComponent(action.dataset.username)}`;
+      window.location.href = `ChiTietCanBo.html?username=${encodeURIComponent(username)}`;
+      return;
+    }
+    
+    if (action.dataset.rowAction === 'lock') {
+      state.openActionId = '';
+      state.selectedOfficerUsername = username;
+      
+      if (record) {
+        $('#lockOfficerName').textContent = record.name;
+        $('#lockOfficerUser').textContent = record.username;
+      }
+      $('#lockOfficerModal').hidden = false;
+      window.lucide?.createIcons();
+      renderRows();
+      return;
+    }
+    
+    if (action.dataset.rowAction === 'unlock') {
+      state.openActionId = '';
+      state.selectedOfficerUsername = username;
+      
+      if (record) {
+        $('#unlockOfficerName').textContent = record.name;
+        $('#unlockOfficerUser').textContent = record.username;
+      }
+      $('#unlockOfficerModal').hidden = false;
+      window.lucide?.createIcons();
+      renderRows();
       return;
     }
 
@@ -358,15 +393,74 @@ function bindEvents() {
     renderRows();
   });
 
+  const closeAllModals = () => {
+    openModal(false);
+    $('#lockOfficerModal').hidden = true;
+    $('#unlockOfficerModal').hidden = true;
+  };
+
   $('#openOfficerModal')?.addEventListener('click', () => openModal(true));
-  $('#closeOfficerModal')?.addEventListener('click', () => openModal(false));
-  document.querySelectorAll('[data-close-modal]').forEach((button) => button.addEventListener('click', () => openModal(false)));
+  $('#closeOfficerModal')?.addEventListener('click', closeAllModals);
+  
+  // Custom close buttons for lock/unlock modals
+  $('#closeLockOfficerModal')?.addEventListener('click', closeAllModals);
+  $('#btnCancelLockOfficer')?.addEventListener('click', closeAllModals);
+  $('#closeUnlockOfficerModal')?.addEventListener('click', closeAllModals);
+  $('#btnCancelUnlockOfficer')?.addEventListener('click', closeAllModals);
+  
+  document.querySelectorAll('[data-close-modal]').forEach((button) => button.addEventListener('click', closeAllModals));
+  
   $('#officerModal')?.addEventListener('click', (event) => {
-    if (event.target.id === 'officerModal') openModal(false);
+    if (event.target.id === 'officerModal') closeAllModals();
   });
+  $('#lockOfficerModal')?.addEventListener('click', (event) => {
+    if (event.target.id === 'lockOfficerModal') closeAllModals();
+  });
+  $('#unlockOfficerModal')?.addEventListener('click', (event) => {
+    if (event.target.id === 'unlockOfficerModal') closeAllModals();
+  });
+  
   $('#officerForm')?.addEventListener('submit', (event) => {
     event.preventDefault();
-    openModal(false);
+    closeAllModals();
+  });
+
+  // Confirm Lock click
+  $('#btnConfirmLockOfficer')?.addEventListener('click', () => {
+    const username = state.selectedOfficerUsername;
+    const reason = $('#lockOfficerReason')?.value.trim();
+    if (!reason) {
+      alert('Vui lòng nhập lý do tạm khóa.');
+      return;
+    }
+    const record = officerRecords.find(r => r.username === username);
+    if (record) {
+      record.status = 'Tạm khóa';
+      // Simulate toast / alert
+      const toast = document.createElement('div');
+      toast.className = 'toast is-visible';
+      toast.textContent = `Đã tạm khóa cán bộ ${record.name} thành công.`;
+      document.body.appendChild(toast);
+      window.setTimeout(() => toast.remove(), 2200);
+    }
+    closeAllModals();
+    renderRows();
+  });
+
+  // Confirm Unlock click
+  $('#btnConfirmUnlockOfficer')?.addEventListener('click', () => {
+    const username = state.selectedOfficerUsername;
+    const record = officerRecords.find(r => r.username === username);
+    if (record) {
+      record.status = 'Hoạt động';
+      const toast = document.createElement('div');
+      toast.className = 'toast is-visible';
+      toast.textContent = `Đã kích hoạt lại cán bộ ${record.name} thành công.`;
+      document.body.appendChild(toast);
+      window.setTimeout(() => toast.remove(), 2200);
+    }
+    closeAllModals();
+    renderRows();
   });
 
   document.addEventListener('click', (event) => {

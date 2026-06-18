@@ -662,25 +662,32 @@ function filtersTemplate() {
 
   if (currentModule === 'declaration-admin') {
     return `<section class="filter-panel">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-4">
+      <div class="grid grid-cols-12 gap-x-7 gap-y-4">
         ${filtersConfig.map((filter, index) => {
           let fieldHTML = '';
           if (filter.options) {
             fieldHTML = `<select class="field appearance-none font-medium" data-filter><option>-- Tất cả --</option>${filter.options.map((option) => `<option>${esc(option)}</option>`).join('')}</select><i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>`;
           } else {
             const type = /ngày|thời gian|khoảng/i.test(filter.label) ? 'date' : 'text';
-            fieldHTML = `<input class="field" type="${type}" ${index === 0 ? 'id="keywordInput"' : 'data-filter'} placeholder="Nhập ${esc(filter.label.toLowerCase())}..." /><i data-lucide="${index === 0 ? 'search' : type === 'date' ? 'calendar-days' : 'filter'}" class="field-icon"></i>`;
+            const iconHTML = type === 'date' ? '' : `<i data-lucide="${index === 0 ? 'search' : 'filter'}" class="field-icon"></i>`;
+            fieldHTML = `<input class="field" type="${type}" ${index === 0 ? 'id="keywordInput"' : 'data-filter'} placeholder="Nhập ${esc(filter.label.toLowerCase())}..." />${iconHTML}`;
           }
-          return `<label class="col-span-1"><span class="form-label">${esc(filter.label)}</span><span class="field-wrap block">${fieldHTML}</span></label>`;
+          let colSpan = 'col-span-12 sm:col-span-6 xl:col-span-3';
+          if (index === 0) {
+            colSpan = 'col-span-12 xl:col-span-4';
+          } else if (index === 1 || index === 2) {
+            colSpan = 'col-span-12 sm:col-span-6 xl:col-span-4';
+          }
+          return `<label class="${colSpan}"><span class="form-label">${esc(filter.label)}</span><span class="field-wrap block">${fieldHTML}</span></label>`;
         }).join('')}
-        <div class="col-span-1 flex items-end gap-3 h-[66px] pb-[1px]">
-          <button class="inline-flex h-[42px] flex-1 items-center justify-center gap-2 rounded-md border border-[#d9dfe8] bg-white px-4 text-[14px] font-medium text-[#202833] shadow-sm transition hover:bg-[#f8fafc]" type="button" data-reset>
-            <i data-lucide="rotate-ccw" class="h-4 w-4"></i>Đặt lại
-          </button>
-          <button class="inline-flex h-[42px] flex-1 items-center justify-center gap-2 rounded-md bg-[#c50000] px-4 text-[14px] font-semibold text-white shadow-[0_6px_13px_rgba(192,0,0,0.24)] transition hover:bg-[#ad0000]" type="button" data-search>
-            <i data-lucide="search" class="h-[18px] w-[18px]"></i>Tìm kiếm
-          </button>
-        </div>
+      </div>
+      <div class="mt-4 flex justify-end gap-3">
+        <button class="inline-flex h-[42px] items-center justify-center gap-2 rounded-md border border-[#d9dfe8] bg-white px-6 text-[14px] font-medium text-[#202833] shadow-sm transition hover:bg-[#f8fafc]" type="button" data-reset>
+          <i data-lucide="rotate-ccw" class="h-4 w-4"></i>Đặt lại
+        </button>
+        <button class="inline-flex h-[42px] items-center justify-center gap-2 rounded-md bg-[#c50000] px-7 text-[14px] font-semibold text-white shadow-[0_6px_13px_rgba(192,0,0,0.24)] transition hover:bg-[#ad0000]" type="button" data-search>
+          <i data-lucide="search" class="h-[18px] w-[18px]"></i>Tìm kiếm
+        </button>
       </div>
     </section>`;
   }
@@ -689,7 +696,7 @@ function filtersTemplate() {
     return `<section class="filter-panel">
       <div class="grid grid-cols-12 gap-x-7 gap-y-4">
         <!-- Extended Search Field (Từ khóa) -->
-        <label class="col-span-12 md:col-span-6 xl:col-span-6">
+        <label class="col-span-12 md:col-span-8 xl:col-span-9">
           <span class="form-label">Từ khóa</span>
           <span class="field-wrap block">
             <input class="field" id="keywordInput" placeholder="Nhập từ khóa..." />
@@ -698,7 +705,7 @@ function filtersTemplate() {
         </label>
         
         <!-- Status Select (Trạng thái) -->
-        <label class="col-span-12 md:col-span-3 xl:col-span-3">
+        <label class="col-span-12 md:col-span-4 xl:col-span-3">
           <span class="form-label">Trạng thái</span>
           <span class="field-wrap block">
             <select class="field appearance-none font-medium" data-filter>
@@ -709,16 +716,39 @@ function filtersTemplate() {
             <i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>
           </span>
         </label>
-        
-        <!-- Inline Action Buttons (Reset and Search) -->
-        <div class="col-span-12 md:col-span-3 xl:col-span-3 flex items-end justify-end gap-3 h-[66px] pb-[1px]">
-          <button class="inline-flex h-[42px] items-center gap-2 rounded-md border border-[#d9dfe8] bg-white px-6 text-[14px] font-medium text-[#202833] shadow-sm transition hover:bg-[#f8fafc]" type="button" data-reset>
-            <i data-lucide="rotate-ccw" class="h-4 w-4"></i>Đặt lại
-          </button>
-          <button class="inline-flex h-[42px] items-center gap-2 rounded-md bg-[#c50000] px-7 text-[14px] font-semibold text-white shadow-[0_6px_13px_rgba(192,0,0,0.24)] transition hover:bg-[#ad0000]" type="button" data-search>
-            <i data-lucide="search" class="h-[18px] w-[18px]"></i>Tìm kiếm
-          </button>
-        </div>
+      </div>
+      
+      <div class="mt-4 flex justify-end gap-3">
+        <button class="inline-flex h-[42px] items-center gap-2 rounded-md border border-[#d9dfe8] bg-white px-6 text-[14px] font-medium text-[#202833] shadow-sm transition hover:bg-[#f8fafc]" type="button" data-reset>
+          <i data-lucide="rotate-ccw" class="h-4 w-4"></i>Đặt lại
+        </button>
+        <button class="inline-flex h-[42px] items-center gap-2 rounded-md bg-[#c50000] px-7 text-[14px] font-semibold text-white shadow-[0_6px_13px_rgba(192,0,0,0.24)] transition hover:bg-[#ad0000]" type="button" data-search>
+          <i data-lucide="search" class="h-[18px] w-[18px]"></i>Tìm kiếm
+        </button>
+      </div>
+    </section>`;
+  }
+  if (currentModule === 'activity-log') {
+    return `<section class="filter-panel">
+      <div class="grid grid-cols-12 gap-x-7 gap-y-4">
+        ${filtersConfig.map((filter, index) => {
+          let fieldHTML = '';
+          if (filter.options) {
+            fieldHTML = `<select class="field appearance-none font-medium" data-filter><option>-- Tất cả --</option>${filter.options.map((option) => `<option>${esc(option)}</option>`).join('')}</select><i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>`;
+          } else {
+            const type = /ngày|thời gian|khoảng/i.test(filter.label) ? 'date' : 'text';
+            fieldHTML = `<input class="field" type="${type}" ${index === 0 ? 'id="keywordInput"' : 'data-filter'} placeholder="Nhập ${esc(filter.label.toLowerCase())}..." /><i data-lucide="${index === 0 ? 'search' : type === 'date' ? 'calendar-days' : 'filter'}" class="field-icon"></i>`;
+          }
+          let span = 'col-span-12 sm:col-span-6 md:col-span-3 xl:col-span-3';
+          if (index === 0 || index === 5) {
+            span = 'col-span-12 md:col-span-6 xl:col-span-6';
+          }
+          return `<label class="${span}"><span class="form-label">${esc(filter.label)}</span><span class="field-wrap block">${fieldHTML}</span></label>`;
+        }).join('')}
+      </div>
+      <div class="mt-4 flex justify-end gap-3">
+        <button class="inline-flex h-[42px] items-center gap-2 rounded-md border border-[#d9dfe8] bg-white px-6 text-[14px] font-medium text-[#202833] shadow-sm transition hover:bg-[#f8fafc]" type="button" data-reset><i data-lucide="rotate-ccw" class="h-4 w-4"></i>Đặt lại</button>
+        <button class="inline-flex h-[42px] items-center gap-2 rounded-md bg-[#c50000] px-7 text-[14px] font-semibold text-white shadow-[0_6px_13px_rgba(192,0,0,0.24)] transition hover:bg-[#ad0000]" type="button" data-search><i data-lucide="search" class="h-[18px] w-[18px]"></i>Tìm kiếm</button>
       </div>
     </section>`;
   }
@@ -726,7 +756,7 @@ function filtersTemplate() {
   return `<section class="filter-panel">
     <div class="grid grid-cols-12 gap-x-7 gap-y-4">
       ${filtersConfig.map((filter, index) => {
-    const span = index === 0 ? 'col-span-12 xl:col-span-4' : 'col-span-12 md:col-span-4 xl:col-span-2';
+    const span = index === 0 ? 'col-span-12 md:col-span-4 xl:col-span-4' : 'col-span-12 sm:col-span-6 md:col-span-2 xl:col-span-2';
     if (filter.options) {
       return `<label class="${span}"><span class="form-label">${esc(filter.label)}</span><span class="field-wrap block"><select class="field appearance-none font-medium" data-filter><option>-- Tất cả --</option>${filter.options.map((option) => `<option>${esc(option)}</option>`).join('')}</select><i data-lucide="chevron-down" class="field-icon h-4 w-4"></i></span></label>`;
     }
@@ -814,7 +844,7 @@ function renderRows() {
           <button class="mx-auto grid h-9 w-9 place-items-center rounded-md border border-[#dfe5ed] bg-white shadow-sm transition hover:border-[#c90000] hover:text-[#c90000]" type="button" data-action-toggle="${rowId}" aria-label="Mở thao tác"><i data-lucide="ellipsis-vertical" class="h-5 w-5"></i></button>
           ${state.openActionId === rowId ? `
             <div class="row-action-menu">
-              <button type="button" data-toast="Đã mô phỏng thao tác xử lý"><i data-lucide="more-horizontal" class="h-4 w-4"></i>Xử lý</button>
+              <button type="button" data-log-action="detail" data-log-row="${rowId}"><i data-lucide="eye" class="h-4 w-4"></i>Xem chi tiết</button>
             </div>
           ` : ''}
         </td>
@@ -826,14 +856,20 @@ function renderRows() {
           <button class="mx-auto grid h-9 w-9 place-items-center rounded-md border border-[#dfe5ed] bg-white shadow-sm transition hover:border-[#c90000] hover:text-[#c90000]" type="button" data-action-toggle="${rowId}" aria-label="Mở thao tác"><i data-lucide="ellipsis-vertical" class="h-5 w-5"></i></button>
           ${state.openActionId === rowId ? `
             <div class="row-action-menu">
-              <button type="button" data-toast="Đã mô phỏng chỉnh sửa tài khoản"><i data-lucide="pencil" class="h-4 w-4"></i>Chỉnh sửa</button>
-              <button type="button" data-toast="Đã tạm khóa tài khoản"><i data-lucide="lock" class="h-4 w-4"></i>Tạm khóa</button>
+              <button type="button" data-account-action="edit" data-account-row="${rowId}"><i data-lucide="pencil" class="h-4 w-4"></i>Chỉnh sửa</button>
+              ${visibleRows[index] && visibleRows[index][6] === 'Tạm khóa' ? `
+                <button type="button" data-account-action="unlock" data-account-row="${rowId}" style="color:#10b981"><i data-lucide="unlock" class="h-4 w-4"></i>Mở khóa</button>
+              ` : `
+                <button type="button" data-account-action="lock" data-account-row="${rowId}" style="color:#c50000"><i data-lucide="lock" class="h-4 w-4"></i>Tạm khóa</button>
+              `}
             </div>
           ` : ''}
         </td>
       `;
     }
     if (currentModule === 'roles') {
+      const rowData = visibleRows[index];
+      const isLocked = rowData && rowData[5] === 'Tạm dừng';
       return `
         <td class="text-center action-cell">
           <button class="mx-auto grid h-9 w-9 place-items-center rounded-md border border-[#dfe5ed] bg-white shadow-sm transition hover:border-[#c90000] hover:text-[#c90000]" type="button" data-action-toggle="${rowId}" aria-label="Mở thao tác"><i data-lucide="ellipsis-vertical" class="h-5 w-5"></i></button>
@@ -841,7 +877,11 @@ function renderRows() {
             <div class="row-action-menu">
               <button type="button" data-edit-role="${rowId}"><i data-lucide="pencil" class="h-4 w-4"></i>Chỉnh sửa vai trò</button>
               <button type="button" data-route="MaTranPhanQuyen.html"><i data-lucide="shield-check" class="h-4 w-4"></i>Xem ma trận quyền</button>
-              <button type="button" data-toast="Đã tạm khóa vai trò này" style="color:#c50000"><i data-lucide="ban" class="h-4 w-4"></i>Khóa vai trò</button>
+              ${isLocked ? `
+                <button type="button" data-role-action="unlock" data-role-row="${rowId}" style="color:#10b981"><i data-lucide="shield-check" class="h-4 w-4"></i>Mở khóa vai trò</button>
+              ` : `
+                <button type="button" data-role-action="lock" data-role-row="${rowId}" style="color:#c50000"><i data-lucide="ban" class="h-4 w-4"></i>Khóa vai trò</button>
+              `}
             </div>
           ` : ''}
         </td>
@@ -857,9 +897,9 @@ function renderRows() {
             <div class="row-action-menu">
               <button type="button" data-route="ThuTuc-ChiTiet.html?id=${procedureCode}"><i data-lucide="eye" class="h-4 w-4"></i>Xem chi tiết</button>
               <button type="button" data-route="ThuTuc-ThemMoi.html?mode=edit&id=${procedureCode}"><i data-lucide="pencil" class="h-4 w-4"></i>Chỉnh sửa</button>
-              <button type="button" data-toast="Đã tải xuống tệp đính kèm"><i data-lucide="download" class="h-4 w-4"></i>Tải xuống (PDF)</button>
-              <button type="button" data-toast="Đã ngưng hiệu lực thủ tục"><i data-lucide="ban" class="h-4 w-4"></i>Ngưng hiệu lực</button>
-              <button type="button" data-toast="Đã xóa thủ tục" style="color:#c50000"><i data-lucide="trash-2" class="h-4 w-4"></i>Xóa</button>
+              <button type="button" data-procedure-action="download" data-procedure-code="${procedureCode}"><i data-lucide="download" class="h-4 w-4"></i>Tải xuống (PDF)</button>
+              <button type="button" data-procedure-action="suspend" data-procedure-code="${procedureCode}"><i data-lucide="ban" class="h-4 w-4"></i>Ngưng hiệu lực</button>
+              <button type="button" data-procedure-action="delete" data-procedure-code="${procedureCode}" style="color:#c50000"><i data-lucide="trash-2" class="h-4 w-4"></i>Xóa</button>
             </div>
           ` : ''}
         </td>
@@ -1021,7 +1061,7 @@ function contentTemplate() {
   let actionBtnHTML = '';
   if (!isSystemConfig && !isActivityLog) {
     if (isAccounts) {
-      actionBtnHTML = `<button class="inline-flex h-[42px] items-center gap-2 rounded-md bg-[#c50000] px-5 text-[14px] font-semibold text-white shadow-[0_6px_13px_rgba(192,0,0,0.24)] transition hover:bg-[#ad0000]" type="button" data-toast="Đã mô phỏng thêm tài khoản mới"><i data-lucide="plus" class="h-[18px] w-[18px]"></i>Thêm tài khoản</button>`;
+      actionBtnHTML = `<button class="inline-flex h-[42px] items-center gap-2 rounded-md bg-[#c50000] px-5 text-[14px] font-semibold text-white shadow-[0_6px_13px_rgba(192,0,0,0.24)] transition hover:bg-[#ad0000]" type="button" data-account-action="add"><i data-lucide="plus" class="h-[18px] w-[18px]"></i>Thêm tài khoản</button>`;
     } else if (currentModule === 'roles') {
       actionBtnHTML = `<button class="inline-flex h-[42px] items-center gap-2 rounded-md bg-[#c50000] px-5 text-[14px] font-semibold text-white shadow-[0_6px_13px_rgba(192,0,0,0.24)] transition hover:bg-[#ad0000]" type="button" data-add-role-modal><i data-lucide="plus" class="h-[18px] w-[18px]"></i>Thêm vai trò mới</button>`;
     } else if (currentModule === 'procedure-admin') {
@@ -1058,6 +1098,285 @@ function contentTemplate() {
 }
 
 function modalBodyTemplate() {
+  if (currentModule === 'roles') {
+    if (state.modalType === 'role-lock') {
+      const rowId = state.selectedRoleId;
+      const row = config.rows[rowId] || config.rows[0];
+      const code = row[0];
+      const name = row[1];
+      
+      return `
+        <!-- Role Lock Modal Content -->
+        <div class="form-section">
+          <div class="form-section-title">
+            <i data-lucide="ban" class="h-4 w-4 text-[#c50000]"></i>Khóa vai trò hệ thống
+          </div>
+          <div class="p-4 border border-red-100 rounded-lg bg-red-50/50 flex gap-3.5 mb-4 text-left">
+            <div class="grid h-10 w-10 place-items-center rounded-full bg-red-100 text-red-700 flex-shrink-0">
+              <i data-lucide="triangle-alert" class="h-5 w-5"></i>
+            </div>
+            <div class="text-xs font-semibold text-slate-700">
+              <h4 class="text-[13px] font-bold text-red-900 mb-1">Cảnh báo khóa vai trò</h4>
+              <p class="text-red-700 font-medium leading-relaxed">Khi bị khóa, vai trò này sẽ chuyển sang trạng thái <strong class="text-red-600">Tạm dừng</strong>. Tất cả người dùng/cán bộ thuộc vai trò này sẽ tạm thời bị mất các quyền hạn liên quan.</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-y-2.5 gap-x-4 text-xs font-semibold text-slate-700 mb-4 bg-slate-50 p-3 rounded-lg border border-slate-100 text-left">
+            <div>
+              <span class="text-slate-400 block font-bold text-[11px] mb-0.5">MÃ VAI TRÒ</span>
+              <span class="text-slate-800 font-bold font-mono">${esc(code)}</span>
+            </div>
+            <div>
+              <span class="text-slate-400 block font-bold text-[11px] mb-0.5">TÊN VAI TRÒ</span>
+              <span class="text-slate-800 font-bold text-[#c50000]">${esc(name)}</span>
+            </div>
+          </div>
+
+          <div class="text-left">
+            <label class="block">
+              <span class="form-label">Lý do khóa vai trò *</span>
+              <textarea id="lockRoleReason" class="field textarea-field h-20" placeholder="Nhập lý do cụ thể...">Thay đổi cơ cấu tổ chức và phân cấp quản lý quyền hạn cán bộ.</textarea>
+            </label>
+          </div>
+        </div>
+      `;
+    }
+
+    if (state.modalType === 'role-unlock') {
+      const rowId = state.selectedRoleId;
+      const row = config.rows[rowId] || config.rows[0];
+      const code = row[0];
+      const name = row[1];
+      
+      return `
+        <!-- Role Unlock Modal Content -->
+        <div class="form-section">
+          <div class="form-section-title">
+            <i data-lucide="shield-check" class="h-4 w-4 text-green-600"></i>Kích hoạt lại vai trò
+          </div>
+          <div class="p-4 border border-green-100 rounded-lg bg-green-50/50 flex gap-3.5 mb-4 text-left">
+            <div class="grid h-10 w-10 place-items-center rounded-full bg-green-100 text-green-700 flex-shrink-0">
+              <i data-lucide="check" class="h-5 w-5"></i>
+            </div>
+            <div class="text-xs font-semibold text-slate-700">
+              <h4 class="text-[13px] font-bold text-green-900 mb-1">Mở khóa vai trò</h4>
+              <p class="text-green-700 font-medium leading-relaxed">Khôi phục đầy đủ quyền hạn cho vai trò này. Các tài khoản cán bộ thuộc vai trò này sẽ hoạt động lại bình thường.</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-y-2.5 gap-x-4 text-xs font-semibold text-slate-700 bg-slate-50 p-3 rounded-lg border border-slate-100 text-left">
+            <div>
+              <span class="text-slate-400 block font-bold text-[11px] mb-0.5">MÃ VAI TRÒ</span>
+              <span class="text-slate-800 font-bold font-mono">${esc(code)}</span>
+            </div>
+            <div>
+              <span class="text-slate-400 block font-bold text-[11px] mb-0.5">TÊN VAI TRÒ</span>
+              <span class="text-slate-800 font-bold">${esc(name)}</span>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+  }
+
+  if (currentModule === 'activity-log') {
+    if (state.modalType === 'log-detail') {
+      const rowId = state.selectedLogRow;
+      const row = logRows[rowId] || logRows[0];
+      const time = row[0];
+      const user = row[1];
+      const role = row[2];
+      const action = row[3];
+      const moduleName = row[4];
+      const target = row[5];
+      const desc = row[6];
+      const ip = row[7];
+      const result = row[8];
+      
+      return `
+        <!-- Activity Log Details Modal Content -->
+        <div class="form-section text-left">
+          <div class="form-section-title">
+            <i data-lucide="history" class="h-4 w-4 text-[#c50000]"></i>Chi tiết nhật ký hoạt động hệ thống
+          </div>
+          <div class="grid grid-cols-2 gap-y-3 gap-x-4 text-xs font-semibold text-slate-700">
+            <div>
+              <span class="text-slate-400 block font-bold text-[11px] mb-0.5">THỜI GIAN</span>
+              <span class="text-slate-800 font-bold bg-slate-50 p-2 border border-slate-100 rounded block font-mono text-[12px]">${esc(time)}</span>
+            </div>
+            <div>
+              <span class="text-slate-400 block font-bold text-[11px] mb-0.5">ĐỊA CHỈ IP</span>
+              <span class="text-slate-800 font-bold bg-slate-50 p-2 border border-slate-100 rounded block font-mono text-[12px]">${esc(ip)}</span>
+            </div>
+            <div>
+              <span class="text-slate-400 block font-bold text-[11px] mb-0.5">NGƯỜI THỰC HIỆN</span>
+              <span class="text-slate-800 font-bold bg-slate-50 p-2 border border-slate-100 rounded block">${esc(user)} <span class="text-slate-500 font-medium text-[11px]">(${esc(role)})</span></span>
+            </div>
+            <div>
+              <span class="text-slate-400 block font-bold text-[11px] mb-0.5">KẾT QUẢ THAO TÁC</span>
+              <div class="mt-1"><span class="status ${statusClass(result)} font-bold px-2 py-0.5 text-[11px]">${esc(result)}</span></div>
+            </div>
+            <div>
+              <span class="text-slate-400 block font-bold text-[11px] mb-0.5">HÀNH ĐỘNG</span>
+              <span class="text-slate-800 font-bold bg-slate-50 p-2 border border-slate-100 rounded block">${esc(action)}</span>
+            </div>
+            <div>
+              <span class="text-slate-400 block font-bold text-[11px] mb-0.5">PHÂN HỆ / MODULE</span>
+              <span class="text-slate-800 font-bold bg-slate-50 p-2 border border-slate-100 rounded block">${esc(moduleName)}</span>
+            </div>
+            <div class="col-span-2">
+              <span class="text-slate-400 block font-bold text-[11px] mb-0.5">ĐỐI TƯỢNG TÁC ĐỘNG</span>
+              <span class="text-slate-800 font-bold bg-slate-50 p-2 border border-slate-100 rounded block font-mono">${esc(target)}</span>
+            </div>
+            <div class="col-span-2">
+              <span class="text-slate-400 block font-bold text-[11px] mb-0.5">MÔ TẢ CHI TIẾT</span>
+              <span class="text-slate-800 font-bold bg-slate-50 p-2 border border-slate-100 rounded block leading-relaxed">${esc(desc)}</span>
+            </div>
+          </div>
+          
+          <div class="mt-4 p-3 border border-blue-100 rounded-lg bg-blue-50/40 text-blue-800 font-semibold text-[11px] leading-relaxed flex gap-2">
+            <i data-lucide="shield-check" class="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5"></i>
+            <span>Nhật ký bảo mật được mã hóa và ký số bảo vệ tự động bởi hệ thống. Bản ghi này chỉ đọc, không thể chỉnh sửa hoặc xóa bỏ.</span>
+          </div>
+        </div>
+      `;
+    }
+  }
+  if (currentModule === 'procedure-admin') {
+    if (state.modalType === 'procedure-download') {
+      const selectedId = state.selectedProcedureCode || 'TTHC-0001';
+      const row = procedureRows.find(r => r[0] === selectedId) || procedureRows[0];
+      const code = row[0];
+      const name = row[1];
+      const file = row[5];
+      
+      return `
+        <!-- Download Modal Content -->
+        <div class="form-section">
+          <div class="form-section-title">
+            <i data-lucide="download" class="h-4 w-4 text-blue-600"></i>Tải tài liệu thủ tục hành chính
+          </div>
+          <div class="p-4 border border-blue-100 rounded-lg bg-blue-50/50 flex gap-3.5">
+            <div class="grid h-10 w-10 place-items-center rounded-full bg-blue-100 text-blue-700 flex-shrink-0">
+              <i data-lucide="file-text" class="h-5 w-5"></i>
+            </div>
+            <div class="text-xs font-semibold text-slate-700">
+              <h4 class="text-[13px] font-bold text-slate-900 mb-1">Xác nhận tải tài liệu</h4>
+              <p class="mb-2 text-slate-500 font-medium">Bạn có chắc chắn muốn tải tài liệu hướng dẫn và biểu mẫu đính kèm cho thủ tục này không?</p>
+              <div class="grid grid-cols-2 gap-y-1.5 pt-1.5 border-t border-blue-100/60">
+                <div>
+                  <span class="text-slate-400 block font-bold text-[10px]">MÃ THỦ TỤC</span>
+                  <span class="text-slate-800 font-bold font-mono">${esc(code)}</span>
+                </div>
+                <div>
+                  <span class="text-slate-400 block font-bold text-[10px]">TÊN TỆP ĐÍNH KÈM</span>
+                  <span class="text-slate-800 font-bold">${esc(file)}</span>
+                </div>
+                <div class="col-span-2 mt-0.5">
+                  <span class="text-slate-400 block font-bold text-[10px]">THỦ TỤC</span>
+                  <span class="text-slate-800 font-bold line-clamp-1">${esc(name)}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mt-4">
+            <label class="inline-flex items-center gap-2 text-xs font-semibold text-slate-700 cursor-pointer">
+              <input type="checkbox" id="openAfterDownload" checked class="rounded border-slate-300 text-[#c50000] focus:ring-[#c50000]" />
+              <span>Tự động mở tệp sau khi tải xuống hoàn tất</span>
+            </label>
+          </div>
+        </div>
+      `;
+    }
+
+    if (state.modalType === 'procedure-suspend') {
+      const selectedId = state.selectedProcedureCode || 'TTHC-0001';
+      const row = procedureRows.find(r => r[0] === selectedId) || procedureRows[0];
+      const code = row[0];
+      const name = row[1];
+      const domain = row[2];
+      
+      return `
+        <!-- Suspend Modal Content -->
+        <div class="form-section">
+          <div class="form-section-title">
+            <i data-lucide="ban" class="h-4 w-4 text-[#c50000]"></i>Ngưng hiệu lực thủ tục
+          </div>
+          <div class="p-4 border border-amber-100 rounded-lg bg-amber-50/50 flex gap-3.5 mb-4">
+            <div class="grid h-10 w-10 place-items-center rounded-full bg-amber-100 text-amber-700 flex-shrink-0">
+              <i data-lucide="triangle-alert" class="h-5 w-5"></i>
+            </div>
+            <div class="text-xs font-semibold text-slate-700">
+              <h4 class="text-[13px] font-bold text-slate-900 mb-1">Cảnh báo ngưng hiệu lực</h4>
+              <p class="text-slate-500 font-medium leading-relaxed">Khi ngưng hiệu lực, trạng thái thủ tục sẽ chuyển sang <strong class="text-red-600">Hết hiệu lực</strong>. Các cơ sở kinh doanh sẽ <strong>không thể tìm kiếm hoặc nộp hồ sơ trực tuyến</strong> theo thủ tục này nữa.</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-y-2.5 gap-x-4 text-xs font-semibold text-slate-700 mb-4 bg-slate-50 p-3 rounded-lg border border-slate-100">
+            <div>
+              <span class="text-slate-400 block font-bold text-[11px] mb-0.5">MÃ THỦ TỤC</span>
+              <span class="text-slate-800 font-bold font-mono">${esc(code)}</span>
+            </div>
+            <div>
+              <span class="text-slate-400 block font-bold text-[11px] mb-0.5">LĨNH VỰC</span>
+              <span class="text-slate-800 font-bold">${esc(domain)}</span>
+            </div>
+            <div class="col-span-2">
+              <span class="text-slate-400 block font-bold text-[11px] mb-0.5">TÊN THỦ TỤC</span>
+              <span class="text-slate-800 font-bold">${esc(name)}</span>
+            </div>
+          </div>
+
+          <div>
+            <label class="block">
+              <span class="form-label">Lý do ngưng hiệu lực *</span>
+              <textarea id="suspendReason" class="field textarea-field h-20" placeholder="Nhập lý do cụ thể...">Quyết định số 124/QĐ-PC06 về việc thay thế/bổ sung thủ tục hành chính mới của Công an tỉnh.</textarea>
+            </label>
+          </div>
+        </div>
+      `;
+    }
+
+    if (state.modalType === 'procedure-delete') {
+      const selectedId = state.selectedProcedureCode || 'TTHC-0001';
+      const row = procedureRows.find(r => r[0] === selectedId) || procedureRows[0];
+      const code = row[0];
+      const name = row[1];
+      
+      return `
+        <!-- Delete Modal Content -->
+        <div class="form-section">
+          <div class="form-section-title">
+            <i data-lucide="trash-2" class="h-4 w-4 text-[#c50000]"></i>Xóa thủ tục hành chính
+          </div>
+          <div class="p-4 border border-red-100 rounded-lg bg-red-50/50 flex gap-3.5 mb-4">
+            <div class="grid h-10 w-10 place-items-center rounded-full bg-red-100 text-red-700 flex-shrink-0">
+              <i data-lucide="trash-2" class="h-5 w-5"></i>
+            </div>
+            <div class="text-xs font-semibold text-slate-700">
+              <h4 class="text-[13px] font-bold text-red-900 mb-1">Cảnh báo xóa dữ liệu</h4>
+              <p class="text-red-700 font-medium leading-relaxed">Hành động này sẽ thực hiện <strong>xóa mềm</strong> thủ tục hành chính khỏi hệ thống. Bản ghi sẽ được ghi nhận vào nhật ký hệ thống và chỉ có thể khôi phục bởi Quản trị viên hệ thống.</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 gap-y-2.5 text-xs font-semibold text-slate-700 mb-4 bg-slate-50 p-3 rounded-lg border border-slate-100">
+            <div>
+              <span class="text-slate-400 block font-bold text-[11px] mb-0.5">THỦ TỤC CẦN XÓA</span>
+              <span class="text-slate-900 font-bold">${esc(name)} <span class="font-mono text-[#c50000] ml-1">(${esc(code)})</span></span>
+            </div>
+          </div>
+
+          <div>
+            <label class="block">
+              <span class="form-label">Lý do xóa thủ tục *</span>
+              <textarea id="deleteReason" class="field textarea-field h-20" placeholder="Nhập lý do xóa...">Điều chỉnh danh mục thủ tục hành chính theo Quyết định mới của cơ quan Công an cấp trên.</textarea>
+            </label>
+          </div>
+        </div>
+      `;
+    }
+  }
   if (currentModule === 'notifications-center') {
     if (state.selectedNotification) {
       const n = state.selectedNotification;
@@ -1151,10 +1470,193 @@ function modalBodyTemplate() {
     }
   }
   if (currentModule === 'accounts') {
-    const accountConfig = moduleConfigs['account-form'];
-    return `<div class="form-section"><div class="form-section-title"><i data-lucide="user-plus" class="h-4 w-4 text-[#c50000]"></i>Thêm / sửa tài khoản</div>
-      <div class="panel-subtitle mb-3">Màn này được refactor thành modal trong danh sách tài khoản, không còn route HTML riêng.</div>
-    </div>${accountConfig.formSections.map((sec) => `<div class="form-section"><div class="form-section-title"><i data-lucide="${esc(sec.icon)}" class="h-4 w-4 text-[#c50000]"></i>${esc(sec.title)}</div><div class="${sec.mode === 'textarea' ? '' : 'form-row'}">${sec.fields.map((field) => fieldTemplate(field, sec.mode)).join('')}</div></div>`).join('')}`;
+    if (state.modalType === 'account-lock') {
+      const rowId = state.selectedAccountRow;
+      const row = accountRows[rowId] || accountRows[0];
+      const name = row[0];
+      const username = row[1];
+      const role = row[2];
+      
+      return `
+        <!-- Lock Account Modal Content -->
+        <div class="form-section">
+          <div class="form-section-title">
+            <i data-lucide="lock" class="h-4 w-4 text-[#c50000]"></i>Tạm khóa tài khoản người dùng
+          </div>
+          <div class="p-4 border border-red-100 rounded-lg bg-red-50/50 flex gap-3.5 mb-4">
+            <div class="grid h-10 w-10 place-items-center rounded-full bg-red-100 text-red-700 flex-shrink-0">
+              <i data-lucide="triangle-alert" class="h-5 w-5"></i>
+            </div>
+            <div class="text-xs font-semibold text-slate-700">
+              <h4 class="text-[13px] font-bold text-red-900 mb-1">Xác nhận tạm khóa tài khoản</h4>
+              <p class="text-red-700 font-medium leading-relaxed">Tài khoản này sẽ bị khóa tạm thời. Người dùng sẽ không thể đăng nhập hoặc thao tác trên hệ thống cho đến khi được mở khóa trở lại.</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-y-2.5 gap-x-4 text-xs font-semibold text-slate-700 mb-4 bg-slate-50 p-3 rounded-lg border border-slate-100">
+            <div>
+              <span class="text-slate-400 block font-bold text-[11px] mb-0.5">HỌ VÀ TÊN</span>
+              <span class="text-slate-800 font-bold">${esc(name)}</span>
+            </div>
+            <div>
+              <span class="text-slate-400 block font-bold text-[11px] mb-0.5">TÊN ĐĂNG NHẬP</span>
+              <span class="text-slate-800 font-bold font-mono">${esc(username)}</span>
+            </div>
+            <div class="col-span-2">
+              <span class="text-slate-400 block font-bold text-[11px] mb-0.5">VAI TRÒ HỆ THỐNG</span>
+              <span class="text-slate-800 font-bold">${esc(role)}</span>
+            </div>
+          </div>
+
+          <div>
+            <label class="block">
+              <span class="form-label">Lý do khóa tài khoản *</span>
+              <textarea id="lockReason" class="field textarea-field h-20" placeholder="Nhập lý do khóa...">Tạm khóa tài khoản cán bộ để rà soát bảo mật định kỳ.</textarea>
+            </label>
+          </div>
+        </div>
+      `;
+    }
+
+    if (state.modalType === 'account-unlock') {
+      const rowId = state.selectedAccountRow;
+      const row = accountRows[rowId] || accountRows[0];
+      const name = row[0];
+      const username = row[1];
+      
+      return `
+        <!-- Unlock Account Modal Content -->
+        <div class="form-section">
+          <div class="form-section-title">
+            <i data-lucide="unlock" class="h-4 w-4 text-green-600"></i>Kích hoạt lại tài khoản
+          </div>
+          <div class="p-4 border border-green-100 rounded-lg bg-green-50/50 flex gap-3.5 mb-4">
+            <div class="grid h-10 w-10 place-items-center rounded-full bg-green-100 text-green-700 flex-shrink-0">
+              <i data-lucide="check" class="h-5 w-5"></i>
+            </div>
+            <div class="text-xs font-semibold text-slate-700">
+              <h4 class="text-[13px] font-bold text-green-900 mb-1">Mở khóa tài khoản</h4>
+              <p class="text-green-700 font-medium leading-relaxed">Khôi phục quyền truy cập hệ thống cho người dùng này. Một email thông báo tự động sẽ được gửi tới người dùng.</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-y-2.5 gap-x-4 text-xs font-semibold text-slate-700 bg-slate-50 p-3 rounded-lg border border-slate-100">
+            <div>
+              <span class="text-slate-400 block font-bold text-[11px] mb-0.5">HỌ VÀ TÊN</span>
+              <span class="text-slate-800 font-bold">${esc(name)}</span>
+            </div>
+            <div>
+              <span class="text-slate-400 block font-bold text-[11px] mb-0.5">TÊN ĐĂNG NHẬP</span>
+              <span class="text-slate-800 font-bold font-mono">${esc(username)}</span>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Add / Edit Account Form
+    const isEdit = state.selectedAccountRow !== null && state.selectedAccountRow !== undefined;
+    let name = '', username = '', email = '', phone = '', unit = 'Phòng PC06', role = 'Cán bộ PC06', area = 'Toàn tỉnh';
+    
+    if (isEdit) {
+      const rowId = state.selectedAccountRow;
+      const row = accountRows[rowId] || accountRows[0];
+      name = row[0];
+      username = row[1];
+      role = row[2];
+      unit = row[3];
+      area = row[4];
+      phone = row[5];
+      email = username + '@ninhbinh.gov.vn';
+    }
+
+    const rolesList = ['Quản trị hệ thống', 'Lãnh đạo đơn vị', 'Cán bộ PC06', 'Công an xã/phường', 'Chủ cơ sở kinh doanh'];
+    const unitsList = ['Phòng PC06', 'CA P. Đông Thành', 'CA P. Nam Thành', 'CA P. Tân Thành', 'CA P. Nam Bình', 'CA P. Phúc Thành', 'CA P. Vân Giang', 'Đội hồ sơ', 'Đội địa bàn'];
+    const areasList = ['Toàn tỉnh', 'P. Đông Thành', 'P. Nam Thành', 'P. Tân Thành', 'P. Nam Bình', 'P. Phúc Thành', 'P. Vân Giang'];
+
+    return `
+      <div class="form-section">
+        <div class="form-section-title">
+          <i data-lucide="${isEdit ? 'pencil' : 'user-plus'}" class="h-4 w-4 text-[#c50000]"></i>${isEdit ? 'Cập nhật tài khoản người dùng' : 'Tạo tài khoản người dùng mới'}
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <label class="block col-span-2 md:col-span-1">
+            <span class="form-label">Họ và tên *</span>
+            <span class="field-wrap block">
+              <input id="accName" class="field" value="${esc(name)}" placeholder="VD: Nguyễn Văn A" required />
+            </span>
+          </label>
+
+          <label class="block col-span-2 md:col-span-1">
+            <span class="form-label">Tên đăng nhập *</span>
+            <span class="field-wrap block">
+              <input id="accUser" class="field ${isEdit ? 'bg-slate-50 font-mono text-slate-500' : ''}" value="${esc(username)}" placeholder="VD: nva.pc06" ${isEdit ? 'disabled' : ''} required />
+            </span>
+          </label>
+
+          <label class="block col-span-2 md:col-span-1">
+            <span class="form-label">Email công vụ *</span>
+            <span class="field-wrap block">
+              <input id="accEmail" class="field" type="email" value="${esc(email)}" placeholder="VD: nva.pc06@ninhbinh.gov.vn" required />
+            </span>
+          </label>
+
+          <label class="block col-span-2 md:col-span-1">
+            <span class="form-label">Số điện thoại *</span>
+            <span class="field-wrap block">
+              <input id="accPhone" class="field" value="${esc(phone)}" placeholder="VD: 0912 345 678" required />
+            </span>
+          </label>
+
+          <label class="block col-span-2 md:col-span-1">
+            <span class="form-label">Đơn vị công tác *</span>
+            <span class="field-wrap block">
+              <select id="accUnit" class="field appearance-none font-medium">
+                ${unitsList.map(u => `<option ${u === unit ? 'selected' : ''}>${esc(u)}</option>`).join('')}
+              </select>
+              <i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>
+            </span>
+          </label>
+
+          <label class="block col-span-2 md:col-span-1">
+            <span class="form-label">Vai trò hệ thống *</span>
+            <span class="field-wrap block">
+              <select id="accRole" class="field appearance-none font-medium">
+                ${rolesList.map(r => `<option ${r === role ? 'selected' : ''}>${esc(r)}</option>`).join('')}
+              </select>
+              <i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>
+            </span>
+          </label>
+
+          <label class="block col-span-2">
+            <span class="form-label">Địa bàn phụ trách *</span>
+            <span class="field-wrap block">
+              <select id="accArea" class="field appearance-none font-medium">
+                ${areasList.map(a => `<option ${a === area ? 'selected' : ''}>${esc(a)}</option>`).join('')}
+              </select>
+              <i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>
+            </span>
+          </label>
+        </div>
+
+        ${!isEdit ? `
+          <div class="mt-4 border-t border-slate-100 pt-4">
+            <span class="form-label mb-2 block">Mật khẩu khởi tạo</span>
+            <div class="flex gap-2">
+              <input id="accPassword" class="field font-mono bg-slate-50" value="PC06@2026!Temp" />
+              <button id="btnGeneratePassword" class="inline-flex items-center gap-1.5 rounded-md border border-[#d9dfe8] bg-white px-4 text-xs font-semibold text-[#202833] hover:bg-[#f8fafc] transition" type="button">
+                <i data-lucide="key" class="w-3.5 h-3.5"></i> Tạo ngẫu nhiên
+              </button>
+            </div>
+            <label class="inline-flex items-center gap-2 text-xs font-semibold text-slate-600 mt-2.5 cursor-pointer">
+              <input type="checkbox" id="accForceChange" checked class="rounded border-slate-300 text-[#c50000] focus:ring-[#c50000]" />
+              <span>Yêu cầu thay đổi mật khẩu trong lần đầu đăng nhập</span>
+            </label>
+          </div>
+        ` : ''}
+      </div>
+    `;
   }
 
   if (currentModule === 'roles') {
@@ -1320,6 +1822,65 @@ function modalBodyTemplate() {
               <label class="inline-flex items-center gap-2 text-xs font-semibold text-slate-700 cursor-pointer">
                 <input type="checkbox" id="bulkSendZalo" checked class="rounded border-slate-300 text-[#c50000] focus:ring-[#c50000]" />
                 <span>Gửi thông báo Zalo OA</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+    if (state.modalType === 'approve') {
+      const selectedId = state.selectedDeclarationId || 'KB-2026-0188';
+      const row = declarationRows.find(r => r[0] === selectedId) || declarationRows[0];
+      const code = row[0];
+      const type = row[1];
+      const businessName = row[2];
+      const summary = row[4];
+      
+      return `
+        <!-- Thông tin hồ sơ -->
+        <div class="form-section">
+          <div class="form-section-title">
+            <i data-lucide="info" class="h-4 w-4 text-[#c50000]"></i>Thông tin khai báo phê duyệt
+          </div>
+          <div class="grid grid-cols-2 gap-y-2.5 gap-x-4 text-xs font-semibold text-slate-700">
+            <div>
+              <span class="text-slate-400 block font-bold text-[11px] mb-0.5">MÃ KHAI BÁO</span>
+              <span class="text-slate-800 font-bold font-mono text-[13px] text-[#c50000]">${esc(code)}</span>
+            </div>
+            <div>
+              <span class="text-slate-400 block font-bold text-[11px] mb-0.5">LOẠI HÌNH</span>
+              <span class="text-slate-800 font-bold">${esc(type)}</span>
+            </div>
+            <div class="col-span-2">
+              <span class="text-slate-400 block font-bold text-[11px] mb-0.5">CƠ SỞ KINH DOANH</span>
+              <span class="text-slate-800 font-bold">${esc(businessName)}</span>
+            </div>
+            <div class="col-span-2">
+              <span class="text-slate-400 block font-bold text-[11px] mb-0.5">TÓM TẮT NỘI DUNG</span>
+              <span class="text-slate-700 font-medium">${esc(summary)}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Thông tin phê duyệt -->
+        <div class="form-section">
+          <div class="form-section-title">
+            <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>Ý kiến phê duyệt & Tiếp nhận
+          </div>
+          <div class="space-y-3">
+            <label class="block">
+              <span class="form-label">Ý kiến cán bộ phê duyệt *</span>
+              <textarea id="approveComment" class="field textarea-field h-24" placeholder="Nhập ý kiến hoặc ghi chú phê duyệt...">Đã đối soát thông tin khai báo đầy đủ và hợp lệ. Đồng ý phê duyệt tiếp nhận hồ sơ khai báo của cơ sở.</textarea>
+            </label>
+            
+            <div class="flex flex-wrap gap-4 pt-1">
+              <label class="inline-flex items-center gap-2 text-xs font-semibold text-slate-700 cursor-pointer">
+                <input type="checkbox" id="approveSendSMS" checked class="rounded border-slate-300 text-[#c50000] focus:ring-[#c50000]" />
+                <span>Gửi SMS thông báo cho cơ sở</span>
+              </label>
+              <label class="inline-flex items-center gap-2 text-xs font-semibold text-slate-700 cursor-pointer">
+                <input type="checkbox" id="approveSendZalo" checked class="rounded border-slate-300 text-[#c50000] focus:ring-[#c50000]" />
+                <span>Gửi thông báo qua Zalo OA</span>
               </label>
             </div>
           </div>
@@ -1744,6 +2305,83 @@ function modalBodyTemplate() {
 }
 
 function modalFooterTemplate() {
+  if (currentModule === 'roles') {
+    if (state.modalType === 'role-lock') {
+      return `
+        <button class="btn btn-secondary mr-auto" type="button" data-close-modal>Hủy bỏ</button>
+        <button class="btn bg-red-600 hover:bg-red-700 text-white font-bold px-4 py-2 rounded-md shadow-sm flex items-center gap-1.5 transition text-xs" type="button" data-confirm-role-lock>
+          <i data-lucide="ban" class="w-4 h-4"></i> Xác nhận khóa
+        </button>
+      `;
+    }
+    if (state.modalType === 'role-unlock') {
+      return `
+        <button class="btn btn-secondary mr-auto" type="button" data-close-modal>Hủy bỏ</button>
+        <button class="btn bg-green-600 hover:bg-green-700 text-white font-bold px-4 py-2 rounded-md shadow-sm flex items-center gap-1.5 transition text-xs" type="button" data-confirm-role-unlock>
+          <i data-lucide="shield-check" class="w-4 h-4"></i> Kích hoạt vai trò
+        </button>
+      `;
+    }
+  }
+
+  if (currentModule === 'activity-log') {
+    if (state.modalType === 'log-detail') {
+      return `
+        <button class="btn btn-secondary" type="button" data-close-modal>Đóng</button>
+      `;
+    }
+  }
+
+  if (currentModule === 'accounts') {
+    if (state.modalType === 'account-lock') {
+      return `
+        <button class="btn btn-secondary mr-auto" type="button" data-close-modal>Hủy bỏ</button>
+        <button class="btn bg-red-600 hover:bg-red-700 text-white font-bold px-4 py-2 rounded-md shadow-sm flex items-center gap-1.5 transition text-xs" type="button" data-confirm-account-lock>
+          <i data-lucide="lock" class="w-4 h-4"></i> Xác nhận tạm khóa
+        </button>
+      `;
+    }
+    if (state.modalType === 'account-unlock') {
+      return `
+        <button class="btn btn-secondary mr-auto" type="button" data-close-modal>Hủy bỏ</button>
+        <button class="btn bg-green-600 hover:bg-green-700 text-white font-bold px-4 py-2 rounded-md shadow-sm flex items-center gap-1.5 transition text-xs" type="button" data-confirm-account-unlock>
+          <i data-lucide="unlock" class="w-4 h-4"></i> Mở khóa tài khoản
+        </button>
+      `;
+    }
+    return `
+      <button class="btn btn-secondary mr-auto" type="button" data-close-modal>Hủy bỏ</button>
+      <button class="btn bg-[#c50000] hover:bg-[#ad0000] text-white font-bold px-5 py-2 rounded-md shadow-sm flex items-center gap-1.5 transition text-xs" type="button" data-confirm-account-save>
+        <i data-lucide="save" class="w-4 h-4"></i> Lưu tài khoản
+      </button>
+    `;
+  }
+  if (currentModule === 'procedure-admin') {
+    if (state.modalType === 'procedure-download') {
+      return `
+        <button class="btn btn-secondary mr-auto" type="button" data-close-modal>Hủy bỏ</button>
+        <button class="btn bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded-md shadow-sm flex items-center gap-1.5 transition text-xs" type="button" data-confirm-procedure-download>
+          <i data-lucide="download" class="w-4 h-4"></i> Tải xuống PDF
+        </button>
+      `;
+    }
+    if (state.modalType === 'procedure-suspend') {
+      return `
+        <button class="btn btn-secondary mr-auto" type="button" data-close-modal>Hủy bỏ</button>
+        <button class="btn bg-orange-500 hover:bg-orange-600 text-white font-bold px-4 py-2 rounded-md shadow-sm flex items-center gap-1.5 transition text-xs" type="button" data-confirm-procedure-suspend>
+          <i data-lucide="ban" class="w-4 h-4"></i> Ngưng hiệu lực
+        </button>
+      `;
+    }
+    if (state.modalType === 'procedure-delete') {
+      return `
+        <button class="btn btn-secondary mr-auto" type="button" data-close-modal>Hủy bỏ</button>
+        <button class="btn bg-red-600 hover:bg-red-700 text-white font-bold px-4 py-2 rounded-md shadow-sm flex items-center gap-1.5 transition text-xs" type="button" data-confirm-procedure-delete>
+          <i data-lucide="trash-2" class="w-4 h-4"></i> Xác nhận xóa
+        </button>
+      `;
+    }
+  }
   if (currentModule === 'notifications-center') {
     if (state.selectedNotification) {
       return `<button class="btn btn-secondary" type="button" data-close-modal>Đóng</button>`;
@@ -1757,6 +2395,16 @@ function modalFooterTemplate() {
         <button class="btn btn-secondary mr-auto" type="button" data-close-modal>Hủy bỏ</button>
         <button class="btn bg-green-600 hover:bg-green-700 text-white font-bold px-4 py-2 rounded-md shadow-sm flex items-center gap-1.5 transition text-xs" type="button" data-confirm-bulk-approve>
           <i data-lucide="check-circle" class="w-4 h-4"></i> Phê duyệt hàng loạt
+        </button>
+      `;
+    }
+    if (state.modalType === 'approve') {
+      return `
+        <button class="btn btn-secondary mr-auto flex items-center gap-1.5" type="button" id="btnBackToDetail">
+          <i data-lucide="arrow-left" class="w-4 h-4"></i> Quay lại
+        </button>
+        <button class="btn bg-green-600 hover:bg-green-700 text-white font-bold px-4 py-2 rounded-md shadow-sm flex items-center gap-1.5 transition text-xs" type="button" data-confirm-approve>
+          <i data-lucide="check-circle" class="w-4 h-4"></i> Xác nhận phê duyệt
         </button>
       `;
     }
@@ -1790,10 +2438,12 @@ function modalFooterTemplate() {
 }
 
 function modalTemplate() {
-  const modalTitle = currentModule === 'accounts' ? 'Thêm / sửa tài khoản'
-    : currentModule === 'declaration-admin' ? (state.modalType === 'bulk-approve' ? 'Phê duyệt hàng loạt khai báo' : 'Chi tiết khai báo')
-      : currentModule === 'roles' ? (state.selectedRoleId !== undefined && state.selectedRoleId !== null ? 'Chỉnh sửa vai trò' : 'Thêm vai trò mới')
-        : config.action;
+  const modalTitle = currentModule === 'accounts' ? (state.modalType === 'account-lock' ? 'Tạm khóa tài khoản' : state.modalType === 'account-unlock' ? 'Kích hoạt lại tài khoản' : state.selectedAccountRow !== null && state.selectedAccountRow !== undefined ? 'Cập nhật tài khoản người dùng' : 'Thêm tài khoản mới')
+    : currentModule === 'declaration-admin' ? (state.modalType === 'bulk-approve' ? 'Phê duyệt hàng loạt khai báo' : state.modalType === 'approve' ? 'Phê duyệt hồ sơ khai báo' : 'Chi tiết khai báo')
+    : currentModule === 'procedure-admin' ? (state.modalType === 'procedure-download' ? 'Tải xuống tài liệu thủ tục' : state.modalType === 'procedure-suspend' ? 'Xác nhận ngưng hiệu lực thủ tục' : state.modalType === 'procedure-delete' ? 'Xác nhận xóa thủ tục' : 'Chi tiết thủ tục')
+    : currentModule === 'roles' ? (state.modalType === 'role-lock' ? 'Khóa vai trò hệ thống' : state.modalType === 'role-unlock' ? 'Mở khóa vai trò hệ thống' : state.selectedRoleId !== undefined && state.selectedRoleId !== null ? 'Chỉnh sửa vai trò' : 'Thêm vai trò mới')
+    : currentModule === 'activity-log' ? 'Chi tiết nhật ký hoạt động'
+    : config.action;
   return `<div id="moduleModal" class="modal-backdrop" hidden>
     <section class="module-modal" role="dialog" aria-modal="true" aria-labelledby="moduleModalTitle">
       <div class="module-modal-head"><h2 id="moduleModalTitle" class="module-modal-title">${esc(modalTitle)}</h2><button class="close-icon-btn" type="button" data-close-modal aria-label="Đóng"><i data-lucide="x" class="h-5 w-5"></i></button></div>
@@ -1888,6 +2538,10 @@ function bindInteractions() {
     const sort = event.target.closest('[data-sort]');
     const toggleCheck = event.target.closest('[data-toggle-check]');
     const declAction = event.target.closest('[data-declaration-action]');
+    const procAction = event.target.closest('[data-procedure-action]');
+    const accAction = event.target.closest('[data-account-action]');
+    const roleAction = event.target.closest('[data-role-action]');
+    const logAction = event.target.closest('[data-log-action]');
     const addRoleModal = event.target.closest('[data-add-role-modal]');
     const editRole = event.target.closest('[data-edit-role]');
     const saveRoleBtn = event.target.closest('[data-save-role-btn]');
@@ -1940,7 +2594,43 @@ function bindInteractions() {
         if (currentModule === 'declaration-admin') {
           const modalTitle = document.querySelector('#moduleModalTitle');
           if (modalTitle) {
-            modalTitle.textContent = state.modalType === 'bulk-approve' ? 'Phê duyệt hàng loạt khai báo' : 'Chi tiết khai báo';
+            modalTitle.textContent = state.modalType === 'bulk-approve' ? 'Phê duyệt hàng loạt khai báo' : state.modalType === 'approve' ? 'Phê duyệt hồ sơ khai báo' : 'Chi tiết khai báo';
+          }
+        }
+        if (currentModule === 'accounts') {
+          const modalTitle = document.querySelector('#moduleModalTitle');
+          if (modalTitle) {
+            let title = 'Tài khoản người dùng';
+            if (state.modalType === 'account-lock') title = 'Tạm khóa tài khoản';
+            else if (state.modalType === 'account-unlock') title = 'Kích hoạt lại tài khoản';
+            else if (state.modalType === 'account-edit') title = 'Cập nhật tài khoản người dùng';
+            else if (state.modalType === 'account-add') title = 'Thêm tài khoản mới';
+            modalTitle.textContent = title;
+          }
+        }
+        if (currentModule === 'procedure-admin') {
+          const modalTitle = document.querySelector('#moduleModalTitle');
+          if (modalTitle) {
+            let title = 'Chi tiết thủ tục';
+            if (state.modalType === 'procedure-download') title = 'Tải xuống tài liệu thủ tục';
+            else if (state.modalType === 'procedure-suspend') title = 'Xác nhận ngưng hiệu lực thủ tục';
+            else if (state.modalType === 'procedure-delete') title = 'Xác nhận xóa thủ tục';
+            modalTitle.textContent = title;
+          }
+        }
+        if (currentModule === 'roles') {
+          const modalTitle = document.querySelector('#moduleModalTitle');
+          if (modalTitle) {
+            let title = 'Tài vai trò';
+            if (state.modalType === 'role-lock') title = 'Khóa vai trò hệ thống';
+            else if (state.modalType === 'role-unlock') title = 'Mở khóa vai trò hệ thống';
+            modalTitle.textContent = title;
+          }
+        }
+        if (currentModule === 'activity-log') {
+          const modalTitle = document.querySelector('#moduleModalTitle');
+          if (modalTitle) {
+            modalTitle.textContent = 'Chi tiết nhật ký hoạt động';
           }
         }
       }
@@ -2044,6 +2734,121 @@ function bindInteractions() {
       });
     }
 
+    if (roleAction) {
+      const actionType = roleAction.dataset.roleAction;
+      const rowIdStr = roleAction.dataset.roleRow;
+      const rowId = rowIdStr !== undefined && rowIdStr !== '' ? Number(rowIdStr) : null;
+      
+      state.selectedRoleId = rowId;
+      state.modalType = 'role-' + actionType;
+      
+      const modalBody = document.querySelector('.module-modal-body');
+      if (modalBody) modalBody.innerHTML = modalBodyTemplate();
+      const modalFoot = document.querySelector('.module-modal-foot');
+      if (modalFoot) modalFoot.innerHTML = modalFooterTemplate();
+      
+      const modalTitle = document.querySelector('#moduleModalTitle');
+      if (modalTitle) {
+        modalTitle.textContent = state.modalType === 'role-lock' ? 'Khóa vai trò hệ thống' : 'Mở khóa vai trò hệ thống';
+      }
+      
+      modal.hidden = false;
+      lucide.createIcons();
+      return;
+    }
+
+    if (logAction) {
+      const actionType = logAction.dataset.logAction;
+      const rowIdStr = logAction.dataset.logRow;
+      const rowId = rowIdStr !== undefined && rowIdStr !== '' ? Number(rowIdStr) : null;
+      
+      state.selectedLogRow = rowId;
+      state.modalType = 'log-' + actionType;
+      
+      const modalBody = document.querySelector('.module-modal-body');
+      if (modalBody) modalBody.innerHTML = modalBodyTemplate();
+      const modalFoot = document.querySelector('.module-modal-foot');
+      if (modalFoot) modalFoot.innerHTML = modalFooterTemplate();
+      
+      const modalTitle = document.querySelector('#moduleModalTitle');
+      if (modalTitle) {
+        modalTitle.textContent = 'Chi tiết nhật ký hoạt động';
+      }
+      
+      modal.hidden = false;
+      lucide.createIcons();
+      return;
+    }
+
+    if (accAction) {
+      const actionType = accAction.dataset.accountAction;
+      const rowIdStr = accAction.dataset.accountRow;
+      const rowId = rowIdStr !== undefined && rowIdStr !== '' ? Number(rowIdStr) : null;
+      
+      state.selectedAccountRow = rowId;
+      state.modalType = 'account-' + actionType;
+      
+      const modalBody = document.querySelector('.module-modal-body');
+      if (modalBody) modalBody.innerHTML = modalBodyTemplate();
+      const modalFoot = document.querySelector('.module-modal-foot');
+      if (modalFoot) modalFoot.innerHTML = modalFooterTemplate();
+      
+      const modalTitle = document.querySelector('#moduleModalTitle');
+      if (modalTitle) {
+        let title = 'Tài khoản người dùng';
+        if (state.modalType === 'account-lock') title = 'Tạm khóa tài khoản';
+        else if (state.modalType === 'account-unlock') title = 'Kích hoạt lại tài khoản';
+        else if (state.modalType === 'account-edit') title = 'Cập nhật tài khoản người dùng';
+        else if (state.modalType === 'account-add') title = 'Thêm tài khoản mới';
+        modalTitle.textContent = title;
+      }
+      
+      modal.hidden = false;
+      
+      // Auto-generate password click handler
+      const btnGen = document.getElementById('btnGeneratePassword');
+      if (btnGen) {
+        btnGen.addEventListener('click', () => {
+          const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+';
+          let pass = '';
+          for (let i = 0; i < 12; i++) {
+            pass += chars.charAt(Math.floor(Math.random() * chars.length));
+          }
+          const pwdInput = document.getElementById('accPassword');
+          if (pwdInput) pwdInput.value = pass;
+        });
+      }
+      
+      lucide.createIcons();
+      return;
+    }
+
+    if (procAction) {
+      const actionType = procAction.dataset.procedureAction;
+      const code = procAction.dataset.procedureCode;
+      
+      state.selectedProcedureCode = code;
+      state.modalType = 'procedure-' + actionType;
+      
+      const modalBody = document.querySelector('.module-modal-body');
+      if (modalBody) modalBody.innerHTML = modalBodyTemplate();
+      const modalFoot = document.querySelector('.module-modal-foot');
+      if (modalFoot) modalFoot.innerHTML = modalFooterTemplate();
+      
+      const modalTitle = document.querySelector('#moduleModalTitle');
+      if (modalTitle) {
+        let title = 'Chi tiết thủ tục';
+        if (state.modalType === 'procedure-download') title = 'Tải xuống tài liệu thủ tục';
+        else if (state.modalType === 'procedure-suspend') title = 'Xác nhận ngưng hiệu lực thủ tục';
+        else if (state.modalType === 'procedure-delete') title = 'Xác nhận xóa thủ tục';
+        modalTitle.textContent = title;
+      }
+      
+      modal.hidden = false;
+      lucide.createIcons();
+      return;
+    }
+
     if (declAction) {
       const actionType = declAction.dataset.declarationAction;
       
@@ -2059,6 +2864,18 @@ function bindInteractions() {
         state.selectedDeclarationId = declId;
       }
       
+      if (actionType === 'approve') {
+        state.modalType = 'approve';
+        const modalBody = document.querySelector('.module-modal-body');
+        if (modalBody) modalBody.innerHTML = modalBodyTemplate();
+        const modalFoot = document.querySelector('.module-modal-foot');
+        if (modalFoot) modalFoot.innerHTML = modalFooterTemplate();
+        const modalTitle = document.querySelector('#moduleModalTitle');
+        if (modalTitle) modalTitle.textContent = 'Phê duyệt hồ sơ khai báo';
+        modal.hidden = false;
+        lucide.createIcons();
+        return;
+      }
       if (actionType === 'supplement') {
         state.modalType = 'supplement';
         const modalBody = document.querySelector('.module-modal-body');
@@ -2074,18 +2891,188 @@ function bindInteractions() {
       
       modal.hidden = true;
       let msg = '';
-      if (actionType === 'approve') msg = 'Đã phê duyệt chấp nhận khai báo thành công.';
       if (actionType === 'verify') msg = 'Đã đánh dấu khai báo cần xác minh bổ sung.';
       showToast(msg);
       
       if (declId) {
         const row = declarationRows.find(r => r[0] === declId);
         if (row) {
-          if (actionType === 'approve') row[6] = 'Đã hoàn thành';
           if (actionType === 'verify') row[6] = 'Có cảnh báo';
           renderRows();
         }
       }
+    }
+
+    const confirmAccLock = event.target.closest('[data-confirm-account-lock]');
+    if (confirmAccLock) {
+      const rowId = state.selectedAccountRow;
+      const reasonVal = document.getElementById('lockReason')?.value.trim();
+      if (!reasonVal) {
+        showToast('Vui lòng nhập lý do khóa tài khoản.');
+        return;
+      }
+      
+      if (rowId !== null && accountRows[rowId]) {
+        accountRows[rowId][6] = 'Tạm khóa';
+        renderRows();
+        showToast(`Đã tạm khóa tài khoản ${accountRows[rowId][1]} thành công.`);
+      }
+      modal.hidden = true;
+    }
+
+    const confirmRoleLock = event.target.closest('[data-confirm-role-lock]');
+    if (confirmRoleLock) {
+      const rowId = state.selectedRoleId;
+      const reasonVal = document.getElementById('lockRoleReason')?.value.trim();
+      if (!reasonVal) {
+        showToast('Vui lòng nhập lý do khóa vai trò.');
+        return;
+      }
+      if (rowId !== null && config.rows[rowId]) {
+        config.rows[rowId][5] = 'Tạm dừng';
+        renderRows();
+        showToast(`Đã khóa vai trò ${config.rows[rowId][1]} thành công.`);
+      }
+      modal.hidden = true;
+    }
+
+    const confirmRoleUnlock = event.target.closest('[data-confirm-role-unlock]');
+    if (confirmRoleUnlock) {
+      const rowId = state.selectedRoleId;
+      if (rowId !== null && config.rows[rowId]) {
+        config.rows[rowId][5] = 'Đang hoạt động';
+        renderRows();
+        showToast(`Đã kích hoạt lại vai trò ${config.rows[rowId][1]} thành công.`);
+      }
+      modal.hidden = true;
+    }
+
+    const confirmAccUnlock = event.target.closest('[data-confirm-account-unlock]');
+    if (confirmAccUnlock) {
+      const rowId = state.selectedAccountRow;
+      if (rowId !== null && accountRows[rowId]) {
+        accountRows[rowId][6] = 'Đang hoạt động';
+        renderRows();
+        showToast(`Đã kích hoạt lại tài khoản ${accountRows[rowId][1]} thành công.`);
+      }
+      modal.hidden = true;
+    }
+
+    const confirmAccSave = event.target.closest('[data-confirm-account-save]');
+    if (confirmAccSave) {
+      const nameVal = document.getElementById('accName')?.value.trim();
+      const userVal = document.getElementById('accUser')?.value.trim();
+      const emailVal = document.getElementById('accEmail')?.value.trim();
+      const phoneVal = document.getElementById('accPhone')?.value.trim();
+      const unitVal = document.getElementById('accUnit')?.value;
+      const roleVal = document.getElementById('accRole')?.value;
+      const areaVal = document.getElementById('accArea')?.value;
+      
+      if (!nameVal || !userVal || !emailVal || !phoneVal) {
+        showToast('Vui lòng điền đầy đủ các trường bắt buộc (*).');
+        return;
+      }
+      
+      const rowId = state.selectedAccountRow;
+      if (rowId !== null && rowId !== undefined) {
+        // Edit mode
+        if (accountRows[rowId]) {
+          accountRows[rowId][0] = nameVal;
+          accountRows[rowId][2] = roleVal;
+          accountRows[rowId][3] = unitVal;
+          accountRows[rowId][4] = areaVal;
+          accountRows[rowId][5] = phoneVal;
+          showToast(`Cập nhật tài khoản ${userVal} thành công.`);
+        }
+      } else {
+        // Add mode
+        accountRows.unshift([
+          nameVal,
+          userVal,
+          roleVal,
+          unitVal,
+          areaVal,
+          phoneVal,
+          'Đang hoạt động',
+          'Chưa đăng nhập'
+        ]);
+        showToast(`Tạo tài khoản ${userVal} thành công.`);
+      }
+      
+      modal.hidden = true;
+      renderRows();
+    }
+
+    const confirmProcDownload = event.target.closest('[data-confirm-procedure-download]');
+    if (confirmProcDownload) {
+      const code = state.selectedProcedureCode;
+      const autoOpen = document.getElementById('openAfterDownload')?.checked;
+      modal.hidden = true;
+      showToast(`Đã tải xuống thành công tài liệu cho thủ tục ${code}${autoOpen ? ' và tự động mở file' : ''}.`);
+    }
+
+    const confirmProcSuspend = event.target.closest('[data-confirm-procedure-suspend]');
+    if (confirmProcSuspend) {
+      const code = state.selectedProcedureCode;
+      const reasonVal = document.getElementById('suspendReason')?.value.trim();
+      if (!reasonVal) {
+        showToast('Vui lòng nhập lý do ngưng hiệu lực.');
+        return;
+      }
+      
+      const row = procedureRows.find(r => r[0] === code);
+      if (row) {
+        row[6] = 'Hết hiệu lực';
+        renderRows();
+      }
+      
+      modal.hidden = true;
+      showToast(`Đã ngưng hiệu lực thủ tục ${code} thành công.`);
+    }
+
+    const confirmProcDelete = event.target.closest('[data-confirm-procedure-delete]');
+    if (confirmProcDelete) {
+      const code = state.selectedProcedureCode;
+      const reasonVal = document.getElementById('deleteReason')?.value.trim();
+      if (!reasonVal) {
+        showToast('Vui lòng nhập lý do xóa thủ tục.');
+        return;
+      }
+      
+      const index = procedureRows.findIndex(r => r[0] === code);
+      if (index !== -1) {
+        procedureRows.splice(index, 1);
+        renderRows();
+      }
+      
+      modal.hidden = true;
+      showToast(`Đã xóa thành công thủ tục ${code} khỏi hệ thống.`);
+    }
+
+    const confirmApprove = event.target.closest('[data-confirm-approve]');
+    if (confirmApprove) {
+      const commentVal = document.getElementById('approveComment')?.value.trim();
+      if (!commentVal) {
+        showToast('Vui lòng nhập ý kiến phê duyệt.');
+        return;
+      }
+      
+      const selectedId = state.selectedDeclarationId;
+      const row = declarationRows.find(r => r[0] === selectedId);
+      if (row) {
+        row[6] = 'Đã hoàn thành';
+        renderRows();
+      }
+      
+      modal.hidden = true;
+      const viaZalo = document.getElementById('approveSendZalo')?.checked;
+      const viaSMS = document.getElementById('approveSendSMS')?.checked;
+      let channelText = '';
+      if (viaZalo && viaSMS) channelText = ' qua Zalo & SMS';
+      else if (viaZalo) channelText = ' qua Zalo';
+      else if (viaSMS) channelText = ' qua SMS';
+      
+      showToast(`Đã phê duyệt chấp nhận khai báo ${selectedId}${channelText}.`);
     }
 
     const confirmSupplement = event.target.closest('[data-confirm-supplement]');

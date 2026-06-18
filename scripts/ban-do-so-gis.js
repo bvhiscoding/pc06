@@ -1218,7 +1218,7 @@ const els = {
   gisLayout: document.querySelector('.gis-layout'),
   gisSide: document.querySelector('.gis-side'),
   floatingPanelToggle: document.querySelector('#floatingPanelToggle'),
-  sideStats: document.querySelector('.gis-side-card .stat-grid'),
+  sideStats: document.querySelector('#gisFooterStatsList'),
   searchFloating: document.querySelector('#facilitySearchFloating'),
   legacySearch: document.querySelector('#facilitySearch'),
   openFilterDrawerBtn: document.querySelector('#openFilterDrawerBtn'),
@@ -1531,10 +1531,10 @@ function renderStats(items = getFilteredFacilities()) {
   })).filter((item) => item.count > 0 || ['green', 'yellow', 'red', 'purple'].includes(item.status));
 
   els.sideStats.innerHTML = stats.map((item) => `
-    <div>
+    <div class="footer-stat-item">
       <span class="marker-dot ${escapeHTML(item.status)}"><i data-lucide="${escapeHTML(item.icon)}" class="h-4 w-4"></i></span>
       <strong>${item.count}</strong>
-      <em>${escapeHTML(item.label)}</em>
+      <span>${escapeHTML(item.label)}</span>
     </div>
   `).join('');
 }
@@ -2157,6 +2157,8 @@ function bindEvents() {
       }
     });
   });
+
+
 
   document.querySelector('#refreshStatsBtn')?.addEventListener('click', () => {
     renderMapData();

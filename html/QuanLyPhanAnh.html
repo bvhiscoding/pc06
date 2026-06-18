@@ -167,42 +167,42 @@
         <!-- Component: Filter Panel -->
         <section id="moduleFilter" class="panel rounded-[7px] border border-[#e0e5ed] bg-white p-5 shadow-panel" aria-label="Bộ lọc phản ánh">
           <div class="grid grid-cols-12 gap-x-7 gap-y-4">
-            <label class="col-span-12 xl:col-span-4">
+            <label class="col-span-12 xl:col-span-6">
               <span class="form-label">Từ khóa</span>
               <span class="field-wrap block">
                 <input class="field" type="text" data-filter="query" placeholder="Tìm theo mã, tên người phản ánh, nội dung..." />
                 <i data-lucide="search" class="field-icon"></i>
               </span>
             </label>
-            <label class="col-span-12 md:col-span-4 xl:col-span-2">
+            <label class="col-span-12 md:col-span-6 xl:col-span-3">
               <span class="form-label">Trạng thái</span>
               <span class="field-wrap block">
                 <select class="field appearance-none font-medium" data-filter="status" data-all-label="Chọn trạng thái"></select>
                 <i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>
               </span>
             </label>
-            <label class="col-span-12 md:col-span-4 xl:col-span-3">
+            <label class="col-span-12 md:col-span-6 xl:col-span-3">
               <span class="form-label">Chủ đề</span>
               <span class="field-wrap block">
                 <select class="field appearance-none font-medium" data-filter="topic" data-all-label="Chọn chủ đề"></select>
                 <i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>
               </span>
             </label>
-            <label class="col-span-12 md:col-span-4 xl:col-span-3">
+            <label class="col-span-12 md:col-span-6 xl:col-span-6">
               <span class="form-label">Cơ sở phản ánh</span>
               <span class="field-wrap block">
                 <select class="field appearance-none font-medium" data-filter="business" data-all-label="Chọn cơ sở"></select>
                 <i data-lucide="chevron-down" class="field-icon h-4 w-4"></i>
               </span>
             </label>
-            <label class="col-span-12 sm:col-span-6 xl:col-span-3">
+            <label class="col-span-12 sm:col-span-6 md:col-span-3 xl:col-span-3">
               <span class="form-label">Ngày tiếp nhận từ</span>
               <span class="field-wrap block">
                 <input class="field" type="date" data-filter="dateFrom" />
                 <i data-lucide="calendar-days" class="field-icon"></i>
               </span>
             </label>
-            <label class="col-span-12 sm:col-span-6 xl:col-span-3">
+            <label class="col-span-12 sm:col-span-6 md:col-span-3 xl:col-span-3">
               <span class="form-label">Ngày tiếp nhận đến</span>
               <span class="field-wrap block">
                 <input class="field" type="date" data-filter="dateTo" />
@@ -267,6 +267,89 @@
       </div>
     </main>
   </div>
+  <!-- Modal Phân công xử lý -->
+  <div id="assignModal" class="modal-backdrop" hidden>
+    <section class="module-modal rounded-xl overflow-hidden bg-white shadow-xl border border-slate-100" role="dialog" aria-modal="true" aria-labelledby="assignModalTitle" style="max-width: 600px; width: 100%; margin: 30px auto;">
+      
+      <!-- Header -->
+      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-white">
+        <h2 id="assignModalTitle" class="text-lg font-bold text-slate-800 flex items-center gap-2">
+          <div class="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center text-red-600">
+            <i data-lucide="user-check" class="h-5 w-5"></i>
+          </div>
+          Phân công xử lý phản ánh
+        </h2>
+        <button id="closeAssignModal" class="text-slate-400 hover:text-slate-600 hover:bg-slate-50 p-1.5 rounded-full transition" type="button" aria-label="Đóng">
+          <i data-lucide="x" class="h-5.5 w-5.5"></i>
+        </button>
+      </div>
+
+      <div class="px-6 py-5 space-y-5">
+        <!-- Thông tin phản ánh -->
+        <div class="bg-slate-50/70 border border-slate-100 rounded-xl p-4">
+          <div class="text-[12px] font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+            <i data-lucide="info" class="h-4 w-4 text-[#c50000]"></i>Thông tin phản ánh
+          </div>
+          <div class="grid grid-cols-2 gap-y-3.5 gap-x-4 text-sm">
+            <div>
+              <span class="text-slate-500 block text-xs font-semibold mb-1">Mã phản ánh</span>
+              <span id="assignRecordCode" class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-bold bg-red-50 text-red-600 border border-red-100 font-mono">-</span>
+            </div>
+            <div>
+              <span class="text-slate-500 block text-xs font-semibold mb-1">Chủ đề</span>
+              <span id="assignRecordTopic" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-100">-</span>
+            </div>
+            <div class="col-span-2">
+              <span class="text-slate-500 block text-xs font-semibold mb-1">Người phản ánh / Doanh nghiệp</span>
+              <span id="assignRecordName" class="text-slate-800 font-bold block text-sm">-</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Thông tin phân công -->
+        <div class="space-y-4">
+          <div class="text-[12px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+            <i data-lucide="user-check" class="h-4 w-4 text-[#c50000]"></i>Thông tin phân công
+          </div>
+          <div class="grid grid-cols-2 gap-x-4 gap-y-3">
+            <label class="block">
+              <span class="form-label text-slate-700 font-semibold text-xs mb-1.5 block">Cán bộ xử lý <span class="text-red-500">*</span></span>
+              <span class="field-wrap block relative">
+                <select id="assignOfficer" class="w-full h-[42px] border border-slate-200 rounded-lg px-3 pr-8 font-medium text-slate-800 text-sm focus:border-red-500 focus:ring-1 focus:ring-red-500 outline-none appearance-none transition bg-white" style="height:42px !important; border-radius:8px !important; padding:0 12px !important;">
+                  <option value="">-- Chọn cán bộ --</option>
+                  <option value="Nguyễn Văn A">Nguyễn Văn A</option>
+                  <option value="Trần Văn B">Trần Văn B</option>
+                  <option value="Phạm Văn C">Phạm Văn C</option>
+                </select>
+                <i data-lucide="chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none h-4 w-4 text-slate-400"></i>
+              </span>
+            </label>
+            <label class="block">
+              <span class="form-label text-slate-700 font-semibold text-xs mb-1.5 block">Hạn hoàn thành <span class="text-red-500">*</span></span>
+              <span class="field-wrap block">
+                <input id="assignDueDate" class="w-full h-[42px] border border-slate-200 rounded-lg px-3 font-medium text-slate-800 text-sm focus:border-red-500 focus:ring-1 focus:ring-red-500 outline-none transition bg-white" type="date" required style="height:42px !important; border-radius:8px !important; padding:0 12px !important;" />
+              </span>
+            </label>
+          </div>
+          <label class="block">
+            <span class="form-label text-slate-700 font-semibold text-xs mb-1.5 block">Ý kiến chỉ đạo / Ghi chú</span>
+            <textarea id="assignNotes" class="w-full border border-slate-200 rounded-lg p-3 text-slate-800 text-sm focus:border-red-500 focus:ring-1 focus:ring-red-500 outline-none transition bg-white min-h-[96px] resize-y" placeholder="Nhập ý kiến chỉ đạo, nội dung cần lưu ý khi xử lý..." style="border-radius:8px !important; padding:12px !important;"></textarea>
+          </label>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="px-6 py-4 border-t border-slate-100 bg-slate-50 flex items-center justify-end gap-3">
+        <button id="btnCancelAssign" class="px-5 h-[42px] rounded-lg border border-slate-200 bg-white text-sm font-semibold text-slate-700 hover:bg-slate-100 hover:text-slate-800 transition" type="button" style="height:42px !important; border-radius:8px !important;">Hủy bỏ</button>
+        <button id="btnConfirmAssign" class="px-6 h-[42px] rounded-lg bg-[#c50000] text-sm font-bold text-white hover:bg-[#ad0000] shadow-[0_4px_12px_rgba(197,0,0,0.2)] flex items-center justify-center gap-1.5 transition" type="button" style="height:42px !important; border-radius:8px !important; background:#c50000 !important; color:#fff !important;">
+          <i data-lucide="check" class="h-4.5 w-4.5"></i>
+          Xác nhận phân công
+        </button>
+      </div>
+    </section>
+  </div>
+  <div id="toast" class="toast"></div>
+
   <script src="../scripts/auth.js"></script>
   <script src="../scripts/layout-sync.js"></script>
   <script src="../scripts/quan-ly-phan-anh.js?v=2"></script>

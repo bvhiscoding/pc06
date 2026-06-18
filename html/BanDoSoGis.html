@@ -372,32 +372,26 @@
               </div>
             </aside>
 
+            <div class="gis-footer-stats flex items-center justify-between gap-4">
+              <div class="flex items-center gap-3 overflow-x-auto">
+                <span class="text-[13px] font-bold text-[#b40000] uppercase tracking-wider flex-shrink-0">Tổng quan:</span>
+                <div id="gisFooterStatsList" class="flex items-center gap-4">
+                  <!-- Dynamically populated with footer-stat-item -->
+                </div>
+              </div>
+              <button id="refreshStatsBtn" type="button" class="text-gray-500 hover:text-red-600 transition flex-shrink-0" aria-label="Làm mới">
+                <i data-lucide="refresh-cw" class="h-4 w-4"></i>
+              </button>
+            </div>
+
             <div id="mapOverlayBackdrop" class="map-overlay-backdrop" hidden></div>
           </div>
 
           <aside class="gis-side">
-            <section class="gis-side-card">
-              <div class="side-title">
-                <h2>Tổng quan trên bản đồ</h2>
-                <button id="refreshStatsBtn" type="button" aria-label="Làm mới">
-                  <i data-lucide="refresh-cw" class="h-5 w-5"></i>
-                </button>
-              </div>
-              <div class="stat-grid">
-                <div><span class="marker-dot green"><i data-lucide="store"
-                      class="h-4 w-4"></i></span><strong>1.248</strong><em>Đang hoạt động</em></div>
-                <div><span class="marker-dot yellow"><i data-lucide="store"
-                      class="h-4 w-4"></i></span><strong>112</strong><em>Tạm dừng</em></div>
-                <div><span class="marker-dot gray"><i data-lucide="store"
-                      class="h-4 w-4"></i></span><strong>58</strong><em>Ngừng hoạt động</em></div>
-                <div><span class="marker-dot orange"><i data-lucide="store"
-                      class="h-4 w-4"></i></span><strong>96</strong><em>Sắp hết hạn</em></div>
-                <div><span class="marker-dot red"><i data-lucide="store"
-                      class="h-4 w-4"></i></span><strong>37</strong><em>Hết hạn / Bị thu hồi</em></div>
-                <div><span class="marker-dot purple"><i data-lucide="triangle-alert"
-                      class="h-4 w-4"></i></span><strong>21</strong><em>Có vi phạm</em></div>
-              </div>
-            </section>
+            <button id="floatingPanelToggle" class="floating-panel-toggle w-full justify-center" type="button" aria-expanded="true">
+              <i data-lucide="panel-right-close" class="h-5 w-5"></i>
+              <span>Thu gọn bảng thông tin</span>
+            </button>
 
             <section class="gis-side-card nearby-card">
               <div class="side-title">
@@ -408,12 +402,15 @@
             </section>
 
             <section class="gis-side-card layer-card">
-              <h2>Lớp hiển thị trên bản đồ</h2>
-              <label><input type="checkbox" data-map-layer="facilityLabels"> Hiển thị nhãn cơ sở</label>
-              <label><input type="checkbox" data-map-layer="administrative" checked> Hiển thị ranh giới hành
-                chính</label>
-              <label><input type="checkbox" data-map-layer="roads" checked> Hiển thị giao thông</label>
-              <label><input type="checkbox" data-map-layer="water" checked> Hiển thị sông, hồ</label>
+              <div class="side-title">
+                <h2>Lớp hiển thị trên bản đồ</h2>
+              </div>
+              <div id="layerList" class="display-grid gap-11 mt-2">
+                <label class="flex items-center gap-2"><input type="checkbox" data-map-layer="facilityLabels"> Hiển thị nhãn cơ sở</label>
+                <label class="flex items-center gap-2"><input type="checkbox" data-map-layer="administrative" checked> Hiển thị ranh giới hành chính</label>
+                <label class="flex items-center gap-2"><input type="checkbox" data-map-layer="roads" checked> Hiển thị giao thông</label>
+                <label class="flex items-center gap-2"><input type="checkbox" data-map-layer="water" checked> Hiển thị sông, hồ</label>
+              </div>
             </section>
           </aside>
         </section>

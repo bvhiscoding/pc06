@@ -144,7 +144,7 @@ function initModuleList(config) {
           <button class="btn-icon mx-auto${state.openActionId === record.id ? ' is-open' : ''}" type="button" data-action-toggle="${escapeHTML(record.id)}" aria-label="Mở thao tác ${escapeHTML(record.id)}">
             <i data-lucide="ellipsis-vertical" class="h-5 w-5"></i>
           </button>
-          ${state.openActionId === record.id ? `<div class="row-action-menu">${config.actions.map((action) => `<button type="button" data-action-route="${escapeHTML(action.route)}" data-id="${escapeHTML(record.id)}"><i data-lucide="${escapeHTML(action.icon)}" class="h-4 w-4"></i>${escapeHTML(action.label)}</button>`).join('')}</div>` : ''}
+          ${state.openActionId === record.id ? `<div class="row-action-menu">${config.actions.map((action) => `<button type="button" data-action-route="${escapeHTML(action.route)}" data-id="${escapeHTML(record.id)}" data-action-label="${escapeHTML(action.label)}"><i data-lucide="${escapeHTML(action.icon)}" class="h-4 w-4"></i>${escapeHTML(action.label)}</button>`).join('')}</div>` : ''}
         </td>
       </tr>`;
     }).join('');
@@ -246,6 +246,78 @@ function initModuleList(config) {
     state.openActionId = '';
     render();
   });
+  const assignModal = document.querySelector('#assignModal');
+  let selectedRecordId = '';
+
+  function openAssignModal(id) {
+    const record = config.records.find((r) => r.id === id);
+    if (!record) return;
+    
+    selectedRecordId = id;
+    
+    document.querySelector('#assignRecordCode').textContent = record.code;
+    document.querySelector('#assignRecordName').textContent = record.name;
+    document.querySelector('#assignRecordTopic').textContent = record.topic;
+    
+    const date = new Date();
+    date.setDate(date.getDate() + 3);
+    const yyyy = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const dd = String(date.getDate()).padStart(2, '0');
+    document.querySelector('#assignDueDate').value = `${yyyy}-${mm}-${dd}`;
+    
+    const currentOfficer = record.officer && record.officer !== 'Chưa phân công' ? record.officer : '';
+    document.querySelector('#assignOfficer').value = currentOfficer;
+    document.querySelector('#assignNotes').value = '';
+    
+    state.openActionId = '';
+    render();
+    
+    if (assignModal) assignModal.hidden = false;
+    safeCreateIcons();
+  }
+
+  function showToast(message) {
+    const toast = document.querySelector('#toast');
+    if (!toast) {
+      alert(message);
+      return;
+    }
+    toast.textContent = message;
+    toast.classList.add('is-visible');
+    window.setTimeout(() => toast.classList.remove('is-visible'), 2200);
+  }
+
+  document.querySelector('#closeAssignModal')?.addEventListener('click', () => {
+    if (assignModal) assignModal.hidden = true;
+  });
+  document.querySelector('#btnCancelAssign')?.addEventListener('click', () => {
+    if (assignModal) assignModal.hidden = true;
+  });
+  document.querySelector('#btnConfirmAssign')?.addEventListener('click', () => {
+    const officer = document.querySelector('#assignOfficer').value;
+    const dueDate = document.querySelector('#assignDueDate').value;
+    
+    if (!officer) {
+      showToast('Vui lòng chọn cán bộ xử lý.');
+      return;
+    }
+    if (!dueDate) {
+      showToast('Vui lòng chọn hạn hoàn thành.');
+      return;
+    }
+    
+    const record = config.records.find((r) => r.id === selectedRecordId);
+    if (record) {
+      record.officer = officer;
+      record.status = 'Đang xử lý';
+      showToast(`Đã phân công xử lý phản ánh ${record.code} cho cán bộ ${officer}.`);
+    }
+    
+    if (assignModal) assignModal.hidden = true;
+    render();
+  });
+
   els.body?.addEventListener('click', (event) => {
     const toggle = event.target.closest('[data-action-toggle]');
     const route = event.target.closest('[data-action-route]');
@@ -254,7 +326,14 @@ function initModuleList(config) {
       render();
       return;
     }
-    if (route) go(route.dataset.actionRoute, route.dataset.id);
+    if (route) {
+      const label = route.dataset.actionLabel;
+      if (label === 'Phân công xử lý') {
+        openAssignModal(route.dataset.id);
+      } else {
+        go(route.dataset.actionRoute, route.dataset.id);
+      }
+    }
   });
   document.addEventListener('click', (event) => {
     if (!event.target.closest('.topbar-menu-wrap')) closeTopbarMenus();

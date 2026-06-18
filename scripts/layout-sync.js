@@ -405,10 +405,10 @@
             </button>
           </div>
         </div>
-        <div class="module-modal-foot">
+        <div class="module-modal-foot" style="justify-content: center !important;">
           <button class="inline-flex h-10 items-center justify-center rounded-md border border-[#d9dfe8] bg-white px-5 text-[14px] font-bold text-[#4b5563] shadow-sm transition hover:bg-[#f9fafb]" type="button" onclick="document.getElementById('importModal').hidden = true" style="display:inline-flex; align-items:center; justify-content:center; height:40px; border:1px solid #d9dfe8; border-radius:6px; background:#fff; padding:0 20px; font-size:14px; font-weight:700; color:#4b5563; cursor:pointer; transition:all 150ms ease; box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);">Hủy bỏ</button>
           <button class="inline-flex h-10 items-center justify-center rounded-md border border-[#c50000] bg-[#c50000] px-5 text-[14px] font-bold text-white shadow-sm transition hover:bg-[#b00000]" type="button" id="globalImportSubmitBtn" style="display:inline-flex; align-items:center; justify-content:center; height:40px; border:1px solid #c50000; border-radius:6px; background:#c50000; padding:0 20px; font-size:14px; font-weight:700; color:#fff; cursor:pointer; transition:all 150ms ease; margin-left:12px; box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);">
-            <i data-lucide="check" class="h-4 w-4" style="width:16px; height:16px; margin-right:4px;"></i>Tải lên &amp; Nhập dữ liệu
+            <i data-lucide="check" class="h-4 w-4" style="width:16px; height:16px; margin-right:4px;"></i>Nhập dữ liệu
           </button>
         </div>
       </section>`;
@@ -520,10 +520,10 @@
             </div>
           </div>
         </div>
-        <div class="module-modal-foot">
+        <div class="module-modal-foot" style="justify-content: center !important;">
           <button class="inline-flex h-10 items-center justify-center rounded-md border border-[#d9dfe8] bg-white px-5 text-[14px] font-bold text-[#4b5563] shadow-sm transition hover:bg-[#f9fafb]" type="button" onclick="document.getElementById('exportModal').hidden = true" style="display:inline-flex; align-items:center; justify-content:center; height:40px; border:1px solid #d9dfe8; border-radius:6px; background:#fff; padding:0 20px; font-size:14px; font-weight:700; color:#4b5563; cursor:pointer; transition:all 150ms ease; box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);">Hủy bỏ</button>
           <button class="inline-flex h-10 items-center justify-center rounded-md border border-[#c50000] bg-[#c50000] px-5 text-[14px] font-bold text-white shadow-sm transition hover:bg-[#b00000]" type="button" id="globalExportSubmitBtn" style="display:inline-flex; align-items:center; justify-content:center; height:40px; border:1px solid #c50000; border-radius:6px; background:#c50000; padding:0 20px; font-size:14px; font-weight:700; color:#fff; cursor:pointer; transition:all 150ms ease; margin-left:12px; box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);">
-            <i data-lucide="download" class="h-4 w-4" style="width:16px; height:16px; margin-right:4px;"></i>Thực hiện xuất file
+            <i data-lucide="download" class="h-4 w-4" style="width:16px; height:16px; margin-right:4px;"></i>Xuất dữ liệu
           </button>
         </div>
       </section>`;
