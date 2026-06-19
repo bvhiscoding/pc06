@@ -1275,7 +1275,9 @@ let panelRestoreButton;
 // State variables for OSRM Routing and Emergency Alerts
 let selectedPoints = [];
 let isRouting = false;
+let isRoutingMode = false;       // 2-point routing mode toggle
 let currentPolyline = null;
+let activeRouteFacilityId = null;
 let alertCircles = {};
 let currentAlertPhones = new Set();
 let speechQueue = [];
@@ -1733,10 +1735,10 @@ function renderFacilityPopup(facility) {
       </div>
     </dl>
     <div class="mt-4 flex flex-col gap-2">
-      <button id="btnRoutePopup" class="w-full py-2 bg-[#bd0000] hover:bg-[#a00000] text-white rounded font-bold text-sm transition flex items-center justify-center gap-2" style="display: ${currentPolyline ? 'none' : 'flex'};" onclick="routeToFacility('${facility.id}')">
+      <button id="btnRoutePopup" class="w-full py-2 bg-[#bd0000] hover:bg-[#a00000] text-white rounded font-bold text-sm transition flex items-center justify-center gap-2" style="display: ${(currentPolyline && activeRouteFacilityId === facility.id) ? 'none' : 'flex'};" onclick="routeToFacility('${facility.id}')">
         <i data-lucide="navigation" class="h-4 w-4"></i> Chỉ đường
       </button>
-      <button id="btnCancelRoutePopup" class="w-full py-2 bg-gray-500 hover:bg-gray-600 text-white rounded font-bold text-sm transition flex items-center justify-center gap-2" style="display: ${currentPolyline ? 'flex' : 'none'};" onclick="clearRouteFromDetail()">
+      <button id="btnCancelRoutePopup" class="w-full py-2 bg-gray-500 hover:bg-gray-600 text-white rounded font-bold text-sm transition flex items-center justify-center gap-2" style="display: ${(currentPolyline && activeRouteFacilityId === facility.id) ? 'flex' : 'none'};" onclick="clearRouteFromDetail()">
         <i data-lucide="trash-2" class="h-4 w-4"></i> Xóa chỉ đường
       </button>
     </div>
@@ -1925,10 +1927,10 @@ function openFacilitySheet(facility) {
       <h3>Thao tác</h3>
       <div class="flex flex-col gap-2">
         <a class="popup-detail w-full flex items-center justify-center" href="ChiTietHoSo.html?id=${encodeURIComponent(facility.id)}">Mở hồ sơ đầy đủ</a>
-        <button id="btnRouteDetail" class="popup-detail w-full flex items-center justify-center gap-2 bg-[#bd0000] hover:bg-[#a00000] text-white font-bold py-2 px-4 rounded text-sm transition" style="display: ${currentPolyline ? 'none' : 'inline-flex'};" onclick="routeToFacility('${facility.id}')">
+        <button id="btnRouteDetail" class="popup-detail w-full flex items-center justify-center gap-2 bg-[#bd0000] hover:bg-[#a00000] text-white font-bold py-2 px-4 rounded text-sm transition" style="display: ${(currentPolyline && activeRouteFacilityId === facility.id) ? 'none' : 'inline-flex'};" onclick="routeToFacility('${facility.id}')">
           <i data-lucide="navigation" class="h-4 w-4"></i> Chỉ đường
         </button>
-        <button id="btnCancelRouteDetail" class="popup-detail w-full flex items-center justify-center gap-2 bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded text-sm transition" style="display: ${currentPolyline ? 'inline-flex' : 'none'};" onclick="clearRouteFromDetail()">
+        <button id="btnCancelRouteDetail" class="popup-detail w-full flex items-center justify-center gap-2 bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded text-sm transition" style="display: ${(currentPolyline && activeRouteFacilityId === facility.id) ? 'inline-flex' : 'none'};" onclick="clearRouteFromDetail()">
           <i data-lucide="trash-2" class="h-4 w-4"></i> Xóa chỉ đường
         </button>
       </div>
@@ -2061,6 +2063,47 @@ function setDrawingMode(mode) {
 }
 
 function handleMapClick(event) {
+  // 2-point routing mode
+  if (isRoutingMode) {
+    const latLng = { lat: event.latLng.lat(), lng: event.latLng.lng() };
+    if (selectedPoints.length === 2) selectedPoints = [];
+    selectedPoints.push(latLng);
+
+    const isFirst = selectedPoints.length === 1;
+    const marker = new google.maps.Marker({
+      map,
+      position: latLng,
+      label: { text: isFirst ? 'A' : 'B', color: '#fff', fontWeight: 'bold', fontSize: '13px' },
+      icon: {
+        path: google.maps.SymbolPath.CIRCLE,
+        scale: 14,
+        fillColor: isFirst ? '#22c55e' : '#bd0000',
+        fillOpacity: 1,
+        strokeColor: '#fff',
+        strokeWeight: 2
+      },
+      zIndex: 500
+    });
+    routeMarkersList.push(marker);
+
+    if (selectedPoints.length === 2) {
+      drawRoute(selectedPoints[0], selectedPoints[1]);
+      isRoutingMode = false;
+      map.setOptions({ draggableCursor: null });
+      const btn = document.getElementById('btnToggleRoute');
+      if (btn) {
+        btn.style.background = '';
+        btn.style.color = '';
+        btn.innerHTML = '<i data-lucide="navigation" class="h-5 w-5"></i>';
+        if (window.lucide) window.lucide.createIcons();
+      }
+      updateRoutingStatus('done');
+    } else {
+      updateRoutingStatus('end');
+    }
+    return;
+  }
+
   if (!state.drawingMode) return;
 
   if (state.drawingMode === 'radius') {
@@ -2380,6 +2423,16 @@ function bindEvents() {
   document.querySelectorAll('[data-map-control]').forEach((button) => {
     button.addEventListener('click', () => {
       const control = button.dataset.mapControl;
+      if (control === 'toggle-route') {
+        toggleRouteMode();
+        return;
+      }
+      if (control === 'clear-route') {
+        clearRoute();
+        clearRouteMarkers();
+        selectedPoints = [];
+        return;
+      }
       if (!map) {
         alert('Bản đồ thật sẽ hoạt động sau khi bạn thêm Google Maps API key.');
         return;
@@ -2465,78 +2518,106 @@ function bindEvents() {
 }
 
 // ── OSRM ROUTING FUNCTIONS ───────────────────────────────────
+let routeMarkersList = [];
+
+function toggleRouteMode() {
+  if (!map) { alert('Bản đồ chưa sẵn sàng.'); return; }
+  isRoutingMode = !isRoutingMode;
+  const btn = document.getElementById('btnToggleRoute');
+  if (isRoutingMode) {
+    selectedPoints = [];
+    clearRouteMarkers();
+    clearRoute();
+    map.setOptions({ draggableCursor: 'crosshair' });
+    if (btn) {
+      btn.style.background = 'rgba(37,99,235,0.85)';
+      btn.style.color = '#fff';
+      btn.innerHTML = '<i data-lucide="navigation" class="h-5 w-5"></i>';
+      if (window.lucide) window.lucide.createIcons();
+    }
+    updateRoutingStatus('start');
+  } else {
+    map.setOptions({ draggableCursor: null });
+    if (btn) {
+      btn.style.background = '';
+      btn.style.color = '';
+      btn.innerHTML = '<i data-lucide="navigation" class="h-5 w-5"></i>';
+      if (window.lucide) window.lucide.createIcons();
+    }
+    const status = document.getElementById('routingStatus');
+    if (status && selectedPoints.length < 2) status.style.display = 'none';
+  }
+}
+window.toggleRouteMode = toggleRouteMode;
+
+function updateRoutingStatus(step) {
+  let statusEl = document.getElementById('routingStatus');
+  if (!statusEl) {
+    statusEl = document.createElement('div');
+    statusEl.id = 'routingStatus';
+    statusEl.style.cssText = 'position:absolute;bottom:14px;left:50%;transform:translateX(-50%);z-index:50;background:#fff;border:1.5px solid #bd0000;border-radius:8px;padding:7px 16px;font-size:12px;font-weight:600;color:#bd0000;box-shadow:0 2px 8px rgba(0,0,0,0.15);white-space:nowrap;pointer-events:none;';
+    document.querySelector('.map-shell, .public-map-shell')?.appendChild(statusEl);
+  }
+  if (step === 'start') {
+    statusEl.style.display = 'block';
+    statusEl.innerHTML = '📍 Bấm điểm <strong>xuất phát (A)</strong> trên bản đồ';
+  } else if (step === 'end') {
+    statusEl.style.display = 'block';
+    statusEl.innerHTML = '🏁 Bấm điểm <strong>đích (B)</strong> trên bản đồ';
+  } else if (step === 'done') {
+    statusEl.style.display = 'none';
+  }
+}
+
+function clearRouteMarkers() {
+  routeMarkersList.forEach(m => m.setMap(null));
+  routeMarkersList = [];
+}
+
 function routeToFacility(facilityId) {
-  const facility = findFacility(facilityId);
-  if (!facility) return;
-
-  const start = { lat: 20.2506, lng: 105.9745 }; // Vị trí hiện tại mặc định ở Ninh Bình
-  const end = facility.position;
-
-  drawRoute(start, end);
-
-  // Toggle display of buttons
-  const routeBtnPopup = document.getElementById('btnRoutePopup');
-  if (routeBtnPopup) routeBtnPopup.style.display = 'none';
-
-  const clearBtnPopup = document.getElementById('btnCancelRoutePopup');
-  if (clearBtnPopup) clearBtnPopup.style.display = 'flex';
-
-  const routeBtnDetail = document.getElementById('btnRouteDetail');
-  if (routeBtnDetail) routeBtnDetail.style.display = 'none';
-
-  const clearBtnDetail = document.getElementById('btnCancelRouteDetail');
-  if (clearBtnDetail) clearBtnDetail.style.display = 'inline-flex';
+  // Giữ tương thích ngược – kích hoạt chế độ chỉ đường
+  toggleRouteMode();
 }
 window.routeToFacility = routeToFacility;
 
 function clearRouteFromDetail() {
+  isRoutingMode = false;
+  selectedPoints = [];
+  clearRouteMarkers();
   clearRoute();
-
-  const routeBtnPopup = document.getElementById('btnRoutePopup');
-  if (routeBtnPopup) routeBtnPopup.style.display = 'flex';
-
-  const clearBtnPopup = document.getElementById('btnCancelRoutePopup');
-  if (clearBtnPopup) clearBtnPopup.style.display = 'none';
-
-  const routeBtnDetail = document.getElementById('btnRouteDetail');
-  if (routeBtnDetail) routeBtnDetail.style.display = 'inline-flex';
-
-  const clearBtnDetail = document.getElementById('btnCancelRouteDetail');
-  if (clearBtnDetail) clearBtnDetail.style.display = 'none';
+  if (map) map.setOptions({ draggableCursor: null });
+  const btn = document.getElementById('btnToggleRoute');
+  if (btn) { btn.style.background = ''; btn.style.color = ''; }
+  updateRoutingStatus('done');
 }
 window.clearRouteFromDetail = clearRouteFromDetail;
 
 function drawRoute(start, end) {
   if (currentPolyline) {
     currentPolyline.setMap(null);
+    currentPolyline = null;
   }
-  
   const url = `https://router.project-osrm.org/route/v1/driving/${start.lng},${start.lat};${end.lng},${end.lat}?overview=full&geometries=geojson`;
-  
   fetch(url)
     .then(response => response.json())
     .then(data => {
-      if (data.code !== "Ok") {
-        console.error("OSRM routing error:", data);
+      if (data.code !== 'Ok') {
+        console.error('OSRM routing error:', data);
+        updateRoutingStatus('done');
         return;
       }
-      const coordinates = data.routes[0].geometry.coordinates;
-      const path = coordinates.map(coord => ({
-        lat: coord[1],
-        lng: coord[0]
-      }));
+      const route = data.routes[0];
+      const path = route.geometry.coordinates.map(coord => ({ lat: coord[1], lng: coord[0] }));
       currentPolyline = new google.maps.Polyline({
-        path: path,
-        geodesic: true,
-        strokeColor: "#bd0000",
-        strokeOpacity: 0.8,
-        strokeWeight: 5
+        path, geodesic: true,
+        strokeColor: '#bd0000', strokeOpacity: 0.85, strokeWeight: 5
       });
       currentPolyline.setMap(map);
+      const routeBounds = new google.maps.LatLngBounds();
+      path.forEach(p => routeBounds.extend(p));
+      map.fitBounds(routeBounds, { top: 80, right: 40, bottom: 60, left: 40 });
     })
-    .catch(error => {
-      console.error("Fetch OSRM error:", error);
-    });
+    .catch(error => console.error('Fetch OSRM error:', error));
 }
 
 function clearRoute() {

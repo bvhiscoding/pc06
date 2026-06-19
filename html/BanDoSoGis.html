@@ -272,6 +272,24 @@
                 <input id="riskHeatmapToggle" type="checkbox" />
                 <span>Bản đồ rủi ro</span>
               </label>
+              <!-- Demo 113 Toggle Button -->
+              <button id="btnDemo113" type="button" title="Bật / Tắt demo báo động 113"
+                style="display:inline-flex;align-items:center;gap:6px;padding:6px 13px;background:#bd0000;color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 1px 6px rgba(189,0,0,0.35);transition:background 0.15s,box-shadow 0.15s;white-space:nowrap;flex-shrink:0;">
+                <i data-lucide="bell-ring" class="h-4 w-4"></i>
+                <span id="btnDemo113Label">Demo Báo động 113</span>
+              </button>
+            </div>
+
+            <!-- 2-point routing controls -->
+            <div id="routingControls" style="position:absolute;top:56px;left:10px;z-index:40;display:none;flex-direction:column;gap:6px;">
+              <div id="routingStatus" style="background:#fff;border:1.5px solid #bd0000;border-radius:8px;padding:8px 12px;font-size:12px;font-weight:600;color:#bd0000;box-shadow:0 2px 8px rgba(0,0,0,0.12);max-width:230px;line-height:1.5;">
+                <i data-lucide="map-pin" class="h-3 w-3" style="display:inline;"></i>
+                Bấm điểm <strong>xuất phát</strong> trên bản đồ
+              </div>
+              <button id="btnCancelRouting" type="button"
+                style="display:flex;align-items:center;gap:6px;padding:6px 12px;background:#6b7280;color:#fff;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.15);">
+                <i data-lucide="x" class="h-3 w-3"></i> Hủy chỉ đường
+              </button>
             </div>
 
             <div class="map-toolbar">
@@ -285,6 +303,13 @@
                   class="h-5 w-5"></i></button>
               <button type="button" data-map-control="clear-region" title="Xóa vùng lọc"><i data-lucide="eraser"
                   class="h-5 w-5"></i></button>
+              <hr style="border:none;border-top:1px solid rgba(255,255,255,0.3);margin:2px 0;">
+              <button id="btnToggleRoute" type="button" data-map-control="toggle-route" title="Chỉ đường 2 điểm" style="position:relative;">
+                <i data-lucide="navigation" class="h-5 w-5"></i>
+              </button>
+              <button id="btnClearRoute" type="button" data-map-control="clear-route" title="Xóa chỉ đường">
+                <i data-lucide="eraser" class="h-5 w-5" style="color:#f97316;"></i>
+              </button>
             </div>
 
             <div class="map-legend">
@@ -308,12 +333,6 @@
               <p class="tooltip-type mb-2">Karaoke</p>
               <div class="flex flex-col gap-1.5 mt-auto">
                 <button id="openFacilitySheetBtn" class="popup-detail w-full flex items-center justify-center py-1.5 px-3 rounded text-xs font-bold transition border border-gray-300 hover:bg-gray-50 text-gray-700" type="button">Xem chi tiết</button>
-                <button id="btnRouteGisPopup" class="w-full flex items-center justify-center gap-1.5 bg-[#bd0000] hover:bg-[#a00000] text-white font-bold py-1.5 px-3 rounded text-xs transition focus:outline-none" type="button">
-                  <i data-lucide="navigation" class="h-3.5 w-3.5"></i> Chỉ đường
-                </button>
-                <button id="btnCancelRouteGisPopup" class="w-full flex items-center justify-center gap-1.5 bg-gray-500 hover:bg-gray-600 text-white font-bold py-1.5 px-3 rounded text-xs transition focus:outline-none" style="display: none;" type="button">
-                  <i data-lucide="trash-2" class="h-3.5 w-3.5"></i> Xóa chỉ đường
-                </button>
               </div>
             </article>
 

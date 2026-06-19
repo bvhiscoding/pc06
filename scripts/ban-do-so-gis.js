@@ -1275,8 +1275,15 @@ let panelRestoreButton;
 // State variables for OSRM Routing and Emergency Alerts
 let selectedPoints = [];
 let isRouting = false;
+let isRoutingMode = false;       // 2-point routing mode active
+let routePoint1 = null;          // First click point (start)
+let routePoint2 = null;          // Second click point (end)
+let routeMarker1 = null;         // Marker for point 1
+let routeMarker2 = null;         // Marker for point 2
 let currentPolyline = null;
+let activeRouteFacilityId = null; // Track which facility is currently being routed to
 let alertCircles = {};
+let alertMarkers = {};           // GIF alert markers keyed by facilityId
 let currentAlertPhones = new Set();
 let speechQueue = [];
 let isSpeaking = false;
@@ -1503,10 +1510,11 @@ function renderMarkers(items) {
     markerCluster = new markerClusterer.MarkerClusterer({ markers, map });
   }
 
+  const hasActiveAlert = facilities.some(f => f.hasAlert);
   if (items.length === 1) {
     map.panTo(items[0].position);
     map.setZoom(Math.max(map.getZoom(), 14));
-  } else if (items.length > 1) {
+  } else if (items.length > 1 && !hasActiveAlert) {
     map.fitBounds(bounds);
   }
 }
@@ -1656,14 +1664,14 @@ function openFacilityTooltip(facility) {
   els.facilityPopup.querySelector('.popup-status').style.color = meta.color;
   els.facilityPopup.querySelector('.tooltip-type').textContent = `${facility.type} - ${facility.licenseStatus}`;
   
-  // Toggle inline routing buttons depending on routing state
+  // Toggle inline routing buttons depending on routing state for THIS specific facility
   const routeBtnGisPopup = document.getElementById('btnRouteGisPopup');
   if (routeBtnGisPopup) {
-    routeBtnGisPopup.style.display = currentPolyline ? 'none' : 'flex';
+    routeBtnGisPopup.style.display = (currentPolyline && activeRouteFacilityId === facility.id) ? 'none' : 'flex';
   }
   const clearBtnGisPopup = document.getElementById('btnCancelRouteGisPopup');
   if (clearBtnGisPopup) {
-    clearBtnGisPopup.style.display = currentPolyline ? 'flex' : 'none';
+    clearBtnGisPopup.style.display = (currentPolyline && activeRouteFacilityId === facility.id) ? 'flex' : 'none';
   }
 
   els.facilityPopup.style.display = 'flex';
@@ -1736,10 +1744,10 @@ function openFacilitySheet(facility) {
       <h3>Thao tác</h3>
       <div class="flex flex-col gap-2">
         <a class="popup-detail w-full flex items-center justify-center" href="ChiTietHoSo.html?id=${encodeURIComponent(facility.id)}">Mở hồ sơ đầy đủ</a>
-        <button id="btnRouteDetail" class="popup-detail w-full flex items-center justify-center gap-2 bg-[#bd0000] hover:bg-[#a00000] text-white font-bold py-2 px-4 rounded text-sm transition" style="display: ${currentPolyline ? 'none' : 'inline-flex'};" onclick="routeToFacility('${facility.id}')">
+        <button id="btnRouteDetail" class="popup-detail w-full flex items-center justify-center gap-2 bg-[#bd0000] hover:bg-[#a00000] text-white font-bold py-2 px-4 rounded text-sm transition" style="display: ${(currentPolyline && activeRouteFacilityId === facility.id) ? 'none' : 'inline-flex'};" onclick="routeToFacility('${facility.id}')">
           <i data-lucide="navigation" class="h-4 w-4"></i> Chỉ đường
         </button>
-        <button id="btnCancelRouteDetail" class="popup-detail w-full flex items-center justify-center gap-2 bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded text-sm transition" style="display: ${currentPolyline ? 'inline-flex' : 'none'};" onclick="clearRouteFromDetail()">
+        <button id="btnCancelRouteDetail" class="popup-detail w-full flex items-center justify-center gap-2 bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded text-sm transition" style="display: ${(currentPolyline && activeRouteFacilityId === facility.id) ? 'inline-flex' : 'none'};" onclick="clearRouteFromDetail()">
           <i data-lucide="trash-2" class="h-4 w-4"></i> Xóa chỉ đường
         </button>
       </div>
@@ -1872,6 +1880,50 @@ function setDrawingMode(mode) {
 }
 
 function handleMapClick(event) {
+  // 2-point routing mode (t.html style)
+  if (isRoutingMode) {
+    const latLng = { lat: event.latLng.lat(), lng: event.latLng.lng() };
+
+    if (selectedPoints.length === 2) selectedPoints = [];
+    selectedPoints.push(latLng);
+
+    // Place marker
+    const isFirst = selectedPoints.length === 1;
+    const marker = new google.maps.Marker({
+      map,
+      position: latLng,
+      label: { text: isFirst ? 'A' : 'B', color: '#fff', fontWeight: 'bold', fontSize: '13px' },
+      icon: {
+        path: google.maps.SymbolPath.CIRCLE,
+        scale: 14,
+        fillColor: isFirst ? '#22c55e' : '#bd0000',
+        fillOpacity: 1,
+        strokeColor: '#fff',
+        strokeWeight: 2
+      },
+      zIndex: 500
+    });
+    routeMarkersList.push(marker);
+
+    if (selectedPoints.length === 2) {
+      drawRoute(selectedPoints[0], selectedPoints[1]);
+      // Tắt mode sau khi chọn đủ 2 điểm
+      isRoutingMode = false;
+      map.setOptions({ draggableCursor: null });
+      const btn = document.getElementById('btnToggleRoute');
+      if (btn) {
+        btn.style.background = '';
+        btn.style.color = '';
+        btn.innerHTML = '<i data-lucide="navigation" class="h-5 w-5"></i>';
+        if (window.lucide) window.lucide.createIcons();
+      }
+      updateRoutingStatus('done');
+    } else {
+      updateRoutingStatus('end');
+    }
+    return;
+  }
+
   if (!state.drawingMode) return;
 
   if (state.drawingMode === 'radius') {
@@ -2172,6 +2224,16 @@ function bindEvents() {
   document.querySelectorAll('[data-map-control]').forEach((button) => {
     button.addEventListener('click', () => {
       const control = button.dataset.mapControl;
+      if (control === 'toggle-route') {
+        toggleRouteMode();
+        return;
+      }
+      if (control === 'clear-route') {
+        clearRoute();
+        clearRouteMarkers();
+        selectedPoints = [];
+        return;
+      }
       if (!map) {
         alert('Bản đồ thật sẽ hoạt động sau khi bạn thêm Google Maps API key.');
         return;
@@ -2229,93 +2291,235 @@ function bindEvents() {
         state.drawingMode = null;
         map?.setOptions({ draggableCursor: null, disableDoubleClickZoom: false });
       }
+      cancelTwoPointRouting();
     }
   });
 
-  // Routing Buttons Event Listeners
+  // Routing Buttons Event Listeners (từ popup - đã xóa button, giữ event null-safe)
   document.getElementById('btnRouteGisPopup')?.addEventListener('click', () => {
-    const facility = findFacility(state.selectedFacilityId);
-    if (facility) routeToFacility(facility.id);
+    // Nếu muốn giữ tính năng chỉ đường từ popup, để nơi đây
   });
 
   document.getElementById('btnCancelRouteGisPopup')?.addEventListener('click', () => {
-    clearRouteFromDetail();
+    cancelTwoPointRouting();
   });
+
+  // Demo 113 Alert button (toggle on/off)
+  const btn113 = document.getElementById('btnDemo113');
+  const btn113Label = document.getElementById('btnDemo113Label');
+  if (btn113) {
+    btn113.addEventListener('click', () => {
+      if (!map) {
+        alert('Bản đồ chưa sẵn sàng. Vui lòng chờ Google Maps tải xong.');
+        return;
+      }
+
+      const isActive = btn113.dataset.active === 'true';
+
+      if (!isActive) {
+        // Bật demo
+        btn113.dataset.active = 'true';
+        btn113.style.background = '#7f0000';
+        btn113.style.boxShadow = '0 0 0 3px rgba(189,0,0,0.3), 0 1px 6px rgba(189,0,0,0.35)';
+        if (btn113Label) btn113Label.textContent = 'Đồng hồ Báo động 113...';
+
+        // Reset alerts cũ
+        facilities.forEach(f => {
+          if (f.hasAlert) {
+            f.hasAlert = false;
+            f.status = 'green';
+            if (alertCircles[f.id]) { alertCircles[f.id].setMap(null); delete alertCircles[f.id]; }
+          }
+        });
+        currentAlertPhones.clear();
+        updateAlertPanel();
+        renderMapData();
+        runAlertSimulator();
+      } else {
+        // Tắt demo
+        btn113.dataset.active = 'false';
+        btn113.style.background = '#bd0000';
+        btn113.style.boxShadow = '0 1px 6px rgba(189,0,0,0.35)';
+        if (btn113Label) btn113Label.textContent = 'Demo Báo động 113';
+
+        // Clear tất cả timers
+        if (window._alertTimers) {
+          window._alertTimers.forEach(id => clearTimeout(id));
+          window._alertTimers = [];
+        }
+        // Reset alerts
+        facilities.forEach(f => {
+          if (f.hasAlert) {
+            f.hasAlert = false;
+            f.status = 'green';
+            if (alertCircles[f.id]) { alertCircles[f.id].setMap(null); delete alertCircles[f.id]; }
+          }
+        });
+        // Clear animated circles
+        if (window._animatedAlertCircles) {
+          window._animatedAlertCircles.forEach(c => { if (c) c.setMap(null); });
+          window._animatedAlertCircles = [];
+        }
+        // Clear GIF markers
+        Object.keys(alertMarkers).forEach(id => {
+          if (alertMarkers[id]) alertMarkers[id].setMap(null);
+        });
+        alertMarkers = {};
+        currentAlertPhones.clear();
+        if (window.speechSynthesis) window.speechSynthesis.cancel();
+        updateAlertPanel();
+        renderMapData();
+      }
+    });
+    btn113.addEventListener('mouseover', () => {
+      if (btn113.dataset.active !== 'true') btn113.style.background = '#a00000';
+    });
+    btn113.addEventListener('mouseout', () => {
+      if (btn113.dataset.active !== 'true') btn113.style.background = '#bd0000';
+    });
+  }
+
+  // Cancel routing button
+  document.getElementById('btnCancelRouting')?.addEventListener('click', cancelTwoPointRouting);
 }
 
-// ── OSRM ROUTING FUNCTIONS ───────────────────────────────────
+// ── OSRM ROUTING FUNCTIONS ────────────────────────────────────────────
+
+let routeMarkersList = []; // All A/B markers
+
+function toggleRouteMode() {
+  if (!map) {
+    alert('Bản đồ chưa sẵn sàng.');
+    return;
+  }
+  isRoutingMode = !isRoutingMode;
+  const btn = document.getElementById('btnToggleRoute');
+
+  if (isRoutingMode) {
+    selectedPoints = [];
+    clearRouteMarkers();
+    clearRoute();
+    map.setOptions({ draggableCursor: 'crosshair' });
+    if (btn) {
+      btn.style.background = 'rgba(37,99,235,0.85)';
+      btn.style.color = '#fff';
+      btn.innerHTML = '<i data-lucide="navigation" class="h-5 w-5"></i>';
+      if (window.lucide) window.lucide.createIcons();
+    }
+    updateRoutingStatus('start');
+  } else {
+    map.setOptions({ draggableCursor: null });
+    if (btn) {
+      btn.style.background = '';
+      btn.style.color = '';
+      btn.innerHTML = '<i data-lucide="navigation" class="h-5 w-5"></i>';
+      if (window.lucide) window.lucide.createIcons();
+    }
+    const status = document.getElementById('routingStatus');
+    if (status && selectedPoints.length < 2) status.style.display = 'none';
+  }
+}
+window.toggleRouteMode = toggleRouteMode;
+
+function updateRoutingStatus(step) {
+  let statusEl = document.getElementById('routingStatus');
+  if (!statusEl) {
+    // Tạo nếu chưa có
+    statusEl = document.createElement('div');
+    statusEl.id = 'routingStatus';
+    statusEl.style.cssText = 'position:absolute;bottom:14px;left:50%;transform:translateX(-50%);z-index:50;background:#fff;border:1.5px solid #bd0000;border-radius:8px;padding:7px 16px;font-size:12px;font-weight:600;color:#bd0000;box-shadow:0 2px 8px rgba(0,0,0,0.15);white-space:nowrap;pointer-events:none;';
+    document.querySelector('.map-shell')?.appendChild(statusEl);
+  }
+  if (step === 'start') {
+    statusEl.style.display = 'block';
+    statusEl.innerHTML = '📍 Bấm điểm <strong>xuất phát (A)</strong> trên bản đồ';
+  } else if (step === 'end') {
+    statusEl.style.display = 'block';
+    statusEl.innerHTML = '🏁 Bấm điểm <strong>đích (B)</strong> trên bản đồ';
+  } else if (step === 'done') {
+    statusEl.style.display = 'none';
+  }
+}
+
+function clearRouteMarkers() {
+  routeMarkersList.forEach(m => m.setMap(null));
+  routeMarkersList = [];
+  // Legacy markers
+  if (routeMarker1) { routeMarker1.setMap(null); routeMarker1 = null; }
+  if (routeMarker2) { routeMarker2.setMap(null); routeMarker2 = null; }
+}
+
+function cancelTwoPointRouting() {
+  isRoutingMode = false;
+  selectedPoints = [];
+  clearRouteMarkers();
+  clearRoute();
+  activeRouteFacilityId = null;
+  if (map) map.setOptions({ draggableCursor: null });
+  const btn = document.getElementById('btnToggleRoute');
+  if (btn) { btn.style.background = ''; btn.style.color = ''; }
+  updateRoutingStatus('done');
+}
+window.cancelTwoPointRouting = cancelTwoPointRouting;
+
+// routeToFacility: giữ tương thích ngược - gọi toggleRouteMode() thay vì dùng vị trí cố định
 function routeToFacility(facilityId) {
-  const facility = findFacility(facilityId);
-  if (!facility) return;
-
-  const start = { lat: 20.2506, lng: 105.9745 }; // Vị trí hiện tại mặc định ở Ninh Bình
-  const end = facility.position;
-
-  drawRoute(start, end);
-
-  // Toggle display of buttons
-  const routeBtnGisPopup = document.getElementById('btnRouteGisPopup');
-  if (routeBtnGisPopup) routeBtnGisPopup.style.display = 'none';
-
-  const clearBtnGisPopup = document.getElementById('btnCancelRouteGisPopup');
-  if (clearBtnGisPopup) clearBtnGisPopup.style.display = 'flex';
-
-  const routeBtnDetail = document.getElementById('btnRouteDetail');
-  if (routeBtnDetail) routeBtnDetail.style.display = 'none';
-
-  const clearBtnDetail = document.getElementById('btnCancelRouteDetail');
-  if (clearBtnDetail) clearBtnDetail.style.display = 'inline-flex';
+  toggleRouteMode();
 }
 window.routeToFacility = routeToFacility;
 
 function clearRouteFromDetail() {
-  clearRoute();
-
-  const routeBtnGisPopup = document.getElementById('btnRouteGisPopup');
-  if (routeBtnGisPopup) routeBtnGisPopup.style.display = 'flex';
-
-  const clearBtnGisPopup = document.getElementById('btnCancelRouteGisPopup');
-  if (clearBtnGisPopup) clearBtnGisPopup.style.display = 'none';
-
-  const routeBtnDetail = document.getElementById('btnRouteDetail');
-  if (routeBtnDetail) routeBtnDetail.style.display = 'inline-flex';
-
-  const clearBtnDetail = document.getElementById('btnCancelRouteDetail');
-  if (clearBtnDetail) clearBtnDetail.style.display = 'none';
+  cancelTwoPointRouting();
 }
 window.clearRouteFromDetail = clearRouteFromDetail;
+
 
 function drawRoute(start, end) {
   if (currentPolyline) {
     currentPolyline.setMap(null);
+    currentPolyline = null;
   }
-  
+
   const url = `https://router.project-osrm.org/route/v1/driving/${start.lng},${start.lat};${end.lng},${end.lat}?overview=full&geometries=geojson`;
-  
+
   fetch(url)
     .then(response => response.json())
     .then(data => {
-      if (data.code !== "Ok") {
-        console.error("OSRM routing error:", data);
+      if (data.code !== 'Ok') {
+        console.error('OSRM routing error:', data);
+        const status = document.getElementById('routingStatus');
+        if (status) status.innerHTML = `<i data-lucide="alert-triangle" class="h-3 w-3" style="display:inline;"></i> Không tìm được đường đi`;
+        if (window.lucide) window.lucide.createIcons();
         return;
       }
-      const coordinates = data.routes[0].geometry.coordinates;
-      const path = coordinates.map(coord => ({
-        lat: coord[1],
-        lng: coord[0]
-      }));
+      const route = data.routes[0];
+      const coordinates = route.geometry.coordinates;
+      const path = coordinates.map(coord => ({ lat: coord[1], lng: coord[0] }));
+
       currentPolyline = new google.maps.Polyline({
-        path: path,
+        path,
         geodesic: true,
-        strokeColor: "#bd0000",
-        strokeOpacity: 0.8,
+        strokeColor: '#bd0000',
+        strokeOpacity: 0.85,
         strokeWeight: 5
       });
       currentPolyline.setMap(map);
+
+      // Hiển thị khoảng cách và thời gian
+      const distKm = (route.distance / 1000).toFixed(1);
+      const durMin = Math.round(route.duration / 60);
+      const status = document.getElementById('routingStatus');
+      if (status) {
+        status.innerHTML = `<i data-lucide="route" class="h-3 w-3" style="display:inline;"></i> ≈ ${distKm} km &bull; ${durMin} phút lái xe`;
+      }
+      if (window.lucide) window.lucide.createIcons();
+
+      // Fit bản đồ vào route
+      const routeBounds = new google.maps.LatLngBounds();
+      path.forEach(p => routeBounds.extend(p));
+      map.fitBounds(routeBounds, { top: 80, right: 40, bottom: 60, left: 40 });
     })
-    .catch(error => {
-      console.error("Fetch OSRM error:", error);
-    });
+    .catch(error => console.error('Fetch OSRM error:', error));
 }
 
 function clearRoute() {
@@ -2395,37 +2599,100 @@ function initVoiceSearch() {
 
 // ── EMERGENCY ALERTS SIMULATOR ───────────────────────────────
 function runAlertSimulator() {
-  // Simulate alert after 5 seconds
-  setTimeout(() => {
-    triggerMockAlert('karaoke-hoa-sen', "Đang có báo động tại Karaoke Hoa Sen! Địa chỉ: 123 Trần Hưng Đạo, P. Đông Thành");
-  }, 5000);
+  window._alertTimers = window._alertTimers || [];
+  window._animatedAlertCircles = window._animatedAlertCircles || [];
 
-  // Simulate another alert after 25 seconds
-  setTimeout(() => {
-    triggerMockAlert('cam-do-phat-loc', "Đang có báo động tại Cầm đồ Phát Lộc! Địa chỉ: 17 Lương Văn Tụy, P. Tân Thành");
+  const t1 = setTimeout(() => {
+    triggerMockAlert('karaoke-hoa-sen', 'Có sự cố tại Karaoke Hoa Sen! Địa chỉ: 123 Trần Hưng Đạo, P. Đông Thành');
+    const btn113 = document.getElementById('btnDemo113');
+    const btn113Label = document.getElementById('btnDemo113Label');
+    if (btn113 && btn113Label && btn113.dataset.active === 'true') {
+      btn113Label.textContent = 'Tắt Báo động 113';
+    }
+  }, 5000);
+  window._alertTimers.push(t1);
+
+  const t2 = setTimeout(() => {
+    triggerMockAlert('cam-do-phat-loc', 'Có sự cố tại Cầm đồ Phát Lộc! Địa chỉ: 17 Lương Văn Tụy, P. Tân Thành');
   }, 25000);
+  window._alertTimers.push(t2);
 }
 
 function triggerMockAlert(facilityId, message) {
   const facility = findFacility(facilityId);
   if (!facility) return;
 
-  facility.status = 'purple'; // "Có vi phạm/Rủi ro cao", shows pulsing red dot
+  const isFirstAlert = facilities.filter(f => f.hasAlert).length === 0;
+
+  facility.status = 'purple';
   facility.hasAlert = true;
   facility.alertMessage = message;
 
+  if (map) {
+    if (isFirstAlert) {
+      map.panTo(facility.position);
+      map.setZoom(15);
+    }
+  }
+
   if (map && !alertCircles[facilityId]) {
+    // Vòng cảnh báo chính - giống style radius drawing
     const circle = new google.maps.Circle({
-      strokeColor: "#FF0000",
-      strokeOpacity: 0.8,
-      strokeWeight: 2,
-      fillColor: "#FF0000",
-      fillOpacity: 0.15,
-      map: map,
+      strokeColor: '#d00000',
+      strokeOpacity: 0.9,
+      strokeWeight: 2.5,
+      fillColor: '#d00000',
+      fillOpacity: 0.12,
+      map,
       center: facility.position,
-      radius: 500
+      radius: 900
     });
     alertCircles[facilityId] = circle;
+
+    // GIF cảnh báo tại tâm cơ sở
+    if (!alertMarkers[facilityId]) {
+      alertMarkers[facilityId] = new google.maps.Marker({
+        map,
+        position: facility.position,
+        icon: {
+          url: '../public/Alert.gif',
+          scaledSize: new google.maps.Size(72, 72),
+          anchor: new google.maps.Point(36, 36)
+        },
+        zIndex: 1000,
+        clickable: false
+      });
+    }
+
+    // Vòng pulse ngoài (lớn hơn, mờ hơn) – hiệu ứng pulsing
+    window._animatedAlertCircles = window._animatedAlertCircles || [];
+    const outerCircle = new google.maps.Circle({
+      strokeColor: '#ff0000',
+      strokeOpacity: 0.45,
+      strokeWeight: 1.5,
+      fillColor: '#ff0000',
+      fillOpacity: 0.04,
+      map,
+      center: facility.position,
+      radius: 1400
+    });
+    window._animatedAlertCircles.push(outerCircle);
+
+    // Animate: mở rộng / thu nhỏ stroke opacity
+    let expanding = true;
+    const animInterval = setInterval(() => {
+      // Kiểm tra nếu circle đã bị xóa
+      if (!alertCircles[facilityId]) { clearInterval(animInterval); outerCircle.setMap(null); return; }
+      const opacity = outerCircle.get('strokeOpacity');
+      if (expanding) {
+        outerCircle.setOptions({ strokeOpacity: Math.min(0.7, opacity + 0.05), fillOpacity: Math.min(0.1, outerCircle.get('fillOpacity') + 0.005) });
+        if (opacity >= 0.68) expanding = false;
+      } else {
+        outerCircle.setOptions({ strokeOpacity: Math.max(0.1, opacity - 0.05), fillOpacity: Math.max(0.02, outerCircle.get('fillOpacity') - 0.005) });
+        if (opacity <= 0.12) expanding = true;
+      }
+    }, 80);
+    window._animatedAlertCircles.push({ setMap: (m) => { clearInterval(animInterval); outerCircle.setMap(m); } });
   }
 
   currentAlertPhones.add(facility.phone);
@@ -2452,19 +2719,31 @@ function updateAlertPanel() {
   }
 
   content.innerHTML = alertingFacilities.map(f => `
-    <article class="p-3 bg-red-50 border border-red-200 rounded-lg space-y-1 relative" data-phone="${f.phone}">
-      <h4 class="font-bold text-red-800 text-sm">${escapeHTML(f.name)}</h4>
-      <p class="text-xs text-red-700 flex items-center gap-1">
+    <article class="p-3 bg-red-50 border border-red-200 rounded-lg space-y-1 relative" data-phone="${f.phone}" data-facility-id="${f.id}" style="cursor:pointer;" title="Nhấp để xem trên bản đồ">
+      <h4 class="font-bold text-red-800 text-sm pointer-events-none">${escapeHTML(f.name)}</h4>
+      <p class="text-xs text-red-700 flex items-center gap-1 pointer-events-none">
         <i data-lucide="phone" class="h-3 w-3"></i> ${escapeHTML(f.phone)}
       </p>
-      <p class="text-xs text-red-600 flex items-center gap-1">
+      <p class="text-xs text-red-600 flex items-center gap-1 pointer-events-none">
         <i data-lucide="map-pin" class="h-3 w-3"></i> ${escapeHTML(f.address)}
       </p>
-      <button class="mt-2 w-full py-1 bg-red-600 hover:bg-red-700 text-white rounded text-xs font-bold transition-colors" onclick="acknowledgeAlert('${f.id}')">
+      <button class="mt-2 w-full py-1 bg-red-600 hover:bg-red-700 text-white rounded text-xs font-bold transition-colors" onclick="event.stopPropagation();acknowledgeAlert('${f.id}')">
         Đã tiếp nhận
       </button>
     </article>
   `).join('');
+
+  // Click on article → pan map to facility
+  content.querySelectorAll('article[data-facility-id]').forEach(el => {
+    el.addEventListener('click', () => {
+      const fid = el.dataset.facilityId;
+      if (!fid || !map) return;
+      const fac = findFacility(fid);
+      if (!fac) return;
+      map.panTo(fac.position);
+      map.setZoom(15);
+    });
+  });
 
   panel.style.opacity = '1';
   panel.style.transform = 'scale(1)';
@@ -2588,10 +2867,15 @@ function acknowledgeAlert(facilityId) {
 
   facility.status = 'green';
   facility.hasAlert = false;
-  
+
   if (alertCircles[facilityId]) {
     alertCircles[facilityId].setMap(null);
     delete alertCircles[facilityId];
+  }
+
+  if (alertMarkers[facilityId]) {
+    alertMarkers[facilityId].setMap(null);
+    delete alertMarkers[facilityId];
   }
 
   currentAlertPhones.delete(facility.phone);
