@@ -1,0 +1,761 @@
+@using core.data
+@model DataFilter
+@{
+    ViewData["Title"] = "HỆ THỐNG TỔNG ĐÀI 113 - BẢN ĐỒ ĐỊA ĐIỂM";
+    Layout = "~/Views/Shared/_NKT_FE.cshtml";
+    //if (Session["SESSION_FULLNAME"] == null)
+    //{
+    //            Response.Redirect(new Uri(Request.Url, Url.Action("Login", "Accounts")).ToString());
+    //}
+}
+@* <audio controls="controls">
+        <source src="~/audio/canhbao.mp3" type="audio/mpeg" />
+    </audio> *@
+<link href="~/css/site.css" rel="stylesheet" />
+<div id="alert-panel" style="
+    display: none;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    width: 350px;
+    background: #fff;
+    border: 2px solid red;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+">
+    <div id="alert-content"></div>
+
+</div>
+<div>
+    <button id="toggleRoute" class="btn btn-white"
+            title="Chỉ đường"
+            style="position: fixed; bottom: 165px; right: 25px; z-index: 1000; width: 40px; height: 40px; border-radius: 50%; padding: 0; font-size: 24px; display: flex; align-items: center; justify-content: center; background-color: #4CAF50; color: white; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);">
+        <i class="fas fa-map-signs"></i>
+    </button>
+    <span id="isRoutingValue" hidden>0</span>
+
+</div>
+
+<div>
+    <button id="clearRoute" class="btn btn-white"
+            title="Xóa chỉ đường"
+            style="position: fixed; bottom: 235px; right: 25px; z-index: 1000; width: 40px; height: 40px; border-radius: 50%; padding: 0; font-size: 24px; display: flex; align-items: center; justify-content: center; background-color: #F44336; color: white; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);">
+        <i class="fas fa-eraser"></i>
+    </button>
+</div>
+@Html.Raw("<script src='https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js'></script>")
+
+<section class="ctmap">
+    <article class="mapbs">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12 col-xs-12">
+                    <div class="mapmt">
+                        <div id="map"></div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header" role="tab" id="headingTwo">
+                            <h5 class="mb-0">
+                                <a class="collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    Thanh tìm kiếm
+                                </a>
+                            </h5>
+                        </div>
+                        <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion" style="height: 0px;">
+                            <div class="card-body">
+                                <div class="bts">
+                                    <h3><i class="fa fa-map"></i>BẢN ĐỒ ĐỊA ĐIỂM</h3>
+                                    <div class="selectxnk">
+                                        <select id="maTinh" name="maTinh" class="form-control select2" style="width: 100%;">
+                                            @foreach (var item in Model.arrTinhTP)
+                                            {
+                                                <option value="@item.Id">@string.Format("{0}.{1}", item.Id, item.Ten)</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="selectxnk">
+                                        <select id="maHuyen" name="maHuyen" class="form-control select2" style="width: 100%;" onchange="javascript:loadPhuongXa();">
+                                            <option selected="selected" value="-1">Quận/Huyện</option>
+                                            @foreach (var item in Model.arrQuanHuyen)
+                                            {
+                                                <option value="@item.Id">@string.Format("{0}.{1}", item.Id, item.Ten)</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="selectxnk">
+                                        <select id="maXa" name="maXa" class="form-control select2" style="width: 100%;" onchange="javascript:initMap();">
+                                            <option selected="selected" value="-1">Phường/Xã</option>
+                                            @foreach (var item in Model.arrXaPhuong)
+                                            {
+                                                <option value="@item.Id">@string.Format("{0}.{1}", item.Id, item.Ten)</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="selectxnk">
+                                        <select id="IdLoaiDiaDiem" name="IdLoaiDiaDiem" class="form-control select2" style="width: 100%;" onchange="javascript:initMap();">
+                                            <option selected="selected" value="-1">Loại địa điểm</option>
+                                            @foreach (var item in Model.arrLoaiDiaDiem)
+                                            {
+                                                <option value="@item.Id">@string.Format("{0}.{1}", item.Id, item.Ten)</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="selectxnk" style="display:none;">
+                                        <select id="TrangThai" name="TrangThai" class="form-control select2 nam" style="width: 100%;" onchange="javascript:initMap();">
+                                            <option selected="selected" value="-1">Chọn trạng thái</option>
+                                            <option value="1">Mở khóa địa điểm</option>
+                                            <option value="0">Khóa địa điểm</option>
+                                        </select>
+                                    </div>
+                                    <div class="inputxnk">
+                                        <input class="input-text form-control" type="text" id="txtKeyword" value="" placeholder="Số ĐT, mã đơn vị, tên...">
+                                        <span class="clear-button" id="clearBtn" style="display: none; font-size: 50px;">&times;</span>
+                                    </div>
+                                    <div style="display: flex; gap: 10px; margin-top: 10px; align-items: center;">
+                                        <a class="btn btsearch d-flex align-items-center" onclick="initMap();" style="padding: 10px 20px; font-size: 16px; border-radius: 4px;">
+                                            <i class="fa fa-search me-2"></i> Tìm kiếm thông tin
+                                        </a>
+
+                                        <a class="btn btsearch d-flex align-items-center justify-content-center" id="btnVoice" style="padding: 10px 20px; font-size: 16px; border-radius: 4px;">
+                                            <i class="fa fa-microphone"></i>
+                                        </a>
+                                    </div>
+                                    <div class="inputxnk" style="display:none">
+                                        <audio id="myAudio">
+                                            <source src="/audio/canhbao.mp3" type="audio/mp3" preload="auto">
+                                        </audio>
+                                        <button id="btnClick" onclick="playAudio()">Play Audio</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </article>
+</section>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA9oDzJjHCZH4iVCowyZ-UR9eG6X4qFpGY&callback=initMap&libraries=places" async defer></script>
+<script>
+    $(document).ready(function () {
+        $('.select2').select2();
+        setInterval(function () {
+            loadData();
+        }, 3000);
+
+    });
+
+
+    function loadPhuongXa() {
+        var maHuyen = $("#maHuyen").val();
+        $("#maXa").empty();
+        $("#maXa").append("<option value='-1'>Phường/Xã</option>");
+        var maTinh = $("#maTinh").val();
+        $.ajax({
+            url: "/Home/DM_XaPhuong_GetAll",
+            data: {
+                maTinh: maTinh,
+                maHuyen: maHuyen
+            },
+            complete: function () {
+            },
+            success: function (rs) {
+                //console.log(rs.data);
+                $.each(rs.data, function (index) {
+                    var item = rs.data[index];
+                    var option = "<option value='" + item.Id + "'>" + item.Ten + "</option>";
+                    $("#maXa").append(option);
+                });
+            },
+            error: function (e) {
+            }
+        });
+
+        initMap();
+    }
+
+    let map;
+    var features = [];
+    var _lat = 20.558011;
+    var _lng = 105.9856871;
+    var activeInfoWindow;
+    var countDiaDiem = 0;
+    let alertHtml = "";
+    var oldAlertIds = [];
+    let isRouting = 0;
+    let isSearchVoice = 0;
+    let oldInputText = "";
+    let selectedPoints = [];
+    let selectedPoints1 = [];
+    let currentInfoWindow;
+    var alertCircles = {};
+    var oldId = [];
+    var newId = [];
+    oldId.push(-1);
+    const inputKeyword = document.getElementById("txtKeyword");
+    let isFirstVoiceSearch = true;
+
+    function loadData() {
+
+        var iconMapOpen = {
+            map1: {
+                url: "/images/113bank.png",
+                scaledSize: new google.maps.Size(32, 32),
+                shadow: true,
+                origin: new google.maps.Point(0, 0),
+                anchor: new google.maps.Point(30, 30)
+            },
+            map2: {
+                url: "/images/113gold.png",
+                scaledSize: new google.maps.Size(32, 32),
+                shadow: true,
+                origin: new google.maps.Point(0, 0),
+                anchor: new google.maps.Point(30, 30)
+            },
+            map3: {
+                url: "/images/113CS.png",
+                scaledSize: new google.maps.Size(35, 35),
+                shadow: true,
+                origin: new google.maps.Point(0, 0),
+                anchor: new google.maps.Point(30, 30)
+            },
+            map4: {
+                url: "/images/113hp.png",
+                scaledSize: new google.maps.Size(32, 32),
+                shadow: true,
+                origin: new google.maps.Point(0, 0),
+                anchor: new google.maps.Point(30, 30)
+            },
+            map5: {
+                url: "/images/113114.png",
+                scaledSize: new google.maps.Size(32, 32),
+                shadow: true,
+                origin: new google.maps.Point(0, 0),
+                anchor: new google.maps.Point(30, 30)
+            },
+        };
+        $.ajax({
+            url: "/Home/GetMap",
+            data: {
+                maTinh: $("#maTinh").val(),
+                maHuyen: $("#maHuyen").val(),
+                maXa: $("#maXa").val(),
+                IdLoaiDiaDiem: $("#IdLoaiDiaDiem").val(),
+                TrangThai: $("#TrangThai").val(),
+                key: $("#txtKeyword").val()
+            },
+            //async: false,
+            complete: function () {
+            },
+            success: function (rs) {
+                newId = [];
+                features = [];
+                var alertItems = [];
+                //console.log(rs);
+                $.each(rs.result, function (index) {
+                    var item = rs.result[index];
+                    //console.log(item);
+                    var content = "<article class=\"ttdn\"><h2>" + item.Ten + "</h2><p class=\"sp2\"><i class=\"fa fa-phone-square\"></i> " + item.SoDienThoai + "</p><p class=\"sp2\"><i class=\"fa fa-envelope\"></i> " + item.Email + "</p><p class=\"sp3\"><i class=\"fa fa-map-marker\"></i>" + item.DiaChi + "</p></article>";
+                    if (item.SoCuocGoi > 0) {
+                        alertItems.push(item);
+                        //    const text = `Có báo động tại ${item.Ten}, địa chỉ là ${item.DiaChi}`;
+                        //    enqueueSpeech(text, item.SoDienThoai);
+                    }
+                    var obj =
+                    {
+                        position: new google.maps.LatLng(item.Lat, item.Lng),
+                        content: content,
+                        count: item.SoCuocGoi
+                    }
+                    if (item.IdLoaiDiaDiem == 1)
+                        obj.icon = iconMapOpen.map1;
+                    else if (item.IdLoaiDiaDiem == 2)
+                        obj.icon = iconMapOpen.map2;
+                    else if (item.IdLoaiDiaDiem == 3)
+                        obj.icon = iconMapOpen.map3;
+                    else if (item.IdLoaiDiaDiem == 4)
+                        obj.icon = iconMapOpen.map4;
+                    else if (item.IdLoaiDiaDiem == 5)
+                        obj.icon = iconMapOpen.map5;
+                    features.push(obj);
+                    if (item.SoCuocGoi > 0) {
+                        obj.icon = {
+                            url: "/images/Alert.gif",
+                            scaledSize: new google.maps.Size(40, 40),
+                            anchor: new google.maps.Point(20, 20)
+                        };
+                        newId.push(item.Id);
+                        showAlertCircle(item);
+                    }
+                });
+                _lat = parseFloat(rs.lat); _lng = parseFloat(rs.lng);
+                //var isSame = JSON.stringify(oldAlertIds) === JSON.stringify(newId);
+
+                //if (newId.length === 0) {
+                //    document.getElementById("alert-panel").style.display = "none";
+                //    oldAlertIds = [];
+                //} else if (!isSame) {
+                //    document.getElementById("alert-panel").style.display = "block";
+                //    document.getElementById("alert-content").innerHTML = alertHtml;
+                //    oldAlertIds = [...newId];
+                //}
+                updateAlerts(alertItems);
+                initMap();
+                setTimeout(function () { isSearchVoice = 0; }, 0);
+            },
+            error: function (e) {
+            }
+        });
+    }
+
+    function initMap(type = 0) {
+        //console.log(isSearchVoice);
+        //console.log("initmap called with:", inputKeyword.value);
+        var checkNew = false;
+        var _zoom = 12;
+        let shouldRender = false;
+
+        //console.log(oldId);
+        //console.log(isFirstVoiceSearch);
+
+        if (JSON.stringify(oldId) !== JSON.stringify(newId)) {
+            newId.forEach(_new => {
+                if (!oldId.includes(_new)) checkNew = true;
+            });
+            oldId = [...newId];
+            shouldRender = true;
+        }
+        else if (countDiaDiem !== features.length) {
+            oldId = [...newId];
+            countDiaDiem = features.length;
+            shouldRender = true;
+        }
+        else if (isSearchVoice === 1) {
+            if (isFirstVoiceSearch) {
+                oldInputText = inputKeyword.value;
+                isFirstVoiceSearch = false;
+                shouldRender = true;
+            }
+            else if (oldInputText !== inputKeyword.value) {
+                oldInputText = inputKeyword.value;
+                shouldRender = true;
+            }
+        }
+        if (!shouldRender) return;
+
+        if (_lat != "20.8498289" && _lng != "106.6877922")
+            _zoom = 17;
+
+        const mapOptions = {
+            zoom: _zoom,
+            center: { lat: _lat, lng: _lng },
+        };
+
+        map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+        const markers = [];
+
+        for (let i = 0; i < features.length; i++) {
+            const marker = new google.maps.Marker({
+                position: features[i].position,
+                icon: features[i].icon,
+                map: map
+            });
+            const infowindow = new google.maps.InfoWindow({
+                content: features[i].content,
+            });
+            if (isSearchVoice === 1) {
+                infowindow.open(map, marker);
+            }
+
+            google.maps.event.addListener(marker, "click", () => {
+                //if (isSearchVoice === 1) return;
+                if (isRouting === 0 && isSearchVoice === 0) {
+                    if (currentInfoWindow) {
+                        currentInfoWindow.close();
+                    }
+                    infowindow.open(map, marker);
+                    currentInfoWindow = infowindow;
+                    return;
+                }
+
+                const pos = marker.getPosition();
+                const latLng = { lat: pos.lat(), lng: pos.lng() };
+
+                if (selectedPoints.length === 2) {
+                    selectedPoints = [];
+                }
+
+                selectedPoints.push(latLng);
+
+                if (selectedPoints.length === 2) {
+                    drawRoute(selectedPoints[0], selectedPoints[1]);
+                    isRouting = 0;
+                    document.getElementById('toggleRoute').style.backgroundColor = '#4CAF50';
+                }
+            });
+
+            google.maps.event.addListener(marker, "rightclick", () => {
+                const pos1 = marker.getPosition();
+                const latLng1 = { lat: pos1.lat(), lng: pos1.lng() };
+                if (selectedPoints1.length === 2) {
+                    selectedPoints1 = [];
+                }
+                selectedPoints1.push(latLng1);
+                if (selectedPoints1.length === 2) {
+                    drawRoute(selectedPoints1[0], selectedPoints1[1]);
+                }
+            });
+
+            markers.push(marker);
+        }
+        new markerClusterer.MarkerClusterer({
+            markers: markers,
+            map: map,
+            gridSize: 100,
+            maxZoom: 16,
+            averageCenter: true,
+        });
+        if (checkNew)
+            $('#btnClick').trigger('click');
+        //playAudio();
+    }
+    function updateCuocGoi(soDienThoai) {
+        //clearSpeechQueueByPhone(soDienThoai);
+        var pdata = {};
+        pdata.SoDienThoai = soDienThoai;
+        //console.log(pdata);
+        $.post("/Home/UpdateCuocGOi", { obj: pdata }, function (data) {
+            $(`#alert-content article[data-phone='${soDienThoai}']`).remove();
+            //removeCircleByPhone(soDienThoai);
+            //currentAlertPhones.delete(soDienThoai);
+
+            if (currentAlertPhones.size === 0) {
+                $("#alert-panel").hide();
+            }
+            loadData();
+        });
+
+    }
+    function playAudio() {
+        // var audio = $("#myAudio")[0];
+        // audio.play();
+        var audio = new Audio();
+        audio.src = '/audio/canhbao.mp3';
+        // when the sound has been loaded, execute your code
+        audio.oncanplaythrough = (event) => {
+            var playedPromise = audio.play();
+            if (playedPromise) {
+                playedPromise.catch((e) => {
+                    //console.log(e)
+                    if (e.name === 'NotAllowedError' || e.name === 'NotSupportedError') {
+                        //console.log(e.name);
+                    }
+                }).then(() => {
+                    //console.log("playing sound !!!");
+                });
+            }
+        }
+    }
+    document.getElementById('toggleRoute').addEventListener('click', function () {
+        //console.log(this);
+        isRouting = isRouting === 0 ? 1 : 0;
+        document.getElementById('isRoutingValue').textContent = isRouting;
+
+        if (isRouting === 1) {
+            this.style.backgroundColor = '#2196F3';
+        } else {
+            this.style.backgroundColor = '#4CAF50';
+        }
+    });
+    document.getElementById('clearRoute').addEventListener('click', function () {
+        clearRoute();
+    });
+
+
+
+    function drawRoute(start, end) {
+        if (window.currentPolyline) {
+            window.currentPolyline.setMap(null);
+        }
+        const url = `https://router.project-osrm.org/route/v1/driving/${start.lng},${start.lat};${end.lng},${end.lat}?overview=full&geometries=geojson`;
+        //console.log("Start:", start, "End:", end);
+        //console.log("OSRM URL:", url);
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                if (data.code !== "Ok") {
+                    console.error("OSRM routing error:", data);
+                    return;
+                }
+                const coordinates = data.routes[0].geometry.coordinates;
+                const path = coordinates.map(coord => ({
+                    lat: coord[1],
+                    lng: coord[0]
+                }));
+                const polyline = new google.maps.Polyline({
+                    path: path,
+                    geodesic: true,
+                    strokeColor: "#FF0000",
+                    strokeOpacity: 0.8,
+                    strokeWeight: 5
+                });
+                polyline.setMap(map);
+                window.currentPolyline = polyline;
+            })
+            .catch(error => {
+                console.error("Fetch OSRM error:", error);
+            });
+    }
+
+    function clearRoute() {
+        if (window.currentPolyline) {
+            window.currentPolyline.setMap(null);
+            window.currentPolyline = null;
+        }
+    }
+
+    const btnVoice = document.getElementById("btnVoice");
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+        btnVoice.disabled = true;
+        btnVoice.title = "Trình duyệt không hỗ trợ nhận dạng giọng nói.";
+    } else {
+        const recognition = new SpeechRecognition();
+        recognition.lang = "vi-VN";
+
+        btnVoice.addEventListener("click", () => {
+            recognition.start();
+            btnVoice.innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
+        });
+
+        recognition.onresult = function (event) {
+            let transcript = event.results[0][0].transcript;
+            transcript = transcript.replace(/[.,!?;:]/g, '');
+            transcript = transcript.trim();
+            transcript = transcript.toLowerCase();
+            inputKeyword.value = transcript;
+            btnVoice.innerHTML = '<i class="fa fa-microphone"></i>';
+            isSearchVoice = 1;
+            //console.log("Calling initMap()");
+            loadData();
+        };
+
+        recognition.onerror = function () {
+            btnVoice.innerHTML = '<i class="fa fa-microphone"></i>';
+            alert("Lỗi khi nhận giọng nói. Vui lòng thử lại.");
+        };
+
+        recognition.onend = function () {
+            btnVoice.innerHTML = '<i class="fa fa-microphone"></i>';
+        };
+    }
+
+    function showAlertCircle(item) {
+        const center = { lat: parseFloat(item.Lat), lng: parseFloat(item.Lng) };
+        if (alertCircles[item.Id] && alertCircles[item.Id].circle) {
+            alertCircles[item.Id].circle.setMap(null);
+            delete alertCircles[item.Id];
+        }
+        const circle = new google.maps.Circle({
+            strokeColor: "#FF0000",
+            strokeOpacity: 1,
+            strokeWeight: 2,
+            fillColor: "#FF0000",
+            fillOpacity: 0.1,
+            map: map,
+            center: center,
+            radius: 500
+        });
+
+        alertCircles[item.Id] = {
+            circle: circle,
+            phone: item.SoDienThoai
+        };
+    }
+
+
+    function removeCircleByPhone(phone) {
+        for (let id in alertCircles) {
+            if (alertCircles[id].phone === phone) {
+                if (alertCircles[id].pulse) {
+                    clearInterval(alertCircles[id].pulse);
+                }
+                alertCircles[id].circle.setMap(null);
+                delete alertCircles[id];
+            }
+        }
+    }
+    let currentAlertPhones = new Set();
+
+    function updateAlerts(alertItems) {
+        const alertPanel = $("#alert-panel");
+        const alertContent = $("#alert-content");
+
+        const newPhones = new Set(alertItems.map(item => item.SoDienThoai));
+
+        currentAlertPhones.forEach(phone => {
+            if (!newPhones.has(phone)) {
+                $(`#alert-content article[data-phone='${phone}']`).remove();
+                currentAlertPhones.delete(phone);
+            }
+        });
+
+        alertItems.forEach(item => {
+            if (!currentAlertPhones.has(item.SoDienThoai)) {
+                const content = `
+            <article class="ttdn" data-phone="${item.SoDienThoai}">
+                <h2>Đang có báo động tại: ${item.Ten}</h2>
+                <p class="sp2"><i class="fa fa-phone-square"></i> ${item.SoDienThoai}</p>
+                <p class="sp2"><i class="fa fa-envelope"></i> ${item.Email}</p>
+                <p class="sp3"><i class="fa fa-map-marker"></i> ${item.DiaChi}</p>
+                <a class="viewdt" href="#" onclick="updateCuocGoi('${item.SoDienThoai}')">Đã tiếp nhận</a>
+            </article>`;
+                alertContent.append(content);
+                currentAlertPhones.add(item.SoDienThoai);
+            }
+        });
+
+        if (currentAlertPhones.size === 0) {
+            alertPanel.hide();
+        } else {
+            alertPanel.show();
+        }
+    }
+
+    let speechQueue = [];
+    let isSpeaking = false;
+    let currentMsg = null;
+    function enqueueSpeech(text, phone) {
+        const isPhoneKnown = speechQueue.some(msg => msg.phone === phone);
+
+        if (!isPhoneKnown) {
+            const oldPhones = [...new Set(speechQueue.map(msg => msg.phone))];
+
+            const oldMsgs = [];
+            for (const p of oldPhones) {
+                const firstMsg = speechQueue.find(msg => msg.phone === p);
+                if (firstMsg) oldMsgs.push(firstMsg);
+            }
+
+            speechQueue = [];
+
+            if (currentMsg && currentMsg.phone !== phone) {
+                window.speechSynthesis.cancel();
+                currentMsg = null;
+                isSpeaking = false;
+            }
+
+            const newMsg = new SpeechSynthesisUtterance(text);
+            newMsg.textToSpeak = text;
+            newMsg.lang = 'vi-VN';
+            newMsg.phone = phone;
+            newMsg.onend = () => {
+                isSpeaking = false;
+                currentMsg = null;
+                playNextSpeech();
+            };
+            speechQueue.push(newMsg);
+
+            for (const oldMsg of oldMsgs) {
+                if (oldMsg.phone !== phone) {
+                    const replayMsg = new SpeechSynthesisUtterance(oldMsg.textToSpeak);
+                    replayMsg.lang = 'vi-VN';
+                    replayMsg.phone = oldMsg.phone;
+                    replayMsg.onend = () => {
+                        isSpeaking = false;
+                        currentMsg = null;
+                        playNextSpeech();
+                    };
+                    speechQueue.push(replayMsg);
+                }
+            }
+        } else {
+            const msg = new SpeechSynthesisUtterance(text);
+            msg.textToSpeak = text;
+            msg.lang = 'vi-VN';
+            msg.phone = phone;
+            msg.onend = () => {
+                isSpeaking = false;
+                currentMsg = null;
+                playNextSpeech();
+            };
+            speechQueue.push(msg);
+        }
+
+        if (!isSpeaking) {
+            playNextSpeech();
+        }
+    }
+
+    function playNextSpeech() {
+        if (speechQueue.length > 0) {
+            isSpeaking = true;
+            currentMsg = speechQueue.shift();
+            window.speechSynthesis.speak(currentMsg);
+        } else {
+            isSpeaking = false;
+            currentMsg = null;
+        }
+    }
+
+    function clearSpeechQueueByPhone(phone) {
+        speechQueue = speechQueue.filter(msg => msg.phone !== phone);
+    }
+
+    const inputText = document.getElementById("txtKeyword");
+    const clrBtn = document.getElementById("clearBtn");
+
+    inputText.addEventListener('input', () => {
+        clrBtn.style.display = inputText ? 'block' : 'none';
+    })
+
+    clrBtn.addEventListener('click', () => {
+        inputText.value = "";
+        clrBtn.style.display = 'none';
+
+    })
+    let lastValue = inputText.value;
+
+    //setInterval(() => {
+    //    if (inputText.value !== lastValue) {
+    //        lastValue = inputText.value;
+    //        clrBtn.style.display = lastValue ? 'block' : 'none';
+    //    }
+    //}, 100);
+
+</script>
+<style>
+    #alert-content article {
+        margin-bottom: 12px;
+    }
+
+    .inputxnk {
+        position: relative;
+        display: inline-block;
+        width: 325px;
+    }
+
+        .inputxnk input {
+            width: 100%;
+            padding-right: 30px;
+        }
+
+    .clear-button {
+        position: absolute;
+        right: 10px;
+        top: 25px;
+        transform: translateY(-50%);
+        cursor: pointer;
+        font-size: 18px;
+        color: orangered;
+        display: none;
+    }
+</style>
+

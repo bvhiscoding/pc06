@@ -741,9 +741,12 @@
       </label>
       <label class="search-field">
         <span class="sr-only">Tìm kiếm cơ sở</span>
-        <span class="search-wrap">
-          <input id="facilitySearch" type="text" placeholder="Nhập tên cơ sở, địa chỉ..." />
-          <i data-lucide="search" class="h-5 w-5"></i>
+        <span class="search-wrap relative flex items-center">
+          <input id="facilitySearch" type="text" placeholder="Nhập tên cơ sở, địa chỉ..." class="pr-16" />
+          <button type="button" id="btnVoice" class="absolute right-8 text-gray-400 hover:text-[#bd0000] p-1 focus:outline-none transition-colors" title="Tìm kiếm bằng giọng nói">
+            <i data-lucide="mic" class="h-4 w-4"></i>
+          </button>
+          <i data-lucide="search" class="h-5 w-5 absolute right-2 pointer-events-none"></i>
         </span>
       </label>
       <button id="resetFilterBtnPublic" class="advanced-btn" type="button" style="background: rgba(189, 0, 0, 0.08); color: #bd0000; border-color: #bd0000; padding: 0 16px; font-weight: 600;">
@@ -761,11 +764,33 @@
           </div>
         </div>
 
+        <!-- Alert Panel Overlay -->
+        <div id="alert-panel" class="absolute top-4 right-4 z-40 w-80 bg-white border-2 border-red-500 rounded-xl shadow-2xl p-4 transition-all duration-300 transform scale-95 opacity-0 pointer-events-none">
+          <div class="flex items-center justify-between border-b border-red-100 pb-2 mb-2">
+            <div class="flex items-center gap-2 text-red-600 font-bold text-sm">
+              <i data-lucide="bell-ring" class="h-4 w-4 animate-bounce"></i>
+              <span>CẢNH BÁO KHẨN CẤP 113</span>
+            </div>
+            <span class="flex h-2.5 w-2.5 relative">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+            </span>
+          </div>
+          <div id="alert-content" class="max-h-60 overflow-y-auto space-y-3">
+            <!-- Dynamic alerts go here -->
+          </div>
+        </div>
+
+        <audio id="myAudio" preload="auto" class="hidden">
+          <source src="audio/canhbao.mp3" type="audio/mpeg" />
+          <source src="https://actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg" type="audio/ogg" />
+        </audio>
+
         <div class="map-toolbar">
-          <button type="button" data-map-control="zoom-in"><i data-lucide="plus" class="h-6 w-6"></i></button>
-          <button type="button" data-map-control="zoom-out"><i data-lucide="minus" class="h-6 w-6"></i></button>
-          <button type="button" data-map-control="fit"><i data-lucide="scan" class="h-5 w-5"></i></button>
-          <button type="button" data-map-control="locate"><i data-lucide="crosshair" class="h-5 w-5"></i></button>
+          <button type="button" data-map-control="zoom-in" title="Phóng to"><i data-lucide="plus" class="h-6 w-6"></i></button>
+          <button type="button" data-map-control="zoom-out" title="Thu nhỏ"><i data-lucide="minus" class="h-6 w-6"></i></button>
+          <button type="button" data-map-control="fit" title="Xem toàn bộ"><i data-lucide="scan" class="h-5 w-5"></i></button>
+          <button type="button" data-map-control="locate" title="Vị trí mặc định"><i data-lucide="crosshair" class="h-5 w-5"></i></button>
         </div>
 
         <div class="map-layer-menu">

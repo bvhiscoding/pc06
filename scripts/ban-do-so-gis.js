@@ -1272,6 +1272,16 @@ let riskPingOverlays = [];
 let drawingListeners = [];
 let panelRestoreButton;
 
+// State variables for OSRM Routing and Emergency Alerts
+let selectedPoints = [];
+let isRouting = false;
+let currentPolyline = null;
+let alertCircles = {};
+let currentAlertPhones = new Set();
+let speechQueue = [];
+let isSpeaking = false;
+let currentMsg = null;
+
 const baseMapStyles = [
   { featureType: 'poi.business', stylers: [{ visibility: 'off' }] },
   { featureType: 'water', stylers: [{ color: '#a7d5ff' }] },
@@ -1474,7 +1484,9 @@ function renderMarkers(items) {
     marker.facilityId = facility.id;
     markerById.set(facility.id, marker);
     bounds.extend(facility.position);
-    marker.addListener('click', () => openFacilityTooltip(facility));
+    marker.addListener('click', () => {
+      openFacilityTooltip(facility);
+    });
     marker.addListener('mouseover', () => highlightFacility(facility.id, true, false));
     marker.addListener('mouseout', () => highlightFacility(facility.id, false, false));
 
@@ -1643,7 +1655,18 @@ function openFacilityTooltip(facility) {
   els.facilityPopup.querySelector('.popup-status').style.background = `${meta.color}22`;
   els.facilityPopup.querySelector('.popup-status').style.color = meta.color;
   els.facilityPopup.querySelector('.tooltip-type').textContent = `${facility.type} - ${facility.licenseStatus}`;
-  els.facilityPopup.hidden = false;
+  
+  // Toggle inline routing buttons depending on routing state
+  const routeBtnGisPopup = document.getElementById('btnRouteGisPopup');
+  if (routeBtnGisPopup) {
+    routeBtnGisPopup.style.display = currentPolyline ? 'none' : 'flex';
+  }
+  const clearBtnGisPopup = document.getElementById('btnCancelRouteGisPopup');
+  if (clearBtnGisPopup) {
+    clearBtnGisPopup.style.display = currentPolyline ? 'flex' : 'none';
+  }
+
+  els.facilityPopup.style.display = 'flex';
   state.lockToCenter = true;
   positionFacilityPopup(facility.position);
   highlightFacility(facility.id, true, true);
@@ -1656,7 +1679,7 @@ function openFacilityTooltip(facility) {
 }
 
 function hideFacilityTooltip() {
-  els.facilityPopup.hidden = true;
+  els.facilityPopup.style.display = 'none';
   if (state.selectedFacilityId) {
     highlightFacility(state.selectedFacilityId, false, false);
   }
@@ -1711,7 +1734,15 @@ function openFacilitySheet(facility) {
     </section>
     <section class="detail-section">
       <h3>Thao tác</h3>
-      <a class="popup-detail" href="ChiTietHoSo.html?id=${encodeURIComponent(facility.id)}">Mở hồ sơ đầy đủ</a>
+      <div class="flex flex-col gap-2">
+        <a class="popup-detail w-full flex items-center justify-center" href="ChiTietHoSo.html?id=${encodeURIComponent(facility.id)}">Mở hồ sơ đầy đủ</a>
+        <button id="btnRouteDetail" class="popup-detail w-full flex items-center justify-center gap-2 bg-[#bd0000] hover:bg-[#a00000] text-white font-bold py-2 px-4 rounded text-sm transition" style="display: ${currentPolyline ? 'none' : 'inline-flex'};" onclick="routeToFacility('${facility.id}')">
+          <i data-lucide="navigation" class="h-4 w-4"></i> Chỉ đường
+        </button>
+        <button id="btnCancelRouteDetail" class="popup-detail w-full flex items-center justify-center gap-2 bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded text-sm transition" style="display: ${currentPolyline ? 'inline-flex' : 'none'};" onclick="clearRouteFromDetail()">
+          <i data-lucide="trash-2" class="h-4 w-4"></i> Xóa chỉ đường
+        </button>
+      </div>
     </section>
   `;
   openOverlay(els.facilityDetailSheet);
@@ -2010,7 +2041,7 @@ window.initMap = function initMap() {
   map.addListener('dblclick', finishPolygon);
   map.addListener('bounds_changed', () => {
     const facility = findFacility(state.selectedFacilityId);
-    if (facility && !els.facilityPopup.hidden) {
+    if (facility && els.facilityPopup.style.display !== 'none') {
       positionFacilityPopup(facility.position);
     }
   });
@@ -2018,7 +2049,7 @@ window.initMap = function initMap() {
     if (state.lockToCenter) {
       state.lockToCenter = false;
       const facility = findFacility(state.selectedFacilityId);
-      if (facility && !els.facilityPopup.hidden) {
+      if (facility && els.facilityPopup.style.display !== 'none') {
         positionFacilityPopup(facility.position);
       }
     }
@@ -2178,7 +2209,7 @@ function bindEvents() {
 
   window.addEventListener('resize', () => {
     const facility = findFacility(state.selectedFacilityId);
-    if (facility && !els.facilityPopup.hidden) {
+    if (facility && els.facilityPopup.style.display !== 'none') {
       positionFacilityPopup(facility.position);
     }
   });
@@ -2200,7 +2231,376 @@ function bindEvents() {
       }
     }
   });
+
+  // Routing Buttons Event Listeners
+  document.getElementById('btnRouteGisPopup')?.addEventListener('click', () => {
+    const facility = findFacility(state.selectedFacilityId);
+    if (facility) routeToFacility(facility.id);
+  });
+
+  document.getElementById('btnCancelRouteGisPopup')?.addEventListener('click', () => {
+    clearRouteFromDetail();
+  });
 }
+
+// ── OSRM ROUTING FUNCTIONS ───────────────────────────────────
+function routeToFacility(facilityId) {
+  const facility = findFacility(facilityId);
+  if (!facility) return;
+
+  const start = { lat: 20.2506, lng: 105.9745 }; // Vị trí hiện tại mặc định ở Ninh Bình
+  const end = facility.position;
+
+  drawRoute(start, end);
+
+  // Toggle display of buttons
+  const routeBtnGisPopup = document.getElementById('btnRouteGisPopup');
+  if (routeBtnGisPopup) routeBtnGisPopup.style.display = 'none';
+
+  const clearBtnGisPopup = document.getElementById('btnCancelRouteGisPopup');
+  if (clearBtnGisPopup) clearBtnGisPopup.style.display = 'flex';
+
+  const routeBtnDetail = document.getElementById('btnRouteDetail');
+  if (routeBtnDetail) routeBtnDetail.style.display = 'none';
+
+  const clearBtnDetail = document.getElementById('btnCancelRouteDetail');
+  if (clearBtnDetail) clearBtnDetail.style.display = 'inline-flex';
+}
+window.routeToFacility = routeToFacility;
+
+function clearRouteFromDetail() {
+  clearRoute();
+
+  const routeBtnGisPopup = document.getElementById('btnRouteGisPopup');
+  if (routeBtnGisPopup) routeBtnGisPopup.style.display = 'flex';
+
+  const clearBtnGisPopup = document.getElementById('btnCancelRouteGisPopup');
+  if (clearBtnGisPopup) clearBtnGisPopup.style.display = 'none';
+
+  const routeBtnDetail = document.getElementById('btnRouteDetail');
+  if (routeBtnDetail) routeBtnDetail.style.display = 'inline-flex';
+
+  const clearBtnDetail = document.getElementById('btnCancelRouteDetail');
+  if (clearBtnDetail) clearBtnDetail.style.display = 'none';
+}
+window.clearRouteFromDetail = clearRouteFromDetail;
+
+function drawRoute(start, end) {
+  if (currentPolyline) {
+    currentPolyline.setMap(null);
+  }
+  
+  const url = `https://router.project-osrm.org/route/v1/driving/${start.lng},${start.lat};${end.lng},${end.lat}?overview=full&geometries=geojson`;
+  
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      if (data.code !== "Ok") {
+        console.error("OSRM routing error:", data);
+        return;
+      }
+      const coordinates = data.routes[0].geometry.coordinates;
+      const path = coordinates.map(coord => ({
+        lat: coord[1],
+        lng: coord[0]
+      }));
+      currentPolyline = new google.maps.Polyline({
+        path: path,
+        geodesic: true,
+        strokeColor: "#bd0000",
+        strokeOpacity: 0.8,
+        strokeWeight: 5
+      });
+      currentPolyline.setMap(map);
+    })
+    .catch(error => {
+      console.error("Fetch OSRM error:", error);
+    });
+}
+
+function clearRoute() {
+  if (currentPolyline) {
+    currentPolyline.setMap(null);
+    currentPolyline = null;
+  }
+}
+
+// ── VOICE SEARCH FUNCTIONS ───────────────────────────────────
+function initVoiceSearch() {
+  const btnVoice = document.getElementById('btnVoice');
+  const btnVoiceFloating = document.getElementById('btnVoiceFloating');
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  if (!SpeechRecognition) {
+    if (btnVoice) {
+      btnVoice.disabled = true;
+      btnVoice.title = "Trình duyệt không hỗ trợ nhận dạng giọng nói.";
+    }
+    if (btnVoiceFloating) {
+      btnVoiceFloating.disabled = true;
+      btnVoiceFloating.title = "Trình duyệt không hỗ trợ nhận dạng giọng nói.";
+    }
+    return;
+  }
+
+  const recognition = new SpeechRecognition();
+  recognition.lang = "vi-VN";
+
+  const setupMicButton = (btn, searchInput) => {
+    if (!btn || !searchInput) return;
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      try {
+        recognition.start();
+        btn.innerHTML = '<i data-lucide="loader-2" class="h-4 w-4 animate-spin text-red-600"></i>';
+        if (window.lucide) window.lucide.createIcons();
+      } catch (e) {
+        console.error(e);
+      }
+    });
+  };
+
+  setupMicButton(btnVoice, els.legacySearch);
+  setupMicButton(btnVoiceFloating, els.searchFloating);
+
+  recognition.onresult = function (event) {
+    let transcript = event.results[0][0].transcript;
+    transcript = transcript.replace(/[.,!?;:]/g, '').trim().toLowerCase();
+    
+    if (els.legacySearch) els.legacySearch.value = transcript;
+    if (els.searchFloating) els.searchFloating.value = transcript;
+    
+    state.searchQuery = transcript;
+    renderMapData();
+  };
+
+  recognition.onerror = function () {
+    resetIcons();
+  };
+
+  recognition.onend = function () {
+    resetIcons();
+  };
+
+  function resetIcons() {
+    if (btnVoice) {
+      btnVoice.innerHTML = '<i data-lucide="mic" class="h-4 w-4"></i>';
+    }
+    if (btnVoiceFloating) {
+      btnVoiceFloating.innerHTML = '<i data-lucide="mic" class="h-4 w-4"></i>';
+    }
+    if (window.lucide) window.lucide.createIcons();
+  }
+}
+
+// ── EMERGENCY ALERTS SIMULATOR ───────────────────────────────
+function runAlertSimulator() {
+  // Simulate alert after 5 seconds
+  setTimeout(() => {
+    triggerMockAlert('karaoke-hoa-sen', "Đang có báo động tại Karaoke Hoa Sen! Địa chỉ: 123 Trần Hưng Đạo, P. Đông Thành");
+  }, 5000);
+
+  // Simulate another alert after 25 seconds
+  setTimeout(() => {
+    triggerMockAlert('cam-do-phat-loc', "Đang có báo động tại Cầm đồ Phát Lộc! Địa chỉ: 17 Lương Văn Tụy, P. Tân Thành");
+  }, 25000);
+}
+
+function triggerMockAlert(facilityId, message) {
+  const facility = findFacility(facilityId);
+  if (!facility) return;
+
+  facility.status = 'purple'; // "Có vi phạm/Rủi ro cao", shows pulsing red dot
+  facility.hasAlert = true;
+  facility.alertMessage = message;
+
+  if (map && !alertCircles[facilityId]) {
+    const circle = new google.maps.Circle({
+      strokeColor: "#FF0000",
+      strokeOpacity: 0.8,
+      strokeWeight: 2,
+      fillColor: "#FF0000",
+      fillOpacity: 0.15,
+      map: map,
+      center: facility.position,
+      radius: 500
+    });
+    alertCircles[facilityId] = circle;
+  }
+
+  currentAlertPhones.add(facility.phone);
+  updateAlertPanel();
+  playAlertSound();
+  enqueueSpeech(message, facility.phone);
+
+  renderMapData();
+}
+
+function updateAlertPanel() {
+  const panel = document.getElementById('alert-panel');
+  const content = document.getElementById('alert-content');
+  if (!panel || !content) return;
+
+  const alertingFacilities = facilities.filter(f => f.hasAlert);
+
+  if (alertingFacilities.length === 0) {
+    panel.style.opacity = '0';
+    panel.style.transform = 'scale(0.95)';
+    panel.style.pointerEvents = 'none';
+    content.innerHTML = '';
+    return;
+  }
+
+  content.innerHTML = alertingFacilities.map(f => `
+    <article class="p-3 bg-red-50 border border-red-200 rounded-lg space-y-1 relative" data-phone="${f.phone}">
+      <h4 class="font-bold text-red-800 text-sm">${escapeHTML(f.name)}</h4>
+      <p class="text-xs text-red-700 flex items-center gap-1">
+        <i data-lucide="phone" class="h-3 w-3"></i> ${escapeHTML(f.phone)}
+      </p>
+      <p class="text-xs text-red-600 flex items-center gap-1">
+        <i data-lucide="map-pin" class="h-3 w-3"></i> ${escapeHTML(f.address)}
+      </p>
+      <button class="mt-2 w-full py-1 bg-red-600 hover:bg-red-700 text-white rounded text-xs font-bold transition-colors" onclick="acknowledgeAlert('${f.id}')">
+        Đã tiếp nhận
+      </button>
+    </article>
+  `).join('');
+
+  panel.style.opacity = '1';
+  panel.style.transform = 'scale(1)';
+  panel.style.pointerEvents = 'auto';
+
+  if (window.lucide) window.lucide.createIcons();
+}
+
+function playAlertSound() {
+  const audio = document.getElementById('myAudio');
+  if (audio) {
+    audio.play().catch(e => {
+      console.log("Audio play blocked by browser. Synthesizing alert tone instead.");
+      synthesizeBeep();
+    });
+  } else {
+    synthesizeBeep();
+  }
+}
+
+function synthesizeBeep() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(880, ctx.currentTime);
+    gain.gain.setValueAtTime(0.5, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
+    
+    osc.start();
+    osc.stop(ctx.currentTime + 0.5);
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+function enqueueSpeech(text, phone) {
+  const SpeechSynthesisUtterance = window.SpeechSynthesisUtterance;
+  if (!SpeechSynthesisUtterance) return;
+
+  const isPhoneKnown = speechQueue.some(msg => msg.phone === phone);
+  if (!isPhoneKnown) {
+    const oldPhones = [...new Set(speechQueue.map(msg => msg.phone))];
+    const oldMsgs = [];
+    for (const p of oldPhones) {
+      const firstMsg = speechQueue.find(msg => msg.phone === p);
+      if (firstMsg) oldMsgs.push(firstMsg);
+    }
+
+    speechQueue = [];
+    if (currentMsg && currentMsg.phone !== phone) {
+      window.speechSynthesis.cancel();
+      currentMsg = null;
+      isSpeaking = false;
+    }
+
+    const newMsg = new SpeechSynthesisUtterance(text);
+    newMsg.textToSpeak = text;
+    newMsg.lang = 'vi-VN';
+    newMsg.phone = phone;
+    newMsg.onend = () => {
+      isSpeaking = false;
+      currentMsg = null;
+      playNextSpeech();
+    };
+    speechQueue.push(newMsg);
+
+    for (const oldMsg of oldMsgs) {
+      if (oldMsg.phone !== phone) {
+        const replayMsg = new SpeechSynthesisUtterance(oldMsg.textToSpeak);
+        replayMsg.lang = 'vi-VN';
+        replayMsg.phone = oldMsg.phone;
+        replayMsg.onend = () => {
+          isSpeaking = false;
+          currentMsg = null;
+          playNextSpeech();
+        };
+        speechQueue.push(replayMsg);
+      }
+    }
+  } else {
+    const msg = new SpeechSynthesisUtterance(text);
+    msg.textToSpeak = text;
+    msg.lang = 'vi-VN';
+    msg.phone = phone;
+    msg.onend = () => {
+      isSpeaking = false;
+      currentMsg = null;
+      playNextSpeech();
+    };
+    speechQueue.push(msg);
+  }
+
+  if (!isSpeaking) {
+    playNextSpeech();
+  }
+}
+
+function playNextSpeech() {
+  if (speechQueue.length > 0) {
+    isSpeaking = true;
+    currentMsg = speechQueue.shift();
+    window.speechSynthesis.speak(currentMsg);
+  } else {
+    isSpeaking = false;
+    currentMsg = null;
+  }
+}
+
+function clearSpeechQueueByPhone(phone) {
+  speechQueue = speechQueue.filter(msg => msg.phone !== phone);
+}
+
+function acknowledgeAlert(facilityId) {
+  const facility = findFacility(facilityId);
+  if (!facility) return;
+
+  facility.status = 'green';
+  facility.hasAlert = false;
+  
+  if (alertCircles[facilityId]) {
+    alertCircles[facilityId].setMap(null);
+    delete alertCircles[facilityId];
+  }
+
+  currentAlertPhones.delete(facility.phone);
+  clearSpeechQueueByPhone(facility.phone);
+
+  updateAlertPanel();
+  renderMapData();
+}
+window.acknowledgeAlert = acknowledgeAlert;
 
 setTimeout(() => {
   if (!window.google || !map) {
@@ -2215,3 +2615,7 @@ renderNotifications();
 renderNearbyList();
 renderStats();
 lucide.createIcons();
+
+// Initialize voice search
+initVoiceSearch();
+

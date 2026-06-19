@@ -211,9 +211,12 @@
           </label>
           <label class="search-field">
             <span>Tìm kiếm cơ sở</span>
-            <span class="search-wrap">
-              <input id="facilitySearch" type="text" placeholder="Nhập tên cơ sở, địa chỉ..." />
-              <i data-lucide="search" class="h-5 w-5"></i>
+            <span class="search-wrap relative flex items-center">
+              <input id="facilitySearch" type="text" placeholder="Nhập tên cơ sở, địa chỉ..." class="pr-16" />
+              <button type="button" id="btnVoice" class="absolute right-8 text-gray-400 hover:text-[#bd0000] p-1 focus:outline-none transition-colors" title="Tìm kiếm bằng giọng nói">
+                <i data-lucide="mic" class="h-4 w-4"></i>
+              </button>
+              <i data-lucide="search" class="h-5 w-5 absolute right-2 pointer-events-none"></i>
             </span>
           </label>
           <button id="advancedFilterBtn" class="advanced-btn" type="button">
@@ -231,10 +234,35 @@
               </div>
             </div>
 
+            <!-- Alert Panel Overlay -->
+            <div id="alert-panel" class="absolute top-16 right-4 z-40 w-80 bg-white border-2 border-red-500 rounded-xl shadow-2xl p-4 transition-all duration-300 transform scale-95 opacity-0 pointer-events-none">
+              <div class="flex items-center justify-between border-b border-red-100 pb-2 mb-2">
+                <div class="flex items-center gap-2 text-red-600 font-bold text-sm">
+                  <i data-lucide="bell-ring" class="h-4 w-4 animate-bounce"></i>
+                  <span>CẢNH BÁO KHẨN CẤP 113</span>
+                </div>
+                <span class="flex h-2.5 w-2.5 relative">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+                </span>
+              </div>
+              <div id="alert-content" class="max-h-60 overflow-y-auto space-y-3">
+                <!-- Dynamic alerts go here -->
+              </div>
+            </div>
+
+            <audio id="myAudio" preload="auto" class="hidden">
+              <source src="../audio/canhbao.mp3" type="audio/mpeg" />
+              <source src="https://actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg" type="audio/ogg" />
+            </audio>
+
             <div class="map-search-bar" role="search">
-              <span class="map-search-input">
-                <i data-lucide="search" class="h-5 w-5"></i>
-                <input id="facilitySearchFloating" type="text" placeholder="Tìm kiếm cơ sở, địa chỉ, loại hình..." />
+              <span class="map-search-input relative flex items-center">
+                <i data-lucide="search" class="h-5 w-5 mr-1 text-gray-400"></i>
+                <input id="facilitySearchFloating" type="text" placeholder="Tìm kiếm cơ sở, địa chỉ, loại hình..." class="pr-8" style="background: transparent; outline: none; border: none; width: 100%;" />
+                <button type="button" id="btnVoiceFloating" class="absolute right-2 text-gray-400 hover:text-[#bd0000] p-1 focus:outline-none transition-colors" title="Tìm kiếm bằng giọng nói">
+                  <i data-lucide="mic" class="h-4 w-4"></i>
+                </button>
               </span>
               <button id="openFilterDrawerBtn" class="map-filter-btn" type="button">
                 <i data-lucide="sliders-horizontal" class="h-5 w-5"></i>
@@ -247,10 +275,10 @@
             </div>
 
             <div class="map-toolbar">
-              <button type="button" data-map-control="zoom-in"><i data-lucide="plus" class="h-6 w-6"></i></button>
-              <button type="button" data-map-control="zoom-out"><i data-lucide="minus" class="h-6 w-6"></i></button>
-              <button type="button" data-map-control="fit"><i data-lucide="scan" class="h-5 w-5"></i></button>
-              <button type="button" data-map-control="locate"><i data-lucide="crosshair" class="h-5 w-5"></i></button>
+              <button type="button" data-map-control="zoom-in" title="Phóng to"><i data-lucide="plus" class="h-6 w-6"></i></button>
+              <button type="button" data-map-control="zoom-out" title="Thu nhỏ"><i data-lucide="minus" class="h-6 w-6"></i></button>
+              <button type="button" data-map-control="fit" title="Xem toàn bộ"><i data-lucide="scan" class="h-5 w-5"></i></button>
+              <button type="button" data-map-control="locate" title="Vị trí mặc định"><i data-lucide="crosshair" class="h-5 w-5"></i></button>
               <button type="button" data-map-control="radius" title="Khoanh vùng bán kính"><i data-lucide="circle-dot"
                   class="h-5 w-5"></i></button>
               <button type="button" data-map-control="polygon" title="Vẽ đa giác"><i data-lucide="pentagon"
@@ -272,13 +300,21 @@
               </div>
             </div>
 
-            <article id="facilityPopup" class="facility-popup facility-tooltip" hidden>
+            <article id="facilityPopup" class="facility-popup facility-tooltip flex flex-col" style="display: none;">
               <button class="popup-close" type="button" aria-label="Đóng"><i data-lucide="x"
                   class="h-4 w-4"></i></button>
               <h2>Karaoke Hoa Sen</h2>
               <span class="popup-status">Đang hoạt động</span>
-              <p class="tooltip-type">Karaoke</p>
-              <button id="openFacilitySheetBtn" class="popup-detail" type="button">Xem chi tiết</button>
+              <p class="tooltip-type mb-2">Karaoke</p>
+              <div class="flex flex-col gap-1.5 mt-auto">
+                <button id="openFacilitySheetBtn" class="popup-detail w-full flex items-center justify-center py-1.5 px-3 rounded text-xs font-bold transition border border-gray-300 hover:bg-gray-50 text-gray-700" type="button">Xem chi tiết</button>
+                <button id="btnRouteGisPopup" class="w-full flex items-center justify-center gap-1.5 bg-[#bd0000] hover:bg-[#a00000] text-white font-bold py-1.5 px-3 rounded text-xs transition focus:outline-none" type="button">
+                  <i data-lucide="navigation" class="h-3.5 w-3.5"></i> Chỉ đường
+                </button>
+                <button id="btnCancelRouteGisPopup" class="w-full flex items-center justify-center gap-1.5 bg-gray-500 hover:bg-gray-600 text-white font-bold py-1.5 px-3 rounded text-xs transition focus:outline-none" style="display: none;" type="button">
+                  <i data-lucide="trash-2" class="h-3.5 w-3.5"></i> Xóa chỉ đường
+                </button>
+              </div>
             </article>
 
 
